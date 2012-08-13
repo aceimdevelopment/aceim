@@ -1,0 +1,145 @@
+%br
+=form_tag({:action => "guardar_parametros"}) do
+  %table.tablesorter.tablefilter.likert
+    %thead
+      %tr
+        %th
+          Acción
+        %th
+          SI
+        %th
+          NO
+    %tbody
+      %tr
+        %td
+          ¿Abrir la Inscripción General? (Alumnos Regulares)
+        %td
+          -if @inscripcion_general == "SI"
+            =radio_button_tag "inscripcion_general","SI",true
+          -else
+            =radio_button_tag "inscripcion_general","SI",false
+        %td
+          -if @inscripcion_general == "NO"
+            =radio_button_tag "inscripcion_general","NO",true
+          -else
+            =radio_button_tag "inscripcion_general","NO",false
+
+      %tr
+        %td
+          ¿Permitir Cambio de Horario en la Inscripción?
+        %td
+          -if @cambio_de_horario == "SI"
+            =radio_button_tag "cambio_de_horario","SI",true
+          -else
+            =radio_button_tag "cambio_de_horario","SI",false
+        %td
+          -if @cambio_de_horario == "NO"
+            =radio_button_tag "cambio_de_horario","NO",true
+          -else
+            =radio_button_tag "cambio_de_horario","NO",false
+
+      %tr
+        %td
+          ¿Abrir la Inscripción de Alumnos Nuevos?
+        %td
+          -if @inscripcion_nuevos == "SI"
+            =radio_button_tag "inscripcion_nuevos","SI",true
+          -else
+            =radio_button_tag "inscripcion_nuevos","SI",false
+        %td
+          -if @inscripcion_nuevos == "NO"
+            =radio_button_tag "inscripcion_nuevos","NO",true
+          -else
+            =radio_button_tag "inscripcion_nuevos","NO",false
+      %tr
+        %td
+          ¿Calificación Abierta?
+        %td
+          -if @califiacion_abierta == "SI"
+            =radio_button_tag "calificacion_abierta","SI",true
+          -else
+            =radio_button_tag "calificacion_abierta","SI",false
+        %td
+          -if @califiacion_abierta == "NO"
+            =radio_button_tag "calificacion_abierta","NO",true
+          -else
+            =radio_button_tag "calificacion_abierta","NO",false
+      %tr
+        %td
+          ¿Listados Abiertos?
+        %td
+          -if @listados_abiertos == "SI"
+            =radio_button_tag "listados_abiertos","SI",true
+          -else
+            =radio_button_tag "listados_abiertos","SI",false
+        %td
+          -if @listados_abiertos == "NO"
+            =radio_button_tag "listados_abiertos","NO",true
+          -else
+            =radio_button_tag "listados_abiertos","NO",false
+      %tr
+        %td
+          ¿Inscripción Modo Niños?
+        %td
+          -if @inscripcion_modo_ninos == "SI"
+            =radio_button_tag "inscripcion_modo_ninos","SI",true
+          -else
+            =radio_button_tag "inscripcion_modo_ninos","SI",false
+        %td
+          -if @inscripcion_modo_ninos == "NO"
+            =radio_button_tag "inscripcion_modo_ninos","NO",true
+          -else
+            =radio_button_tag "inscripcion_modo_ninos","NO",false
+  %p= submit_tag 'Guardar'
+
+%br/
+%br/
+
+
+%table.tablesorter.tablefilter.likert
+  %thead
+    %tr
+      %th{:width => "40%"}
+        Parámetro
+      %th{:width => "40%"}
+        Valor
+      %th{:width => "20%"}
+        Acción
+  %tbody
+    %tr
+      %td
+        Periodo Actual
+      %td
+        =@periodo_actual
+      %td
+        =link_to_modal "Cambiar",{:action => "cambiar_periodo_modal",:title =>"Cambiar Período Actual por Defecto",:width=>300,:params => {:invocador => "cambiar_periodo_general"}}
+        ="&nbsp;&nbsp;|&nbsp;&nbsp;".html_safe
+        =link_to_modal "Crear Nuevo Periodo",{:action => "crear_nuevo_periodo_modal",:title =>"Crear Nuevo Período",:width=>300}
+        
+
+
+    %tr
+      %td
+        Periodo Anterior
+      %td
+        =@periodo_anterior
+      %td
+        ="-----"
+
+    %tr
+      %td
+        Periodo Calificación
+      %td
+        =@periodo_calificacion
+      %td
+        =link_to_modal "Cambiar",{:action => "cambiar_periodo_modal",:title =>"Cambiar Período de Calificación",:width=>300,:params => {:invocador => "cambiar_periodo_calificacion"}}
+
+
+    %tr
+      %td
+        Periodo Inscripción
+      %td
+        =@periodo_inscripcion
+      %td
+        =link_to_modal "Cambiar",{:action => "cambiar_periodo_modal",:title =>"Cambiar Período de Inscripción",:width=>300,:params => {:invocador => "cambiar_periodo_inscripcion"}}
+

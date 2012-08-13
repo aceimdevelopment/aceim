@@ -1,0 +1,12 @@
+-if session[:parametros][:inscripcion_abierta] == "SI" && !@preinscrito 
+  -if session[:parametros][:inscripcion_modo_ninos]=="NO" || session[:tipo_curso].tipo_categoria_id == "NI"
+    %h3
+      =link_to "Preinscribirse", :action => "paso1", :controller => "inscripcion"
+    %div.titulo Preinscribirse en el periodo #{session[:parametros][:periodo_inscripcion]} y obtener la Planilla           
+-if @preinscrito
+  %h3
+    =link_to "Obtener Planilla de Preinscripción", :action => "planilla_inscripcion", :controller => "inscripcion"
+  %div.titulo Obtener de nuevo la planilla del periodo #{session[:parametros][:periodo_inscripcion]}
+%h3
+  =link_to "Consultar Historial de Cursos", :action => "cursos", :controller => "estudiante"
+%div.titulo Consulta el listado de tus Cursos Realizados
