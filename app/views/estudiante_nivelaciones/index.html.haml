@@ -13,13 +13,16 @@
     - @estudiante_nivelaciones.each_with_index do |en,i| 
       %tr
         %td #{i+1}
-        %td #{en.usuario.descripcion}
+        %td=link_to en.usuario.descripcion, :action => "planilla_nivelacion", :id => en.id
         %td #{en.usuario.datos_contacto}
         %td #{en.tipo_curso.descripcion}
         %td #{en.estado}
         %td #{en.observaciones}
         %td
           =link_to 'Eliminar', {:action => "eliminar", :id => en.id}, :confirm => 'Está seguro de eliminar al estudiante?'
+          %br/
+          %br/
+          =link_to 'Planilla', :action => "planilla_nivelacion", :id => en.id
           %br/
           %br/
           =link_to 'Inscribir', {:action => "inscribir", :id => en.usuario_ci, :idioma => en.tipo_curso.id}

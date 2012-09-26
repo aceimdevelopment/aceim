@@ -81,4 +81,18 @@ class EstudianteNivelacionesController < ApplicationController
     flash[:mensaje] = "Se ha eliminado la nivelación"
     redirect_to :action => "index"
   end
+
+  def planilla_nivelacion
+    
+    usuario_ci,periodo_id,idioma_id,tipo_categoria_id = params[:id]
+    @historial = EstudianteNivelacion.where(
+      :usuario_ci => usuario_ci,
+      :idioma_id => idioma_id,
+      :tipo_categoria_id => tipo_categoria_id,
+      :periodo_id => periodo_id).limit(1).first
+    info_bitacora "Se busco la planilla de nivelacion en #{@historial.usuario_ci}"
+    pdf = DocumentosPDF.planilla_nivelacion(@historial)
+    send_data pdf.render,:filename => "planilla_nivelacion_#{usuario_ci}.pdf",
+                         :type => "application/pdf", :disposition => "attachment"
+  end
 end

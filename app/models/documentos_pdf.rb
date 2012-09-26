@@ -1512,6 +1512,146 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
     tab.render_on pdf
     pdf
   end
+
+  def self.planilla_nivelacion_pagina(historial_academico,pdf)
+    pdf.add_image_from_file 'app/assets/images/logo_fhe_ucv.jpg', 465, 710, 50,nil
+    pdf.add_image_from_file 'app/assets/images/logo_eim.jpg', 515, 710+10, 50,nil
+    pdf.add_image_from_file 'app/assets/images/logo_ucv.jpg', 45, 710, 50,nil
+    #pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 450-10, 500+35, nil, 120
+    #pdf.add_text 480-10,500+35,to_utf16("---- #{historial_academico.usuario_ci} ----"),11
+    
+    #texto del encabezado
+    pdf.add_text 100,745,to_utf16("Universidad Central de Venezuela"),11
+    pdf.add_text 100,735,to_utf16("Facultad de Humanidades y Educación"),11
+    pdf.add_text 100,725,to_utf16("Escuela de Idiomas Modernos"),11
+    pdf.add_text 100,715,to_utf16("Cursos de Extensión EIM-UCV"),11 
+    
+
+    #titulo    
+    pdf.text "\n\n\n\n\n"
+    pdf.text to_utf16("Planilla de Inscripción (Sede Ciudad Universitaria)\n"), :font_size => 14, :justification => :center
+    pdf.text to_utf16("Periodo #{historial_academico.periodo_id}"), :justification => :center
+
+    # ------- DATOS DE LA PREINSCRIPCIO -------
+    pdf.text "\n", :font_size => 10
+    pdf.text to_utf16("<b>Datos de la Preinscripción:</b>"), :font_size => 12
+    tabla = PDF::SimpleTable.new 
+    tabla.font_size = 12
+    tabla.show_lines    = :none
+    tabla.show_headings = false 
+    tabla.shade_rows = :none
+    tabla.column_order = ["nombre", "valor"]
+
+    tabla.columns["nombre"] = PDF::SimpleTable::Column.new("nombre") { |col|
+      col.width = 100
+      col.justification = :left
+    }
+    tabla.columns["valor"] = PDF::SimpleTable::Column.new("valor") { |col|
+      col.width = 400
+      col.justification = :left
+    }
+    datos = []
+    
+    datos << { "nombre" => to_utf16("<b>Estudiante:</b>"), "valor" => to_utf16("#{historial_academico.usuario.descripcion}\n#{historial_academico.usuario.datos_contacto}") }
+    datos << { "nombre" => to_utf16("<b>Curso:</b>"), "valor" => to_utf16("#{historial_academico.tipo_curso.descripcion}") }
+    datos << { "nombre" => to_utf16("<b>Nivel:</b>"), "valor" => to_utf16("____________________________") }
+    datos << { "nombre" => to_utf16("<b>Horario:</b>"), "valor" => to_utf16("____________________________") }
+    datos << { "nombre" => to_utf16("<b>Sección:</b>"), "valor" => to_utf16("____________________________") }
+    datos << { "nombre" => to_utf16("<b>Aula:</b>"), "valor" => to_utf16("____________________________") }
+    tabla.data.replace datos
+    tabla.render_on(pdf)
+    
+
+    # -------- TABLA CUENTA -------
+    pdf.text "\n", :font_size => 10
+    pdf.text to_utf16("<b>Datos de Pago:</b>"), :font_size => 12
+    pdf.text "\n", :font_size => 8
+    tabla = PDF::SimpleTable.new 
+    tabla.font_size = 12
+    tabla.show_lines    = :none
+    tabla.show_headings = false 
+    tabla.shade_rows = :none
+    tabla.column_order = ["nombre", "valor"]
+
+    tabla.columns["nombre"] = PDF::SimpleTable::Column.new("nombre") { |col|
+      col.width = 110
+      col.justification = :left
+    }
+    tabla.columns["valor"] = PDF::SimpleTable::Column.new("valor") { |col|
+      col.width = 400
+      col.justification = :left
+    }
+    datos = []
+    
+    datos << { "nombre" => to_utf16("<b>Banco:</b>"), "valor" => to_utf16("Banco de Venezuela") }
+    datos << { "nombre" => to_utf16("<b>Nro. de Cuenta:</b>"), "valor" => to_utf16("Cuenta Corriente #{historial_academico.cuenta_numero}") }
+    datos << { "nombre" => to_utf16("<b>A nombre de:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_nombre}") }
+    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF.") }
+    datos << { "nombre" => to_utf16("<b>Nro Depósito:</b>"), "valor" => to_utf16("______________________________") }
+    tabla.data.replace datos  
+    tabla.render_on(pdf)
+    pdf.text "\n", :font_size => 10
+    
+    # ---- NORMAS -----
+    pdf.text to_utf16("<b>LEA CUIDADOSAMENTE LA SIGUIENTE INFORMACIÓN Y NORMATIVA DEL PROGRAMA</b>"), :font_size => 12
+    pdf.text "\n", :font_size => 10
+    pdf.text to_utf16("<C:bullet/>La inscripción es válida UNICAMENTE para el período indicado en esta planilla. NO SE CONGELAN CUPOS POR NINGÚN MOTIVO."), :font_size => 11, :justification => :full
+    pdf.text to_utf16("<C:bullet/>SOLO SE REINTEGRARÁ EL MONTO DE LA MATRÍCULA EN CASO DE QUE NO SE REUNA EL QUORUM NECESARIO PARA LA APERTURA DEL CURSO."), :font_size => 11, :justification => :full
+    pdf.text to_utf16("<C:bullet/>La asistencia a clases es obligatoria: Cursos <b>LUN-MIE</b>: Límite de 3 inasistencias. Cursos <b>MAR-JUE</b>: Límite de 3 inasistencias. Cursos <b>SÁBADOS</b>: Límite de 2 inasistencias."), :font_size => 11, :justification => :full
+    pdf.text to_utf16("<C:bullet/>La nota mínima aprobatoria es de 15 puntos. El cupo mínimo es de 15 participantes."), :font_size => 11, :justification => :full
+    pdf.text to_utf16("<C:bullet/>NO SE PERMITEN CAMBIOS DE SECCIÓN."), :font_size => 11, :justification => :full
+    pdf.text to_utf16("<C:bullet/>El horario, sección y aula se reserva hasta la fecha indicada."), :font_size => 11, :justification => :full
+    pdf.text to_utf16("<C:bullet/>Únicamente DEPOSITOS en EFECTIVO (NO CHEQUES)."), :font_size => 11, :justification => :full
+    
+    # -- FIRMAS -----
+    pdf.text "\n", :font_size => 8
+    pdf.text "\n", :font_size => 8
+    pdf.text "\n", :font_size => 8
+    pdf.text "\n", :font_size => 8
+    tabla = PDF::SimpleTable.new 
+    tabla.font_size = 12 
+    tabla.orientation   = :center
+    tabla.position      = :center
+    tabla.show_lines    = :none
+    tabla.show_headings = false 
+    tabla.shade_rows = :none
+    tabla.column_order = ["nombre", "valor"]
+
+    tabla.columns["nombre"] = PDF::SimpleTable::Column.new("nombre") { |col|
+      col.width = 250
+      col.justification = :center
+    }
+    tabla.columns["valor"] = PDF::SimpleTable::Column.new("valor") { |col|
+      col.width = 250
+      col.justification = :center
+    }
+    datos = []
+    datos << { "nombre" => to_utf16("<b>__________________________</b>"), "valor" => to_utf16("<b>__________________________</b>") }
+    datos << { "nombre" => to_utf16("Firma Estudiante"), "valor" => to_utf16("Firma Autorizada y Sello") }
+    tabla.data.replace datos  
+    tabla.render_on(pdf)
+    pdf.text "\n", :font_size => 8
+    pdf.text "\n", :font_size => 8
+  end
+
+  def self.planilla_nivelacion(historial_academico=nil)
+    pdf = PDF::Writer.new(:paper => "letter")  #:orientation => :landscape, 
+    t = Time.now
+
+    planilla_nivelacion_pagina(historial_academico,pdf)
+    pdf.text to_utf16("----- COPIA DEL ESTUDIANTE -----"), :font_size => 12, :justification => :center
+    pdf.text "\n", :font_size => 8
+    pdf.text to_utf16("#{t.strftime('%d/%m/%Y %I:%M%p')} - Página: 1 de 2"), :font_size => 10, :justification => :right
+    
+    pdf.new_page
+    pdf.y = 756
+    planilla_nivelacion_pagina(historial_academico,pdf)
+    pdf.text to_utf16("----- COPIA ADMINISTRACIÓN -----"), :font_size => 12, :justification => :center
+    pdf.text "\n", :font_size => 8
+    pdf.text to_utf16("#{t.strftime('%d/%m/%Y %I:%M%p')} - Página: 2 de 2"), :font_size => 10, :justification => :right
+   
+    return pdf
+  end
   
   
   
