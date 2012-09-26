@@ -1529,7 +1529,7 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
 
     #titulo    
     pdf.text "\n\n\n\n\n"
-    pdf.text to_utf16("Planilla de Inscripción (Sede Ciudad Universitaria)\n"), :font_size => 14, :justification => :center
+    pdf.text to_utf16("Planilla de Inscripción-Nivelación (Sede Ciudad Universitaria)\n"), :font_size => 14, :justification => :center
     pdf.text to_utf16("Periodo #{historial_academico.periodo_id}"), :justification => :center
 
     # ------- DATOS DE LA PREINSCRIPCIO -------
