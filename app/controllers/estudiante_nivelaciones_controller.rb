@@ -4,6 +4,7 @@ class EstudianteNivelacionesController < ApplicationController
   def index 
     @titulo_pagina = "Estudiantes con nivelación - Periodo #{session[:parametros][:periodo_actual]}"
     @estudiante_nivelaciones = EstudianteNivelacion.where(:periodo_id => session[:parametros][:periodo_actual])
+    @periodo_id = session[:parametros][:periodo_actual]
   end
 
   # GET /estudiante_nivelaciones/1
@@ -82,6 +83,14 @@ class EstudianteNivelacionesController < ApplicationController
     redirect_to :action => "index"
   end
 
+  def confirmar
+    @estudiante_nivelacion = EstudianteNivelacion.find(params[:id])
+    @estudiante_nivelacion.confirmado = 1
+    @estudiante_nivelacion.save
+    flash[:mensaje] = "Se ha confirmado al estudiante"
+    redirect_to :action => "index"
+  end
+
   def planilla_nivelacion
     
     usuario_ci,periodo_id,idioma_id,tipo_categoria_id = params[:id]
@@ -94,5 +103,12 @@ class EstudianteNivelacionesController < ApplicationController
     pdf = DocumentosPDF.planilla_nivelacion(@historial)
     send_data pdf.render,:filename => "planilla_nivelacion_#{usuario_ci}.pdf",
                          :type => "application/pdf", :disposition => "attachment"
+  end
+
+  def listado_confirmados
+    periodo_id = params[:periodo_id]
+    if pdf = DocumentosPDF.generar_listado_nivelacion_confirmados(periodo_id)
+      send_data pdf.render,:filename => "nivelacion_confirmados_#{periodo_id}.pdf",:type => "application/pdf", :disposition => "attachment"
+    end
   end
 end

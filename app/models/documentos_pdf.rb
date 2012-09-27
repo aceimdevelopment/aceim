@@ -1691,100 +1691,101 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
     pdf
   end
 
+  def self.generar_listado_nivelacion_confirmados(periodo_id)
+    historial = EstudianteNivelacion.where(:periodo_id=>periodo_id, :confirmado => 1)
+    historial = historial.sort_by{|x| x.usuario.nombre_completo}
+    pdf = PDF::Writer.new(:paper => "letter")  #:orientation => :landscape, 
+    
+    ss = PDF::Writer::StrokeStyle.new(2)
+    ss.cap = :round
+    pdf.stroke_style ss
+
+    pdf.add_image_from_file 'app/assets/images/logo_fhe_ucv.jpg', 45, 710, 50,nil
+    pdf.add_image_from_file 'app/assets/images/logo_eim.jpg', 515, 710, 50,nil
+    pdf.add_image_from_file 'app/assets/images/logo_ucv.jpg', 275, 710, 50,nil
+    pdf.line 35,700,575,700
+    
+    if historial.size > 0
+      
+      pdf.text "\n\n\n\n\n"
+      pdf.text to_utf16("<b>Estudiantes con Nivelación (Confirmados) - Período:</b> #{periodo_id}"), :justification => :center
+      pdf.text "\n\n"
+      
+      
+      
+      
+      
+      tab = PDF::SimpleTable.new
+      tab.bold_headings = true
+      tab.show_lines    = :inner
+      tab.show_headings = true
+      tab.shade_rows = :none
+      tab.orientation   = :center
+      tab.heading_font_size = 8
+      tab.font_size = 8
+      tab.row_gap = 3
+      tab.minimum_space = 0
+      tab.column_order = ["nro","nombre","cedula", "correo","telefono"]
+      tab.columns["nro"] = PDF::SimpleTable::Column.new("nro") { |col|
+        col.width = 25
+        col.justification = :right
+        col.heading = "#"
+        col.heading.justification= :center
+      }
+      tab.columns["nombre"] = PDF::SimpleTable::Column.new("nombre") { |col|
+        col.width = 180
+        col.justification = :left
+        col.heading = "NOMBRE COMPLETO"
+        col.heading.justification= :center
+      }
+      tab.columns["cedula"] = PDF::SimpleTable::Column.new("cedula") { |col|
+        col.width = 50
+        col.justification = :center
+        col.heading = to_utf16 "CÉDULA"
+        col.heading.justification= :center
+      }
+      tab.columns["correo"] = PDF::SimpleTable::Column.new("correo") { |col|
+        col.width = 180
+        col.justification = :left
+        col.heading = "CORREO"
+        col.heading.justification= :center
+      }
+      tab.columns["telefono"] = PDF::SimpleTable::Column.new("telefono") { |col|
+        col.width = 80
+        col.justification = :left
+        col.heading = "TELEFONO"
+        col.heading.justification= :center
+      }
+
+      data = []
+
+      historial.each_with_index{|reg,ind|
+        data << {
+          "nro" => "#{(ind+1)}",          
+          "nombre" => to_utf16(reg.usuario.nombre_completo),
+          "cedula" => reg.usuario_ci,
+          "correo" => reg.usuario.correo,
+          "telefono" => reg.usuario.telefono_movil
+        }
+      }
+
+
+      t = Time.new
+      pdf.start_page_numbering(250, 15, 7, nil, to_utf16("#{t.day} / #{t.month} / #{t.year}       Página: <PAGENUM> de <TOTALPAGENUM>"), 1)
+
+      tab.data.replace data
+      
+      pdf.line 35,25,575,25
+      
+      tab.render_on(pdf)
+
+      
+    end
+    pdf
+  end
+
 end
 
 
 
 
-
-
-
-
-
-
-
-
-
-#OJO LA CLASE TERMINO ARRIBA, ESTO ESTA FUERA DE LA CLASE MOSCA!
-
-=begin
-
-		
-#		pdf.rounded_rectangle(50,710, 250, 150, 5).stroke
-#		pdf.rounded_rectangle(310,710, 250, 150, 5).stroke
-		
-		pdf.rounded_rectangle(50,550, 250, 150, 5).stroke
-		pdf.rounded_rectangle(310,550, 250, 150, 5).stroke		
-		
-		pdf.rounded_rectangle(50,390, 250, 150, 5).stroke
-		pdf.rounded_rectangle(310,390, 250, 150, 5).stroke
-
-    pdf.rounded_rectangle(50,230, 250, 150, 5).stroke
-		pdf.rounded_rectangle(310,230, 250, 150, 5).stroke
-		
-		
-		pdf.add_text_wrap 55,690,300,to_utf16("FUNDEIM")
-		pdf.add_text_wrap 55,680,300,to_utf16("Coordinación de los Cursos de Extensión")	
-		pdf.add_text_wrap 55,670,300,to_utf16("Autoriza a:")
-		pdf.add_text_wrap 55,660,300,to_utf16("<b>Andrés Alejandro Viviani Querales</b>")
-		pdf.add_text_wrap 55,650,300,to_utf16("<b>CI: 19499931</b>")
-		pdf.add_text_wrap 55,630,300,to_utf16("A ingresar al edificio de Ingeniería durante el periodo")
-		pdf.add_text_wrap 55,620,300,to_utf16("B-2012 <b>(Abril - Julio 2012)</b>")
-		pdf.add_text_wrap 140,580,300,to_utf16("<b>___________________________</b>")
-		pdf.add_text_wrap 160,570,300,to_utf16("Firma y sello autorizado")
-    pdf.add_image_from_file 'app/assets/images/firma_joyce.jpg', 155, 580, 130,35
-		
-
-		pdf.add_text_wrap 315,690,300,to_utf16("FUNDEIM")
-		pdf.add_text_wrap 315,680,300,to_utf16("Coordinación de los Cursos de Extensión")
-		
-		pdf.add_text_wrap 315,670,300,to_utf16("Autoriza a:")
-		pdf.add_text_wrap 315,660,300,to_utf16("<b>Andrés Alejandro Viviani Querales</b>")
-		pdf.add_text_wrap 315,650,300,to_utf16("<b>CI: 19499931</b>")
-		pdf.add_text_wrap 315,630,300,to_utf16("A ingresar al edificio de Ingeniería durante el periodo")
-		pdf.add_text_wrap 315,620,300,to_utf16("B-2012 <b>(Abril - Julio 2012)</b>")
-		pdf.add_text_wrap 400,580,300,to_utf16("<b>___________________________</b>")
-		pdf.add_text_wrap 420,570,300,to_utf16("Firma y sello autorizado")
-    pdf.add_image_from_file 'app/assets/images/firma_joyce.jpg', 415, 580, 130,35
-#--------------------------------------------------------------------------------------------------------    
-
-    pdf.add_text_wrap 55,530,300,to_utf16("FUNDEIM")
-		pdf.add_text_wrap 55,520,300,to_utf16("Coordinación de los Cursos de Extensión")
-		
-		pdf.add_text_wrap 55,510,300,to_utf16("Autoriza a:")
-		pdf.add_text_wrap 55,500,300,to_utf16("<b>Andrés Alejandro Viviani Querales</b>")
-		pdf.add_text_wrap 55,490,300,to_utf16("<b>CI: 19499931</b>")
-		pdf.add_text_wrap 55,470,300,to_utf16("A ingresar al edificio de Ingeniería durante el periodo")
-		pdf.add_text_wrap 55,460,300,to_utf16("B-2012 <b>(Abril - Julio 2012)</b>")
-		pdf.add_text_wrap 140,420,300,to_utf16("<b>___________________________</b>")
-		pdf.add_text_wrap 160,410,300,to_utf16("Firma y sello autorizado")
-    pdf.add_image_from_file 'app/assets/images/firma_joyce.jpg', 155, 420, 130,35
-
-
-    pdf.add_text_wrap 55,370,300,to_utf16("FUNDEIM")
-		pdf.add_text_wrap 55,360,300,to_utf16("Coordinación de los Cursos de Extensión")
-		
-		pdf.add_text_wrap 55,350,300,to_utf16("Autoriza a:")
-		pdf.add_text_wrap 55,340,300,to_utf16("<b>Andrés Alejandro Viviani Querales</b>")
-		pdf.add_text_wrap 55,330,300,to_utf16("<b>CI: 19499931</b>")
-		pdf.add_text_wrap 55,310,300,to_utf16("A ingresar al edificio de Ingeniería durante el periodo")
-		pdf.add_text_wrap 55,300,300,to_utf16("B-2012 <b>(Abril - Julio 2012)</b>")
-		pdf.add_text_wrap 140,260,300,to_utf16("<b>___________________________</b>")
-		pdf.add_text_wrap 160,250,300,to_utf16("Firma y sello autorizado")
-    pdf.add_image_from_file 'app/assets/images/firma_joyce.jpg', 155, 260, 130,35
-    
-    
-    pdf.add_text_wrap 55,210,300,to_utf16("FUNDEIM")
-		pdf.add_text_wrap 55,200,300,to_utf16("Coordinación de los Cursos de Extensión")
-		
-		pdf.add_text_wrap 55,190,300,to_utf16("Autoriza a:")
-		pdf.add_text_wrap 55,180,300,to_utf16("<b>Andrés Alejandro Viviani Querales</b>")
-		pdf.add_text_wrap 55,170,300,to_utf16("<b>CI: 19499931</b>")
-		pdf.add_text_wrap 55,150,300,to_utf16("A ingresar al edificio de Ingeniería durante el periodo")
-		pdf.add_text_wrap 55,140,300,to_utf16("B-2012 <b>(Abril - Julio 2012)</b>")
-		pdf.add_text_wrap 140,100,300,to_utf16("<b>___________________________</b>")
-		pdf.add_text_wrap 160,90,300,to_utf16("Firma y sello autorizado")
-    pdf.add_image_from_file 'app/assets/images/firma_joyce.jpg', 155, 100, 130,35
-=end
-
-#OJO LA CLASE TERMINO ARRIBA, ESTO ESTA FUERA DE LA CLASE MOSCA!

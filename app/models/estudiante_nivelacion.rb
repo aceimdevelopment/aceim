@@ -32,6 +32,10 @@ class EstudianteNivelacion < ActiveRecord::Base
     return "No inscrito"
   end
 
+  def estado_confirmado
+    return "Confirmado" if confirmado == 1
+    return "No confirmado"
+  end
 
 
   
