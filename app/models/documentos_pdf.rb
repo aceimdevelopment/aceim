@@ -1725,11 +1725,17 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
       tab.font_size = 8
       tab.row_gap = 3
       tab.minimum_space = 0
-      tab.column_order = ["nro","nombre","cedula", "correo","telefono"]
+      tab.column_order = ["nro","idioma","nombre","cedula", "correo","telefono"]
       tab.columns["nro"] = PDF::SimpleTable::Column.new("nro") { |col|
         col.width = 25
         col.justification = :right
         col.heading = "#"
+        col.heading.justification= :center
+      }
+      tab.columns["idioma"] = PDF::SimpleTable::Column.new("idioma") { |col|
+        col.width = 100
+        col.justification = :left
+        col.heading = "IDIOMA"
         col.heading.justification= :center
       }
       tab.columns["nombre"] = PDF::SimpleTable::Column.new("nombre") { |col|
@@ -1762,6 +1768,7 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
       historial.each_with_index{|reg,ind|
         data << {
           "nro" => "#{(ind+1)}",          
+          "idioma" => to_utf16(reg.tipo_curso.idioma.descripcion),
           "nombre" => to_utf16(reg.usuario.nombre_completo),
           "cedula" => reg.usuario_ci,
           "correo" => reg.usuario.correo,
