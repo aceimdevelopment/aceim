@@ -194,11 +194,15 @@ class AdminSeccionController < ApplicationController
 
               #Se debe buscar la pareja del aula que fue asignada para el dia1
               pareja = BloqueAulaDisponible.where(["aula_id = ? AND tipo_hora_id = ? AND tipo_dia_id = ? AND asignada = ?", aula, hora, dia1, 1]).limit(1).first
-
               aula_complemento = BloqueAulaDisponible.where(["pareja = ? AND tipo_dia_id = ? AND tipo_hora_id = ? ", pareja.pareja, dia2, hora]).limit(1).first
 
 		          #Se asigna el aula complemento
+		          if aula_complemento
 				      horario_seccion2.aula_id = aula_complemento.aula_id
+				  else
+				  	horario_seccion1.aula_id = "PD"
+				  	horario_seccion2.aula_id = "PD"
+				  end
 
 			      end
 
@@ -223,7 +227,7 @@ class AdminSeccionController < ApplicationController
 
 				  flash[:mensaje] = "No se ha podido crear la sección"
 				  redirect_to(:action=>"nuevo" ,:periodo => periodo, :idioma => idioma_cat, :categoria => categoria)
-
+				  return
 			  end
 
 		  end
@@ -233,6 +237,7 @@ class AdminSeccionController < ApplicationController
     end
     
     redirect_to(:action=>"nuevo" ,:periodo => periodo, :idioma => idioma_cat, :categoria => categoria)	
+    return
   end
 
 
