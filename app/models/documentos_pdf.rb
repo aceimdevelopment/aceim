@@ -1655,7 +1655,7 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
   
   
   
-  def self.generar_carnets_instructores(consulta)
+  def self.generar_carnets_instructores(consulta,periodo)
     pdf = PDF::Writer.new(:paper => "letter")  #:orientation => :landscape,   
     ss = PDF::Writer::StrokeStyle.new(2)
 		ss.cap = :round
@@ -1681,7 +1681,7 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
    		pdf.add_text_wrap xb,(yb-30),300,to_utf16("<b>#{ins.usuario.nombre_completo}</b>")
    		pdf.add_text_wrap xb,(yb-40),300,to_utf16("<b>CI: #{ins.usuario_ci}</b>")
    		pdf.add_text_wrap xb,(yb-60),300,to_utf16("Es instructor de los cursos de idiomas durante el")
-   		pdf.add_text_wrap xb,(yb-70),300,to_utf16("periodo C-2012 <b>(Julio - Septiembre 2012)</b>")
+   		pdf.add_text_wrap xb,(yb-70),300,to_utf16("periodo #{periodo} <b>(Octubre - Diciembre 2012)</b>")
    		pdf.add_text_wrap xb+85,yb-110,300,to_utf16("<b>___________________________</b>")
    		pdf.add_text_wrap xb+105,yb-120,300,to_utf16("Firma y sello autorizado")
       if ((i%8==7))

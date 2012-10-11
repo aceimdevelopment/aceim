@@ -181,7 +181,7 @@ class PrincipalAdminController < ApplicationController
     end
     
     consulta = consulta.sort_by{|x| x.usuario.nombre_completo}
-    pdf = DocumentosPDF.generar_carnets_instructores(consulta)
+    pdf = DocumentosPDF.generar_carnets_instructores(consulta,session[:parametros][:periodo_actual])
     send_data pdf.render,:filename => "carnet_instructores.pdf",:type => "application/pdf", :disposition => "attachment"
   end
   
