@@ -62,7 +62,7 @@ class EstudianteNivelacion < ActiveRecord::Base
   
   
   def cuenta_monto
-    return "Arancel prueba : Bs. 150,00 + Arancel Curso: Bs. 750,00"
+    return "Arancel prueba : Bs. 150,00 + Arancel Curso: Bs. 770,00"
   end
 
 
