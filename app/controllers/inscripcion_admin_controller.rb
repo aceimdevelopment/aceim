@@ -12,7 +12,7 @@ class InscripcionAdminController < ApplicationController
     else                      
       @usuario = Usuario.new
     end
-    tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_inscripcion]).collect{|y| 
+    tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_actual]).collect{|y| 
       y.tipo_curso.id
     }.sort.uniq
     @idiomas = TipoCurso.all.delete_if{|x| !tipo_curso.index(x.id)}
@@ -149,7 +149,7 @@ class InscripcionAdminController < ApplicationController
     @tipo_curso = session[:especial_tipo_curso] 
     @niveles = Seccion.where(:idioma_id => @tipo_curso.idioma_id,
       :tipo_categoria_id => @tipo_curso.tipo_categoria_id,
-      :periodo_id => session[:parametros][:periodo_inscripcion]).collect{|x| x.curso}.uniq.sort_by{|y| y.grado}.collect{|w| w.tipo_nivel}
+      :periodo_id => session[:parametros][:periodo_actual]).collect{|x| x.curso}.uniq.sort_by{|y| y.grado}.collect{|w| w.tipo_nivel}
   end
   
   def paso1_1_guardar
@@ -166,7 +166,7 @@ class InscripcionAdminController < ApplicationController
       session[:especial_tipo_curso].tipo_categoria_id)
     @ec = ec
     @secciones = Seccion.where(
-      :periodo_id => session[:parametros][:periodo_inscripcion],
+      :periodo_id => session[:parametros][:periodo_actual],
       :idioma_id => ec.idioma_id,
       :tipo_categoria_id => ec.tipo_categoria_id,
       :tipo_nivel_id => session[:especial_nivel]
