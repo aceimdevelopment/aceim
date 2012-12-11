@@ -60,6 +60,7 @@ end
     @historial = HistorialAcademico.where(:usuario_ci=>ci).sort_by{|x| "#{x.periodo.ano} #{x.periodo.id}"}.reverse
     @historial_actual = HistorialAcademico.where(:usuario_ci=>ci, :periodo_id=>periodo_actual)
     @estudiante_curso = EstudianteCurso.where(:usuario_ci=>ci)
+    @nivelaciones = EstudianteNivelacion.where(:usuario_ci=>ci)
     @titulo_pagina = "Modificar Estudiante: #{@usuario.descripcion}"
     @subtitulo_pagina = "Opciones"
   end

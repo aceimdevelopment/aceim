@@ -34,9 +34,10 @@
             %br/
 
           =link_to 'Planilla', :action => "planilla_nivelacion", :id => en.id
-          %br/
-          %br/
-          =link_to 'Inscribir', {:action => "inscribir", :id => en.usuario_ci, :idioma => en.tipo_curso.id}
+          -if en.estado != "Inscrito"
+            %br/
+            %br/
+            =link_to 'Inscribir', {:action => "inscribir", :id => en.usuario_ci, :idioma => en.tipo_curso.id}
 = link_to "Listado de los confirmados", :action => "listado_confirmados", :periodo_id => @periodo_id
 %br/
 %br/

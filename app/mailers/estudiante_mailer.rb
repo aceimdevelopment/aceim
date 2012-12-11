@@ -29,4 +29,15 @@ class EstudianteMailer < ActionMailer::Base
     mail(:to => usuario.correo, :subject => "FUNDEIM - Recordatorio de clave")
   end
 
+  def nivelacion(usuario, historial)
+    @nombre = usuario.nombre_completo
+    @clave = usuario.contrasena
+    @id=historial.tipo_curso.descripcion
+    @ni=historial.tipo_nivel.descripcion
+    @ho=historial.seccion.horario
+    @se=historial.seccion_numero
+    @au=historial.seccion.aula
+    mail(:to => usuario.correo, :subject => "FUNDEIM - Inscrito por nivelación")
+  end
+
 end

@@ -205,6 +205,15 @@ class InscripcionAdminController < ApplicationController
     end
     
     @historial.save  
+
+    #correo de asignacion
+    if EstudianteNivelacion.where(:usuario_ci => @historial.usuario_ci, 
+      :idioma_id => @historial.idioma_id, :tipo_categoria_id => @historial.tipo_categoria_id,
+      :periodo_id => @historial.periodo_id).first
+      EstudianteMailer.nivelacion(@historial.usuario,@historial).deliver
+    end
+
+
     info_bitacora "Paso 2 realizado preinscripcion realizada en #{@historial.seccion.descripcion_con_periodo}"
     flash[:mensaje] = "Preinscripción realizada, recuerde imprimir su planilla"
     redirect_to :action => "paso3"

@@ -27,6 +27,10 @@ class EstudianteCurso < ActiveRecord::Base
     "Estudiante - #{tipo_curso.descripcion}"
   end
 
+  def estudiante_nivelacion
+    EstudianteNivelacion.where(:usuario_ci => usuario_ci, :idioma_id => idioma_id, :tipo_categoria_id => tipo_categoria_id)
+  end
+
   belongs_to :estudiante,
     :class_name => 'Estudiante',
     :foreign_key => ['usuario_ci']

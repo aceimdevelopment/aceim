@@ -324,6 +324,10 @@ class DocumentosPDF
     tabla.render_on(pdf)
  		pdf.text "\n", :font_size => 8
 		pdf.text "\n", :font_size => 8
+
+
+
+
   end
 
   def self.planilla_inscripcion(historial_academico=nil)
@@ -335,12 +339,92 @@ class DocumentosPDF
 		pdf.text "\n", :font_size => 8
 		pdf.text to_utf16("#{t.strftime('%d/%m/%Y %I:%M%p')} - Página: 1 de 2"), :font_size => 10, :justification => :right
 		
+    if historial_academico.tipo_categoria_id == "NI" || historial_academico.tipo_categoria_id == "TE"
+      pdf.y = 650
+      pdf.new_page 
+      
+
+      pdf.add_image_from_file 'app/assets/images/logo_fhe_ucv.jpg', 465, 710, 50,nil
+      pdf.add_image_from_file 'app/assets/images/logo_eim.jpg', 515, 710+10, 50,nil
+      pdf.add_image_from_file 'app/assets/images/logo_ucv.jpg', 45, 710, 50,nil
+      pdf.add_text 100,745,to_utf16("Universidad Central de Venezuela"),11
+      pdf.add_text 100,735,to_utf16("Facultad de Humanidades y Educación"),11
+      pdf.add_text 100,725,to_utf16("Escuela de Idiomas Modernos"),11
+      pdf.add_text 100,715,to_utf16("Cursos de Extensión EIM-UCV"),11 
+      pdf.text to_utf16("NORMAS ADOLESCENTES Y NIÑOS\n"), :font_size => 14, :justification => :center
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+      pdf.text to_utf16("<b>Estimado representante:</b>"), :font_size => 12
+      pdf.text "\n", :font_size => 10
+      pdf.text to_utf16("<b>Le informamos que para poder inscribir a su representado en los cursos, debe apegarse a las siguientes condiciones:</b>"), :font_size => 12
+      pdf.text "\n", :font_size => 10
+      
+      pdf.text to_utf16("<C:bullet/>Traer su merienda para hacer el receso en el salón de clase. Sólo podrán ir al cafetín con una autorización escrita de su representante por cada sesión de clase. "), :font_size => 11, :justification => :full
+
+      pdf.text to_utf16("<C:bullet/>Cumplir el horario de entrada y salida de clase. Si necesitan ausentarse y/o retirarse antes de la clase deben presentar una autorización escrita de su representante o presentarse y hablar directamente con el profesor."), :font_size => 11, :justification => :full
+      pdf.text to_utf16("<C:bullet/>No llevar pelotas, patinetas, videojuegos u objetos similares al salón de clase."), :font_size => 11, :justification => :full
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+
+      pdf.text to_utf16("________________________________\n"), :font_size => 14, :justification => :center
+      pdf.text to_utf16("Firma Representante\n"), :font_size => 14, :justification => :center
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+
+      pdf.text to_utf16("****Es importante que usted conozca al profesor y a los coordinadores del curso de su representado y esté en comunicación con los mismos****\n"), :font_size => 12, :justification => :center
+    end
+
     pdf.new_page
     pdf.y = 756
     planilla_inscripcion_pagina(historial_academico,pdf)
 		pdf.text to_utf16("----- COPIA ADMINISTRACIÓN -----"), :font_size => 12, :justification => :center
 		pdf.text "\n", :font_size => 8
 		pdf.text to_utf16("#{t.strftime('%d/%m/%Y %I:%M%p')} - Página: 2 de 2"), :font_size => 10, :justification => :right
+
+    if historial_academico.tipo_categoria_id == "NI" || historial_academico.tipo_categoria_id == "TE"
+      pdf.y = 650
+      pdf.new_page 
+
+
+
+      pdf.add_image_from_file 'app/assets/images/logo_fhe_ucv.jpg', 465, 710, 50,nil
+      pdf.add_image_from_file 'app/assets/images/logo_eim.jpg', 515, 710+10, 50,nil
+      pdf.add_image_from_file 'app/assets/images/logo_ucv.jpg', 45, 710, 50,nil
+      pdf.add_text 100,745,to_utf16("Universidad Central de Venezuela"),11
+      pdf.add_text 100,735,to_utf16("Facultad de Humanidades y Educación"),11
+      pdf.add_text 100,725,to_utf16("Escuela de Idiomas Modernos"),11
+      pdf.add_text 100,715,to_utf16("Cursos de Extensión EIM-UCV"),11 
+      pdf.text to_utf16("NORMAS ADOLESCENTES Y NIÑOS\n"), :font_size => 14, :justification => :center
+
+      pdf.text to_utf16("<b>Estimado representante:</b>"), :font_size => 12
+      pdf.text "\n", :font_size => 10
+      pdf.text to_utf16("<b>Le informamos que para poder inscribir a su representado en los cursos, debe apegarse a las siguientes condiciones:</b>"), :font_size => 12
+      pdf.text "\n", :font_size => 10
+      
+      pdf.text to_utf16("<C:bullet/>Traer su merienda para hacer el receso en el salón de clase. Sólo podrán ir al cafetín con una autorización escrita de su representante por cada sesión de clase. "), :font_size => 11, :justification => :full
+
+      pdf.text to_utf16("<C:bullet/>Cumplir el horario de entrada y salida de clase. Si necesitan ausentarse y/o retirarse antes de la clase deben presentar una autorización escrita de su representante o presentarse y hablar directamente con el profesor."), :font_size => 11, :justification => :full
+      pdf.text to_utf16("<C:bullet/>No llevar pelotas, patinetas, videojuegos u objetos similares al salón de clase."), :font_size => 11, :justification => :full
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+
+      pdf.text to_utf16("________________________________\n"), :font_size => 14, :justification => :center
+      pdf.text to_utf16("Firma Representante\n"), :font_size => 14, :justification => :center
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+      pdf.text "\n", :font_size => 10
+
+      pdf.text to_utf16("****Es importante que usted conozca al profesor y a los coordinadores del curso de su representado y esté en comunicación con los mismos****\n"), :font_size => 12, :justification => :center
+    end
    
     return pdf
   end
@@ -1673,6 +1757,14 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
       pdf.rounded_rectangle(c["x_columna_#{col}"],c["y_fila_#{fil}"], 250, 150, 5).stroke 
       xb = c["x_columna_#{col}_base"]
       yb = c["y_fila_#{fil}_base"]
+      letra, ano = periodo.split("-")
+      
+      rango = "Enero - Marzo" if letra == "A"
+      rango = "Abril - Junio" if letra == "B"
+      rango = "Julio - Septiembre" if letra == "C"
+      rango = "Octubre - Diciembre" if letra == "D"
+      rango << " #{ano}"
+
       #primero la firma para poder superponer texto sobre ella (como si fuera transparente)
       pdf.add_image_from_file 'app/assets/images/firma_joyce.jpg', (xb+100), (yb-110), 130,35
       pdf.add_text_wrap xb,yb,300,to_utf16("Escuela de Idiomas Modernos")
@@ -1681,7 +1773,7 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
    		pdf.add_text_wrap xb,(yb-30),300,to_utf16("<b>#{ins.usuario.nombre_completo}</b>")
    		pdf.add_text_wrap xb,(yb-40),300,to_utf16("<b>CI: #{ins.usuario_ci}</b>")
    		pdf.add_text_wrap xb,(yb-60),300,to_utf16("Es instructor de los cursos de idiomas durante el")
-   		pdf.add_text_wrap xb,(yb-70),300,to_utf16("periodo #{periodo} <b>(Octubre - Diciembre 2012)</b>")
+   		pdf.add_text_wrap xb,(yb-70),300,to_utf16("periodo #{periodo} <b>(#{rango})</b>")
    		pdf.add_text_wrap xb+85,yb-110,300,to_utf16("<b>___________________________</b>")
    		pdf.add_text_wrap xb+105,yb-120,300,to_utf16("Firma y sello autorizado")
       if ((i%8==7))

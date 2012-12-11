@@ -1,3 +1,24 @@
+-if @nivelaciones.size >0 
+  %h3
+    Nivelación
+  %div.titulo
+    %table.tablesorter
+      %thead
+        %tr
+          %th
+            Idioma
+          %th
+            Periodo
+      %tbody
+        -@nivelaciones.each do |ni|
+          %tr
+            %td
+              =ni.tipo_curso.descripcion
+            %td
+              =ni.periodo_id
+          
+  
+  
 %h3
   Historial Académico
 %div.titulo

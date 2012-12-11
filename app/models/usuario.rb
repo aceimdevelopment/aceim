@@ -34,7 +34,9 @@ class Usuario < ActiveRecord::Base
   end    
   
   def edad
-    Time.now.year - fecha_nacimiento.year
+    edad = Time.now.year - fecha_nacimiento.year
+    edad -= 1 if Date.today < fecha_nacimiento + edad.years 
+    edad
   end     
   
   def nombre_completo
