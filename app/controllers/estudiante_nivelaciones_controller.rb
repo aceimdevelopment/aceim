@@ -3,7 +3,7 @@ class EstudianteNivelacionesController < ApplicationController
   # GET /estudiante_nivelaciones.json
   def index 
     @titulo_pagina = "Estudiantes con nivelación - Periodo #{session[:parametros][:periodo_actual]}"
-    @estudiante_nivelaciones = EstudianteNivelacion.where(:periodo_id => session[:parametros][:periodo_actual])
+    @estudiante_nivelaciones = EstudianteNivelacion.where(:periodo_id => session[:parametros][:periodo_actual]).sort_by{|x| x.usuario.descripcion}
     @periodo_id = session[:parametros][:periodo_actual]
   end
 

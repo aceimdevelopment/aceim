@@ -133,13 +133,13 @@ class InscripcionController < ApplicationController
         return
       end
 
-      if (@usuario.edad < 12 || @usuario.edad > 15) && session[:tipo_curso].tipo_categoria_id == "TE" #&& session[:nuevo]
+      if (@usuario.edad < 12 || @usuario.edad > 14) && session[:tipo_curso].tipo_categoria_id == "TE" #&& session[:nuevo]
         flash[:mensaje] = "Usted no tiene la edad para el curso de adolecentes"
         redirect_to :action => "paso1"
         return
       end
 
-      if (@usuario.edad < 16 ) && session[:tipo_curso].tipo_categoria_id == "AD" #&& session[:nuevo]
+      if (@usuario.edad < 15 ) && session[:tipo_curso].tipo_categoria_id == "AD" #&& session[:nuevo]
         flash[:mensaje] = "Usted no tiene la edad para el curso de adultos"
         redirect_to :action => "paso1"
         return
