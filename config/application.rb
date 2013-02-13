@@ -1,3 +1,5 @@
+RMAGICK_BYPASS_VERSION_TEST = true
+
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
@@ -71,6 +73,7 @@ require 'pdf/simpletable'
 require 'resque'
 require 'resque-meta'
 require 'resque/plugins/progress'
+=begin
 begin
   require 'barby'   
   require 'barby/barcode/code_128'
@@ -78,3 +81,4 @@ begin
   require 'resque/tasks'
 rescue
 end
+=end

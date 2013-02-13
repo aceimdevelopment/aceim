@@ -269,6 +269,26 @@ end
       redirect_to :action => "opciones_menu"
     end
   end
+
+  def ver_detalle_nota
+    if (session[:administrador].usuario_ci != "aceim")
+      pa = params[:parametros]
+      @historial = HistorialAcademico.where(:usuario_ci => pa[:usuario_ci],
+                                            :idioma_id => pa[:idioma_id],
+                                            :tipo_categoria_id => pa[:tipo_categoria_id],
+                                            :tipo_nivel_id => pa[:tipo_nivel_id],
+                                            :periodo_id => pa[:periodo_id],
+                                            :seccion_numero => pa[:seccion_numero]
+   ).limit(1).first
+      @n1 = @historial.nota_en_evaluacion("EXA_ESC_1").nota
+      @n2 = @historial.nota_en_evaluacion("EXA_ESC_2").nota
+      @n3 = @historial.nota_en_evaluacion("EXA_ORA").nota
+      @n4 = @historial.nota_en_evaluacion("OTRAS").nota
+      render :layout => false   
+    else
+      redirect_to :action => "opciones_menu"
+    end
+  end
   
   def confirmar_inscripcion_guardar
     idioma_id = params[:historial][:idioma_id]

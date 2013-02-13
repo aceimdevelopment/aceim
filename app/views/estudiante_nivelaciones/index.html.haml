@@ -1,5 +1,6 @@
 %br/
-= link_to "Listado de los confirmados", :action => "listado_confirmados", :periodo_id => @periodo_id
+= link_to "Listado de los confirmados (PDF)", :action => "listado_confirmados", :periodo_id => @periodo_id
+= link_to "Listado de los confirmados (EXCEL)", :action => "listado_confirmados_excel", :periodo_id => @periodo_id
 %br/
 %br/
 %table.tablesorter.tablefilter
@@ -39,6 +40,7 @@
             %br/
             =link_to 'Inscribir', {:action => "inscribir", :id => en.usuario_ci, :idioma => en.tipo_curso.id}
 = link_to "Listado de los confirmados", :action => "listado_confirmados", :periodo_id => @periodo_id
+= link_to "Listado de los confirmados (EXCEL)", :action => "listado_confirmados_excel", :periodo_id => @periodo_id
 %br/
 %br/
 = button_to 'Agregar estudiante', :action => "new"

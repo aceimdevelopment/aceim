@@ -13,20 +13,30 @@ $ ->
       valor = $(this).val()
       valor2 = $("#ubicacion_id").val()
       valor3 = $("#horario_id").val()
-      window.location.href = "/aceim/estado_inscripcion/ver_secciones?filtrar=#{valor}&filtrar2=#{valor2}&filtrar3=#{valor3}";
+      valor4 = $("#tipo_nivel_id").val()
+      window.location.href = "/aceim/estado_inscripcion/ver_secciones?filtrar=#{valor}&filtrar2=#{valor2}&filtrar3=#{valor3}&filtrar4=#{valor4}";
+
+    $("#tipo_nivel_id").change ->
+      valor4 = $(this).val()
+      valor = $("#tipo_curso_id").val()
+      valor2 = $("#ubicacion_id").val()
+      valor3 = $("#horario_id").val()
+      window.location.href = "/aceim/estado_inscripcion/ver_secciones?filtrar=#{valor}&filtrar2=#{valor2}&filtrar3=#{valor3}&filtrar4=#{valor4}";
 
 
     $("#ubicacion_id").change ->
       valor = $(this).val()
       valor2 = $("#tipo_curso_id").val()
       valor3 = $("#horario_id").val()
-      window.location.href = "/aceim/estado_inscripcion/ver_secciones?filtrar=#{valor2}&filtrar2=#{valor}&filtrar3=#{valor3}";
+      valor4 = $("#tipo_nivel_id").val()
+      window.location.href = "/aceim/estado_inscripcion/ver_secciones?filtrar=#{valor2}&filtrar2=#{valor}&filtrar3=#{valor3}&filtrar4=#{valor4}";
 
     $("#horario_id").change ->
       valor = $(this).val()
       valor2 = $("#ubicacion_id").val()
       valor3 = $("#tipo_curso_id").val()
-      window.location.href = "/aceim/estado_inscripcion/ver_secciones?filtrar=#{valor3}&filtrar2=#{valor2}&filtrar3=#{valor}";
+      valor4 = $("#tipo_nivel_id").val()
+      window.location.href = "/aceim/estado_inscripcion/ver_secciones?filtrar=#{valor3}&filtrar2=#{valor2}&filtrar3=#{valor}&filtrar4=#{valor4}";
 
       
   if aceim.es_accion("ver_estado_envio")

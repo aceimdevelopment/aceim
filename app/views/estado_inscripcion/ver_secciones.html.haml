@@ -16,6 +16,9 @@
   Filtro por Idioma: 
   =collection_select :tipo_curso, :id, @tipos_curso, :id, :descripcion, {:prompt => "-- Todos --", :selected => @filtro}
   %br/
+  Filtro por Nivel: 
+  =collection_select :tipo_nivel, :id, @tipos_nivel, :id, :descripcion, {:prompt => "-- Todos --", :selected => @filtro4}
+  %br/
   Filtro por Ubicación: 
   =collection_select :ubicacion, :id, @ubicaciones, :id, :descripcion_corta, {:prompt => "-- Todas --", :selected => @filtro2}
   %br/

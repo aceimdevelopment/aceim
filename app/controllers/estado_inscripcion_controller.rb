@@ -79,10 +79,13 @@ class EstadoInscripcionController < ApplicationController
     @filtro2 = nil if @filtro2 == nil || @filtro2.strip.size == 0
     @filtro3 = params[:filtrar3] 
     @filtro3 = nil if @filtro3 == nil || @filtro3.strip.size == 0
+    @filtro4 = params[:filtrar4] 
+    @filtro4 = nil if @filtro4 == nil || @filtro4.strip.size == 0
     periodo = session[:parametros][:periodo_actual]
     @subtitulo_pagina = "Período #{periodo}"  
     @seccion = Seccion.where(:periodo_id=>periodo).sort_by{|x| "#{x.tipo_curso.id}-#{'%03i'%x.curso.grado}-#{'%03i'%x.seccion_numero}"}
     @tipos_curso = @seccion.collect{|y| y.tipo_curso}.uniq
+    @tipos_nivel = @seccion.collect{|y| y.tipo_nivel}.uniq
     #render :text => "#{@seccion.collect{|x| x.horario_seccion2}.delete_if{|r| r.nil?}.inspect}"
     #return
     @ubicaciones = @seccion.collect{|x| x.horario_seccion2}.delete_if{|r| r.nil?}.collect{|w| w.aula }.compact.collect{|y| y.tipo_ubicacion }.uniq
@@ -106,6 +109,10 @@ class EstadoInscripcionController < ApplicationController
     
     if @filtro3
       @seccion = @seccion.delete_if{|s| !s.mach_horario?(@filtro3)}
+    end
+
+    if @filtro4
+      @seccion = @seccion.delete_if{|s| !(s.tipo_nivel_id ==  @filtro4)}
     end
     
   end
