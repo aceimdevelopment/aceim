@@ -1,7 +1,7 @@
 class InscripcionController < ApplicationController
   
-  before_filter :filtro_inscripcion_abierta, :except => ["paso0","paso0_guardar","planilla_inscripcion"] 
-  before_filter :filtro_primer_dia, :only => ["paso1","paso2"]
+  #before_filter :filtro_inscripcion_abierta, :except => ["paso0","paso0_guardar","planilla_inscripcion"] 
+  #before_filter :filtro_primer_dia, :only => ["paso1","paso2"]
   before_filter :filtro_logueado, :except => ["paso0","paso0_guardar"]
   #before_filter :filtro_nuevos
   
@@ -11,15 +11,27 @@ class InscripcionController < ApplicationController
     @titulo_pagina = "Inscripción de Nuevo en Idioma"  
     @subtitulo_pagina = "Datos Básicos"    
     @usuario = Usuario.new                    
-    tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_inscripcion]).delete_if{|x|
+    categorias = []
+    categorias << "NI" if ParametroGeneral.inscripcion_ninos_abierta
+    categorias << "AD" if ParametroGeneral.inscripcion_nuevos_abierta
+    tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_inscripcion],
+      :tipo_categoria_id => categorias).delete_if{|x|
       x.curso.grado != 1
       }.collect{|y| y.tipo_curso.id}.sort.uniq                                          
-    if session[:parametros][:inscripcion_modo_ninos] == "SI"
-    tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_inscripcion], :tipo_categoria_id => "NI").delete_if{|x|
-      x.curso.grado != 1
-      }.collect{|y| y.tipo_curso.id}.sort.uniq
-    end
+    #puts tipo_curso.inspect
+    #if session[:parametros][:inscripcion_modo_ninos] == "SI"
+    #tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_inscripcion], :tipo_categoria_id => "NI").delete_if{|x|
+    #  x.curso.grado != 1
+    #  }.collect{|y| y.tipo_curso.id}.sort.uniq
+    #end
+    #puts tipo_curso.inspect
+    #puts session.inspect
     @idiomas = TipoCurso.all.delete_if{|x| !tipo_curso.index(x.id)}
+    if @idiomas.size == 0
+      flash[:mensaje] = "No hay cursos disponibles"
+      redirect_to :controller => "inicio"
+      return
+    end
     render :layout => "nuevo"
   end
   

@@ -37,7 +37,7 @@ private
   end
   
   def filtro_inscripcion_abierta
-    if session[:parametros][:inscripcion_abierta] != "SI"                    
+    if session[:parametros][:inscripcion_abierta] != "SI" 
       if session[:parametros][:inscripcion_nuevos_abierta] != "SI" || !session[:nuevo]
         flash[:mensaje] = "Esta funcionalidad no está activa en este momento"  
         info_bitacora "Intento inscribirse pero por filtro de inscripcion no pudo"

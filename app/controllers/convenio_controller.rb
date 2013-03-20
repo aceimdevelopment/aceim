@@ -4,6 +4,8 @@ class ConvenioController < ApplicationController
     @titulo_pagina = "Actualizar la Matricula de los Cursos" 
     @precios = TipoConvenio.find(:all)
     @precio_planilla = ParametroGeneral.find("COSTO_PLANILLA").valor.to_f
+    @precio_nuevos = ParametroGeneral.find("COSTO_NUEVOS").valor.to_f
+    @precio_examen = ParametroGeneral.find("COSTO_EXAMEN").valor.to_f
 
   end
 
@@ -110,6 +112,16 @@ class ConvenioController < ApplicationController
     render :layout => false   
   end
 
+  def modificar_monto_examen
+    @precio_planilla = ParametroGeneral.find("COSTO_EXAMEN")
+    render :layout => false   
+  end
+
+  def modificar_monto_nuevos
+    @precio_planilla = ParametroGeneral.find("COSTO_NUEVOS")
+    render :layout => false   
+  end
+
   def guardar_monto_planilla
 
 		id = params[:parametro_general][:id]
@@ -154,9 +166,41 @@ class ConvenioController < ApplicationController
 
   end
 
+  def guardar_monto_examen
 
+    id = params[:parametro_general][:id]
 
-	
+    #Se obtiene el precio anterior de la planilla
+    @planilla = ParametroGeneral.where(:id=>id).limit(1).first
+    precio_viejo = @planilla.valor.to_f
+    
+    #Se almacena el nuevo precio
+    @planilla.valor = params[:parametro_general][:valor]
+
+    @planilla.save
+
+    info_bitacora("Monto del examen Actualizado: #{id}")
+    flash[:mensaje] = "Monto del examen actualizado satisfactoriamente"
+    redirect_to(:action=>"index")
+  end
+
+ def guardar_monto_nuevos
+
+    id = params[:parametro_general][:id]
+
+    #Se obtiene el precio anterior de la planilla
+    @planilla = ParametroGeneral.where(:id=>id).limit(1).first
+    precio_viejo = @planilla.valor.to_f
+    
+    #Se almacena el nuevo precio
+    @planilla.valor = params[:parametro_general][:valor]
+
+    @planilla.save
+
+    info_bitacora("Monto de los nuevos Actualizado: #{id}")
+    flash[:mensaje] = "Monto de los nuevos actualizado satisfactoriamente"
+    redirect_to(:action=>"index")
+  end	
 
 
   

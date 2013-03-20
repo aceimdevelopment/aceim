@@ -1601,7 +1601,7 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
     pdf.add_image_from_file 'app/assets/images/logo_fhe_ucv.jpg', 465, 710, 50,nil
     pdf.add_image_from_file 'app/assets/images/logo_eim.jpg', 515, 710+10, 50,nil
     pdf.add_image_from_file 'app/assets/images/logo_ucv.jpg', 45, 710, 50,nil
-    #pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 450-10, 500+35, nil, 120
+    pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 450-10, 500+35, nil, 120
     #pdf.add_text 480-10,500+35,to_utf16("---- #{historial_academico.usuario_ci} ----"),11
     
     #texto del encabezado

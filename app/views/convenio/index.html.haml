@@ -18,6 +18,35 @@
 %table.tablesorter.liker
   %thead
     %tr
+      %th{:width => "85%"}
+        Costo Examen
+      %th{:width => "15%"}
+        Acción
+  %tbody
+    %tr
+      %td
+        =@precio_examen
+      %td
+        =link_to_modal "Actualizar",{:action => "modificar_monto_examen",:title =>"Modificar Monto examen",:width=>350}
+
+%table.tablesorter.liker
+  %thead
+    %tr
+      %th{:width => "85%"}
+        Costo Nuevos
+      %th{:width => "15%"}
+        Acción
+  %tbody
+    %tr
+      %td
+        =@precio_nuevos
+      %td
+        =link_to_modal "Actualizar",{:action => "modificar_monto_nuevos",:title =>"Modificar Monto nuevos",:width=>350}
+
+
+%table.tablesorter.liker
+  %thead
+    %tr
       %th{:width => "10%"}
         Id
       %th{:width => "40%"}

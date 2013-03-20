@@ -34,9 +34,35 @@ class ParametroGeneral < ActiveRecord::Base
     ParametroGeneral.first(:conditions=>["id = ?", "INSCRIPCION_NUEVOS_ABIERTA"]).valor == "SI"
   end
 
+  def self.inscripcion_regulares_abierta                                          
+    ParametroGeneral.first(:conditions=>["id = ?", "INSCRIPCION_ABIERTA"]).valor == "SI"
+  end
+
+  def self.inscripcion_cambio_abierta                                          
+    ParametroGeneral.first(:conditions=>["id = ?", "INSCRIPCION_PERMITIR_CAMBIO_HORARIO"]).valor == "SI"
+  end
+
   def self.monto_planilla
      monto_planilla = ParametroGeneral.first(:conditions=>["id = ?", "COSTO_PLANILLA"]).valor.to_i
   end
+
+  def self.inscripcion_ninos_abierta                                          
+    ParametroGeneral.first(:conditions=>["id = ?", "INSCRIPCION_MODO_NINOS"]).valor == "SI"
+  end
+
+  def self.costo_ninos
+    ide = ParametroGeneral.first(:conditions=>["id = ?", "COSTO_NINOS"]).valor.to_f
+  end
+
+  def self.costo_examen
+    ide = ParametroGeneral.first(:conditions=>["id = ?", "COSTO_EXAMEN"]).valor.to_f
+  end
+
+  def self.costo_nuevos
+    ide = ParametroGeneral.first(:conditions=>["id = ?", "COSTO_NUEVOS"]).valor.to_f
+  end
+
+
 
 
 end 

@@ -1,5 +1,5 @@
--if session[:parametros][:inscripcion_abierta] == "SI" && !@preinscrito 
-  -if session[:parametros][:inscripcion_modo_ninos]=="NO" || session[:tipo_curso].tipo_categoria_id == "NI"
+-if  !@preinscrito 
+  -if (ParametroGeneral.inscripcion_ninos_abierta && session[:tipo_curso].tipo_categoria_id == "NI") || ((ParametroGeneral.inscripcion_regulares_abierta || ParametroGeneral.inscripcion_cambio_abierta)&& session[:tipo_curso].tipo_categoria_id == "NI")
     %h3
       =link_to "Preinscribirse", :action => "paso1", :controller => "inscripcion"
     %div.titulo Preinscribirse en el periodo #{session[:parametros][:periodo_inscripcion]} y obtener la Planilla           

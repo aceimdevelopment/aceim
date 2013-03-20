@@ -26,7 +26,7 @@
 
       %tr
         %td
-          ¿Permitir Cambio de Horario en la Inscripción?
+          ¿Abrir la Inscripción con cambio de horario? (Alumnos Regulares)
         %td
           -if @cambio_de_horario == "SI"
             =radio_button_tag "cambio_de_horario","SI",true
@@ -53,6 +53,19 @@
             =radio_button_tag "inscripcion_nuevos","NO",false
       %tr
         %td
+          ¿Inscripción abierta para Niños?
+        %td
+          -if @inscripcion_modo_ninos == "SI"
+            =radio_button_tag "inscripcion_modo_ninos","SI",true
+          -else
+            =radio_button_tag "inscripcion_modo_ninos","SI",false
+        %td
+          -if @inscripcion_modo_ninos == "NO"
+            =radio_button_tag "inscripcion_modo_ninos","NO",true
+          -else
+            =radio_button_tag "inscripcion_modo_ninos","NO",false
+      %tr
+        %td
           ¿Calificación Abierta?
         %td
           -if @califiacion_abierta == "SI"
@@ -77,19 +90,7 @@
             =radio_button_tag "listados_abiertos","NO",true
           -else
             =radio_button_tag "listados_abiertos","NO",false
-      %tr
-        %td
-          ¿Inscripción Modo Niños?
-        %td
-          -if @inscripcion_modo_ninos == "SI"
-            =radio_button_tag "inscripcion_modo_ninos","SI",true
-          -else
-            =radio_button_tag "inscripcion_modo_ninos","SI",false
-        %td
-          -if @inscripcion_modo_ninos == "NO"
-            =radio_button_tag "inscripcion_modo_ninos","NO",true
-          -else
-            =radio_button_tag "inscripcion_modo_ninos","NO",false
+      
   %p= submit_tag 'Guardar'
 
 %br/
