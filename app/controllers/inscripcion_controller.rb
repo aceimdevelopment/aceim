@@ -14,6 +14,7 @@ class InscripcionController < ApplicationController
     categorias = []
     categorias << "NI" if ParametroGeneral.inscripcion_ninos_abierta
     categorias << "AD" if ParametroGeneral.inscripcion_nuevos_abierta
+    categorias << "TE" if ParametroGeneral.inscripcion_nuevos_abierta
     tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_inscripcion],
       :tipo_categoria_id => categorias).delete_if{|x|
       x.curso.grado != 1
