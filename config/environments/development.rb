@@ -42,6 +42,6 @@ end
 =begin                            
 Aceim::Application.config.middleware.use ExceptionNotifier,
   :email_prefix => "[Excepcion en ACEIM] ",
-  :sender_address => %{"Notificador ACEIM" <fundeimucv@gmail.com>},
+  :sender_address => %{"Notificador ACEIM" <fundeim@ucv.ve},
   :exception_recipients => %w{sergiorivas@gmail.com andresviviani1@gmail.com}
 =end

@@ -1,5 +1,5 @@
 class InstructorMailer < ActionMailer::Base
-  default :from => "fundeimucv@gmail.com"      
+  default :from => "fundeim@ucv.ve"      
   
   def inicio_clave(usuario)
     @nombre = usuario.nombre_completo

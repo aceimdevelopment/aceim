@@ -1,5 +1,5 @@
 class AdministradorMailer < ActionMailer::Base
-  default :from => "fundeimucv@gmail.com"
+  default :from => "fundeim@ucv.ve"
   
   def enviar_notificacion(instructores)
     @instructores = instructores

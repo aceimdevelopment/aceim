@@ -1,5 +1,5 @@
 class EstudianteMailer < ActionMailer::Base
-  default :from => "fundeimucv@gmail.com"      
+  default :from => "fundeim@ucv.ve"      
   
   def bienvenida(usuario)
     @nombre = usuario.nombre_completo     
