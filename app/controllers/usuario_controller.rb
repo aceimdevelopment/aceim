@@ -71,4 +71,68 @@ class UsuarioController < ApplicationController
     
   end
 
+  def cambiar_cedula
+    parametros = params[:parametros]
+    @controlador = parametros["controlador"]
+    @accion = parametros["accion"]
+    render :layout => false
+  end
+
+  def cambiar_cedula_guardar
+    controlador = params[:controlador]
+    accion = params[:accion]
+    
+    if controlador == "admin_estudiante"
+      usuario_ci = session[:estudiante].usuario_ci
+    elsif controlador == "admin_instructor"
+      usuario_ci = session[:instructor_ci]
+    else
+      usuario_ci = session[:usuario].ci
+    end
+    if !params[:cedula] || params[:cedula] == "" || !params[:repetir_cedula] || params[:repetir_cedula] == ""
+      flash[:mensaje] = "Debe completar todos los campos para el cambio de cédula"
+      redirect_to :controller => controlador, :action => accion
+      return
+    end
+
+    if params[:cedula] != params[:repetir_cedula]
+      flash[:mensaje] = "Las cédulas deben ser iguales"
+      redirect_to :controller => controlador, :action => accion
+      return
+    end
+
+    if Usuario.where(:ci => params[:cedula]).size > 0
+      flash[:mensaje] = "Ya existe un usuario registrado con esa cédula"
+      redirect_to :controller => controlador, :action => accion
+      return
+    else
+      begin
+        cedula = Integer(params[:cedula])
+        connection = ActiveRecord::Base.connection()
+        sql = "update usuario set ci = '#{cedula}' where ci = '#{usuario_ci}';"
+        connection.execute(sql)
+        info_bitacora("Cambio de cédula de #{usuario_ci} a #{cedula}")
+        if controlador == "admin_estudiante"
+          session[:estudiante] = Estudiante.where(:usuario_ci => cedula).limit(0).first
+          session[:estudiante_ci] = session[:estudiante].usuario_ci
+        elsif controlador == "admin_instructor"
+          session[:instructor] = Instructor.where(:usuario_ci => cedula).limit(0).first
+          session[:instructor_ci] = session[:instructor].usuario_ci
+        else
+          session[:usuario] = Usuario.where(:ci => cedula).limit(0).first
+        end
+        
+        flash[:mensaje] = "Cédula actualizada satisfactoriamente"
+        redirect_to :controller => controlador, :action => accion
+        return
+      rescue
+        flash[:mensaje] = "La cédula debe ser un número"
+        redirect_to :controller => controlador, :action => accion
+        return
+      end
+    end
+
+  end
+
+
 end

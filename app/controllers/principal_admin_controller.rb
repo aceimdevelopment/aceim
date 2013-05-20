@@ -7,6 +7,7 @@ class PrincipalAdminController < ApplicationController
       flash[:mensaje] = "Correo enviado satisfactoriamente"
     end
     @titulo_pagina = "Opciones del administrador"
+    session[:instructor_ci] = nil
     session[:estudiante_ci] = nil
     session[:especial_usuario] = nil
     session[:especial_estudiante] = nil

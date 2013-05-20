@@ -62,7 +62,8 @@ class AdminInstructorController < ApplicationController
 
   def modificar 
     @titulo_pagina = "Modificar instructor" 
-    @usuario = Usuario.find(params[:ci])
+    session[:instructor_ci] = params[:ci] if params[:ci]
+    @usuario = Usuario.find(session[:instructor_ci])
     
   end
   

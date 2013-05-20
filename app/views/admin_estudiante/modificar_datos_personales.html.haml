@@ -12,7 +12,9 @@
       %label
         Cédula de Identidad
       =@usuario.ci
-      =link_to_modal "Cambiar", {:action => :cambiar_cedula_estudiante, :title => "Cambiar cédula"}
+      / =link_to_modal "Cambiar", {:action => :cambiar_cedula_estudiante, :title => "Cambiar cédula"}
+      / =f.hidden_field :ci
+      =link_to_modal "Cambiar_Cedula", {:controller => :usuario, :action => :cambiar_cedula, :title => "Cambiar cédula", :params => {:controlador => controller_name, :accion => action_name}}
       =f.hidden_field :ci
     %p
       %label 
