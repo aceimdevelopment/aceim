@@ -67,7 +67,7 @@ class AdminAulaController < ApplicationController
     @aula=Aula.where(:id=>id).limit(1).first
     @aula.tipo_ubicacion_id = params[:aula][:tipo_ubicacion_id]
     @aula.descripcion = params[:aula][:descripcion]
-    @aula.conjunto_disponible = params[:aula][:disponible]
+    @aula.conjunto_disponible = params[:aula][:conjunto_disponible]
     
     respond_to do |format|
       if @aula.save
