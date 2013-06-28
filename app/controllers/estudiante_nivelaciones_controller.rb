@@ -111,4 +111,15 @@ class EstudianteNivelacionesController < ApplicationController
       send_data pdf.render,:filename => "nivelacion_confirmados_#{periodo_id}.pdf",:type => "application/pdf", :disposition => "attachment"
     end
   end
+
+  def listado_confirmados_excel
+    periodo_id = params[:periodo_id]
+
+
+    ruta_excel = ReportesExcel.generar_listado_nivelacion_confirmados(periodo_id)
+    send_file ruta_excel,
+      :filename => "nivelacion_confirmados_#{periodo_id}.xls",
+      :type => "application/excel", :disposition => "attachment"
+    
+  end
 end
