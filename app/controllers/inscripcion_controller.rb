@@ -179,7 +179,10 @@ class InscripcionController < ApplicationController
     ec = EstudianteCurso.find(session[:usuario], 
       session[:tipo_curso].idioma_id, 
       session[:tipo_curso].tipo_categoria_id)
-      
+     
+
+    
+
     @historial = nil
     begin
       @historial = ec.proximo_historial
@@ -188,6 +191,15 @@ class InscripcionController < ApplicationController
       redirect_to :controller => "principal", :action => "principal"
       return
     end
+
+    if @historial.tipo_nivel_id == "BI" 
+      if !ParametroGeneral.inscripcion_nuevos_abierta 
+        flash[:mensaje] = "En este momento no estan abiertas las inscripciones para básico I"
+        redirect_to :controller => "principal", :action => "principal"
+        return
+      end
+    end
+
     if @historial
       @horarios = @historial.horarios_disponibles(
         session[:parametros][:inscripcion_permitir_cambio_horario] == "NO"
