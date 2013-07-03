@@ -10,6 +10,7 @@ class MailJob
     args[0] << "sergiorivas@gmail.com"
     args[0] << "joygutierrez@hotmail.com"
     args[0] << "jossie.zambrano@gmail.com"
+    args[0] << "aceim.development@gmail.com"
     total_correos = args[0].size
     args[0].each_with_index{|p,i|
       ruta = args[3]

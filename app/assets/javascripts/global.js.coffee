@@ -165,7 +165,7 @@ clase_aceim =
           setTimeout("aceim.refrescar('actualizar_estado')",5000)
         else
           if $("#valor").val() == "true"
-            url = "http://blues.ciens.ucv.ve/aceim/principal_admin/index?ci=1"
+            url = "/aceim/principal_admin/index?ci=1"
             location.href = url
             return
           else

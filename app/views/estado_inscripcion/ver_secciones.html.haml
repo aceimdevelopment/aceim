@@ -78,6 +78,7 @@
 
             -hor.each do |hs|
               -if hs.aula_id
+                =#link_to "#{hs.dia_aula}", :controller => controller_name, :action => "cambiar_aula", :parametros => {:seccion_horario => hs, :controlador => controller_name, :accion => "cambiar_aula", :indice => i, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3}
                 =link_to_modal "#{hs.dia_aula}",{:action => "cambiar_aula",:title =>"Modificar Aula",:width=>920, :params => {:seccion_horario => hs, :controlador => controller_name, :accion => action_name, :indice => i, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3}}
               -else
                 =link_to_modal "-- NO ASIGNADA --",{:action => "cambiar_aula",:title =>"Modificar Aula",:width=>920, :params => {:seccion_horario => hs, :controlador => controller_name, :accion => action_name, :indice => i, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3}}
