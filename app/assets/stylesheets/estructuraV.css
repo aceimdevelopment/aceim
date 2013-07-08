@@ -52,8 +52,12 @@ footer, header, nav, section, video, object, output {
 font-family:inherit;}
 #sitenav li {display:inline; }
 #sitenav li a {display:inline; float:center; height:33px; line-height:300%; padding:1.5% 25px;text-decoration:none;}
-#sitenav li a:hover {background:url(../assets/tria.png) center bottom no-repeat; color: black;padding:2% 25px;}
-#sitenav li.current a {color:black;font-weight: bold;background:url(../assets/tria_gris.png) center bottom no-repeat; }
+#sitenav li a:hover { color: black;padding:24px 25px;}
+#sitenav li.current a {color:black;font-weight: bold;padding:14px 25px;}
+
+.cargar_sesion {
+	height: 65px;
+}
 
 
 .contenedor{

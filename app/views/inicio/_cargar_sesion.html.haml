@@ -1,0 +1,9 @@
+=form_tag({:action => "validar"}) do
+  -if flash[:mensaje_login]
+    #error-login
+    =flash[:mensaje_login]
+  =text_field :usuario, :cedula, :size => 8, :autofocus => "true", :placeholder => " Cédula"
+  =password_field :usuario, :clave, :size => 8, :placeholder => " Contraseña"
+  =submit_tag "Ingresar"
+  %br
+    =link_to "Olvidó su clave", :action => "olvido_clave", :style => "float: right;"
