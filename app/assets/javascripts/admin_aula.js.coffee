@@ -6,4 +6,12 @@ $ ->
   tabla = $('table.tablefilter')
   $("#ubicacion_id").change ->
     $.uiTableFilter(tabla, this.value);
-
+$ ->
+  $(".ubicaciones").change ->
+    aulas = document.getElementsByClassName(this.id)
+    if (this.checked)
+      for i in [0..aulas.length-1] 
+        aulas[i].style.display = "table-row-group"
+    else
+      for i in [0..aulas.length-1]
+        aulas[i].style.display = "none"

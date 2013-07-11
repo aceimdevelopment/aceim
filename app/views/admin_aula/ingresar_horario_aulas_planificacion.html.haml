@@ -1,5 +1,10 @@
 -tam = @aulas_disponibles.size
 -cont = 0
+- @ubicaciones.each do |ubicacion|
+  = check_box_tag ubicacion.id, false, false, :class => "ubicaciones"
+  = ubicacion.desc
+  %br
+
 = form_tag "../admin_aula/guardar_horario_aulas_planificacion" do
   %br
   %table.tablesorter
@@ -17,11 +22,11 @@
           JUEVES
         %th{:width => "17%",:style=> "text-align:center"}
           SÁBADO
-    %tbody
-      -@aulas_disponibles.each do |ad|
-        -cant = 1
-        -cont = cont + 1
-        %tr  
+    -@aulas_disponibles.each do |ad|
+      -cant = 1
+      -cont = cont + 1
+      %tbody{:class => "#{ad.tipo_ubicacion_id}", :style=> "display: none"}
+        %tr
           %td{:rowspan =>"3", :style=> "vertical-align:middle;text-align:center"}
             =ad.id
             %br
@@ -55,30 +60,8 @@
                 -else
                   =check_box_tag "horario_aula_disponible[][#{x.aula_id}][#{x.tipo_dia_id}][#{x.tipo_hora_id}]", 1, true
                   =x.tipo_hora.descripcion_hora
-        -if cont < tam
-          %thead
-            %tr
-              %th{:width => "15%",:style=> "text-align:center"}
-                Aula
-              %th{:width => "17%",:style=> "text-align:center"}
-                LUNES
-              %th{:width => "17%",:style=> "text-align:center"}
-                MIÉRCOLES
-              %th{:width => "17%",:style=> "text-align:center"}
-                MARTES
-              %th{:width => "17%",:style=> "text-align:center"}
-                JUEVES
-              %th{:width => "17%",:style=> "text-align:center"}
-                SÁBADO
-
-        
-                  
-
-
 
   %p= submit_tag 'Guardar'
     
 %br/
 %br/
-
-
