@@ -396,8 +396,6 @@ class AdminAulaController < ApplicationController
 
 	  end
 
-
-
 	end
 
 
@@ -441,12 +439,14 @@ class AdminAulaController < ApplicationController
 
     #pareja_temporal.destroy
 
-  
-
   end
 
+  def eliminar
+    @aula = Aula.find(params[:id])
+    flash[:mensaje] = @aula.destroy ? "Aula Eliminada con éxito" : "El Aula no pudo ser eliminada"
+    redirect_to (:controller => "admin_aula", :action => "index")
 
-
+  end
 
 
 end

@@ -183,6 +183,10 @@
       update: 'Actualizar %{model}'
       submit: 'Guardar %{model}'
 
+    links:
+      destroy: 'Eliminar'
+      confirm: 'Esta Seguro de Eliminar, esta acción no podrá deshacerse.'
+
   errors:
     format: "%{attribute} %{message}"
 
