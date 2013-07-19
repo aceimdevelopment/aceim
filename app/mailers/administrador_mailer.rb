@@ -8,7 +8,7 @@ class AdministradorMailer < ActionMailer::Base
     #carlos A. Saavedra A. <saavedraazuaje73@gmail.com>
     #sergiorivas@gmail.com,
     mail(:to => 'aleidajave@yahoo.com',
-         :bcc => 'andresviviani1@gmail.com,joygutierrez@hotmail.com,saavedraazuaje73@gmail.com,sergiorivas@gmail.com,luciusdaniel@gmail.com',
+         :bcc => 'joygutierrez@hotmail.com,saavedraazuaje73@gmail.com,luciusdaniel@gmail.com',
          :subject => "Notificación de Pago")
   end 
   
