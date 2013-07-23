@@ -32,6 +32,8 @@
     %thead
       %tr
         %th{:width => "5%"}
+          =@seccion.count
+        %th{:width => "5%"}
           PRE
         %th{:width => "5%"}
           INS
@@ -58,6 +60,8 @@
         -else
           -estilo = "color: red"
         %tr
+          %td
+            = i+1
           %td{:style => "#{estilo}", :id => "ins#{i}"} 
             .oculto-param{ :style => "display:none;"}
               =s.id
