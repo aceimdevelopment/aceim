@@ -1,8 +1,5 @@
 source 'http://rubygems.org'
 
-# gemas inclidas
-gem 'execjs'
-gem 'therubyracer'
 
 gem 'rails', '3.1.0'
 
