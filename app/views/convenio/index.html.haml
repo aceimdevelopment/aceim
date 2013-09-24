@@ -43,6 +43,19 @@
       %td
         =link_to_modal "Actualizar",{:action => "modificar_monto_nuevos",:title =>"Modificar Monto nuevos",:width=>350}
 
+%table.tablesorter.liker
+  %thead
+    %tr
+      %th{:width => "85%"}
+        Costo Niños
+      %th{:width => "15%"}
+        Acción
+  %tbody
+    %tr
+      %td
+        =@precio_ninos
+      %td
+        =link_to_modal "Actualizar",{:action => "modificar_monto_ninos",:title =>"Modificar Monto nuevos",:width=>350}
 
 %table.tablesorter.liker
   %thead
