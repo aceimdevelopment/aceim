@@ -227,6 +227,7 @@ class InscripcionAdminController < ApplicationController
       :idioma_id => session[:especial_tipo_curso].idioma_id,
       :tipo_categoria_id => session[:especial_tipo_curso].tipo_categoria_id,
       :periodo_id => session[:parametros][:periodo_actual]).limit(1).first
+    @nivelacion = EstudianteNivelacion.where(:usuario_ci => @historial.usuario_ci)
   end
 
   def paso3_guardar                                              

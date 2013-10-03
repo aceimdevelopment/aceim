@@ -31,7 +31,10 @@
 %br/
 %br/
 %p
-  =link_to "< Ir a inscribir otro estudiante", :action => "paso0"
+  - if @nivelacion
+    =link_to "< Inscribir otro estudiante de nivelacion", :controller => "estudiante_nivelaciones"
+  - else
+    =link_to "< Ir a inscribir otro estudiante", :action => "paso0"
 %p
   =link_to "< Ir a gestionar este estudiante", :action => "validar", :controller => "admin_estudiante", :usuario => {:ci => @historial.usuario_ci}
 %br/
