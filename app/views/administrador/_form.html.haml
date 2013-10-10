@@ -1,0 +1,19 @@
+=form_for(@administrador,:url=>{:action => "editar_guardar"}) do |f|
+  = f.hidden_field :id
+  %fieldset
+    %legend Gestión de Rol de Usuario
+    %p
+      = @administrador.usuario.descripcion
+    %p
+      Rol Actual:
+      -if @administrador.rol.blank?
+        = "Sin rol asignado"
+      -else
+        = @administrador.rol
+    %p
+      Nuevo Rol: 
+      =f.select :rol, %w(Superadministrador administrador gestor), {:include_blank => 'Seleccione...'}
+  %p
+    =submit_tag "Modificar"
+    |
+    =link_to_function "Cancelar","aceim.cerrar_modal()"

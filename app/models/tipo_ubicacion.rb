@@ -1,6 +1,8 @@
 #creada por db2models
 class TipoUbicacion < ActiveRecord::Base
-
+  attr_accessible :id, :descripcion, :descripcion_corta
+  validates_presence_of :id, :descripcion, :descripcion_corta
+  validates :id, :length => {:is => 3 }
 	def desc
 		
 		if(descripcion == "Facultad de Humanidades y Educación")
@@ -10,6 +12,10 @@ class TipoUbicacion < ActiveRecord::Base
 		end
 
 	end
+
+  def descripcion_completa
+    "#{id}- #{descripcion_corta}: #{descripcion}"
+  end
 	
 	def cantidad_alumnos_por_ubicacion(periodo)
 	  seccion = Seccion.where(:periodo_id=>periodo)

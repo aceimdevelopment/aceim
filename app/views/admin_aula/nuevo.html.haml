@@ -13,7 +13,9 @@
       %label
         Ubicación
         %span.req *
-      =a.collection_select :tipo_ubicacion_id, TipoUbicacion.where(["id NOT IN (?) ", ["CER", "nul", "N/A", "TOR"] ]), :id, :desc
+      =a.collection_select :tipo_ubicacion_id, TipoUbicacion.where(["id NOT IN (?) ", ["CER", "nul", "N/A", "TOR"] ]), :id, :desc, :prompt => true, :required => true
+
+      =link_to_modal "Nueva Ubicación",{:controller => 'TipoUbicacion', :action => 'nuevo',:title =>"Nueva Ubicación",:width=>500}
 
     %p
       %label

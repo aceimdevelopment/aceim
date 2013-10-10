@@ -1,5 +1,8 @@
 %ul.navegador
   %li
+    =link_to "Gestionar Usuario", "#"
+    %i{:style => 'color: green; font-weight: bold;'} Proximamente
+  %li
     =link_to "Configuraciones Generales", :controller=>"parametros_generales", :action=>"index"
 
   %li
@@ -8,23 +11,23 @@
   %li 
     %a.desplegable{:href=>"#"} Recursos Disponibles (Aulas e Instructores)
     %ul.subnavegador
-      %li
-        =link_to "Ingresar Aulas Asignadas", :controller=> "admin_aula", :action=>"ingresar_aulas_planificacion"
+      %li= link_to "Gestionar Aulas", :controller=>"admin_aula"
+      
+      %li= link_to "Agregar Nueva Aula", :controller=> "admin_aula", :action=>"nuevo"    
+      
+      %li= link_to "Ingresar Aulas Asignadas", :controller=> "admin_aula", :action=>"ingresar_aulas_planificacion"
 
-      %li
-        =link_to "Ingresar Horarios Asignados", :controller=> "admin_aula", :action=>"ingresar_horario_aulas_planificacion"
+      %li= link_to "Ingresar Horarios Asignados", :controller=> "admin_aula", :action=>"ingresar_horario_aulas_planificacion"
 
-      %li
-        =link_to "Ingresar Horarios Disponibles Instructores", :controller=> "admin_instructor", :action=>"ingresar_horario_disponible_instructores"
+      %li= link_to "Ingresar Horarios Disponibles Instructores", :controller=> "admin_instructor", :action=>"ingresar_horario_disponible_instructores"
 
 
   %li
     %a.desplegable{:href=>"#"} Secciones
     %ul.subnavegador
-      %li  
-        =link_to "Gestionar Secciones", :controller=>"admin_seccion"
-      %li
-        =link_to_modal "Agregar Nueva Sección", {:title => "Elegir período e idioma", :controller => "admin_seccion", :action =>"elegir_periodo_idioma_modal", :width => 400}
+      %li= link_to "Gestionar Secciones", :controller=>"admin_seccion"
+      
+      %li= link_to_modal "Agregar Nueva Sección", {:title => "Elegir período e idioma", :controller => "admin_seccion", :action =>"elegir_periodo_idioma_modal", :width => 400}
 
   %li
     %a.desplegable{:href=>"#"} Reportes

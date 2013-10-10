@@ -1,5 +1,6 @@
 #creada por db2models
 class Aula < ActiveRecord::Base
+  attr_accessible :id, :tipo_ubicacion_id, :descripcion, :conjunto_disponible, :usada
   include ActiveModel::Validations 
   #autogenerado por db2models
   belongs_to :tipo_ubicacion,
