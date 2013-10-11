@@ -3,7 +3,7 @@ class AdministradorController < ApplicationController
  	before_filter :filtro_administrador
 
 	def index
-		@administradores = Administrador.all
+		@administradores = Administrador.where("tipo_rol_id <> ? OR tipo_rol_id IS NULL", 2)
 	end
 
 	def editar
@@ -14,7 +14,7 @@ class AdministradorController < ApplicationController
 
 	def editar_guardar
 		administrador = Administrador.where(:usuario_ci  => params[:administrador][:id]).limit(1).first
-		administrador.rol = params[:administrador][:rol]
+		administrador.tipo_rol_id = params[:administrador][:tipo_rol_id]
 		
 		if administrador.save
 			flash[:mensaje] = "Actualización Correcta"
@@ -23,7 +23,13 @@ class AdministradorController < ApplicationController
 		end
 
 		redirect_to :action => "index"
+	end
 
+	def eliminar
+		administrador = Administrador.where(:usuario_ci => params[:ci]).limit(1).first
+		administrador.destroy
+		flash[:mensaje] = "Usuario Adminstrador Eliminado Correctamente"
+		redirect_to :action => 'index'
 	end
 
 end

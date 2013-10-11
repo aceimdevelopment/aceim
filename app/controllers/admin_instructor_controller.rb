@@ -6,8 +6,13 @@ class AdminInstructorController < ApplicationController
   end
 
   def nuevo
+    if session[:administrador].tipo_rol_id > 3 
+      flash[:mensaje] = "Usted no posee los privilegios para acceder a esta función"
+      redirect_to :action => 'index'
+    end
     @titulo_pagina = "Agregar instructor" 
     @usuario = Usuario.new
+
   end
 
   def nuevo_guardar 
@@ -60,7 +65,11 @@ class AdminInstructorController < ApplicationController
 	  end
   end
 
-  def modificar 
+  def modificar
+    if session[:administrador].tipo_rol_id > 3 
+      flash[:mensaje] = "Usted no posee los privilegios para acceder a esta función"
+      redirect_to :action => 'index'
+    end 
     @titulo_pagina = "Modificar instructor" 
     session[:instructor_ci] = params[:ci] if params[:ci]
     @usuario = Usuario.find(session[:instructor_ci])

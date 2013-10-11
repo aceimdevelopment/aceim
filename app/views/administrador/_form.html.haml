@@ -6,13 +6,13 @@
       = @administrador.usuario.descripcion
     %p
       Rol Actual:
-      -if @administrador.rol.blank?
+      -if @administrador.tipo_rol.blank?
         = "Sin rol asignado"
       -else
-        = @administrador.rol
+        = @administrador.tipo_rol.nombre
     %p
       Nuevo Rol: 
-      =f.select :rol, %w(Superadministrador administrador gestor), {:include_blank => 'Seleccione...'}
+      =f.collection_select :tipo_rol_id, TipoRol.where("id <> ?", 2), :id, :nombre, {:include_blank => 'Seleccione...'}
   %p
     =submit_tag "Modificar"
     |

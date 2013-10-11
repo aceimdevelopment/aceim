@@ -24,11 +24,12 @@
               Ninguno
           %td
             =ec.tipo_convenio.descripcion
-          %td
-            - ha = ec.ultimo_historial_aprobado
-            =link_to_modal "Modificar_Convenio",{:action => "cambiar_convenio",:title =>"Modificar Convenio",:width=>500, :params => {:tipo_curso => "#{ec.tipo_curso.id}", :usuario_ci=>"#{ec.usuario_ci}"}}
-            %br/
-            = link_to_if(ha, "Generar_constancia_notas_aprobadas", :action=>"generar_constancia_notas",:tipo_curso=>ec.tipo_curso)
-            %br/
-           
-            = link_to_if(ha && ha.curso.grado == ha.tipo_curso.numero_grados, "Obtener Certificado", :action=>"generar_certificado", :tipo_curso=>ec.tipo_curso )
+          -if session[:administrador].tipo_rol_id <= 3
+            %td
+              - ha = ec.ultimo_historial_aprobado
+              =link_to_modal "Modificar_Convenio",{:action => "cambiar_convenio",:title =>"Modificar Convenio",:width=>500, :params => {:tipo_curso => "#{ec.tipo_curso.id}", :usuario_ci=>"#{ec.usuario_ci}"}}
+              %br/
+              = link_to_if(ha, "Generar_constancia_notas_aprobadas", :action=>"generar_constancia_notas",:tipo_curso=>ec.tipo_curso)
+              %br/
+             
+              = link_to_if(ha && ha.curso.grado == ha.tipo_curso.numero_grados, "Obtener Certificado", :action=>"generar_certificado", :tipo_curso=>ec.tipo_curso )

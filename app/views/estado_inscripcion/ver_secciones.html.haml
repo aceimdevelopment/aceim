@@ -80,20 +80,28 @@
             -hor = s.horario_seccion
             -hor = hor.sort_by{|x| x.dia.orden}
 
-            -hor.each do |hs|
+            -hor.each do |hs| 
               -if hs.aula_id
-                =#link_to "#{hs.dia_aula}", :controller => controller_name, :action => "cambiar_aula", :parametros => {:seccion_horario => hs, :controlador => controller_name, :accion => "cambiar_aula", :indice => i, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3}
-                =link_to_modal "#{hs.dia_aula}",{:action => "cambiar_aula",:title =>"Modificar Aula",:width=>920, :params => {:seccion_horario => hs, :controlador => controller_name, :accion => action_name, :indice => i, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3}}
+                - aula_id = "#{hs.aula_id}"
               -else
-                =link_to_modal "-- NO ASIGNADA --",{:action => "cambiar_aula",:title =>"Modificar Aula",:width=>920, :params => {:seccion_horario => hs, :controlador => controller_name, :accion => action_name, :indice => i, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3}}
+                - aula_id = "-- NO ASIGNADA --"
 
+              -if session[:administrador].tipo_rol_id <= 3 
+                =link_to_modal aula_id,{:action => "cambiar_aula",:title =>"Modificar Aula",:width=>920, :params => {:seccion_horario => hs, :controlador => controller_name, :accion => action_name, :indice => i, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3}}
+              -else
+                =aula_id
               %br/
           %td{:style => "#{estilo}"}
             -if s.instructor
-              =link_to_modal s.instructor.descripcion,{:action => "cambiar_instructor",:title =>"Modificar Instructor",:width=>700, :params => {:seccion => s, :controlador => controller_name, :accion => action_name, :indice => i, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3}}
+              - instructor_id = s.instructor.descripcion
             -else
-              =link_to_modal "-- NO ASIGNADO --",{:action => "cambiar_instructor",:title =>"Modificar Instructor",:width=>700, :params => {:seccion => s, :controlador => controller_name, :accion => action_name, :indice => i, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3}}
-          -if (session[:administrador].usuario_ci == "10264009") || (session[:administrador].usuario_ci == "14519813") || (session[:administrador].usuario_ci == "13736933") || (session[:administrador].usuario_ci == "15573230") || (session[:administrador].usuario_ci == "19220025") || (session[:administrador].usuario_ci == "19395140")
+              - instructor_id = "-- NO ASIGNADO --"
+
+            -if session[:administrador].tipo_rol_id <= 3
+              =link_to_modal instructor_id,{:action => "cambiar_instructor",:title =>"Modificar Instructor",:width=>700, :params => {:seccion => s, :controlador => controller_name, :accion => action_name, :indice => i, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3}}
+            -else
+              =instructor_id
+          -if session[:administrador].tipo_rol_id <= 2 
             %td{:style => "#{estilo}"}
               =link_to_modal "Eliminar", {:action => "confirmar_eliminar",:title =>"Eliminar Sección",:width=>700, :params => {:seccion => s, :controlador => controller_name, :accion => action_name}}
 

@@ -8,6 +8,10 @@ class AdminAulaController < ApplicationController
   end
   
   def nuevo
+    if session[:administrador].tipo_rol_id > 3 
+      flash[:mensaje] = "Usted no posee los privilegios para acceder a esta función"
+      redirect_to :action => 'index'
+    end
   	@titulo_pagina = "Agregar Aula" 
     @aula = Aula.new
   end
@@ -57,6 +61,10 @@ class AdminAulaController < ApplicationController
   end
 
   def modificar
+    if session[:administrador].tipo_rol_id > 3 
+      flash[:mensaje] = "Usted no posee los privilegios para acceder a esta función"
+      redirect_to :action => 'index'
+    end
     id = params[:parametros][:id]
   	@aula = Aula.find(id)
   	render :layout => false   

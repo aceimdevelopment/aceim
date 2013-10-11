@@ -119,6 +119,10 @@ end
   end
   
   def modificar_datos_personales
+    if session[:administrador].tipo_rol_id > 3 
+      flash[:mensaje] = "Usted no posee los privilegios para acceder a esta función"
+      redirect_to :action => 'index'
+    end
     ci = session[:estudiante_ci]
     p ci
     @usuario = Usuario.where(:ci=>ci).limit(1).first

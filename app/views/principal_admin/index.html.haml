@@ -6,26 +6,21 @@
         =link_to "Confirmar con Código de Barra", :action => "capturar_ci"
       %li
         =link_to "Gestionar Estudiante Existente", :controller=> "admin_estudiante"
-      %li
-        =link_to "Agregar Nuevo Estudiante", :controller=> "inscripcion_admin", :action => "paso0"
+      -if session[:administrador].tipo_rol_id <= 3
+        %li
+          =link_to "Agregar Nuevo Estudiante", :controller=> "inscripcion_admin", :action => "paso0"
   %li 
     %a.desplegable{:href=>"#"} Instructores
     %ul.subnavegador
       %li
         =link_to "Gestionar Instructores Existentes", :controller=>"admin_instructor", :action=>"index"
-      %li
-        =link_to "Ingresar Horarios Disponibles Instructores", :controller=> "admin_instructor", :action=>"ingresar_horario_disponible_instructores"
-      %li
-        =link_to "Enviar Correo a Instructores", :action=>"redactar_correo"
-      %li
-        =link_to "Agregar Nuevo Instructor", :controller=> "admin_instructor", :action=>"nuevo"
-  %li
-    %a.desplegable{:href=>"#"} Aulas
-    %ul.subnavegador
-      %li  
-        =link_to "Gestionar Aulas", :controller=>"admin_aula"
-      %li
-        =link_to "Agregar Nueva Aula", :controller=> "admin_aula", :action=>"nuevo"
+      -if session[:administrador].tipo_rol_id <= 3
+        %li
+          =link_to "Ingresar Horarios Disponibles Instructores", :controller=> "admin_instructor", :action=>"ingresar_horario_disponible_instructores"
+        %li
+          =link_to "Enviar Correo a Instructores", :action=>"redactar_correo"
+        %li
+          =link_to "Agregar Nuevo Instructor", :controller=> "admin_instructor", :action=>"nuevo"
   %li
     =link_to "Estudiantes con Nivelación", :controller => "estudiante_nivelaciones", :action=> "index"
       
@@ -34,7 +29,7 @@
     
   %li
     =link_to "Estado de la Calificación - Período #{session[:parametros][:periodo_calificacion]}", :action=> "estado_instructores"
-  -if (session[:administrador].usuario_ci == "10264009") || (session[:administrador].usuario_ci == "14519813") || (session[:administrador].usuario_ci == "13736933")
+  -if session[:administrador].tipo_rol_id <= 2
     %li
       =link_to "Calificar Sección", :controller=>"calificacion", :action => "seleccionar_curso"
 
@@ -52,19 +47,20 @@
       %li  
         =link_to "Secciones Cerradas", :controller=>"reportes", :action=>"index_reporte_secciones_cerradas"
 
-  %li
-    %a.desplegable{:href=>"#"} Cartelera Virtual
-    %ul.subnavegador
-      %li  
-        =link_to "Ver Cartelera Principal", :controller=>"gestionar_cartelera", :action=>"visualizar"
-      %li  
-        =link_to "Editar Cartelera Principal", :controller=>"gestionar_cartelera", :action=>"modificar"
+  -if session[:administrador].tipo_rol_id <= 2  
+    %li
+      %a.desplegable{:href=>"#"} Cartelera Virtual
+      %ul.subnavegador
+        %li  
+          =link_to "Ver Cartelera Principal", :controller=>"gestionar_cartelera", :action=>"visualizar"
+        %li  
+          =link_to "Editar Cartelera Principal", :controller=>"gestionar_cartelera", :action=>"modificar"
 
-        
-  %li 
-    %a.desplegable{:href=>"#"} Banco de Preguntas
-    %ul.subnavegador
-      %li
-        =link_to "Agregar pregunta", "#{session[:parametros][:direccion_atest]}"
-  %li
-    =link_to "Generar Carnets de Instructores", :action=> "generar_carnets"
+          
+    %li 
+      %a.desplegable{:href=>"#"} Banco de Preguntas
+      %ul.subnavegador
+        %li
+          =link_to "Agregar pregunta", "#{session[:parametros][:direccion_atest]}"
+    %li
+      =link_to "Generar Carnets de Instructores", :action=> "generar_carnets"
