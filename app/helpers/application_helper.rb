@@ -9,7 +9,21 @@ module ApplicationHelper
     }                   
     datos = default.merge datos
     raw link_to_function nombre, "aceim.modal_remota('#{url_for(:controller=>datos[:controller],:action=>datos[:action], :parametros => datos[:params])}','#{datos[:title]}','#{datos[:width]}')"
-  end 
+  end
+
+  def button_to_modal(nombre, datos = {}, clase = {})  
+    default = {
+      :controller => controller_name,
+      :action => nil,
+      :title => "ACEIM",
+      :width => 300,
+      :params => nil
+    }                   
+    datos = default.merge datos
+    raw button_to_function nombre, "aceim.modal_remota('#{url_for(:controller=>datos[:controller],:action=>datos[:action], :parametros => datos[:params])}','#{datos[:title]}','#{datos[:width]}')", :class => clase
+  end
+
+
   
   def codigo_barra(texto)
     Rutinas.crear_codigo_barra(texto)

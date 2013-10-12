@@ -3,6 +3,7 @@ class Usuario < ActiveRecord::Base
 	
 	include ActiveModel::Validations    
 	attr_accessor :contrasena_confirmation
+  attr_accessible :ci,:nombres, :apellidos, :contrasena, :telefono_movil, :correo, :tipo_sexo_id
   #autogenerado por db2models
   set_primary_key :ci
   #autogenerado por db2models

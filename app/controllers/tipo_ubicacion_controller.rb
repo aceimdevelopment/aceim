@@ -13,7 +13,7 @@ class TipoUbicacionController < ApplicationController
  		if @tipo_ubicacion.save
  			flash[:mensaje] = "Ubicación Agregada Satisfactoriamente"
  		else
- 			flash[:mensaje] = "Error: #{@tipo_ubicacion.id}: #{@tipo_ubicacion.errors.full_messages}"
+ 			flash[:mensaje] = "Error: #{@tipo_ubicacion.id}: #{@tipo_ubicacion.errors.full_messages.join(". ")}"
  		end
  		redirect_to :controller => 'admin_aula', :action => 'nuevo'
  	end

@@ -1,7 +1,32 @@
 class UsuarioController < ApplicationController
   before_filter :filtro_logueado
   
+  def nuevo
+    if session[:administrador].tipo_rol_id > 2 
+      flash[:mensaje] = "Usted no posee los privilegios para acceder a esta función"
+      redirect_to :action => 'index'
+    end
+    @titulo_pagina = "Agregar Usuario"
+    @usuario = Usuario.new
+    @controlador = params[:controlador]
+    @accion = params[:accion]
+  end
+
+  def nuevo_guardar
+    usuario = Usuario.new(params[:administrador])
+    if usuario.save
+      flash[:mensaje] = "Actualización Correcta"
+    else
+      flash[:mensaje] = "No se pudo actualizar"
+    end
+    redirect_to :controller => 'adminstrador', :action => 'index'     
+  end
+
   def modificar
+    if session[:administrador].tipo_rol_id > 2 
+      flash[:mensaje] = "Usted no posee los privilegios para acceder a esta función"
+      redirect_to :action => 'index'
+    end
     @usuario = session[:usuario] 
     @controlador = params[:controlador]
     @accion = params[:accion]
