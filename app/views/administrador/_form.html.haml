@@ -12,10 +12,10 @@
         -else
           = @administrador.tipo_rol.nombre
     -else
-    %p
-      %label
-        Cédula Usuario:
-      = f.text_field :usuario_ci
+      %p
+        %label
+          Cédula Usuario:
+        = f.text_field :usuario_ci
     %p
       Nuevo Rol: 
       =f.collection_select :tipo_rol_id, TipoRol.where("id <> ?", 2), :id, :nombre, {:include_blank => 'Seleccione...'}
