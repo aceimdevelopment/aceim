@@ -1,66 +1,68 @@
-%ul.navegador
-  %li    
-    %a.desplegable{:href=>"#"} Estudiantes
-    %ul.subnavegador
-      %li
-        =link_to "Confirmar con Código de Barra", :action => "capturar_ci"
-      %li
-        =link_to "Gestionar Estudiante Existente", :controller=> "admin_estudiante"
-      -if session[:administrador].tipo_rol_id <= 3
-        %li
-          =link_to "Agregar Nuevo Estudiante", :controller=> "inscripcion_admin", :action => "paso0"
-  %li 
-    %a.desplegable{:href=>"#"} Instructores
-    %ul.subnavegador
-      %li
-        =link_to "Gestionar Instructores Existentes", :controller=>"admin_instructor", :action=>"index"
-      -if session[:administrador].tipo_rol_id <= 3
-        %li
-          =link_to "Ingresar Horarios Disponibles Instructores", :controller=> "admin_instructor", :action=>"ingresar_horario_disponible_instructores"
-        %li
-          =link_to "Enviar Correo a Instructores", :action=>"redactar_correo"
-        %li
-          =link_to "Agregar Nuevo Instructor", :controller=> "admin_instructor", :action=>"nuevo"
-  %li
-    =link_to "Estudiantes con Nivelación", :controller => "estudiante_nivelaciones", :action=> "index"
-      
-  %li
-    =link_to "Gestionar Cursos (Estado de la Inscripción)", :controller => "estado_inscripcion", :action=> "ver_secciones"
-    
-  %li
-    =link_to "Estado de la Calificación - Período #{session[:parametros][:periodo_calificacion]}", :action=> "estado_instructores"
-  -if session[:administrador].tipo_rol_id <= 2
-    %li
-      =link_to "Calificar Sección", :controller=>"calificacion", :action => "seleccionar_curso"
-
-  %li
-    %a.desplegable{:href=>"#"} Reportes
-    %ul.subnavegador
-      %li  
-        =link_to "Alumnos con Convenios", :controller=>"reportes", :action=>"index_reportes_convenios",  :controlador => controller_name
-      %li  
-        =link_to "Alumnos Congelados", :controller=>"reportes", :action=>"index_reporte_congelados", :controlador => controller_name
-      %li
-        =link_to "Alumnos por Edificio", :controller => "reportes", :action => "alumnos_por_edificio"
-      %li
-        =link_to "Nómina Instructores", :controller => "reportes", :action => "nomina_instructores"
-      %li  
-        =link_to "Secciones Cerradas", :controller=>"reportes", :action=>"index_reporte_secciones_cerradas"
-
-  -if session[:administrador].tipo_rol_id <= 2  
-    %li
-      %a.desplegable{:href=>"#"} Cartelera Virtual
+-if session[:administrador].tipo_rol_id
+  %ul.navegador
+    %li    
+      %a.desplegable{:href=>"#"} Estudiantes
       %ul.subnavegador
-        %li  
-          =link_to "Ver Cartelera Principal", :controller=>"gestionar_cartelera", :action=>"visualizar"
-        %li  
-          =link_to "Editar Cartelera Principal", :controller=>"gestionar_cartelera", :action=>"modificar"
-
-          
+        %li
+          =link_to "Confirmar con Código de Barra", :action => "capturar_ci"
+        %li
+          =link_to "Gestionar Estudiante Existente", :controller=> "admin_estudiante"
+        -if session[:administrador].tipo_rol_id <= 3
+          %li
+            =link_to "Agregar Nuevo Estudiante", :controller=> "inscripcion_admin", :action => "paso0"
     %li 
-      %a.desplegable{:href=>"#"} Banco de Preguntas
+      %a.desplegable{:href=>"#"} Instructores
       %ul.subnavegador
         %li
-          =link_to "Agregar pregunta", "#{session[:parametros][:direccion_atest]}"
+          =link_to "Gestionar Instructores Existentes", :controller=>"admin_instructor", :action=>"index"
+        -if session[:administrador].tipo_rol_id <= 3
+          %li
+            =link_to "Ingresar Horarios Disponibles Instructores", :controller=> "admin_instructor", :action=>"ingresar_horario_disponible_instructores"
+          %li
+            =link_to "Enviar Correo a Instructores", :action=>"redactar_correo"
+          %li
+            =link_to "Agregar Nuevo Instructor", :controller=> "admin_instructor", :action=>"nuevo"
     %li
-      =link_to "Generar Carnets de Instructores", :action=> "generar_carnets"
+      =link_to "Estudiantes con Nivelación", :controller => "estudiante_nivelaciones", :action=> "index"
+        
+    %li
+      =link_to "Gestionar Cursos (Estado de la Inscripción)", :controller => "estado_inscripcion", :action=> "ver_secciones"
+      
+    %li
+      =link_to "Estado de la Calificación - Período #{session[:parametros][:periodo_calificacion]}", :action=> "estado_instructores"
+    -if session[:administrador].tipo_rol_id <= 2
+      %li
+        =link_to "Calificar Sección", :controller=>"calificacion", :action => "seleccionar_curso"
+
+    %li
+      %a.desplegable{:href=>"#"} Reportes
+      %ul.subnavegador
+        %li  
+          =link_to "Alumnos con Convenios", :controller=>"reportes", :action=>"index_reportes_convenios",  :controlador => controller_name
+        %li  
+          =link_to "Alumnos Congelados", :controller=>"reportes", :action=>"index_reporte_congelados", :controlador => controller_name
+        %li
+          =link_to "Alumnos por Edificio", :controller => "reportes", :action => "alumnos_por_edificio"
+        %li
+          =link_to "Nómina Instructores", :controller => "reportes", :action => "nomina_instructores"
+        %li  
+          =link_to "Secciones Cerradas", :controller=>"reportes", :action=>"index_reporte_secciones_cerradas"
+
+    -if session[:administrador].tipo_rol_id <= 2  
+      %li
+        %a.desplegable{:href=>"#"} Cartelera Virtual
+        %ul.subnavegador
+          %li  
+            =link_to "Ver Cartelera Principal", :controller=>"gestionar_cartelera", :action=>"visualizar"
+          %li  
+            =link_to "Editar Cartelera Principal", :controller=>"gestionar_cartelera", :action=>"modificar"
+
+            
+      %li 
+        %a.desplegable{:href=>"#"} Banco de Preguntas
+        %ul.subnavegador
+          %li
+            =link_to "Agregar pregunta", "#{session[:parametros][:direccion_atest]}"
+    -if session[:administrador].tipo_rol_id <= 3  
+      %li
+        =link_to "Generar Carnets de Instructores", :action=> "generar_carnets"

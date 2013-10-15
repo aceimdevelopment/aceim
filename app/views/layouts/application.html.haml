@@ -42,13 +42,14 @@
           %li.current
             =link_to "Principal", :controller => "principal", :action => "principal"
         -if session[:rol] == "Administrador"
-          -if session[:administrador].tipo_rol.id <= 2
-            -if controller_name == "planificacion" || controller_name == "convenio" || controller_name == "reportes" || controller_name == "gestionar_cartelera" || controller_name == "admin_seccion" || action_name == "ingresar_aulas_planificacion" || action_name == "ingresar_horario_aulas_planificacion" || action_name == "emparejar_aulas_manualmente" || action_name == "ingresar_horario_disponible_instructores" || controller_name == "parametros_generales"
-              %li.current
-                =link_to "Gestión y Planificación", :controller=>"planificacion", :action => "index"
-            -else
-              %li
-                =link_to "Gestión y Planificación", :controller=>"planificacion", :action => "index"
+          -if session[:administrador].tipo_rol_id
+            -if session[:administrador].tipo_rol_id <= 2
+              -if controller_name == "planificacion" || controller_name == "convenio" || controller_name == "reportes" || controller_name == "gestionar_cartelera" || controller_name == "admin_seccion" || action_name == "ingresar_aulas_planificacion" || action_name == "ingresar_horario_aulas_planificacion" || action_name == "emparejar_aulas_manualmente" || action_name == "ingresar_horario_disponible_instructores" || controller_name == "parametros_generales"
+                %li.current
+                  =link_to "Gestión y Planificación", :controller=>"planificacion", :action => "index"
+              -else
+                %li
+                  =link_to "Gestión y Planificación", :controller=>"planificacion", :action => "index"
         %li
           =link_to "Contacto", "mailto:fundeim@ucv.ve"
     .contenedor
