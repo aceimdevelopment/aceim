@@ -293,6 +293,10 @@ class Seccion < ActiveRecord::Base
     end                                                                          
     return "#{descripcion_corta} - (#{preinscritos}/#{inscritos}), CUPO: 0 -- ESTA LLENA"
   end
+
+  def descripcion_sin_horario
+    "#{curso.descripcion} - #{"%002i"%seccion_numero}"
+  end
   
   def descripcion
     "#{curso.descripcion} - #{horario} - #{"%002i"%seccion_numero}"

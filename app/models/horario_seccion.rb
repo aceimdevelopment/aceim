@@ -26,7 +26,11 @@ class HorarioSeccion < ActiveRecord::Base
   def dia_aula
       fac,au = aula_id.split("-")
       "#{dia.descripcion} Aula #{au.to_s} - #{aula.tipo_ubicacion.descripcion_corta}" 
-  end  
+  end
+
+  def ubicacion
+    "#{aula.tipo_ubicacion.descripcion_corta}"
+  end
   
   def descripcion
     tipo_bloque.descripcion

@@ -136,7 +136,7 @@ class PrincipalAdminController < ApplicationController
   
   def redactar_correo
     @titulo_pagina = "Enviar Correo a Instructores"
-    @instructor = Instructor.all.delete_if{|i| !i.seccion_periodo}
+    @instructor = Instructor.all.delete_if{|i| i.seccion_periodo.count < 1}
     @instructor = @instructor.sort_by{|i| i.usuario.nombre_completo}
     
   end
