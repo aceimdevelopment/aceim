@@ -1,16 +1,20 @@
+=javascript_include_tag "elrte.min.js"
+
+%script{:charset => "utf-8", :type => "text/javascript"}
+  $().ready(function() {
+  var opts = {
+  lang         : 'es',
+  styleWithCSS : false,
+  height       : 400,
+  toolbar      : 'tiny',        // Se pueden usar las siguientes opciones: 'tiny', 'compact', 'normal', 'complete', 'maxi'
+  allowSource  : false,
+  };
+ 
+  var editor = new elRTE($('correo_contenido'), opts);
+  });
+
 =form_tag(url_for(:action => "enviar_correo", :controller => :estado_inscripcion),{:class => "formulario titulo", :id => "formu",:multipart=> true}) do
-  Título
-  %br/
-  =text_field :correo, :titulo, {:autofocus => "true", :class => "k-textbox"}
-  %br/
-  Contenido
-  %br/
-  =text_area :correo, :contenido, :size => "110x20"
-  %br/
-  Adjuntar un archivo
-  %br/
-  =file_field_tag :archivo_adjunto
-  %br/
+  %br
   %h3
     Seleccione Instructores
   %div.titulo
@@ -55,12 +59,27 @@
               .check
                 =check_box :seleccion, i.id
   
-  
+  Título
+  %br
+  =text_field :correo, :titulo, {:autofocus => "true", :class => "k-textbox"}
+  %br
+  %br
+  Contenido
+  %br
+
+  =text_area :correo, :contenido#, :size => "110x20"
+  %br
+  Adjuntar un archivo
+  %br/
+  =file_field_tag :archivo_adjunto
+
+
   - mensaje = "x"
   - mensaje = mensaje + ", ¿está seguro?" if mensaje != ""
   
   
   =hidden_field_tag :correo_para_instructores, "true"
+  %br
   =submit_tag "enviar_correo", :id => "submit_correo", :class => "ui-button ui-widget ui-state-default ui-corner-all" # :confirm => "validar()"
 
   
