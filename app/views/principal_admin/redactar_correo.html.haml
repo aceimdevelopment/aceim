@@ -1,7 +1,7 @@
 =form_tag(url_for(:action => "enviar_correo", :controller => :estado_inscripcion),{:class => "formulario titulo", :id => "formu",:multipart=> true}) do
   Título
   %br/
-  =text_field :correo, :titulo, :autofocus => "true"
+  =text_field :correo, :titulo, {:autofocus => "true", :class => "k-textbox"}
   %br/
   Contenido
   %br/
@@ -61,6 +61,6 @@
   
   
   =hidden_field_tag :correo_para_instructores, "true"
-  =submit_tag "enviar_correo", :id => "submit_correo"# :confirm => "validar()"
+  =submit_tag "enviar_correo", :id => "submit_correo", :class => "ui-button ui-widget ui-state-default ui-corner-all" # :confirm => "validar()"
 
   
