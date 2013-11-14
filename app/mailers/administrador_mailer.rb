@@ -22,7 +22,7 @@ class AdministradorMailer < ActionMailer::Base
     if adjunto
       attachments[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
     end
-    mail(:to => para, :subject => asunto)
+    mail(:to => para, :subject => asunto, :content_type => "text/html")
   end
   
 end
