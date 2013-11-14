@@ -1,16 +1,18 @@
 =javascript_include_tag "elrte.min.js"
+=javascript_include_tag "/aceim/assets/elrte.min"
 
 %script{:charset => "utf-8", :type => "text/javascript"}
   $().ready(function() {
   var opts = {
   lang         : 'es',
-  styleWithCSS : false,
+  styleWithCSS : true,
   height       : 400,
-  toolbar      : 'tiny',        // Se pueden usar las siguientes opciones: 'tiny', 'compact', 'normal', 'complete', 'maxi'
+  toolbar      : 'maxi',        // Se pueden usar las siguientes opciones: 'tiny', 'compact', 'normal', 'complete', 'maxi'
   allowSource  : false,
   };
  
-  var editor = new elRTE($('correo_contenido'), opts);
+  var editor = new elRTE(document.getElementById('correo_contenido'), opts);
+
   });
 
 =form_tag(url_for(:action => "enviar_correo", :controller => :estado_inscripcion),{:class => "formulario titulo", :id => "formu",:multipart=> true}) do
@@ -81,5 +83,3 @@
   =hidden_field_tag :correo_para_instructores, "true"
   %br
   =submit_tag "enviar_correo", :id => "submit_correo", :class => "ui-button ui-widget ui-state-default ui-corner-all" # :confirm => "validar()"
-
-  

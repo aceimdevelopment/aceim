@@ -3,6 +3,7 @@
 -if flash[:mensaje]
   =flash[:mensaje]
 =javascript_include_tag "elrte.min.js"
+=javascript_include_tag "/aceim/assets/elrte.min"
 %script{:charset => "utf-8", :type => "text/javascript"}
   $().ready(function() {
   var opts = {
