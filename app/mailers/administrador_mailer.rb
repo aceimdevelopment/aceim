@@ -29,9 +29,3 @@ class AdministradorMailer < ActionMailer::Base
   end
   
 end
-
-
-encoded_content = SpecialEncode(File.read('/path/to/filename.jpg'))
-attachments['filename.jpg'] = {mime_type: 'application/x-gzip',
-                               encoding: 'SpecialEncoding',
-                               content: encoded_content }
