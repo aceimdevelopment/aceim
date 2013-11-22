@@ -21,9 +21,9 @@ class AdministradorMailer < ActionMailer::Base
     @mensaje = mensaje
     if adjunto
       encoded_content = SpecialEncode(File.read("#{Rails.root}/attachments/#{adjunto}"))
-      attachments[adjunto] = {mime_type: 'application/x-gzip',
-                               encoding: 'SpecialEncoding',
-                               content: encoded_content}
+      attachments[adjunto] = {:mime_type => 'application/x-gzip',
+                               :encoding => 'SpecialEncoding',
+                               :content => encoded_content}
     end
     mail(:to => para, :subject => asunto, :body => mensaje, :content_type => "text/html")
   end
