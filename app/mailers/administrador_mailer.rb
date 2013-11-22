@@ -20,11 +20,7 @@ class AdministradorMailer < ActionMailer::Base
   def enviar_correo_general(para,asunto,mensaje,adjunto)
     @mensaje = mensaje
     if adjunto
-      encoded_content = SpecialEncode(File.read("#{Rails.root}/attachments/#{adjunto}"))
-      attachments[adjunto] = {:mime_type => 'application/x-gzip',
-                               :encoding => 'SpecialEncoding',
-                               :content => encoded_content}
-    end
+      attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
     mail(:to => para, :subject => asunto, :body => mensaje, :content_type => "text/html")
   end
   
