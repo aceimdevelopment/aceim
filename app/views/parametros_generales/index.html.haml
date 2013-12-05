@@ -1,4 +1,5 @@
 %br
+%h3 Variables de Entorno
 =form_tag({:action => "guardar_parametros"}) do
   %table.tablesorter.tablefilter.likert
     %thead
@@ -93,10 +94,33 @@
       
   %p= submit_tag 'Guardar'
 
+%br
+%br
+
+%h3 Capacidad de los Cursos
+%table.tablesorter.tablefilter.likert
+  %thead
+    %tr
+      %th{:width => "40%"}
+        Parámetro
+      %th{:width => "40%"}
+        Valor
+      %th{:width => "20%"}
+        Acción
+  %tbody
+    %tr
+      %td
+        Capacidad Actual
+      %td
+        =@capacidad_cursos
+      %td
+        =link_to_modal "Cambiar",{:action => "cambiar_capacidad_curso_modal",:title =>"Cambiar Capacidad Cursos",:width=>300}
+
 %br/
 %br/
 
 
+%h3 Períodos
 %table.tablesorter.tablefilter.likert
   %thead
     %tr

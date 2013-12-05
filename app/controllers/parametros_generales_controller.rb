@@ -15,6 +15,7 @@ class ParametrosGeneralesController < ApplicationController
 
     @califiacion_abierta = ParametroGeneral.find("CALIFICACION_ABIERTA").valor
 
+    @capacidad_cursos = ParametroGeneral.find("CAPACIDAD_CURSO").valor
 
     @periodo_actual = ParametroGeneral.find("PERIODO_ACTUAL").valor
 
@@ -169,5 +170,17 @@ class ParametrosGeneralesController < ApplicationController
   
   end
 
-  
+  def cambiar_capacidad_curso_modal
+    @capacidad = ParametroGeneral.capacidad_curso
+    render :layout => false
+  end
+
+  def cambiar_capacidad_curso
+    valor = params[:capacidad]
+    capacidad = ParametroGeneral.find("CAPACIDAD_CURSO")
+    capacidad.valor = valor
+    flash[:mensaje] = capacidad.save ? "Capacidad de curso actualizada" : "No se pudo acualizar la capacidad del curso" 
+    redirect_to :action => 'index' 
+  end
+
 end
