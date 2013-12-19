@@ -33,6 +33,8 @@
               CONGELADO
             -else
               SIN CALIFICAR
+              -if (session[:administrador].tipo_rol_id <= 3) & (session[:parametros][:periodo_actual]!=h.periodo_id)
+                =link_to_modal "Modificar",{:action => "cambiar_nota",:title =>"Modificar Nota",:width=>500, :params => {:usuario_ci => h.usuario_ci, :idioma_id => h.idioma_id,:tipo_categoria_id => h.tipo_categoria_id, :tipo_nivel_id => h.tipo_nivel_id, :periodo_id => h.periodo_id, :seccion_numero => h.seccion_numero} }
           -elsif h.nota_final == -1
             PERDIDA POR INASISTENCIA
             -if session[:administrador].tipo_rol_id <= 3#(session[:administrador].usuario_ci != "aceim") 

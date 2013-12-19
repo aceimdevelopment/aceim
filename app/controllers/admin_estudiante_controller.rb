@@ -275,7 +275,7 @@ end
   end
 
   def ver_detalle_nota
-    if (session[:administrador].usuario_ci != "aceim")
+    if session[:administrador].tipo_rol_id <= 3
       pa = params[:parametros]
       @historial = HistorialAcademico.where(:usuario_ci => pa[:usuario_ci],
                                             :idioma_id => pa[:idioma_id],
@@ -284,11 +284,11 @@ end
                                             :periodo_id => pa[:periodo_id],
                                             :seccion_numero => pa[:seccion_numero]
    ).limit(1).first
-      @n1 = @historial.nota_en_evaluacion("EXA_ESC_1").nota
-      @n2 = @historial.nota_en_evaluacion("EXA_ESC_2").nota
-      @n3 = @historial.nota_en_evaluacion("EXA_ORA").nota
-      @n4 = @historial.nota_en_evaluacion("OTRAS").nota
-      render :layout => false   
+      @n1 = @historial.nota_en_evaluacion("EXA_ESC_1").nota if @historial.nota_en_evaluacion("EXA_ESC_1")
+      @n2 = @historial.nota_en_evaluacion("EXA_ESC_2").nota if @historial.nota_en_evaluacion("EXA_ESC_2")
+      @n3 = @historial.nota_en_evaluacion("EXA_ORA").nota if @historial.nota_en_evaluacion("EXA_ORA")
+      @n4 = @historial.nota_en_evaluacion("OTRAS").nota if @historial.nota_en_evaluacion("OTRAS")
+      render :layout => false
     else
       redirect_to :action => "opciones_menu"
     end
