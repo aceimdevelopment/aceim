@@ -20,7 +20,7 @@ class AdministradorMailer < ActionMailer::Base
   def enviar_correo_general(para,asunto,mensaje,adjunto)
     @mensaje = mensaje
     if adjunto
-      attachments["#{adjunto.filename}"] = File.read("#{Rails.root}/attachments/#{adjunto}")
+      attachments["#{adjunto}"] = File.read("#{Rails.root}/attachments/#{adjunto}")
       # attachment :content_type => file.content_type, :body => File.read(file.full_path), :filename => file.filename
       # attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
     end
