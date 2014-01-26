@@ -22,46 +22,94 @@
           JUEVES
         %th{:width => "17%",:style=> "text-align:center"}
           SÁBADO
-    -@aulas_disponibles.each do |ad|
-      -cant = 1
-      -cont = cont + 1
-      %tbody{:class => "#{ad.tipo_ubicacion_id}", :style=> "display: none"}
-        %tr
-          %td{:rowspan =>"3", :style=> "vertical-align:middle;text-align:center"}
+
+    %tbody
+      -@aulas_disponibles.each do |ad|
+        -cant = 1
+        -cont = cont + 1
+        %tr{:class => "#{ad.tipo_ubicacion_id}", :style=> "display: none;"}
+          %td{:width => "15%", :style=> "vertical-align:middle;text-align:center;"}
             =ad.id
             %br
             =ad.descripcion
-          -ad.bloque_aula_disponible.each do |x|
-            -if(cant < @cant_horarios)
-              -if x.tipo_dia_id == "MA" || x.tipo_dia_id == "JU"
-                -estilo = "background-color: #A0C0F0"
-              -else
-                -if x.tipo_dia_id != "SA"
-                  -estilo = "background-color: #F3F781"
-                -else
-                  -estilo = "background-color: #A9F5A9"
+          %td{:style => "background-color: #9AF5A9"}
+            -horas = ad.bloque_aula_disponible.where(:tipo_dia_id => "LU")
+            -horas.each do |hora|
+              =check_box_tag "horario_aula_disponible[][#{hora.aula_id}][#{hora.tipo_dia_id}][#{hora.tipo_hora_id}]", 1, (hora.asignada != 0)
+              =hora.tipo_hora.descripcion_hora
+              %br
 
-              %td{:style => "#{estilo}"} 
-                -if(x.asignada == 0)
-                  =check_box_tag "horario_aula_disponible[][#{x.aula_id}][#{x.tipo_dia_id}][#{x.tipo_hora_id}]", 1
-                  =x.tipo_hora.descripcion_hora
-                -else
-                  =check_box_tag "horario_aula_disponible[][#{x.aula_id}][#{x.tipo_dia_id}][#{x.tipo_hora_id}]", 1, true
-                  =x.tipo_hora.descripcion_hora 
-              -cant = cant + 1
-            -else
-              -if(cant == @cant_horarios)
-                %tr
-              -cant = 1
-              %td{:style => "background-color: #F3F781"} 
-                -if(x.asignada == 0)
-                  =check_box_tag "horario_aula_disponible[][#{x.aula_id}][#{x.tipo_dia_id}][#{x.tipo_hora_id}]", 1
-                  =x.tipo_hora.descripcion_hora
-                -else
-                  =check_box_tag "horario_aula_disponible[][#{x.aula_id}][#{x.tipo_dia_id}][#{x.tipo_hora_id}]", 1, true
-                  =x.tipo_hora.descripcion_hora
+          %td{:style => "background-color: #9AF5A9"}
+            -horas = ad.bloque_aula_disponible.where(:tipo_dia_id => "MI")
+            -horas.each do |hora|
+              =check_box_tag "horario_aula_disponible[][#{hora.aula_id}][#{hora.tipo_dia_id}][#{hora.tipo_hora_id}]", 1, (hora.asignada != 0)
+              =hora.tipo_hora.descripcion_hora
+              %br
 
+          %td{:style => "background-color: #A0C0F0"}
+            -horas = ad.bloque_aula_disponible.where(:tipo_dia_id => "MA")
+            -horas.each do |hora|
+              =check_box_tag "horario_aula_disponible[][#{hora.aula_id}][#{hora.tipo_dia_id}][#{hora.tipo_hora_id}]", 1, (hora.asignada != 0)
+              =hora.tipo_hora.descripcion_hora
+              %br
+
+          %td{:style => "background-color: #A0C0F0"}
+            -horas = ad.bloque_aula_disponible.where(:tipo_dia_id => "JU")
+            -horas.each do |hora|
+              =check_box_tag "horario_aula_disponible[][#{hora.aula_id}][#{hora.tipo_dia_id}][#{hora.tipo_hora_id}]", 1, (hora.asignada != 0)
+              =hora.tipo_hora.descripcion_hora
+              %br
+          %td{:style => "background-color: #F3F781"}
+            -horas = ad.bloque_aula_disponible.where(:tipo_dia_id => "SA")
+            -horas.each do |hora|
+              =check_box_tag "horario_aula_disponible[][#{hora.aula_id}][#{hora.tipo_dia_id}][#{hora.tipo_hora_id}]", 1, (hora.asignada != 0)
+              =hora.tipo_hora.descripcion_hora
+              %br
+
+  
+
+
+          / -ad.bloque_aula_disponible.each do |aula_bloque|
+
+
+          /   -case aula_bloque.tipo_dia_id
+          /   -when "LU"
+          /     - aula_bloque.where(:tipo_dia_id => "LU")
+          /     %td[0]{:style => "#{estilo};", :width => "17%"}
+          /       =check_box_tag "horario_aula_disponible[][#{x.aula_id}][#{x.tipo_dia_id}][#{x.tipo_hora_id}]", 1, (x.asignada != 0)
+          /       =x.tipo_hora.descripcion_hora
+
+
+
+          /   -if x.tipo_dia_id == "MA" || x.tipo_dia_id == "JU"
+          /     -estilo = "background-color: #A0C0F0"
+
+          /   -elsif x.tipo_dia_id != "SA"
+          /     -estilo = "background-color: #F3F781"
+          /   -else
+          /     -estilo = "background-color: #9AF5A9"
+
+
+
+          / -ad.bloque_aula_disponible.each do |x|
+          /   -if x.tipo_dia_id == "MA" || x.tipo_dia_id == "JU"
+          /     -estilo = "background-color: #A0C0F0"
+          /   -elsif x.tipo_dia_id != "SA"
+          /     -estilo = "background-color: #F3F781"
+          /   -else
+          /     -estilo = "background-color: #9AF5A9"
+
+          /   -if(cant == @cant_horarios)
+          /     %tr{:class => "#{ad.tipo_ubicacion_id}", :style=> "display: none;"}
+
+          /   %td{:style => "#{estilo};", :width => "17%"}
+          /     =check_box_tag "horario_aula_disponible[][#{x.aula_id}][#{x.tipo_dia_id}][#{x.tipo_hora_id}]", 1, (x.asignada != 0)
+          /     =x.tipo_hora.descripcion_hora
+          /   -cant = cant + 1
   %p= submit_tag 'Guardar'
     
 %br/
 %br/
+
+
+/ {:class => "#{ad.tipo_ubicacion_id}", :style=> "display: none;"}

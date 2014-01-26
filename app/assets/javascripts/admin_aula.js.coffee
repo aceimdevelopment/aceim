@@ -11,7 +11,7 @@ $ ->
     aulas = document.getElementsByClassName(this.id)
     if (this.checked)
       for i in [0..aulas.length-1] 
-        aulas[i].style.display = "table-row-group"
+        aulas[i].style.display = "table-row"
     else
       for i in [0..aulas.length-1]
         aulas[i].style.display = "none"
