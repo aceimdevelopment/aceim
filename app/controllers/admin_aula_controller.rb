@@ -128,6 +128,7 @@ class AdminAulaController < ApplicationController
   end
 
   def ingresar_horario_aulas_planificacion
+    @tipo_dias = TipoDia.where("id != 'VI' and id != 'null'").order('orden2')
     @titulo_pagina = "Ingresar Horarios de Aulas Disponibles"  
     @aulas_disponibles = Aula.includes(:bloque_aula_disponible => [:tipo_dia,:tipo_hora]).where(:usada=>1).order("aula.tipo_ubicacion_id ASC, aula.id ASC, tipo_hora.orden ASC,tipo_dia.orden2 ASC")
     @cant_horarios = BloqueHorario.count
