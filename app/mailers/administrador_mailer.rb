@@ -19,7 +19,7 @@ class AdministradorMailer < ActionMailer::Base
   
   def enviar_correo_general(para,asunto,mensaje,adjunto)
     @mensaje = mensaje
-    content_type    "multipart/mixed"
+    
 
     part :content_type => "text/html", :body => mensaje
 
@@ -32,7 +32,7 @@ class AdministradorMailer < ActionMailer::Base
       # attachment :content_type => file.content_type, :body => File.read(file.full_path), :filename => file.filename
       # attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
     # end
-    mail(:to => para, :subject => asunto, :body => mensaje)
+    mail(:to => para, :subject => asunto, :body => mensaje, :content_type  =>  "multipart/mixed")
   end
   
 end
