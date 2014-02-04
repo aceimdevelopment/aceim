@@ -12,13 +12,11 @@ prueba
 </p>
 
 <p>
-  <strong>Forma de pago:</strong> <%= @transaction.type_transaction.name.titlecase %><br />
-  <strong>Monto:</strong> <%= number_to_currency @transaction.ammount %><br />
-  <strong>Referencia:</strong> <%= @transaction.reference %><br />
-  <strong>Fecha:</strong> <%= @transaction.date_at.strftime("%d-%m-%Y") %><br />
-  <% if @transaction.note %>
-    <strong>Nota:</strong> <%= @transaction.note %>
-  <% end %>
+  <strong>Forma de pago:</strong> casa<br />
+  <strong>Monto:</strong> casa<br />
+  <strong>Referencia:</strong> casa<br />
+  <strong>Fecha:</strong> <%= Time.now %><br />
+
 </p>
 
 <p>
