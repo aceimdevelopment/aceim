@@ -30,26 +30,27 @@ class AdministradorMailer < ActionMailer::Base
 
   def enviar_correo_general(para,asunto,mensaje,adjunto)
     @mensaje = mensaje
-    
+
     mail(:subject => asunto,
     :to => para,
     :content_type => "multipart/mixed")
 
-    part "multipart/alternative" do |alternative|
-
-      alternative.part "text/html" do |html|
-        html.body = render_message("enviar_correo_general.text.html.erb", :message => mensaje)
-      end
+    part "text/html" do |html|
+      html.body = render_message("enviar_correo_general.text.html.erb", :message => mensaje)
+    end
 
     end
 
     if adjunto
-      attachment :content_type => "image/jpeg",
-        :body => File.read("#{Rails.root}/attachments/#{adjunto}")
 
-      attachment "application/pdf" do |a|
-        a.body = File.read("#{Rails.root}/attachments/#{adjunto}")
-      end
+      mail.attachments[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
+
+      # attachment :content_type => "image/jpeg",
+      #   :body => File.read("#{Rails.root}/attachments/#{adjunto}")
+
+      # attachment "application/pdf" do |a|
+      #   a.body = File.read("#{Rails.root}/attachments/#{adjunto}")
+      # end
     end
 
 
