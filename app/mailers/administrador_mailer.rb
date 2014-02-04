@@ -21,7 +21,7 @@ class AdministradorMailer < ActionMailer::Base
 
     @mensaje = mensaje
 
-    part :content_type => "text/html", :body => render_message("enviar_correo_general.text.html.erb", :message => mensaje)
+    # part :content_type => "text/html", :body => render_message("enviar_correo_general.text.html.erb", :message => mensaje)
     #   html.body = render_message("enviar_correo_general.text.html.erb", :message => mensaje)
     # end
       
