@@ -18,14 +18,20 @@ class AdministradorMailer < ActionMailer::Base
   end
   
   def enviar_correo_general(para,asunto,mensaje,adjunto)
+
     @mensaje = mensaje
+
+    part "text/html" do |html|
+      html.body = render_message("enviar_correo_general.text.html.erb", :message => mensaje)
+    end
+      
     if adjunto
       # attachments["#{adjunto}"] = File.read("#{Rails.root}/attachments/#{adjunto}")
       # attachment :content_type => file.content_type, :body => File.read(file.full_path), :filename => file.filename
       # attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
       mail.attachments[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
     end
-    mail(:to => para, :subject => asunto, :body => mensaje, :content_type => "text/html")
+    mail(:to => para, :subject => asunto, :body => mensaje, :content_type => "multipart/mixed")
   end
   
 
