@@ -16,23 +16,40 @@ class AdministradorMailer < ActionMailer::Base
     @info = info
     mail(:to => correo, :subject => "Aviso General - #{titulo}")
   end
-  
+
+
   def enviar_correo_general(para,asunto,mensaje,adjunto)
-
-    @mensaje = mensaje
-
-    # part :content_type => "text/html", :body => render_message("enviar_correo_general.text.html.erb", :message => mensaje)
-    #   html.body = render_message("enviar_correo_general.text.html.erb", :message => mensaje)
-    # end
-      
+    @headers = {content_type => 'text/html'} 
+    @to = para
+    @subject = asunto
+    @body = mensaje
+    
+    # attach files  
     if adjunto
       # attachments["#{adjunto}"] = File.read("#{Rails.root}/attachments/#{adjunto}")
       # attachment :content_type => file.content_type, :body => File.read(file.full_path), :filename => file.filename
       # attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
-      mail.attachments[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
+      attachments[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
     end
-    mail(:to => para, :subject => asunto)
   end
+
+  
+  # def enviar_correo_general(para,asunto,mensaje,adjunto)
+
+  #   @mensaje = mensaje
+
+  #   # part :content_type => "text/html", :body => render_message("enviar_correo_general.text.html.erb", :message => mensaje)
+  #   #   html.body = render_message("enviar_correo_general.text.html.erb", :message => mensaje)
+  #   # end
+      
+  #   if adjunto
+  #     # attachments["#{adjunto}"] = File.read("#{Rails.root}/attachments/#{adjunto}")
+  #     # attachment :content_type => file.content_type, :body => File.read(file.full_path), :filename => file.filename
+  #     # attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
+  #     attachments[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
+  #   end
+  #   mail(:to => para, :subject => asunto)
+  # end
   
 
   # def enviar_correo_general(para,asunto,mensaje,adjunto)
