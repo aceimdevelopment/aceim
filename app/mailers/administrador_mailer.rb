@@ -21,13 +21,13 @@ class AdministradorMailer < ActionMailer::Base
     @mensaje = mensaje
     
 
-    part :content_type => "text/html", :body => mensaje
+    part(:content_type => "text/html", :body => mensaje)
 
+    attachment(:content_type => "application/pd", :body => File.read("#{Rails.root}/attachments/#{adjunto}")) if adjunto
 
-    if adjunto
-      attachment "application/pdf" do |a|
-      a.body = File.read("#{Rails.root}/attachments/#{adjunto}")
-    end
+    #   attachment "application/pdf" do |a|
+    #   a.body = File.read("#{Rails.root}/attachments/#{adjunto}")
+    # end
       # attachments["#{adjunto}"] = File.read("#{Rails.root}/attachments/#{adjunto}")
       # attachment :content_type => file.content_type, :body => File.read(file.full_path), :filename => file.filename
       # attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
