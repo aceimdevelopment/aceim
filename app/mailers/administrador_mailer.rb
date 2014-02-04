@@ -21,7 +21,7 @@ class AdministradorMailer < ActionMailer::Base
 
     @mensaje = mensaje
 
-    # part "text/html" do |html|
+    part :content_type => "text/html", :body => render_message("enviar_correo_general.text.html.erb", :message => mensaje)
     #   html.body = render_message("enviar_correo_general.text.html.erb", :message => mensaje)
     # end
       
@@ -31,7 +31,7 @@ class AdministradorMailer < ActionMailer::Base
       # attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
       mail.attachments[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
     end
-    mail(:to => para, :subject => asunto, :body => mensaje)
+    mail(:to => para, :subject => asunto)
   end
   
 
