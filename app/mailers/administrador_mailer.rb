@@ -25,7 +25,7 @@ class AdministradorMailer < ActionMailer::Base
       # attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
       mail.attachments[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
     end
-    mail(:to => para, :subject => asunto, :body => mensaje, :content_type => "html/plain")
+    mail(:to => para, :subject => asunto, :body => mensaje, :content_type => "text/html")
   end
   
 
