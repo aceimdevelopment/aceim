@@ -17,43 +17,44 @@ class AdministradorMailer < ActionMailer::Base
     mail(:to => correo, :subject => "Aviso General - #{titulo}")
   end
   
-  # def enviar_correo_general(para,asunto,mensaje,adjunto)
-  #   @mensaje = mensaje
-  #   if adjunto
-  #     # attachments["#{adjunto}"] = File.read("#{Rails.root}/attachments/#{adjunto}")
-  #     # attachment :content_type => file.content_type, :body => File.read(file.full_path), :filename => file.filename
-  #     attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
-  #   end
-  #   mail(:to => para, :subject => asunto, :body => mensaje)
-  # end
-  
-
   def enviar_correo_general(para,asunto,mensaje,adjunto)
     @mensaje = mensaje
-
-    mail(:subject => asunto,
-    :to => para,
-    :content_type => "multipart/mixed")
-
-    part "text/html" do |html|
-      html.body = render_message("enviar_correo_general.text.html.erb", :message => mensaje)
-    end
-
-    end
-
     if adjunto
-
+      # attachments["#{adjunto}"] = File.read("#{Rails.root}/attachments/#{adjunto}")
+      # attachment :content_type => file.content_type, :body => File.read(file.full_path), :filename => file.filename
+      # attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
       mail.attachments[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
-
-      # attachment :content_type => "image/jpeg",
-      #   :body => File.read("#{Rails.root}/attachments/#{adjunto}")
-
-      # attachment "application/pdf" do |a|
-      #   a.body = File.read("#{Rails.root}/attachments/#{adjunto}")
-      # end
     end
-
-
+    mail(:to => para, :subject => asunto, :body => mensaje, :content_type => "html/plain")
   end
+  
+
+  # def enviar_correo_general(para,asunto,mensaje,adjunto)
+  #   @mensaje = mensaje
+
+  #   mail(:subject => asunto,
+  #   :to => para,
+  #   :content_type => "multipart/mixed")
+
+  #   part "text/html" do |html|
+  #     html.body = render_message("enviar_correo_general.text.html.erb", :message => mensaje)
+  #   end
+
+  #   end
+
+  #   if adjunto
+
+  #     mail.attachments[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
+
+  #     # attachment :content_type => "image/jpeg",
+  #     #   :body => File.read("#{Rails.root}/attachments/#{adjunto}")
+
+  #     # attachment "application/pdf" do |a|
+  #     #   a.body = File.read("#{Rails.root}/attachments/#{adjunto}")
+  #     # end
+  #   end
+
+
+  # end
 
 end
