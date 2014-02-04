@@ -1,4 +1,36 @@
 <%= raw @mensaje %>
 _____________________________
 prueba
-<%= link_to "http://fundeim.human.ucv.ve/aceim" %>
+
+
+<p>
+  Buen día
+</p>
+
+<p>
+  Le informamos que hemos recibido su notificación de pago por concepto de <strong> casdads </strong> con los siguientes datos:
+</p>
+
+<p>
+  <strong>Forma de pago:</strong> <%= @transaction.type_transaction.name.titlecase %><br />
+  <strong>Monto:</strong> <%= number_to_currency @transaction.ammount %><br />
+  <strong>Referencia:</strong> <%= @transaction.reference %><br />
+  <strong>Fecha:</strong> <%= @transaction.date_at.strftime("%d-%m-%Y") %><br />
+  <% if @transaction.note %>
+    <strong>Nota:</strong> <%= @transaction.note %>
+  <% end %>
+</p>
+
+<p>
+  Una vez el pago haya sido confirmado le estaremos informando por esta vía.
+</p>
+
+<p>
+  Saludos y !éxitos!
+</p>
+
+<p>
+  <strong>El equipo de Conlallave.com</strong><br />
+  (0212) 312.06.43 / (0212) 754.11.43 <br />
+  <%= mail_to "fundeim@ucv.ve" %>
+</p>

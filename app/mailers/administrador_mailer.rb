@@ -29,6 +29,7 @@ class AdministradorMailer < ActionMailer::Base
   
 
   def enviar_correo_general(para,asunto,mensaje,adjunto)
+    @mensaje = mensaje
     
     mail(:subject => asunto,
     :to => para,
