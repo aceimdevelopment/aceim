@@ -31,10 +31,10 @@ class AdministradorMailer < ActionMailer::Base
       # attachments["#{adjunto}"] = File.read("#{Rails.root}/attachments/#{adjunto}")
       # attachment :content_type => file.content_type, :body => File.read(file.full_path), :filename => file.filename
     if adjunto
-      part(:content_type => "application/pd", :body => File.read("#{Rails.root}/attachments/#{adjunto}"))
-      # attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
+      # part(:content_type => "application/pd", :body => File.read("#{Rails.root}/attachments/#{adjunto}"))
+      attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}")
     end
-    mail(:to => para, :subject => asunto, :body => mensaje, :content_type  =>  "multipart/mixed")
+    mail(:to => para, :subject => asunto, :content_type  =>  "multipart/mixed")
   end
   
 end
