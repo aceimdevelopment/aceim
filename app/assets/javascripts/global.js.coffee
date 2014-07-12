@@ -1,3 +1,5 @@
+
+
 $ ->
   
     $("#horario_id").change ->
@@ -25,8 +27,7 @@ $ ->
 
     
 $ ->
-  $("ul.subnav").parent().append "<span></span>"
-  $("ul.topnav li span").click ->
+  $("ul.topnav ").click ->
     $(this).parent().find("ul.subnav").slideDown('fast').show()
     $(this).parent().hover ->
       $(this).parent().find("ul.subnav").slideUp "slow"
