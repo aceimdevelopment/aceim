@@ -75,6 +75,141 @@ class EstudianteNivelacionesController < ApplicationController
   end
 
 
+  def inscribir_paso1
+    @titulo_pagina = "Preinscripción - Admin"  
+    @subtitulo_pagina = "Actualización de Datos Personales"
+    @usuario = Usuario.where(:ci => params[:id]).limit(1).first
+    @idioma_id = params[:idioma]
+
+  end
+
+  def paso1_guardar
+    usr = params[:usuario]
+    if @usuario = Usuario.where(:ci => usr[:ci]).limit(1).first
+      @usuario.ultima_modificacion_sistema = Time.now
+      @usuario.nombres = usr[:nombres]
+      @usuario.apellidos = usr[:apellidos]
+      @usuario.correo = usr[:correo]
+      @usuario.telefono_habitacion = usr[:telefono_habitacion]
+      @usuario.telefono_movil = usr[:telefono_movil]
+      @usuario.direccion = usr[:direccion] 
+      if @usuario.contrasena == nil || @usuario.contrasena == "" || @usuario.contrasena.empty?
+        @usuario.contrasena = usr[:ci]
+        @usuario.contrasena_confirmation = usr[:ci]
+      else                                         
+        @usuario.contrasena_confirmation = @usuario.contrasena
+      end                                                     
+      
+      @usuario.tipo_sexo_id = usr[:tipo_sexo_id]
+      @usuario.fecha_nacimiento = usr[:fecha_nacimiento]
+      # session[:especial_usuario] = @usuario
+      
+      if @usuario.save 
+        info_bitacora "Paso1 (Actualización de Datos Personales) realizado con éxito."
+        flash[:mensaje] = "Paso1 (Actualización de Datos Personales) realizado con éxito."
+        redirect_to :action => "inscribir_paso2" , :id => "#{@usuario.ci}", :idioma_id => "#{params[:idioma_id]}"
+      else
+        @titulo_pagina = "Preinscripción - Admin"
+        @subtitulo_pagina = "Actualización de Datos Personales"
+        render :action => "inscribir_paso1"
+      end
+    else
+      flash[:mensaje] = "Error Usuario no encontrado #{usr[:ci]}."
+      render :action => "inscribir_paso1"
+    end
+  end
+
+
+  def inscribir_paso2
+    @convenios = TipoConvenio.all
+    @estudiante_curso = EstudianteCurso.new
+
+    @estudiante_curso.usuario_ci = params[:id]
+    idioma_id, cat_id = params[:idioma_id].split
+
+    @estudiante_curso.idioma_id = idioma_id
+    @estudiante_curso.tipo_categoria_id = cat_id
+
+    @niveles = Seccion.where(:idioma_id => idioma_id,
+      :tipo_categoria_id => cat_id,
+      :periodo_id => session[:parametros][:periodo_actual]).collect{|x| x.curso}.uniq.sort_by{|y| y.grado}.collect{|w| w.tipo_nivel}
+
+  end
+
+  def paso2_guardar
+    usuario_ci = params[:estudiante_curso][:usuario_ci]
+    idioma_id = params[:estudiante_curso][:idioma_id]
+    tipo_categoria_id = params[:estudiante_curso][:tipo_categoria_id]
+    # idioma_id, tipo_categoria_id = params[:seleccion][:idioma_id].split","
+    # tipo_convenio_id = params[:seleccion][:tipo_convenio_id]
+    @tipo_curso = TipoCurso.where(:idioma_id => idioma_id, :tipo_categoria_id => tipo_categoria_id).limit(1).first
+
+    # Busco o creo Usuario 
+    @usuario = Usuario.find_or_create_by_ci(usuario_ci)
+    @usuario.save! :validate => false
+
+    # Busco o creo estudiente
+    @estudiante = Estudiante.find_or_create_by_usuario_ci(usuario_ci)
+    @estudiante.save! :validate => false
+
+    # Busco o creo EstudianteCurso
+
+    @estudiante_curso = EstudianteCurso.where(params[:estudiante_curso]).limit(1).first
+    @estudiante_curso = EstudianteCurso.new(params[:estudiante_curso]) unless @estudiante_curso
+
+    if @estudiante_curso.save
+      flash[:mensaje] = "Paso2 (Selección de Convenio y recibo de pago) realizado con éxito."
+      redirect_to :action => "inscribir_paso3", :recibo => params[:recibo], :id => @estudiante_curso.id, :tipo_nivel => params[:nivel][:id]
+    else
+      render :action => "inscribir_paso2"
+    end
+
+  end
+
+  def inscribir_paso3
+
+
+    @titulo_pagina = "Preinscripción - Admin - Nivelación"
+    @subtitulo_pagina = "Selección de Sección"
+    recibo = params[:recibo]
+    tipo_nivel = TipoNivel.find params[:tipo_nivel]
+    estudiante_curso = EstudianteCurso.find (params[:id])
+    @secciones = Seccion.where(
+      :periodo_id => session[:parametros][:periodo_actual],
+      :idioma_id => estudiante_curso.idioma_id,
+      :tipo_categoria_id => estudiante_curso.tipo_categoria_id,
+      :tipo_nivel_id => tipo_nivel.id
+      ).sort_by{|s| s.cupo}
+
+    @historial = HistorialAcademico.new
+    @historial.usuario_ci = estudiante_curso.usuario_ci
+    @historial.tipo_categoria_id = estudiante_curso.tipo_categoria_id
+    @historial.idioma_id = estudiante_curso.idioma_id
+    @historial.periodo_id = session[:parametros][:periodo_actual]
+    @historial.tipo_convenio_id = estudiante_curso.tipo_convenio_id
+    @historial.tipo_nivel_id = tipo_nivel.id
+    @historial.numero_deposito = recibo
+
+
+  end
+
+  def paso3_guardar
+    @historial = HistorialAcademico.new(params[:historial_academico])
+
+    @historial.tipo_estado_calificacion_id = "SC"
+    @historial.tipo_estado_inscripcion_id = "PRE"
+    @historial.cuenta_bancaria_id = @historial.cuenta_nueva
+    @historial.nota_final = -2
+    
+    if @historial.save
+      flash[:mensaje] = "Estudiante Inscrito Satisfactoriamente."
+      redirect_to :action => "index"
+    else
+      render :action => "inscribir_paso3"
+    end 
+
+  end
+
 
   def eliminar
     @estudiante_nivelacion = EstudianteNivelacion.find(params[:id])
