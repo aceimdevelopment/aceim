@@ -1,51 +1,61 @@
-Filtrar Contenido:
-=text_field_tag "filtro_particular"
+#idiomas
+  %ul
+    -@idiomas.each do |idioma|
+      %li
+        =link_to idioma.descripcion, "##{idioma.id}"
 
-%br/
+  -@idiomas.each do |idioma|
+    %div{:id => idioma.id}
+      - tipo_curso = idioma.tipo_curso.where(:tipo_categoria_id => 'AD').limit(1).first
+      - @estudiante_nivelaciones = tipo_curso.estudiantes_nivelacion.where(:periodo_id => session[:parametros][:periodo_actual]).sort_by{|x| x.usuario.descripcion}
+      = "Filtrar Contenido #{idioma.descripcion}:"
+      =text_field_tag "filtro_particular"
+
+      %table.tablesorter.tablefilter
+        %thead
+          %tr             
+            %th Nro
+            %th Estudiante
+            %th Datos de Contacto
+            %th Idioma    
+            %th Estado
+            %th Observaciones
+            %th Opciones
+        %tbody
+          - @estudiante_nivelaciones.each_with_index do |en,i| 
+            %tr
+              %td #{i+1}
+              %td=link_to en.usuario.descripcion, :action => "planilla_nivelacion", :id => en.id
+              %td #{en.usuario.datos_contacto}
+              %td #{en.tipo_curso.descripcion}
+              %td 
+                #{en.estado_confirmado} 
+                %br/
+                #{en.estado}
+              %td #{en.observaciones}
+              -if session[:administrador].tipo_rol_id <= 3
+                %td
+                  =link_to 'Eliminar', {:action => "eliminar", :id => en.id}, :confirm => 'Está seguro de eliminar al estudiante?'
+                  %br/
+                  %br/
+                  -if en.confirmado == 0
+                    =link_to 'Confirmar', {:action => "confirmar", :id => en.id}, :confirm => 'Está seguro de confirmar al estudiante?'
+                    %br/
+                    %br/
+
+                  =link_to 'Planilla', :action => "planilla_nivelacion", :id => en.id
+                  -if en.estado != "Inscrito"
+                    %br/
+                    %br/
+                    =link_to 'Inscribir', {:action => "inscribir_paso1", :id => en.usuario_ci, :idioma => en.tipo_curso.id}
+
+
+
 = link_to "Listado de los confirmados", :action => "listado_confirmados", :periodo_id => @periodo_id
 = link_to "Listado de los confirmados (EXCEL)", :action => "listado_confirmados_excel", :periodo_id => @periodo_id
 %br/
 %br/
 = button_to 'Agregar estudiante', :action => "new"
-%table.tablesorter.tablefilter
-  %thead
-    %tr             
-      %th Nro
-      %th Estudiante
-      %th Datos de Contacto
-      %th Idioma    
-      %th Estado
-      %th Observaciones
-      %th Opciones
-  %tbody
-    - @estudiante_nivelaciones.each_with_index do |en,i| 
-      %tr
-        %td #{i+1}
-        %td=link_to en.usuario.descripcion, :action => "planilla_nivelacion", :id => en.id
-        %td #{en.usuario.datos_contacto}
-        %td #{en.tipo_curso.descripcion}
-        %td 
-          #{en.estado_confirmado} 
-          %br/
-          #{en.estado}
-        %td #{en.observaciones}
-        -if session[:administrador].tipo_rol_id <= 3
-          %td
-            =link_to 'Eliminar', {:action => "eliminar", :id => en.id}, :confirm => 'Está seguro de eliminar al estudiante?'
-            %br/
-            %br/
-            -if en.confirmado == 0
-              =link_to 'Confirmar', {:action => "confirmar", :id => en.id}, :confirm => 'Está seguro de confirmar al estudiante?'
-              %br/
-              %br/
 
-            =link_to 'Planilla', :action => "planilla_nivelacion", :id => en.id
-            -if en.estado != "Inscrito"
-              %br/
-              %br/
-              =link_to 'Inscribir', {:action => "inscribir_paso1", :id => en.usuario_ci, :idioma => en.tipo_curso.id}
-= link_to "Listado de los confirmados", :action => "listado_confirmados", :periodo_id => @periodo_id
-= link_to "Listado de los confirmados (EXCEL)", :action => "listado_confirmados_excel", :periodo_id => @periodo_id
-%br/
-%br/
-= button_to 'Agregar estudiante', :action => "new"
+:javascript
+  $("#idiomas").tabs();
