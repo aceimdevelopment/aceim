@@ -4,10 +4,6 @@
 
 $ ->       
   if aceim.es_accion("ver_secciones")
-    $('#filtro_particular').keyup ->
-      valor = $(this).val()
-      tabla = $('table.tablefilter')
-      $.uiTableFilter(tabla, valor) 
 
     $("#tipo_curso_id").change ->
       valor = $(this).val()

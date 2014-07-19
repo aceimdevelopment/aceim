@@ -1,4 +1,8 @@
-
+$ ->
+  $('#filtro_particular').keyup ->
+    valor = $(this).val()
+    tabla = $('table.tablefilter')
+    $.uiTableFilter(tabla, valor) 
 
 $ ->
   
