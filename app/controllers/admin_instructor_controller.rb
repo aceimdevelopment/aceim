@@ -3,6 +3,11 @@ class AdminInstructorController < ApplicationController
     @periodo_actual = ParametroGeneral.periodo_actual 
     @titulo_pagina = "Listado de Instructores"  
     @instructores = Instructor.all.sort_by{|x| x.usuario.nombre_completo}
+
+    @instructor_con_cursos_periodo_actual = Instructor.all.delete_if{|instructor| instructor.secciones_que_dicta(@periodo_actual.id).count < 1}
+    @instructor_sin_cursos_periodo_actual = Instructor.all.delete_if{|instructor| instructor.secciones_que_dicta(@periodo_actual.id).count > 0}
+    @instructores_tabs = ["actual", "otros"]
+
   end
 
   def nuevo

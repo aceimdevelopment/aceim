@@ -105,8 +105,8 @@ class Instructor < ActiveRecord::Base
       false
   end
   
-  def secciones_que_dicta(periodo)
-    Seccion.where(:instructor_ci => usuario_ci, :periodo_id => periodo,:esta_abierta => true)
+  def secciones_que_dicta(periodo_id)
+    Seccion.where(:instructor_ci => usuario_ci, :periodo_id => periodo_id,:esta_abierta => true)
   end
   
   def horario_secciones_que_dicta(periodo)
