@@ -206,6 +206,8 @@ class EstudianteNivelacionesController < ApplicationController
     
     if @historial.save
       flash[:mensaje] = "Estudiante Inscrito Satisfactoriamente."
+      info_bitacora "Estudiante de nivelación inscrito #{@historial.usuario_ci}"
+      EstudianteMailer.nivelacion(@historial.usuario,@historial).deliver
       redirect_to :action => "index"
     else
       render :action => "inscribir_paso3"
