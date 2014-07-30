@@ -200,7 +200,7 @@ class EstudianteNivelacionesController < ApplicationController
     @historial = HistorialAcademico.new(params[:historial_academico])
 
     @historial.tipo_estado_calificacion_id = "SC"
-    @historial.tipo_estado_inscripcion_id = "PRE"
+    @historial.tipo_estado_inscripcion_id = "INS"
     @historial.cuenta_bancaria_id = @historial.cuenta_nueva
     @historial.nota_final = -2
     

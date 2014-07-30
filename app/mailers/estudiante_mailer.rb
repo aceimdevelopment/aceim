@@ -1,7 +1,6 @@
 class EstudianteMailer < ActionMailer::Base
   # default :from => "fundeim@ucv.ve"      
-  default :from => "fundeimucv@gmail.com", :bcc => 'aceim.development@gmail.com'
-
+  default :from => "fundeimucv@gmail.com"
   def bienvenida(usuario)
     @nombre = usuario.nombre_completo     
     @clave = usuario.contrasena
@@ -38,7 +37,7 @@ class EstudianteMailer < ActionMailer::Base
     @ho=historial.seccion.horario
     @se=historial.seccion_numero
     @au=historial.seccion.aula
-    mail(:to => usuario.correo, :subject => "FUNDEIM - Inscrito por nivelación", :bcc => 'fundeimucv@gmail.com')
+    mail(:to => usuario.correo, :subject => "FUNDEIM - Inscrito por nivelación", :bcc => 'fundeimucv@gmail.com, aceim.development@gmail.com')
   end
 
 end
