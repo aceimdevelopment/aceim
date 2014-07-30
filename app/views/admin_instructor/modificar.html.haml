@@ -14,6 +14,9 @@
     %legend Datos Personales
     %p
       %label
+        =link_to "Reinicializar Contraseña", url_for(:controller => "usuario", :action => "resetear_contrasena", :ci => @usuario.ci), :confirm => "¿Confirma reinicio de la Contraseña para #{@usuario.descripcion}?"
+    %p
+      %label
         Cédula de Identidad
       =@usuario.ci
       -if session[:administrador].tipo_rol_id <= 3
