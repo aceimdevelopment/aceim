@@ -5,15 +5,14 @@ $ ->
     $.uiTableFilter(tabla, valor) 
 
 $ ->
-  
-    $("#horario_id").change ->
-      valor = $(this).val()    
-      unless valor is ""
-        $.ajax
-          url: "/aceim/admin_seccion/elegir_ubicacion_segun_horario?identificador=#{valor}",
-          success: (datos) ->
-            $('#ubicacion').html(datos)  
-            return
+  $("#horario_id").change ->
+    valor = $(this).val()    
+    unless valor is ""
+      $.ajax
+        url: "/aceim/admin_seccion/elegir_ubicacion_segun_horario?identificador=#{valor}",
+        success: (datos) ->
+          $('#ubicacion').html(datos)  
+          return
 
 $ ->
   $('.tablesorter').tablesorter widgets:['zebra']

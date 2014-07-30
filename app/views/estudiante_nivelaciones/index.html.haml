@@ -1,5 +1,6 @@
 #idiomas
   %ul
+    %li= text_field_tag "filtro_particular", nil, :placeholder => "Filtrar contenido..."
     -@idiomas.each do |idioma|
       %li
         =link_to idioma.descripcion, "##{idioma.id}"
@@ -8,10 +9,8 @@
     %div{:id => idioma.id}
       - tipo_curso = idioma.tipo_curso.where(:tipo_categoria_id => 'AD').limit(1).first
       - @estudiante_nivelaciones = tipo_curso.estudiantes_nivelacion.where(:periodo_id => session[:parametros][:periodo_actual]).sort_by{|x| x.usuario.descripcion}
-      = "Filtrar Contenido #{idioma.descripcion}:"
-      =text_field_tag "filtro_particular"
 
-      %table.tablesorter.tablefilter
+      %table.tablesorter.tablefilter{:id => "tabla_#{idioma.id}"}
         %thead
           %tr             
             %th Nro
