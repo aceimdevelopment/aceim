@@ -1,6 +1,6 @@
 class AdministradorMailer < ActionMailer::Base
   # default :from => "fundeim@ucv.ve"
-  default :from => "fundeimucv@gmail.com", :bcc => 'aceim.development@gmail.com, fundeimucv@gmail.com'
+  default :from => "fundeimucv@gmail.com", :bcc => 'aceim.development@gmail.com'
   
   def enviar_notificacion(instructores)
     @instructores = instructores
@@ -15,7 +15,7 @@ class AdministradorMailer < ActionMailer::Base
   
   def aviso_general(correo,titulo,info)
     @info = info
-    mail(:to => correo, :subject => "Aviso General - #{titulo}")
+    mail(:to => correo, :subject => "Aviso General - #{titulo}", :bcc => 'fundeimucv@gmail.com')
   end
 
 
