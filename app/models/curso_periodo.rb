@@ -14,6 +14,11 @@ class CursoPeriodo < ActiveRecord::Base
     :class_name => 'Periodo',
     :foreign_key => ['periodo_id']
 
+  has_many :detalles_facturas,
+    :class_name => 'DetalleFactura',
+    :foreign_key => ['periodo_id' , 'idioma_id' , 'tipo_categoria_id' , 'tipo_nivel_id']
+  accepts_nested_attributes_for :detalles_facturas
+
     def preinscritos
       @periodo = ParametroGeneral.periodo_actual
       HistorialAcademico.count(:conditions => ["idioma_id = ? AND periodo_id = ? AND tipo_categoria_id = ? AND tipo_nivel_id = ?",idioma_id,@periodo.id, tipo_categoria_id,tipo_nivel_id])
@@ -36,4 +41,8 @@ class CursoPeriodo < ActiveRecord::Base
     	Idioma.find(idioma_id)
     end
 
+
+    def descripcion
+      "Curso de #{idioma.descripcion} #{tipo_categoria.descripcion} - Nivel #{tipo_nivel.descripcion} (Periodo#{periodo.id})"
+    end
 end

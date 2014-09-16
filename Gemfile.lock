@@ -55,6 +55,11 @@ GEM
     execjs (1.2.4)
       multi_json (~> 1.0)
     haml (3.1.2)
+    haml-rails (0.3.4)
+      actionpack (~> 3.0)
+      activesupport (~> 3.0)
+      haml (~> 3.0)
+      railties (~> 3.0)
     hike (1.2.1)
     hoe (2.12.2)
       rake (~> 0.8)
@@ -164,6 +169,7 @@ DEPENDENCIES
   composite_primary_keys
   elrte (~> 0.0.4)
   haml
+  haml-rails (= 0.3.4)
   jquery-rails
   json
   mysql2

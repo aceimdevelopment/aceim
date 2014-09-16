@@ -17,7 +17,7 @@ group :assets do
   gem 'coffee-rails', "~> 3.1.0"
   gem 'uglifier'
 end
-
+gem 'haml-rails', '= 0.3.4' # En periodo de prueba
 gem 'jquery-rails' 
 gem 'haml'
 gem 'composite_primary_keys'
