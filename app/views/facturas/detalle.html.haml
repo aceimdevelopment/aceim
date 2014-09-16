@@ -1,0 +1,64 @@
+.well
+  %table
+    %tr
+      %td.raw7
+        %p Universidad Central de Venezuela
+        %p Facultad de Humanidades y Educación
+        %p Escuela de Idiomas Modernos
+        %p Fundación de la Escuela de Idiomas Modernos
+      %td.raw3
+        .well.factura
+          %table
+            %tr
+              %th Código Factura
+              %th No. Control
+            %tr
+              %td= @factura.codigo
+              %td= @factura.numero_control
+        .well.factura
+          %h3
+            Fecha:
+            = @factura.fecha
+  .cliente.well.factura
+    -@cliente = @factura.cliente
+    %h3 
+      Nombre o razon_social:
+      = @cliente.razon_social
+      Rif
+      = @cliente.rif
+    %h3 
+      Domicilio Fiscal:
+      = @cliente.domicilio
+    %h3 
+      Teléfono Fijo:
+      = @cliente.telefono_fijo
+      Teléfono movil:
+      = @cliente.telefono_movil
+      Correo electrónico:
+      = @cliente.correo_electronico
+  - @detalles_factura = @factura.detalles_factura
+
+  .well.factura
+    %table.likert    
+      %thead
+        %tr
+          %th{:style=> "width: 5%;"} N°
+          %th{:style=> "width: 70%;"} Descripción del Bien o Servicio
+          %th Unidad
+          %th Catidad
+          %th Costo Unitario
+          %th{:style=> "width: 15%;"} Total
+      %tbody
+        - @detalles_factura.each_with_index do |detalle, i|
+        %td= i
+        %td= detalle.curso_periodo.descripcion
+        %td Curso
+        %td detalle.cantidad
+        %td{:style=> "text-align: right;"} detalle.costo_unitario
+        %td{:style=> "text-align: right;"} detalle.total
+
+
+
+= link_to 'Editar', {:action => 'editar', :id => @factura.id}
+|
+= link_to 'Regresar', :back

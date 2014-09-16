@@ -1,0 +1,29 @@
+
+
+%table.tablesorter.likert
+  %thead
+    %tr
+      %th Rif
+      %th Razon social
+      %th Domicilio
+      %th Telefono fijo
+      %th Telefono movil
+      %th Correo electronico
+      %th Opciones
+
+
+  - @clientes.each do |cliente|
+    %tbody
+      %tr
+        %td= cliente.rif
+        %td= cliente.razon_social
+        %td= cliente.domicilio
+        %td= cliente.telefono_fijo
+        %td= cliente.telefono_movil
+        %td= cliente.correo_electronico
+        %td= link_to 'Editar', {:action => 'editar', :id => cliente.id}
+        / %td= link_to 'Destroy', cliente, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= button_to 'Registrar Cliente', {:action => 'nuevo'}, :class => 'ui-button ui-widget ui-state-default ui-corner-all'

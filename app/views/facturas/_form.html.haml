@@ -1,0 +1,84 @@
+= form_for (@factura,:url=>{:action => @accion}) do |f|
+  .well
+    %table
+      %tr
+        %td.raw7
+          %p Universidad Central de Venezuela
+          %p Facultad de Humanidades y Educación
+          %p Escuela de Idiomas Modernos
+          %p Fundación de la Escuela de Idiomas Modernos
+        %td.raw3
+          .well.factura
+            %table
+              %tr
+                %th Código Factura
+                %th No. Control
+              %tr
+                %td= f.text_field :codigo, :autofocus => true, :placeholder => "código...", :required => true
+                %td= f.text_field :numero_control, :placeholder => "# control...", :required => true
+          .well.factura
+            %h3
+              Fecha:
+              = f.date_select :fecha
+    .cliente.well.factura
+      %h3 
+        Cliente:
+        = f.collection_select :cliente_rif, Cliente.all, :rif, :descripcion, {:prompt => true}, :required => true, :onchange => "completar_cliente();"
+        ó
+        =link_to_modal "Registre un Nuevo Cliente",{:controller => 'clientes',:action => 'nuevo',:title => 'Registrar Cliente',:width => 500}
+        =#link_to "Agregar Cliente", "#", :onclick => "registrar_cliente();"
+      %h3 
+        Nombre o razon_social:
+        = text_field_tag 'cliente_razon_social', (@factura.cliente.razon_social if @factura.cliente), { :style => "width: 58%;"}
+        Rif
+        = text_field_tag 'cliente_rif', (@factura.cliente.rif if @factura.cliente), { :style => "width: 20%;"}
+      %h3 
+        Domicilio Fiscal:
+        = text_field_tag 'cliente_domicilio', (@factura.cliente.domicilio if @factura.cliente), { :style => "width: 87%;"}
+      %h3 
+        Teléfono Fijo:
+        = text_field_tag 'cliente_telefono_fijo', (@factura.cliente.telefono_fijo if @factura.cliente), {:readonly => true}
+        Teléfono movil:
+        = text_field_tag 'cliente_telefono_movil', (@factura.cliente.telefono_movil if @factura.cliente), {:readonly => true}
+        Correo electrónico:
+        = text_field_tag 'cliente_correo', (@factura.cliente.correo_electronico if @factura.cliente), {:readonly => true, :style => "width: 29%;"}
+
+  .actions
+    = f.submit 'Guardar Datos y agregar Cursos'
+
+  .resultado
+  / <div class="control-group">
+  /   <%#= f.label :municipio_id, :class => 'control-label' %>
+  /   <div class="controls">
+  /     <%#= f.grouped_collection_select :municipio_id, Estado.all, :municipios, :nombre, :id, :nombre, {:prompt => "Tema"}, {:required => true, :class => 'selects2', :style => 'width: 600px;'} %>
+      
+  /   </div>
+  / </div>
+
+:javascript
+  function completar_cliente(){
+    var rif = $("#factura_cliente_rif :selected").val();
+    jQuery.getJSON(
+       "/aceim/clientes/ver/"+rif,
+      function(data){
+        $('#cliente_razon_social').val(data['razon_social'])
+        $('#cliente_domicilio').val(data['domicilio'])
+        $('#cliente_rif').val(data['rif'])
+        $('#cliente_telefono_fijo').val(data['telefono_fijo'])
+        $('#cliente_telefono_movil').val(data['telefono_movil'])
+        $('#cliente_correo').val(data['correo_electronico'])
+
+        /*
+        var items = [];
+        $.each( data, function( key, val ) {
+          items.push( "<li id='" + key + "'>" + val + "</li>" );
+        });
+       
+        $( "<ul/>", {
+          "class": "my-new-list",
+          html: items.join( "" )
+        }).appendTo( "body" );
+        */
+
+        });
+  }
