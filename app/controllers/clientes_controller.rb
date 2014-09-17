@@ -31,6 +31,7 @@ class ClientesController < ApplicationController
     @accion = "actualizar"
     @titulo_pagina = "Edicción de Cliente"
     @cliente = Cliente.find(params[:id])
+    render :layout => false 
   end
 
 
@@ -54,29 +55,20 @@ class ClientesController < ApplicationController
     end
   end
 
-  def registrar_jquery
-    cliente = {:rif => "V-146237812-1", :razon_social => "Jackeline Contreras ", :domicilio => "Caracas"}
-    @cliente = Cliente.new(cliente)
-    if @cliente.save
-      flash[:mensaje] = 'Cliente registrado'
-    else
-      flash[:mensaje] = "Cliente no registrado"
-      return
-    end
-  end
-
   def actualizar
     @cliente = Cliente.find(params[:id])
 
     respond_to do |format|
       if @cliente.update_attributes(params[:cliente])
         flash[:mensaje] = 'Cliente actualizado'
-        format.html { redirect_to :action => 'index'}
+        session[:cliente_id] = @cliente.id
+        format.html { redirect_to :back}
         format.json { head :ok }
       else
         @titulo_pagina = "Edicción de Cliente"
         @accion = "actualizar"
-        format.html { render :action => "editar" }
+        flash[:mensaje] = "#{@cliente.errors.count} error(es) impiden que el cliente sea actualizado: #{@cliente.errors.full_messages.join(". ")}."
+        format.html { redirect_to :back}
         format.json { render :json => @cliente.errors, :status => :unprocessable_entity }
       end
     end

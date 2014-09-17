@@ -16,6 +16,9 @@ footer, header, nav, section, video, object, output {
 	display: block;
 }
 */
+.boton_commit{border-color: lightgreen !important;}
+
+.small-button {font-size: .8em !important;}
 
 .raw7{width: 70%;}
 

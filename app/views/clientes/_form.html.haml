@@ -33,4 +33,5 @@
       = f.label :correo_electronico
       = f.text_field :correo_electronico
     .actions
-      = f.submit 'Registrar', :class => 'ui-button ui-widget ui-state-default ui-corner-all'
+
+      = f.submit @accion.humanize, :class => 'ui-button ui-widget ui-state-default ui-corner-all'

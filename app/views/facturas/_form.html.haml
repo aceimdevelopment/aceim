@@ -21,32 +21,35 @@
               Fecha:
               = f.date_select :fecha
     .cliente.well.factura
-      %h3 
-        Cliente:
-        = f.collection_select :cliente_rif, Cliente.all, :rif, :descripcion, {:prompt => true}, :required => true, :onchange => "completar_cliente();"
+      %p 
+        %b{:style => "font-size: 1.17em;"} 
+          Cliente:
+          = f.collection_select :cliente_rif, Cliente.all, :rif, :descripcion, {:prompt => true}, :required => true, :onchange => "completar_cliente();"
+        = button_to_modal_v2 "Editar Cliente",{:controller => 'clientes',:action => 'editar', :title => 'Editar Cliente',:width => 500}, {:class => 'ui-button ui-widget small-button ui-state-default ui-corner-all', :style => "border-color:lightseagreen;display:none;", :id => 'editar_cliente'}
+ 
         ó
-        =link_to_modal "Registre un Nuevo Cliente",{:controller => 'clientes',:action => 'nuevo',:title => 'Registrar Cliente',:width => 500}
+        =button_to_modal_v2 "Registre un Nuevo Cliente",{:controller => 'clientes',:action => 'nuevo',:title => 'Registrar Cliente',:width => 500}, :class => 'ui-button ui-widget small-button ui-state-default ui-corner-all'
         =#link_to "Agregar Cliente", "#", :onclick => "registrar_cliente();"
       %h3 
         Nombre o razon_social:
-        = text_field_tag 'cliente_razon_social', (@factura.cliente.razon_social if @factura.cliente), { :style => "width: 50%;"}
+        = text_field_tag 'cliente_razon_social', (@factura.cliente.razon_social if @factura.cliente), { :style => "width: 50%;", :disabled => true}
         Rif
-        = text_field_tag 'cliente_rif', (@factura.cliente.rif if @factura.cliente), { :style => "width: 23%;"}
+        = text_field_tag 'cliente_rif', (@factura.cliente.rif if @factura.cliente), { :style => "width: 23%;", :disabled => true}
       %h3 
         Domicilio Fiscal:
-        = text_field_tag 'cliente_domicilio', (@factura.cliente.domicilio if @factura.cliente), { :style => "width: 83%;"}
+        = text_field_tag 'cliente_domicilio', (@factura.cliente.domicilio if @factura.cliente), { :style => "width: 83%;", :disabled => true}
       %h3 
         Teléfono Fijo:
-        = text_field_tag 'cliente_telefono_fijo', (@factura.cliente.telefono_fijo if @factura.cliente), {:readonly => true}
+        = text_field_tag 'cliente_telefono_fijo', (@factura.cliente.telefono_fijo if @factura.cliente), {:disabled => true}
         Teléfono movil:
-        = text_field_tag 'cliente_telefono_movil', (@factura.cliente.telefono_movil if @factura.cliente), {:readonly => true}
+        = text_field_tag 'cliente_telefono_movil', (@factura.cliente.telefono_movil if @factura.cliente), {:disabled => true}
         Correo electrónico:
-        = text_field_tag 'cliente_correo', (@factura.cliente.correo_electronico if @factura.cliente), {:readonly => true, :style => "width: 20%;"}
+        = text_field_tag 'cliente_correo', (@factura.cliente.correo_electronico if @factura.cliente), {:disabled => true, :style => "width: 20%;"}
 
-  .actions
-    = f.submit 'Guardar datos y agregar cursos'
+    .actions
+      = f.submit 'Guardar datos y agregar cursos', :class => 'boton_commit ui-button ui-widget ui-state-default ui-corner-all'
 
-  .resultado
+
   / <div class="control-group">
   /   <%#= f.label :municipio_id, :class => 'control-label' %>
   /   <div class="controls">
@@ -58,27 +61,33 @@
 :javascript
   function completar_cliente(){
     var rif = $("#factura_cliente_rif :selected").val();
-    jQuery.getJSON(
-       "/aceim/clientes/ver/"+rif,
-      function(data){
-        $('#cliente_razon_social').val(data['razon_social'])
-        $('#cliente_domicilio').val(data['domicilio'])
-        $('#cliente_rif').val(data['rif'])
-        $('#cliente_telefono_fijo').val(data['telefono_fijo'])
-        $('#cliente_telefono_movil').val(data['telefono_movil'])
-        $('#cliente_correo').val(data['correo_electronico'])
+    if (rif !=''){
+      jQuery.getJSON(
+         "/aceim/clientes/ver/"+rif,
+        function(data){
+          $('#cliente_razon_social').val(data['razon_social'])
+          $('#cliente_domicilio').val(data['domicilio'])
+          $('#cliente_rif').val(data['rif'])
+          $('#cliente_telefono_fijo').val(data['telefono_fijo'])
+          $('#cliente_telefono_movil').val(data['telefono_movil'])
+          $('#cliente_correo').val(data['correo_electronico'])
 
-        /*
-        var items = [];
-        $.each( data, function( key, val ) {
-          items.push( "<li id='" + key + "'>" + val + "</li>" );
-        });
-       
-        $( "<ul/>", {
-          "class": "my-new-list",
-          html: items.join( "" )
-        }).appendTo( "body" );
-        */
+          /*
+          var items = [];
+          $.each( data, function( key, val ) {
+            items.push( "<li id='" + key + "'>" + val + "</li>" );
+          });
+         
+          $( "<ul/>", {
+            "class": "my-new-list",
+            html: items.join( "" )
+          }).appendTo( "body" );
+          */
 
-        });
+      });
+
+      var onclick = "aceim.modal_remota('/aceim/clientes/editar/"+rif+"','Modificar Cliente','500');"
+      $('#editar_cliente').fadeIn("slow");
+      $('#editar_cliente').attr('onclick', onclick);
+    }else {$('#editar_cliente').fadeOut("slow");}
   }
