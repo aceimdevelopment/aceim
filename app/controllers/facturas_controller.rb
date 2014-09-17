@@ -22,7 +22,7 @@ class FacturasController < ApplicationController
 
   def nueva
     @factura = Factura.new
-    @cliente = session[:cliente_id] ? Cliente.find(session[:cliente_id]) : Cliente.new 
+    @cliente = session[:cliente_id].blank? ? Cliente.new : Cliente.find(session[:cliente_id]) 
     @factura.cliente = @cliente 
     @accion = "registrar"
     @titulo_pagina = "Nueva Factura"
