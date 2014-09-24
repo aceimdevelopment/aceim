@@ -13,4 +13,6 @@ class DetalleFactura < ActiveRecord::Base
 		:foreign_key => ['periodo_id' , 'idioma_id' , 'tipo_categoria_id' , 'tipo_nivel_id']
 
 	validates_presence_of :factura_codigo, :periodo_id , :idioma_id , :tipo_categoria_id , :tipo_nivel_id
+
+	validates :factura_codigo, :uniqueness => {:scope => ['periodo_id' , 'idioma_id' , 'tipo_categoria_id' , 'tipo_nivel_id']}
 end

@@ -18,14 +18,17 @@ footer, header, nav, section, video, object, output {
 */
 .boton_commit{border-color: lightgreen !important;}
 
-.small-button {font-size: .8em !important;}
-
+.small{font-size: .8em !important;}
+.raw8{width: 80%;}
 .raw7{width: 70%;}
-
-.raw3{width: 30%}
-.raw1{width: 10%}
-.raw9{width: 90%}
-.raw10{width: 99%}
+.raw6{width: 60%;}
+.raw5{width: 50%;}
+.raw4{width: 40%;}
+.raw3{width: 30%;}
+.raw2{width: 20%;}
+.raw1{width: 10%;}
+.raw9{width: 90%;}
+.raw10{width: 99%;}
 
 .well {
 background-color: #f5f5f5;
@@ -93,7 +96,6 @@ font-family:inherit;}
 	min-height:200px;
 	background: #e6e6e6;
 	border-top: 1px solid #bbb;
-	padding-top: 20px;
 	padding-bottom:20px;
 	border-bottom: 1px solid #bbb;
 	-webkit-box-shadow:rgba(0,0,0,.2) 0px 0px 5px;

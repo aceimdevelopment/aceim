@@ -46,7 +46,7 @@ module ApplicationHelper
       :params => nil
     }                   
     datos = default.merge datos
-    raw button_to_function nombre, "aceim.modal_remota('#{url_for(:controller=>datos[:controller],:action=>datos[:action], :di => datos[:id], :parametros => datos[:params])}','#{datos[:title]}','#{datos[:width]}')", opciones_html
+    raw button_to_function nombre, "aceim.modal_remota('#{url_for(:controller=>datos[:controller],:action=>datos[:action], :id => datos[:id], :parametros => datos[:params])}','#{datos[:title]}','#{datos[:width]}')", opciones_html
   end
   
   def codigo_barra(texto)

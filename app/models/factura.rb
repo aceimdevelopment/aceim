@@ -6,10 +6,10 @@ class Factura < ActiveRecord::Base
 		:class_name => 'Cliente',
 		:foreign_key => 'cliente_rif'
 
-	has_many :detalles_factura,
+	has_many :detalle_facturas,
 		:class_name => 'DetalleFactura',
 		:foreign_key => 'factura_codigo'
-	accepts_nested_attributes_for :detalles_factura
+	accepts_nested_attributes_for :detalle_facturas
 
 	validates_presence_of :cliente_rif
 	validates_presence_of :codigo
@@ -19,7 +19,7 @@ class Factura < ActiveRecord::Base
 	
 def monto_total
 	total = 0
-	detalles_factura.each do |detalle|
+	detalle_facturas.each do |detalle|
 		total += detalle.total
 	end
 	return total

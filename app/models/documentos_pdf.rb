@@ -330,6 +330,101 @@ class DocumentosPDF
 
   end
 
+
+
+
+  def self.factura(factura)
+    pdf = PDF::Writer.new(:paper => "letter")
+
+    pdf.text "\n\n\n\n\n\n", :font_size => 12
+
+
+    # pdf.text to_utf16("<b>Datos de la Preinscripción:</b>"), :font_size => 12
+    tabla = PDF::SimpleTable.new 
+    tabla.font_size = 9
+    tabla.show_lines    = 1
+    tabla.show_headings = false
+    tabla.shade_rows = :none
+    tabla.column_order = ["nombre", "valor"]
+
+    tabla.columns["nombre"] = PDF::SimpleTable::Column.new("nombre") { |col|
+      col.width = 450
+      col.justification = :center
+    }
+    tabla.columns["valor"] = PDF::SimpleTable::Column.new("valor") { |col|
+      col.width = 100
+      col.justification = :center
+    }
+    datos = []
+    
+    datos << { "nombre" => to_utf16("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t <b>#{factura.cliente.razon_social}</b>"), "valor" => to_utf16("#{factura.fecha}") }
+    datos << { "nombre" => to_utf16("\t\t\t\t\t\t\t\t\t\t\t\t\t\t<b>#{factura.cliente.domicilio}</b>"), "valor" => "" }
+    datos << { "nombre" => to_utf16("\t\t\t\t\t\t\t\t\t\t\t\t<b>#{factura.cliente.telefono_fijo}</b>\t\t\t\t\t\t\t\t\t<b>#{factura.cliente.telefono_movil}</b>\t\t\t\t\t<b>#{factura.cliente.correo_electronico}</b>"), "valor" => "<b>#{factura.cliente.rif}</b>" }
+
+    tabla.data.replace datos
+    tabla.render_on(pdf)
+
+    pdf.text "\n\n\n\n", :font_size => 12
+
+
+    tabla = PDF::SimpleTable.new 
+    tabla.font_size = 9
+    tabla.show_lines    = 1
+    tabla.show_headings = false
+    tabla.shade_rows = :none
+    tabla.column_order = ["no", "descripcion", "unidad", "cantidad", "costo", "total"]
+
+    tabla.columns["no"] = PDF::SimpleTable::Column.new("no") { |col|
+      col.width = 20
+      col.justification = :left
+    }
+    tabla.columns["descripcion"] = PDF::SimpleTable::Column.new("descripcion") { |col|
+      col.width = 230
+      col.justification = :left
+    }
+
+    tabla.columns["unidad"] = PDF::SimpleTable::Column.new("unidad") { |col|
+      col.width = 50
+      col.justification = :left
+    }    
+    tabla.columns["cantidad"] = PDF::SimpleTable::Column.new("cantidad") { |col|
+      col.width = 50
+      col.justification = :left
+    }
+    tabla.columns["costo"] = PDF::SimpleTable::Column.new("costo") { |col|
+      col.width = 100
+      col.justification = :left
+    }
+
+    tabla.columns["total"] = PDF::SimpleTable::Column.new("total") { |col|
+      col.width = 100
+      col.justification = :left
+    }
+
+    datos = []
+    
+    factura.detalle_facturas.each_with_index do |detalle, i|
+      i += 1
+      datos << { "no" => i, "descripcion" => to_utf16(detalle.curso_periodo.descripcion), "unidad"=> "Cursos", "cantidad" => detalle.cantidad.to_s, "costo" => detalle.costo_unitario.to_s, "total" => detalle.total }
+
+    end
+
+ 
+
+    tabla.data.replace datos
+    tabla.render_on(pdf)
+
+    pdf.text "\n\n\n\n", :font_size => 12
+
+    return pdf
+  end
+
+
+
+
+
+
+
   def self.planilla_inscripcion(historial_academico=nil)
     pdf = PDF::Writer.new(:paper => "letter")  #:orientation => :landscape, 
     t = Time.now

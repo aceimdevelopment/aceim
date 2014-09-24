@@ -42,14 +42,14 @@ class ClientesController < ApplicationController
       if @cliente.save
         flash[:mensaje] = 'Cliente registrado'
         session[:cliente_id] = @cliente.id
-        format.html { redirect_to :back}
+        format.html { redirect_to :controller => 'facturas', :action => 'nueva' }
         format.json { render :json => @cliente, :status => :created, :location => @cliente }
       else
         @titulo_pagina = "Nuevo Cliente"
         @accion = "registrar"
-        flash[:mensaje] = "#{@cliente.errors.count} error(es) impiden que el cliente sea registrado: #{@cliente.errors.full_messages.join(". ")}."
+        flash[:mensaje] = "#{@cliente.errors.count} error(es) impide(n) que el cliente sea registrado: #{@cliente.errors.full_messages.join(". ")}."
         session[:cliente_id] = nil
-        format.html { redirect_to :back }
+        format.html  { redirect_to :controller => 'facturas', :action => 'nueva' }
         format.json { render :json => @cliente.errors, :status => :unprocessable_entity }
       end
     end
@@ -57,18 +57,20 @@ class ClientesController < ApplicationController
 
   def actualizar
     @cliente = Cliente.find(params[:id])
-
+    
     respond_to do |format|
       if @cliente.update_attributes(params[:cliente])
         flash[:mensaje] = 'Cliente actualizado'
+        
         session[:cliente_id] = @cliente.id
-        format.html { redirect_to :back}
+
+        format.html { redirect_to :controller => 'facturas', :action => 'nueva' }
         format.json { head :ok }
       else
         @titulo_pagina = "Edicción de Cliente"
         @accion = "actualizar"
-        flash[:mensaje] = "#{@cliente.errors.count} error(es) impiden que el cliente sea actualizado: #{@cliente.errors.full_messages.join(". ")}."
-        format.html { redirect_to :back}
+        flash[:mensaje] = "#{@cliente.errors.count} error(es) impide(n) que el cliente sea actualizado: #{@cliente.errors.full_messages.join(". ")}."
+        format.html { redirect_to :controller => 'facturas', :action => 'nueva' }
         format.json { render :json => @cliente.errors, :status => :unprocessable_entity }
       end
     end

@@ -1,4 +1,16 @@
 Aceim::Application.routes.draw do
+
+
+  resources :facturas do
+    resources :detalle_facturas
+
+    collection do
+      get 'nueva'
+      post 'actualizar'
+      get 'registrar'
+      get 'actualizar_idioma_select'
+    end
+  end
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
