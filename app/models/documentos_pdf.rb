@@ -1,4 +1,5 @@
 class DocumentosPDF
+  # include ActionView::Helpers::NumberHelper
 
   def self.to_utf16(valor)
     ic_ignore = Iconv.new('ISO-8859-15//IGNORE//TRANSLIT', 'UTF-8')
@@ -334,78 +335,82 @@ class DocumentosPDF
 
 
   def self.factura(factura)
+    # require ActionView::Helpers::NumberHelper
     pdf = PDF::Writer.new(:paper => "letter")
 
-    pdf.text "\n\n\n\n\n\n", :font_size => 12
+    pdf.text "\n\n\n\n\n\n\n\n", :font_size => 12
 
 
     # pdf.text to_utf16("<b>Datos de la Preinscripción:</b>"), :font_size => 12
     tabla = PDF::SimpleTable.new 
-    tabla.font_size = 9
-    tabla.show_lines    = 1
+    tabla.font_size = 10
+    tabla.show_lines    = :none
     tabla.show_headings = false
     tabla.shade_rows = :none
+    tabla.row_gap = 6
     tabla.column_order = ["nombre", "valor"]
 
     tabla.columns["nombre"] = PDF::SimpleTable::Column.new("nombre") { |col|
-      col.width = 450
-      col.justification = :center
+      col.width = 490
+      col.justification = :left
     }
     tabla.columns["valor"] = PDF::SimpleTable::Column.new("valor") { |col|
-      col.width = 100
-      col.justification = :center
+      col.width = 90
+      col.justification = :right
     }
     datos = []
     
-    datos << { "nombre" => to_utf16("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t <b>#{factura.cliente.razon_social}</b>"), "valor" => to_utf16("#{factura.fecha}") }
-    datos << { "nombre" => to_utf16("\t\t\t\t\t\t\t\t\t\t\t\t\t\t<b>#{factura.cliente.domicilio}</b>"), "valor" => "" }
-    datos << { "nombre" => to_utf16("\t\t\t\t\t\t\t\t\t\t\t\t<b>#{factura.cliente.telefono_fijo}</b>\t\t\t\t\t\t\t\t\t<b>#{factura.cliente.telefono_movil}</b>\t\t\t\t\t<b>#{factura.cliente.correo_electronico}</b>"), "valor" => "<b>#{factura.cliente.rif}</b>" }
+    datos << { "nombre" => to_utf16("                                                 <i>#{factura.cliente.razon_social}</i>"), "valor" => to_utf16("<i>#{factura.fecha.strftime("%d/%m/%Y") if factura.fecha}</i>") }
+    datos << { "nombre" => to_utf16("                                       <i>#{factura.cliente.domicilio}</i>"), "valor" => "" }
+    datos << { "nombre" => to_utf16("                                  <i>#{factura.cliente.telefono_fijo}</i>                               <i>#{factura.cliente.telefono_movil}</i>"), "valor" => "<i>#{factura.cliente.rif}</i>" }
 
     tabla.data.replace datos
     tabla.render_on(pdf)
 
-    pdf.text "\n\n\n\n", :font_size => 12
+    pdf.text "\n\n\n", :font_size => 12
 
 
     tabla = PDF::SimpleTable.new 
-    tabla.font_size = 9
-    tabla.show_lines    = 1
+    tabla.font_size = 10
+    tabla.show_lines    = :none
     tabla.show_headings = false
     tabla.shade_rows = :none
     tabla.column_order = ["no", "descripcion", "unidad", "cantidad", "costo", "total"]
-
+    tabla.row_gap = 5
+    tabla.position = 310
+    tabla.protect_rows = 15
     tabla.columns["no"] = PDF::SimpleTable::Column.new("no") { |col|
       col.width = 20
-      col.justification = :left
+      col.justification = :center
     }
     tabla.columns["descripcion"] = PDF::SimpleTable::Column.new("descripcion") { |col|
-      col.width = 230
+      col.width = 280
       col.justification = :left
     }
 
     tabla.columns["unidad"] = PDF::SimpleTable::Column.new("unidad") { |col|
       col.width = 50
-      col.justification = :left
+      col.justification = :center
     }    
     tabla.columns["cantidad"] = PDF::SimpleTable::Column.new("cantidad") { |col|
-      col.width = 50
-      col.justification = :left
+      col.width = 40
+      col.justification = :center
     }
     tabla.columns["costo"] = PDF::SimpleTable::Column.new("costo") { |col|
-      col.width = 100
-      col.justification = :left
+      col.width = 90
+      col.justification = :right
     }
 
     tabla.columns["total"] = PDF::SimpleTable::Column.new("total") { |col|
-      col.width = 100
-      col.justification = :left
+      col.width = 80
+      col.justification = :right
     }
-
+    # numero = ActionView::Helpers::NumberHelper
     datos = []
     
     factura.detalle_facturas.each_with_index do |detalle, i|
       i += 1
-      datos << { "no" => i, "descripcion" => to_utf16(detalle.curso_periodo.descripcion), "unidad"=> "Cursos", "cantidad" => detalle.cantidad.to_s, "costo" => detalle.costo_unitario.to_s, "total" => detalle.total }
+      datos << { "no" => "<i>#{i}</i>", "descripcion" => to_utf16("<i>#{detalle.curso_periodo.descripcion}</i>"), "unidad"=> "<i>Cursos</i>", "cantidad" => "<i>#{detalle.cantidad.to_s}</i>", "costo" => "<i>#{format("%.2f", detalle.costo_unitario)}</i>", "total" => "<i>#{format("%.2f",detalle.total)}</i>" }
 
     end
 
@@ -413,8 +418,11 @@ class DocumentosPDF
 
     tabla.data.replace datos
     tabla.render_on(pdf)
-
-    pdf.text "\n\n\n\n", :font_size => 12
+    monto = format("%.2f", factura.monto_total)
+    x = 550-monto.length
+    pdf.add_text x,194,"<i>#{monto}</i>",10
+    pdf.add_text 562,180,"<i>0.00</i>",10
+    pdf.add_text x,164,"<i>#{monto}</i>",10    
 
     return pdf
   end
