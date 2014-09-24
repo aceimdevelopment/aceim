@@ -58,25 +58,9 @@
           %td Total General
           %td= number_to_currency(@factura.monto_total)
 
-  =button_to ">> Imprimir sobre hoja formato <<", :action => "imprimir_factura", :id => @factura.id
+  =button_to ">> Imprimir sobre hoja formato <<", {:action => "imprimir_factura", :id => @factura.id}, {:style => "float: right;"}
 
 = link_to 'Regresar', :back
-
-#divToPrint
-  %br
-  %br
-  %table
-    %thead
-      %tr
-        %th.raw9
-        %th.raw1
-    %tbody
-      %tr
-        %td{:style => 'padding-left: 50px;'}
-          = @factura.cliente.razon_social
-        %td
-          = @factura.fecha 
-
 
 
 :javascript

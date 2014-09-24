@@ -4,7 +4,7 @@ class FacturasController < ApplicationController
 
   def index
     @facturas = Factura.all
-
+    @titulo_pagina = "Facturas"
     respond_to do |format|
       format.html # index.html.erb
       format.json { render :json => @facturas }

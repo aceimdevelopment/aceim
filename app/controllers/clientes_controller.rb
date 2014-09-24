@@ -36,6 +36,7 @@ class ClientesController < ApplicationController
 
 
   def registrar
+    params[:cliente][:rif] = (params[:cliente][:rif]).upcase 
     @cliente = Cliente.new(params[:cliente])
 
     respond_to do |format|
