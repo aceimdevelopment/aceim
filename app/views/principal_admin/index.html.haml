@@ -66,3 +66,5 @@
     -if session[:administrador].tipo_rol_id <= 3  
       %li
         =link_to "Generar Carnets de Instructores", :action=> "generar_carnets"
+      %li
+        =link_to "Facturación", :controller=> "facturas"
