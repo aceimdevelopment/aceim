@@ -21,5 +21,4 @@ class Cliente < ActiveRecord::Base
 	def descripcion
 		"#{rif.upcase} | #{razon_social}"
 	end
-
 end 
