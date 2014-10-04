@@ -367,7 +367,7 @@ class DocumentosPDF
     tabla.data.replace datos
     tabla.render_on(pdf)
 
-    pdf.text "\n\n\n", :font_size => 12
+    pdf.text "\n\n", :font_size => 12
 
 
     tabla = PDF::SimpleTable.new 
