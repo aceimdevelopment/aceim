@@ -338,7 +338,7 @@ class DocumentosPDF
     # require ActionView::Helpers::NumberHelper
     pdf = PDF::Writer.new(:paper => "letter")
 
-    pdf.text "\n\n\n\n\n\n\n\n", :font_size => 12
+    pdf.text "\n\n\n\n\n\n\n", :font_size => 12
 
 
     # pdf.text to_utf16("<b>Datos de la Preinscripción:</b>"), :font_size => 12
@@ -367,7 +367,7 @@ class DocumentosPDF
     tabla.data.replace datos
     tabla.render_on(pdf)
 
-    pdf.text "\n", :font_size => 12
+    pdf.text "\n\n\n", :font_size => 12
 
 
     tabla = PDF::SimpleTable.new 
@@ -380,11 +380,11 @@ class DocumentosPDF
     tabla.position = 310
     tabla.protect_rows = 15
     tabla.columns["no"] = PDF::SimpleTable::Column.new("no") { |col|
-      col.width = 18
+      col.width = 20
       col.justification = :center
     }
     tabla.columns["descripcion"] = PDF::SimpleTable::Column.new("descripcion") { |col|
-      col.width = 280
+      col.width = 270
       col.justification = :left
     }
 
@@ -393,7 +393,7 @@ class DocumentosPDF
       col.justification = :center
     }    
     tabla.columns["cantidad"] = PDF::SimpleTable::Column.new("cantidad") { |col|
-      col.width = 42
+      col.width = 40
       col.justification = :center
     }
     tabla.columns["costo"] = PDF::SimpleTable::Column.new("costo") { |col|
