@@ -21,4 +21,8 @@ class Cliente < ActiveRecord::Base
 	def descripcion
 		"#{rif.upcase} | #{razon_social}"
 	end
+
+	def telefono_fijo_obligatorio
+		return telefono_fijo.to_s.rjust(12,'_')
+	end
 end 
