@@ -367,7 +367,7 @@ class DocumentosPDF
     tabla.data.replace datos
     tabla.render_on(pdf)
 
-    pdf.text "\n\n", :font_size => 12
+    pdf.text "\n", :font_size => 12
 
 
     tabla = PDF::SimpleTable.new 
@@ -380,7 +380,7 @@ class DocumentosPDF
     tabla.position = 310
     tabla.protect_rows = 15
     tabla.columns["no"] = PDF::SimpleTable::Column.new("no") { |col|
-      col.width = 20
+      col.width = 18
       col.justification = :center
     }
     tabla.columns["descripcion"] = PDF::SimpleTable::Column.new("descripcion") { |col|
@@ -393,7 +393,7 @@ class DocumentosPDF
       col.justification = :center
     }    
     tabla.columns["cantidad"] = PDF::SimpleTable::Column.new("cantidad") { |col|
-      col.width = 40
+      col.width = 42
       col.justification = :center
     }
     tabla.columns["costo"] = PDF::SimpleTable::Column.new("costo") { |col|
