@@ -362,7 +362,7 @@ class DocumentosPDF
     
     datos << { "nombre" => to_utf16("                                                 <i>#{factura.cliente.razon_social}</i>"), "valor" => to_utf16("<i>#{factura.fecha.strftime("%d/%m/%Y") if factura.fecha}</i>") }
     datos << { "nombre" => to_utf16("                                       <i>#{factura.cliente.domicilio}</i>"), "valor" => "" }
-    datos << { "nombre" => to_utf16("<i>#{factura.cliente.telefono_fijo.to_s.rjust(40)}</i><i>#{factura.cliente.telefono_movil.rjust(45)}</i>"), "valor" => "<i>#{factura.cliente.rif.to_s.ljust(12)}</i>" }
+    datos << { "nombre" => to_utf16("<i>#{factura.cliente.telefono_fijo.to_s.rjust(40,'_')}</i><i>#{factura.cliente.telefono_movil.rjust(45, '_')}</i>"), "valor" => "<i>#{factura.cliente.rif.to_s.ljust(12)}</i>" }
 
     tabla.data.replace datos
     tabla.render_on(pdf)
