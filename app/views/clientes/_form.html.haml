@@ -1,4 +1,6 @@
 = form_for (@cliente,:url=>{:action => @accion}) do |f|
+  - if @controlador
+    = hidden_field_tag "controlador", @controlador
   - if @accion.eql? "actualizar"
     - @readonly = true
     = hidden_field_tag :id, @cliente.id

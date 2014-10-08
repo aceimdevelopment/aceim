@@ -28,10 +28,12 @@ class ClientesController < ApplicationController
 
 
   def editar
+    @controlador = params[:parametros][:controlador] if params[:parametros]
     @accion = "actualizar"
     @titulo_pagina = "Edicción de Cliente"
     @cliente = Cliente.find(params[:id])
     render :layout => false 
+
   end
 
 
@@ -64,8 +66,8 @@ class ClientesController < ApplicationController
         flash[:mensaje] = 'Cliente actualizado'
         
         session[:cliente_id] = @cliente.id
-
-        format.html { redirect_to :controller => 'facturas', :action => 'nueva' }
+        controlador_retorno = params[:controlador] ? params[:controlador] : 'facturas' 
+        format.html { redirect_to :controller => controlador_retorno}
         format.json { head :ok }
       else
         @titulo_pagina = "Edicción de Cliente"
@@ -77,7 +79,11 @@ class ClientesController < ApplicationController
     end
   end
 
+  def detalle
+    @titulo_pagina = "Detalle Cliente"
+    @cliente = Cliente.find(params[:id])
 
+  end
   # def eliminar
   #   @cliente = Cliente.find(params[:id])
   #   @cliente.destroy

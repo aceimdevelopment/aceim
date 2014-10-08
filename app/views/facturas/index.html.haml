@@ -1,3 +1,8 @@
+%h6
+  = button_to 'Nueva Factura', {:action => 'nueva'}, :class => 'ui-button ui-widget ui-state-default ui-corner-all'
+
+  = button_to 'Lista Clientes', {:controller => 'clientes'}, :class => 'ui-button ui-widget ui-state-default ui-corner-all'
+
 %table.tablesorter.likert
   %thead
     %tr
@@ -24,6 +29,3 @@
           |
           = link_to 'Imprimir', :action => "imprimir_factura", :id => factura.id
 
-%br
-
-= button_to 'Nueva Factura', {:action => 'nueva'}, :class => 'ui-button ui-widget ui-state-default ui-corner-all'

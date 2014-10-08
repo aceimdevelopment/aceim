@@ -1,3 +1,5 @@
+%h6
+  = button_to_modal_v2 "Registre un Nuevo Cliente",{:controller => 'clientes',:action => 'nuevo',:title => 'Registrar Cliente',:width => 500}, :class => 'ui-button ui-widget ui-state-default ui-corner-all'
 
 
 %table.tablesorter.likert
@@ -21,11 +23,13 @@
         %td= cliente.telefono_fijo
         %td= cliente.telefono_movil
         %td= cliente.correo_electronico
-        %td= link_to_modal_v2 "Editar",{:controller => 'clientes',:action => "editar", :id => cliente.id, :title => 'Editar Cliente',:width => 500}
+        %td
+          = link_to_modal_v2 "Editar",{:controller => 'clientes',:action => "editar", :id => cliente.id, :title => 'Editar Cliente',:width => 500, :params => {:controlador => 'clientes'}}
+          |
+          = link_to "Detalle", :controller => 'clientes',:action => "detalle", :id => cliente.id
 
-
-        / %td= link_to 'Destroy', cliente, :confirm => 'Are you sure?', :method => :delete
 
 %br
 
-= button_to_modal_v2 "Registre un Nuevo Cliente",{:controller => 'clientes',:action => 'nuevo',:title => 'Registrar Cliente',:width => 500}, :class => 'ui-button ui-widget ui-state-default ui-corner-all'
+
+= link_to 'Regresar', :controller => 'facturas'
