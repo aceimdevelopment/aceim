@@ -30,6 +30,17 @@ class ParametrosGeneralesController < ApplicationController
   end
   
 
+  def programar_inscripcion_nuevos
+
+    Thread.new do
+      ParametroGeneral.programar_apertura_nuevos(1)
+      # ActiveRecord::Base.connection.close
+    end
+
+    flash[:mensaje] = "Programación realizada" 
+    redirect_to :back
+  end
+
   def guardar_parametros
     
     inscripcion_general = ParametroGeneral.find("INSCRIPCION_ABIERTA")

@@ -62,7 +62,24 @@ class ParametroGeneral < ActiveRecord::Base
     ide = ParametroGeneral.first(:conditions=>["id = ?", "COSTO_NUEVOS"]).valor.to_f
   end
 
+  def self.programar_apertura_nuevos (minutos)
+    sleep minutos
+    puts "Abriendo inscripcion"
+    inscripcion_nuevos = ParametroGeneral.find("INSCRIPCION_NUEVOS_ABIERTA")
+    inscripcion_nuevos.valor = "SI"
+    inscripcion_nuevos.save
+  end
 
+  def self.abrir_inscripcion_nuevos
+    inscripcion_nuevos = ParametroGeneral.find("INSCRIPCION_NUEVOS_ABIERTA")
+    inscripcion_nuevos.valor = "SI"
+    inscripcion_nuevos.save
+  end
 
+  def self.abrir_listados
+    listados_abiertos = ParametroGeneral.find("LISTADOS_ABIERTOS")
+    listados_abiertos.valor = "SI"
+    listados_abiertos.save
+  end
 
 end 
