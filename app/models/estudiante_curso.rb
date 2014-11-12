@@ -22,6 +22,10 @@ class EstudianteCurso < ActiveRecord::Base
   belongs_to :tipo_curso,
     :class_name => 'TipoCurso',
     :foreign_key => ['idioma_id','tipo_categoria_id']  
+
+  has_many :historiales_academicos,
+    :class_name => 'HistorialAcademico',
+    :foreign_key => [:usuario_ci,:idioma_id,:tipo_categoria_id]
     
   def descripcion 
     "Estudiante - #{tipo_curso.descripcion}"

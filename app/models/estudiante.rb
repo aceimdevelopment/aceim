@@ -12,6 +12,12 @@ class Estudiante < ActiveRecord::Base
   belongs_to :tipo_nivel_academico,
     :class_name => 'TipoNivelAcademico',
     :foreign_key => ['tipo_nivel_academico_id']
+
+  has_many :estudiante_cursos,
+    :class_name => 'EstudianteCurso',
+    :foreign_key => ['usuario_ci']
+
+  accepts_nested_attributes_for :estudiante_cursos
     
    def preinscrito?          
      @periodo = ParametroGeneral.periodo_actual

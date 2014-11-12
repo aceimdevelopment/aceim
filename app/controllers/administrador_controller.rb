@@ -2,6 +2,24 @@ class AdministradorController < ApplicationController
 	before_filter :filtro_logueado
  	before_filter :filtro_administrador
 
+ 	def estudiantes
+ 		@estudiantes = Estudiante.limit(1000)
+ 	end
+
+ 	def eliminar_estudiante
+ 	  @estudiante = Estudiante.find(params[:ci]) 
+ 	  @estudiante.estudiante_cursos.each do |ec|
+ 	  	ec.historiales_academicos.each do |historial|
+ 	  		historial.destroy
+ 	  	end
+ 	  	ec.destroy
+ 	  end
+
+  	  @estudiante.destroy
+  	  flash[:mensaje] = "Usuario eliminado con éxito"
+  	  redirect_to :action =>'estudiantes'
+ 	end
+
 	def index
 		@administradores = Administrador.where("tipo_rol_id <> ? OR tipo_rol_id IS NULL", 2)
 	end
