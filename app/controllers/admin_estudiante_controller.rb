@@ -7,6 +7,28 @@ class AdminEstudianteController < ApplicationController
     
   end     
 
+
+  def estudiantes
+    @estudiantes_cursos = EstudianteCurso.where(:idioma_id => params[:id]).limit(1000)
+    @estudiantes = Estudiante.all.delete_if{|e| e.estudiante_cursos.count > 0} if params[:id]=='OTROS'
+    @id = params[:id]
+  end
+
+  def eliminar_estudiante
+    @estudiante = Estudiante.find(params[:ci]) 
+    @estudiante.estudiante_cursos.each do |ec|
+      ec.historiales_academicos.each do |historial|
+        historial.destroy
+      end
+      ec.destroy
+    end
+
+      @estudiante.destroy
+      flash[:mensaje] = "Usuario eliminado con éxito"
+      redirect_to :action =>"estudiantes", :id => params[:id]
+  end
+
+
 =begin
 def autocomplete
   term = params[:term]                                                
