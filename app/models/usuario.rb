@@ -11,6 +11,10 @@ class Usuario < ActiveRecord::Base
     :class_name => 'TipoSexo',
     :foreign_key => ['tipo_sexo_id']
 
+  has_many :historiales_academicos,
+    :class_name => 'HistorialAcademico',
+    :foreign_key => [:usuario_ci]
+
   validates :ci, :presence => true,  
                  :uniqueness => true
                  
@@ -68,4 +72,10 @@ class Usuario < ActiveRecord::Base
     "#{telefono_movil}, #{correo}"
   end
   
+  def eliminar_total
+    administrador.destroy if administrador
+    instructor.destroy if instructor
+    estudiante.destroy if estudiante
+  end
+
 end

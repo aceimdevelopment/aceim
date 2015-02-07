@@ -1,4 +1,5 @@
 #creada por db2models
+# class Administrador < Usuario
 class Administrador < ActiveRecord::Base
   attr_accessible :id, :usuario_ci, :tipo_rol_id
   #autogenerado por db2models

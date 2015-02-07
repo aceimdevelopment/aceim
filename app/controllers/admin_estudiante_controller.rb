@@ -9,9 +9,56 @@ class AdminEstudianteController < ApplicationController
 
 
   def estudiantes
-    @estudiantes_cursos = EstudianteCurso.where(:idioma_id => params[:id]).limit(1000)
-    @estudiantes = Estudiante.all.delete_if{|e| e.estudiante_cursos.count > 0} if params[:id]=='OTROS'
-    @id = params[:id]
+    @estudiantes_total = Estudiante.all.count
+
+    @total_estudiantes = Hash.new()
+    Idioma.all.each do |idioma|
+      case idioma.id
+      when 'IN'
+        @total_estudiantes["IN-AD"] = "#{idioma.descripcion.capitalize}-Adultos(#{EstudianteCurso.where(:idioma_id => idioma.id, :tipo_categoria_id => "AD").count})"
+        @total_estudiantes["IN-NI"] = "#{idioma.descripcion.capitalize}-Niños(#{EstudianteCurso.where(:idioma_id => idioma.id, :tipo_categoria_id => "NI").count})"
+        @total_estudiantes["IN-TE"] = "#{idioma.descripcion.capitalize}-Teens(#{EstudianteCurso.where(:idioma_id => idioma.id, :tipo_categoria_id => "TE").count})"
+      when 'OR'
+        # @total_estudiante[idioma.id] = "Otros (#{Estudiante.all.delete_if{|e| e.estudiante_cursos.count > 0}.count})"
+        @total_estudiantes['OR'] = "Otros (#{EstudianteCurso.where('idioma_id <> ? and idioma_id <> ? and idioma_id <> ? and idioma_id <> ? and idioma_id <> ?', 'IN', 'AL', 'FR', 'IT', 'PG').count})"
+      else
+        @total_estudiantes[idioma.id] = "#{idioma.descripcion.capitalize} (#{EstudianteCurso.where(:idioma_id => idioma.id).count})"
+      end
+    end
+    if params[:id]
+      if params[:id].include? "IN"
+        idioma_id = (params[:id].split"-").first
+        tipo_categoria_id = (params[:id].split"-").second
+
+        @estudiantes_cursos = EstudianteCurso.where(:idioma_id => idioma_id, :tipo_categoria_id => tipo_categoria_id).limit(1000)
+      else
+        @estudiantes_cursos = EstudianteCurso.where(:idioma_id => params[:id])      
+      end
+
+      @estudiantes = Estudiante.all.delete_if{|e| e.estudiante_cursos.count > 0} if params[:id].eql? 'OR'
+      @id = params[:id]
+    end
+  end
+
+
+  def limpiar_lista_estudiantes
+    eliminar_estudiantes_cursos_vacios
+    total_eliminados = 0
+    con_otro_rol = 0
+    Estudiante.all.each do |estudiante|
+      if estudiante.estudiante_cursos.count.eql? 0
+        u = estudiante.usuario
+        if u.administrador.nil? and u.instructor.nil? 
+          u.destroy
+          total_eliminados +=1 if estudiante.destroy
+        else
+          con_otro_rol += 1
+        end
+      end
+    end
+
+    flash[:mensaje] += "#{total_eliminados} Estudiantes (Usuarios) elimininados. Existen #{con_otro_rol} Estudiantes que no han sido eliminados ya que tienen otro rol como Administrador o Instructor."
+    redirect_to :action => "estudiantes"
   end
 
   def eliminar_estudiante
@@ -22,10 +69,11 @@ class AdminEstudianteController < ApplicationController
       end
       ec.destroy
     end
-
-      @estudiante.destroy
-      flash[:mensaje] = "Usuario eliminado con éxito"
-      redirect_to :action =>"estudiantes", :id => params[:id]
+    # usuario = @estudiante.usuario
+    # usuario.destroy
+    @estudiante.destroy
+    flash[:mensaje] = "Usuario eliminado con éxito"
+    redirect_to :action =>"estudiantes", :id => params[:id]
   end
 
 
@@ -474,6 +522,19 @@ end
     redirect_to  :action=>"opciones_menu"
 
   end  
+
+  private
+
+  def eliminar_estudiantes_cursos_vacios
+    eliminados = 0
+    EstudianteCurso.all.each do |ec|
+      if ec.historiales_academicos.count.eql? 0
+        eliminados += 1 if ec.destroy 
+      end
+    end
+    flash[:mensaje] = "Eliminados #{eliminados} Cursos sin historiales academicos;"
+  end
+
 
 
 end
