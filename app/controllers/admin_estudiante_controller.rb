@@ -69,9 +69,15 @@ class AdminEstudianteController < ApplicationController
       end
       ec.destroy
     end
+    u = @estudiante.usuario
+    if u.administrador.nil? and u.instructor.nil? 
+      u.destroy
+    else
+      @estudiante.destroy
+    end
     # usuario = @estudiante.usuario
     # usuario.destroy
-    @estudiante.destroy
+    
     flash[:mensaje] = "Usuario eliminado con éxito"
     redirect_to :action =>"estudiantes", :id => params[:id]
   end
