@@ -1,5 +1,7 @@
 class ConvenioController < ApplicationController
-    
+  before_filter :filtro_logueado 
+  before_filter :filtro_super_administrador 
+  
   def index
     @titulo_pagina = "Actualizar la Matricula de los Cursos" 
     @precios = TipoConvenio.find(:all)

@@ -49,20 +49,54 @@ private
   
   def filtro_logueado
     unless session[:usuario]
+      reset_session
       flash[:mensaje_login] = "Debe iniciar sesión"  
       redirect_to :action => "index", :controller => "inicio"  
+      return false
+    end
+  end
+
+  def filtro_administrador_instructor
+    unless (session[:administrador] or session[:instructor])
+      reset_session
+      flash[:mensaje_login] = "Debe iniciar sesión como administrador o instructor"  
+      info_bitacora "Intento erróneo de acceso restringido a administrador o instructor"
+      redirect_to :action => "index", :controller => "inicio" 
       return false
     end
   end
   
   def filtro_administrador
     unless session[:administrador]
+      reset_session
       flash[:mensaje_login] = "Debe iniciar sesión como administrador"  
-      info_bitacora "Intento malo del administrador"
+      info_bitacora "Intento erróneo de acceso restringido a administrador"
       redirect_to :action => "index", :controller => "inicio"  
       return false
     end
-  end    
+  end
+
+  def filtro_instructor
+    unless session[:instructor]
+      reset_session
+      flash[:mensaje_login] = "Debe iniciar sesión como instructor"  
+      info_bitacora "Intento erróneo de acceso restringido a instructor"
+      redirect_to :action => "index", :controller => "inicio"  
+      return false
+    end
+  end
+
+  def filtro_super_administrador
+    
+    unless (session[:administrador] and session[:administrador].tipo_rol_id < 3)
+      reset_session
+      flash[:mensaje_login] = "Debe iniciar sesión como Superadministrador"  
+      info_bitacora "Intento erróneo de acceso restringido a Superadministrador"
+      redirect_to :action => "index", :controller => "inicio"
+      return false
+    end
+  end
+
   
   def filtro_primer_dia
     usuario_curso = EstudianteCurso.find(session[:usuario], 

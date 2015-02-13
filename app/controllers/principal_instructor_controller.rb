@@ -1,5 +1,6 @@
 class PrincipalInstructorController < ApplicationController
-
+  before_filter :filtro_logueado
+  before_filter :filtro_instructor
   def index
   end
   

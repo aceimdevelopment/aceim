@@ -1,6 +1,6 @@
 class UsuarioController < ApplicationController
   before_filter :filtro_logueado
-  
+  before_filter :filtro_super_administrador 
   def nuevo
     if session[:administrador].tipo_rol_id > 2 
       flash[:mensaje] = "Usted no posee los privilegios para acceder a esta función"

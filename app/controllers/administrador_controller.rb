@@ -1,6 +1,7 @@
 class AdministradorController < ApplicationController
 	before_filter :filtro_logueado
- 	before_filter :filtro_administrador
+ 	before_filter :filtro_super_administrador
+ 	
 
 	def index
 		@administradores = Administrador.where("tipo_rol_id <> ? OR tipo_rol_id IS NULL", 2)

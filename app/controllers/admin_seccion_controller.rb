@@ -1,6 +1,6 @@
 class AdminSeccionController < ApplicationController
   before_filter :filtro_logueado
-  before_filter :filtro_administrador
+  before_filter :filtro_super_administrador
   
   def index
     @titulo_pagina = "Listado de Secciones"  

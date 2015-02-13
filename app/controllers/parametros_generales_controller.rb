@@ -1,5 +1,6 @@
 class ParametrosGeneralesController < ApplicationController
-  
+  before_filter :filtro_logueado
+  before_filter :filtro_super_administrador
   
   def index
 

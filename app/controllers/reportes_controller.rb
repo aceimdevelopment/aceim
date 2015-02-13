@@ -1,5 +1,6 @@
 class ReportesController < ApplicationController
-  
+  before_filter :filtro_logueado
+  before_filter :filtro_administrador 
   def index_reportes_convenios
   	
 		@titulo_pagina = "Reportes de Alumnos por Convenios" 
