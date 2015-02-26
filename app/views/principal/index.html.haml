@@ -1,12 +1,17 @@
 -if  !@preinscrito 
-  -if (ParametroGeneral.inscripcion_ninos_abierta && session[:tipo_curso].tipo_categoria_id == "NI") || ((ParametroGeneral.inscripcion_regulares_abierta || ParametroGeneral.inscripcion_cambio_abierta)&& session[:tipo_curso].tipo_categoria_id != "NI")
-    %h3
-      =link_to "Preinscribirse", :action => "paso1", :controller => "inscripcion"
-    %div.titulo Preinscribirse en el periodo #{session[:parametros][:periodo_inscripcion]} y obtener la Planilla           
+	-if (ParametroGeneral.inscripcion_ninos_abierta && session[:tipo_curso].tipo_categoria_id == "NI") || ((ParametroGeneral.inscripcion_regulares_abierta || ParametroGeneral.inscripcion_cambio_abierta)&& session[:tipo_curso].tipo_categoria_id != "NI")
+		%h3
+			=link_to "Preinscribirse", :action => "paso1", :controller => "inscripcion"
+		%div.titulo Preinscribirse en el periodo #{session[:parametros][:periodo_inscripcion]} y obtener la Planilla           
 -if @preinscrito
-  %h3
-    =link_to "Obtener Planilla de Preinscripción", :action => "planilla_inscripcion", :controller => "inscripcion"
-  %div.titulo Obtener de nuevo la planilla del periodo #{session[:parametros][:periodo_inscripcion]}
+	%h3
+		=link_to "Obtener Planilla de Preinscripción", :action => "planilla_inscripcion", :controller => "inscripcion"
+	%div.titulo Obtener de nuevo la planilla del periodo #{session[:parametros][:periodo_inscripcion]}
 %h3
-  =link_to "Consultar Historial de Cursos", :action => "cursos", :controller => "estudiante"
+	=link_to "Consultar Historial de Cursos", :action => "cursos", :controller => "estudiante"
 %div.titulo Consulta el listado de tus Cursos Realizados
+
+- if @nivel
+	%h3
+		=link_to "Syllabus: #{@nivel.descripcion}", :controller => 'descarga', :action => 'syllabus' 
+	%div.titulo Descarga syllabus correspondiente al curso actual		

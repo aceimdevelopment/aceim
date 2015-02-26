@@ -10,6 +10,9 @@ class PrincipalController < ApplicationController
       :idioma_id => session[:tipo_curso].idioma_id,
       :tipo_categoria_id => session[:tipo_curso].tipo_categoria_id,
       :periodo_id => session[:parametros][:periodo_inscripcion]).limit(1).first
+
+    @nivel = HistorialAcademico.where(:idioma_id => 'IN', :usuario_ci => session[:usuario].ci, :tipo_categoria_id => 'AD', :periodo_id => ParametroGeneral.periodo_actual.id).first.tipo_nivel
+
   end
 
   def principal

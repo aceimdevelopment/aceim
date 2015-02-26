@@ -1,6 +1,7 @@
 
 -if session[:administrador].tipo_rol_id
   %ul.navegador
+    %li= link_to "Descargar_archivo", :controller => 'documento', :action => 'descargar'
     %li    
       %a.desplegable{:href=>"#"} Estudiantes
       %ul.subnavegador
