@@ -13,7 +13,8 @@ class PrincipalAdminController < ApplicationController
     session[:especial_estudiante] = nil
     session[:especial_rol] = nil
     session[:especial_tipo_curso] = nil
-    
+
+  @cursos_ingles = Curso.where(:idioma_id => 'IN', :tipo_categoria_id => 'AD').order(:grado).delete_if{|c| c.tipo_nivel_id.eql? "CC" or c.tipo_nivel_id.eql? "NI" or c.tipo_nivel_id.eql? "BBVA";}
   end
   
   def estado_instructores

@@ -1,7 +1,19 @@
 
 -if session[:administrador].tipo_rol_id
   %ul.navegador
-    %li= link_to "Descargar_archivo", :controller => 'documento', :action => 'descargar'
+    %li    
+      %a.desplegable{:href=>"#"} Syllabus
+      %ul.subnavegador
+        - @cursos_ingles.each do |curso|
+          - nivel = curso.tipo_nivel
+          %p
+            =link_to nivel.descripcion, :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id
+          - if (nivel.id.eql? "CB") or (nivel.id.eql? "CI")
+            %p
+              =link_to nivel.descripcion+" (Sabatino)", :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id+"-S"
+
+
+
     %li    
       %a.desplegable{:href=>"#"} Estudiantes
       %ul.subnavegador

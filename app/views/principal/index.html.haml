@@ -11,7 +11,10 @@
 	=link_to "Consultar Historial de Cursos", :action => "cursos", :controller => "estudiante"
 %div.titulo Consulta el listado de tus Cursos Realizados
 
-- if @nivel
+- if @ha
+	- @nivel = @ha.tipo_nivel_id
+	- @nivel += "-S" if (@nivel.eql? "CB" or @nivel.eql? "CI") and @ha.seccion.bloque_horario.id.eql? 'H5'
+
 	%h3
-		=link_to "Syllabus: #{@nivel.descripcion}", :controller => 'descarga', :action => 'syllabus' 
-	%div.titulo Descarga syllabus correspondiente al curso actual		
+		=link_to "Syllabus: #{@ha.tipo_nivel.descripcion}", :controller => 'descarga', :action => 'syllabus', :nivel => @nivel 
+	%div.titulo Descarga syllabus correspondiente al curso actual
