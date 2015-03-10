@@ -53,7 +53,7 @@ class EstudianteCurso < ActiveRecord::Base
         :idioma_id => idioma_id,
         :tipo_categoria_id => tipo_categoria_id,
         :tipo_estado_calificacion_id => "AP"
-      ).sort_by{|x| "#{x.periodo.ano}-#{x.periodo_id}"}.last
+      ).sort_by{|x| x.periodo.ordenado}.last
   end
   
   def tipo_estudiante

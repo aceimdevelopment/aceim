@@ -253,8 +253,13 @@ class CalificacionController < ApplicationController
     nota = params[:nota_individual].upcase
     if nota == "PI"
       historial.nota_final = -1
+      historial.tipo_estado_calificacion_id = nota
+    elsif nota == "SC"
+      historial.nota_final = -2
+      historial.tipo_estado_calificacion_id = nota      
     elsif HistorialAcademico::NOTASSTRING.include? nota
       historial.nota_final = nota.to_i
+      historial.tipo_estado_calificacion_id = (nota.to_i > 10) ? "AP" : "RE"
     else
       guardo = false
     end
