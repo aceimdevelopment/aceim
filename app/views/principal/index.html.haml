@@ -3,7 +3,7 @@
 		%h3
 			=link_to "Preinscribirse", :action => "paso1", :controller => "inscripcion"
 		%div.titulo Preinscribirse en el periodo #{session[:parametros][:periodo_inscripcion]} y obtener la Planilla           
--if @preinscrito
+-if @preinscrito and @descargar_planilla_inscripcion.eql? "SI"
 	%h3
 		=link_to "Obtener Planilla de Preinscripción", :action => "planilla_inscripcion", :controller => "inscripcion"
 	%div.titulo Obtener de nuevo la planilla del periodo #{session[:parametros][:periodo_inscripcion]}

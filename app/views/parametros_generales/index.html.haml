@@ -13,6 +13,14 @@
     %tbody
       %tr
         %td
+          ¿Permitir descarga de Planilla de Inscripcion?
+        %td
+          =radio_button_tag "descargar_planilla_inscripcion", @descargar_planilla_inscripcion ,(@descargar_planilla_inscripcion.eql? "SI")
+        %td
+          =radio_button_tag "descargar_planilla_inscripcion", @descargar_planilla_inscripcion ,(@descargar_planilla_inscripcion.eql? "NO")
+
+      %tr
+        %td
           ¿Abrir la Inscripción General? (Alumnos Regulares)
         %td
           -if @inscripcion_general == "SI"

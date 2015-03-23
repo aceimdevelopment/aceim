@@ -7,6 +7,8 @@ class ParametrosGeneralesController < ApplicationController
     @titulo_pagina = "Configuraciones Generales"
 
     @inscripcion_general = ParametroGeneral.find("INSCRIPCION_ABIERTA").valor
+    
+    @descargar_planilla_inscripcion = ParametroGeneral.find("DESCARGAR_PLANILLA_INSCRIPCION").valor
 
     @inscripcion_nuevos = ParametroGeneral.find("INSCRIPCION_NUEVOS_ABIERTA").valor
 

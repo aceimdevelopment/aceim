@@ -12,6 +12,7 @@ class PrincipalController < ApplicationController
       :periodo_id => session[:parametros][:periodo_inscripcion]).limit(1).first
 
     @ha = HistorialAcademico.where(:idioma_id => 'IN', :usuario_ci => session[:usuario].ci, :tipo_categoria_id => 'AD', :periodo_id => ParametroGeneral.periodo_actual.id).first
+    @descargar_planilla_inscripcion = ParametroGeneral.find("DESCARGAR_PLANILLA_INSCRIPCION").valor
 
   end
 
