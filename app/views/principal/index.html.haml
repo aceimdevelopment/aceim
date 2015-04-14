@@ -14,7 +14,12 @@
 - if @ha
 	- @nivel = @ha.tipo_nivel_id
 	- @nivel += "-S" if (@nivel.eql? "CB" or @nivel.eql? "CI") and @ha.seccion.bloque_horario.id.eql? 'H5'
-
 	%h3
 		=link_to "Syllabus: #{@ha.tipo_nivel.descripcion}", :controller => 'descarga', :action => 'syllabus', :nivel => @nivel 
 	%div.titulo Descarga syllabus correspondiente al curso actual
+
+%h3
+	=link_to "Fechas Período B-15", :controller => 'descarga', :action => 'fechas', :nivel => @nivel 
+%div.titulo Programación de los Cursos de Idiomas - Período B-15 (Abril-Junio 2015)
+
+

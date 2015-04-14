@@ -1,6 +1,9 @@
 class DescargaController < ApplicationController
 	before_filter :filtro_logueado
 
+	def fechas
+		send_file "#{Rails.root}/attachments/FECHAS B_2015.pdf", :type => "application/pdf", :x_sendfile => true, :disposition => "attachment"
+	end
 
 	def syllabus
 		ha = HistorialAcademico.where(:idioma_id => 'IN', :usuario_ci => session[:usuario].ci, :tipo_categoria_id => 'AD', :periodo_id => ParametroGeneral.periodo_actual.id).first
