@@ -15,9 +15,10 @@
         %td
           ¿Permitir descarga de Planilla de Inscripcion?
         %td
-          =radio_button_tag "descargar_planilla_inscripcion", @descargar_planilla_inscripcion ,(@descargar_planilla_inscripcion.eql? "SI")
+
+          =radio_button_tag "descargar_planilla_inscripcion", "SI", (@descargar_planilla_inscripcion.eql? "SI")
         %td
-          =radio_button_tag "descargar_planilla_inscripcion", @descargar_planilla_inscripcion ,(@descargar_planilla_inscripcion.eql? "NO")
+          =radio_button_tag "descargar_planilla_inscripcion", "NO", (@descargar_planilla_inscripcion.eql? "NO")
 
       %tr
         %td

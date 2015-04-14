@@ -45,6 +45,10 @@ class ParametrosGeneralesController < ApplicationController
   end
 
   def guardar_parametros
+
+    descargar_planilla_inscripcion = ParametroGeneral.find("DESCARGAR_PLANILLA_INSCRIPCION")
+    descargar_planilla_inscripcion.valor = params[:descargar_planilla_inscripcion]
+    descargar_planilla_inscripcion.save
     
     inscripcion_general = ParametroGeneral.find("INSCRIPCION_ABIERTA")
     inscripcion_general.valor = params[:inscripcion_general]
