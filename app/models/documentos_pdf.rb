@@ -908,9 +908,9 @@ class DocumentosPDF
 			pdf.text to_utf16("En Caracas, a los #{t.day} días del mes de #{mes(t.month)} de #{t.year}"), :font_size => 11, :justification => :full
 			
 			pdf.text "\n\n\n"
-			pdf.image 'app/assets/images/firma_joyce.jpg', :justification => :center, :resize => 0.25
-			pdf.text "____________________________" , :justification => :center
-			pdf.text "Prof. Lucius Daniel" , :justification => :center
+			pdf.image 'app/assets/images/firma_joyce3.jpg', :justification => :center, :resize => 0.25
+			pdf.text "____________________________" , :justification => :center, :font_size => 6
+			pdf.text "Prof. Lucius Daniel" , :justification => :center, :font_size => 11
 			
 			
 			pdf.add_text_wrap(160, 38, 300 , "\"CIUDAD UNIVERSITARIA DE CARACAS - PATRIMONIO CULTURAL DE LA HUMANIDAD\"", 6, :center)
