@@ -1022,7 +1022,7 @@ class DocumentosPDF
 			pdf.text to_utf16("\n\tEsta constancia se expide en Caracas, a los #{t.day} días del mes de #{mes(t.month)} de #{t.year} con fines laborales únicamente y bajo ningún concepto indica que #{sexo(historial.usuario.tipo_sexo_id,"la","el")} Sr#{sexo(historial.usuario.tipo_sexo_id,"a","")}. #{historial.usuario.nombre_completo} es estudiante regular de la Universidad Central de Venezuela.
       "), :spacing => 1.5, :font_size => 12, :justification => :full
 			
-			pdf.image 'app/assets/images/firma_joyce.jpg', :justification => :center, :resize => 0.30
+			pdf.image 'app/assets/images/firma_joyce3.jpg', :justification => :center, :resize => 0.30
 			pdf.text "____________________________" , :justification => :center
 			pdf.text "Prof. Lucius Daniel" , :justification => :center
 			pdf.text "Director" , :justification => :center
