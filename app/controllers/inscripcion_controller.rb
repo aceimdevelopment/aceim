@@ -106,74 +106,9 @@ class InscripcionController < ApplicationController
     return
   end
 
-  def paso1      
-    @titulo_pagina = "Preinscripción - Paso 1 de 3"  
-    @subtitulo_pagina = "Actualización de Datos Personales"
-    @usuario = session[:usuario]
-  end  
 
-  def paso1_guardar
-    usr = params[:usuario]
-    if @usuario = Usuario.where(:ci => usr[:ci]).limit(1).first
-      @usuario.ultima_modificacion_sistema = Time.now
-      @usuario.nombres = usr[:nombres]
-      @usuario.apellidos = usr[:apellidos]
-      @usuario.correo = usr[:correo]
-      @usuario.tipo_sexo_id = usr[:tipo_sexo_id]
-      @usuario.telefono_movil = usr[:telefono_movil]
-      
-      if session[:nuevo]
-        @usuario.telefono_habitacion = ""
-        @usuario.direccion = ""
-        @usuario.contrasena = usr[:ci]
-        @usuario.contrasena_confirmation = usr[:ci]
-        @usuario.fecha_nacimiento = "1990-01-01"
-        @usuario.fecha_nacimiento = usr[:fecha_nacimiento]
-      else
-        @usuario.telefono_movil = usr[:telefono_movil]
-        @usuario.telefono_habitacion = usr[:telefono_habitacion]
-        @usuario.direccion = usr[:direccion]
-        @usuario.contrasena = usr[:contrasena]
-        @usuario.contrasena_confirmation = usr[:contrasena_confirmation]
-        @usuario.fecha_nacimiento = usr[:fecha_nacimiento]
-      end
-      
-      session[:usuario] = @usuario
-      
-      if (@usuario.edad < 9 || @usuario.edad > 11) && session[:tipo_curso].tipo_categoria_id == "NI" #&& session[:nuevo]
-        flash[:mensaje] = "Usted no tiene la edad para el curso de niños"
-        redirect_to :action => "paso1"
-        return
-      end
-
-      if (@usuario.edad < 12 || @usuario.edad > 14) && session[:tipo_curso].tipo_categoria_id == "TE" #&& session[:nuevo]
-        flash[:mensaje] = "Usted no tiene la edad para el curso de adolecentes"
-        redirect_to :action => "paso1"
-        return
-      end
-
-      if (@usuario.edad < 15 ) && session[:tipo_curso].tipo_categoria_id == "AD" #&& session[:nuevo]
-        flash[:mensaje] = "Usted no tiene la edad para el curso de adultos"
-        redirect_to :action => "paso1"
-        return
-      end
-      
-      if @usuario.save 
-        info_bitacora "Paso1 realizado"
-        redirect_to :action => "paso2"
-      else
-        @titulo_pagina = "Preinscripción - Paso 1 de 3"  
-        @subtitulo_pagina = "Actualización de Datos Personales"
-        render :action => "paso1"
-      end
-    else
-      flash[:mensaje] = "Error Usuario no encontrado #{usr[:ci]}"
-      render :action => "paso1"
-    end
-  end
-
-  def paso2
-    @titulo_pagina = "Preinscripción - Paso 2 de 3"
+  def paso1
+    @titulo_pagina = "Preinscripción - Paso 1 de 3"
     @subtitulo_pagina = "Selección de Horario"
 
     ec = EstudianteCurso.find(session[:usuario], 
@@ -217,7 +152,7 @@ class InscripcionController < ApplicationController
     end
   end
 
-  def paso2_guardar 
+  def paso1_guardar
 
     seccion = session[:seccion]  
     
@@ -231,7 +166,7 @@ class InscripcionController < ApplicationController
     unless seccion 
       flash[:mensaje] = "Lo sentimos pero no hay secciones disponibles en ese horario"
       info_bitacora "No hay secciones disponible para su horario"
-      redirect_to :action => "paso2"
+      redirect_to :action => "paso1"
       return
     end
     @historial.seccion_numero = seccion
@@ -249,10 +184,79 @@ class InscripcionController < ApplicationController
     end
     
     @historial.save  
-    info_bitacora "Paso 2 realizado preinscripcion realizada en #{@historial.seccion.descripcion_con_periodo}"
-    flash[:mensaje] = "Preinscripción realizada, recuerde imprimir su planilla"
-    redirect_to :action => "paso3"
+    info_bitacora "Paso 1 realizado preinscripcion realizada en #{@historial.seccion.descripcion_con_periodo}"
+    flash[:mensaje] = "Preinscripción realizada, Su cupo está reservado"
+    redirect_to :action => "paso2"
   end
+
+
+  def paso2      
+    @titulo_pagina = "Preinscripción - Paso 2 de 3"  
+    @subtitulo_pagina = "Actualización de Datos Personales"
+    @usuario = session[:usuario]
+  end  
+
+  def paso2_guardar
+    usr = params[:usuario]
+    if @usuario = Usuario.where(:ci => usr[:ci]).limit(1).first
+      @usuario.ultima_modificacion_sistema = Time.now
+      @usuario.nombres = usr[:nombres]
+      @usuario.apellidos = usr[:apellidos]
+      @usuario.correo = usr[:correo]
+      @usuario.tipo_sexo_id = usr[:tipo_sexo_id]
+      @usuario.telefono_movil = usr[:telefono_movil]
+      
+      if session[:nuevo]
+        @usuario.telefono_habitacion = ""
+        @usuario.direccion = ""
+        @usuario.contrasena = usr[:ci]
+        @usuario.contrasena_confirmation = usr[:ci]
+        @usuario.fecha_nacimiento = "1990-01-01"
+        @usuario.fecha_nacimiento = usr[:fecha_nacimiento]
+      else
+        @usuario.telefono_movil = usr[:telefono_movil]
+        @usuario.telefono_habitacion = usr[:telefono_habitacion]
+        @usuario.direccion = usr[:direccion]
+        @usuario.contrasena = usr[:contrasena]
+        @usuario.contrasena_confirmation = usr[:contrasena_confirmation]
+        @usuario.fecha_nacimiento = usr[:fecha_nacimiento]
+      end
+      
+      session[:usuario] = @usuario
+      
+      if (@usuario.edad < 9 || @usuario.edad > 11) && session[:tipo_curso].tipo_categoria_id == "NI" #&& session[:nuevo]
+        flash[:mensaje] = "Usted no tiene la edad para el curso de niños"
+        redirect_to :action => "paso2"
+        return
+      end
+
+      if (@usuario.edad < 12 || @usuario.edad > 14) && session[:tipo_curso].tipo_categoria_id == "TE" #&& session[:nuevo]
+        flash[:mensaje] = "Usted no tiene la edad para el curso de adolecentes"
+        redirect_to :action => "paso2"
+        return
+      end
+
+      if (@usuario.edad < 15 ) && session[:tipo_curso].tipo_categoria_id == "AD" #&& session[:nuevo]
+        flash[:mensaje] = "Usted no tiene la edad para el curso de adultos"
+        redirect_to :action => "paso2"
+        return
+      end
+      
+      if @usuario.save 
+        info_bitacora "Paso2 realizado"
+        flash[:mensaje] = "Preinscripción realizada, recuerde imprimir su planilla"
+        redirect_to :action => "paso3"
+      else
+        @titulo_pagina = "Preinscripción - Paso 2 de 3"  
+        @subtitulo_pagina = "Actualización de Datos Personales"
+        render :action => "paso2"
+      end
+    else
+      flash[:mensaje] = "Error Usuario no encontrado #{usr[:ci]}"
+      render :action => "paso2"
+    end
+  end
+
 
   def paso3 
     @titulo_pagina = "Preinscripción - Paso 3 de 3"  
