@@ -27,6 +27,8 @@ class EstudianteCurso < ActiveRecord::Base
     :class_name => 'HistorialAcademico',
     :foreign_key => [:usuario_ci,:idioma_id,:tipo_categoria_id]
     
+  accepts_nested_attributes_for :historiales_academicos
+    
   def descripcion 
     "Estudiante - #{tipo_curso.descripcion}"
   end

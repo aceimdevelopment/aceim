@@ -13,6 +13,12 @@ class TipoCurso < ActiveRecord::Base
   belongs_to :tipo_categoria,
     :class_name => 'TipoCategoria',
     :foreign_key => ['tipo_categoria_id']  
+
+  has_many :cursos,
+    :class_name => 'Curso',
+    :foreign_key => ['idioma_id','tipo_categoria_id']
+
+  accepts_nested_attributes_for :cursos
   
   has_many :estudiantes_nivelacion,
     :class_name => 'EstudianteNivelacion',
