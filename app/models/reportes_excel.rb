@@ -251,7 +251,7 @@ class ReportesExcel
 
   end
 
-  def self.generar_listado_nivelacion_confirmados(periodo_id)
+  def self.generar_listado_nivelacion_confirmados(periodo_id, idioma_id = nil)
 
     Spreadsheet.client_encoding = 'UTF-8'
     libro = Spreadsheet::Workbook.new
@@ -260,7 +260,11 @@ class ReportesExcel
 
     hoja = libro.create_worksheet :name => 'confirmados_nivelacion'
 
-    historial = EstudianteNivelacion.where(:periodo_id=>periodo_id, :confirmado => 1)
+    if idioma_id
+      historial = EstudianteNivelacion.where(:periodo_id=>periodo_id, :confirmado => 1, :idioma_id => idioma_id)
+    else
+      historial = EstudianteNivelacion.where(:periodo_id=>periodo_id, :confirmado => 1)
+    end
     historial = historial.sort_by{|x| x.usuario.nombre_completo}
 
 

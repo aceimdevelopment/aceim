@@ -1886,8 +1886,12 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
     pdf
   end
 
-  def self.generar_listado_nivelacion_confirmados(periodo_id)
-    historial = EstudianteNivelacion.where(:periodo_id=>periodo_id, :confirmado => 1)
+  def self.generar_listado_nivelacion_confirmados(periodo_id, idioma_id = nil)
+    if idioma_id
+      historial = EstudianteNivelacion.where(:periodo_id=>periodo_id, :confirmado => 1, :idioma_id => idioma_id)
+    else
+      historial = EstudianteNivelacion.where(:periodo_id=>periodo_id, :confirmado => 1)
+    end 
     historial = historial.sort_by{|x| x.usuario.nombre_completo}
     pdf = PDF::Writer.new(:paper => "letter")  #:orientation => :landscape, 
     

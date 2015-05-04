@@ -247,16 +247,17 @@ class EstudianteNivelacionesController < ApplicationController
 
   def listado_confirmados
     periodo_id = params[:periodo_id]
-    if pdf = DocumentosPDF.generar_listado_nivelacion_confirmados(periodo_id)
+    idioma_id = params[:idioma_id]
+    if pdf = DocumentosPDF.generar_listado_nivelacion_confirmados(periodo_id, idioma_id)
       send_data pdf.render,:filename => "nivelacion_confirmados_#{periodo_id}.pdf",:type => "application/pdf", :disposition => "attachment"
     end
   end
 
   def listado_confirmados_excel
     periodo_id = params[:periodo_id]
+    idioma_id = params[:idioma_id]
 
-
-    ruta_excel = ReportesExcel.generar_listado_nivelacion_confirmados(periodo_id)
+    ruta_excel = ReportesExcel.generar_listado_nivelacion_confirmados(periodo_id, idioma_id)
     send_file ruta_excel,
       :filename => "nivelacion_confirmados_#{periodo_id}.xls",
       :type => "application/excel", :disposition => "attachment"
