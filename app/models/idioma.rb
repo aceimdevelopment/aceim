@@ -6,6 +6,16 @@ class Idioma < ActiveRecord::Base
     :foreign_key => ['idioma_id']
 
 
+  # has_and_belongs_to_many :categorias, :class_name => 'idioma_categoria', :foreign_key => ['tipo_categoria_id']
+
+  has_many :idioma_categoria,
+    :class_name => 'IdiomaCategoria',
+    :foreign_key => 'idioma_id'
+
+  has_many :categorias, :through => :idioma_categoria, :source => :tipo_categoria
+
+
+
   def descripcion_idioma
     "#{descripcion}"
   end
