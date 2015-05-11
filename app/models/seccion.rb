@@ -26,6 +26,22 @@ class Seccion < ActiveRecord::Base
   has_many :historial_academico,
   :class_name => 'HistorialAcademico',
   :foreign_key => ['periodo_id','idioma_id','tipo_categoria_id','tipo_nivel_id', 'seccion_numero']
+  accepts_nested_attributes_for :historial_academico
+
+  has_one :horario_seccion2,
+  :class_name => 'HorarioSeccion',
+  :foreign_key => ['periodo_id','idioma_id','tipo_categoria_id','tipo_nivel_id', 'seccion_numero']
+  accepts_nested_attributes_for :horario_seccion2
+
+
+  def horario_seccion
+    HorarioSeccion.where(:periodo_id=>periodo_id,:idioma_id=>idioma_id,:tipo_categoria_id=>tipo_categoria_id,:tipo_nivel_id=>tipo_nivel_id,:seccion_numero=>seccion_numero)
+  end
+    
+  # def horario_seccion2
+  #   HorarioSeccion.where(:periodo_id=>periodo_id,:idioma_id=>idioma_id,:tipo_categoria_id=>tipo_categoria_id,:tipo_nivel_id=>tipo_nivel_id,:seccion_numero=>seccion_numero).limit(0).first
+  # end
+
 
   belongs_to :curso,
     :class_name => 'Curso',
@@ -237,13 +253,7 @@ class Seccion < ActiveRecord::Base
     Curso.where(:idioma_id => idioma_id, :tipo_categoria_id => tipo_categoria_id, :tipo_nivel_id => tipo_nivel_id).limit(1).first
   end
 
-  def horario_seccion
-    HorarioSeccion.where(:periodo_id=>periodo_id,:idioma_id=>idioma_id,:tipo_categoria_id=>tipo_categoria_id,:tipo_nivel_id=>tipo_nivel_id,:seccion_numero=>seccion_numero)
-  end
-  
-  def horario_seccion2
-    HorarioSeccion.where(:periodo_id=>periodo_id,:idioma_id=>idioma_id,:tipo_categoria_id=>tipo_categoria_id,:tipo_nivel_id=>tipo_nivel_id,:seccion_numero=>seccion_numero).limit(0).first
-  end
+
 
   def aula
     if horario_seccion.first.aula_id == "CER"

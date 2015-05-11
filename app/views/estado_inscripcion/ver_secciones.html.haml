@@ -23,7 +23,7 @@
   =collection_select :ubicacion, :id, @ubicaciones, :id, :descripcion_corta, {:prompt => "-- Todas --", :selected => @filtro2}
   %br/
   Filtro por Horario: 
-  =collection_select :horario, :id, @horarios, :to_s, :to_s, {:prompt => "-- Todos --", :selected => @filtro3}
+  =collection_select :horario, :id2, @horarios, :to_s, :to_s, {:prompt => "-- Todos --", :selected => @filtro3}
   %br/
   %div{:style=>"color:red"}
     

@@ -1,5 +1,7 @@
 class EstadoInscripcionController < ApplicationController
-  
+  before_filter :filtro_logueado
+  before_filter :filtro_administrador
+
   def nivel1
     periodo = ParametroGeneral.periodo_actual
     @nombre = params[:id]
@@ -73,6 +75,7 @@ class EstadoInscripcionController < ApplicationController
       flash[:mensaje] = "Los correos se han enviado satisfactoriamente"
     end
     @titulo_pagina = "Estado de la Inscripción"
+
     @filtro = params[:filtrar] 
     @filtro = nil if @filtro == nil || @filtro.strip.size == 0
     @filtro2 = params[:filtrar2] 
@@ -81,9 +84,13 @@ class EstadoInscripcionController < ApplicationController
     @filtro3 = nil if @filtro3 == nil || @filtro3.strip.size == 0
     @filtro4 = params[:filtrar4] 
     @filtro4 = nil if @filtro4 == nil || @filtro4.strip.size == 0
+    # puts session[:parametros]
     periodo = session[:parametros][:periodo_actual]
     @subtitulo_pagina = "Período #{periodo}"  
-    @seccion = Seccion.where(:periodo_id=>periodo).sort_by{|x| "#{x.tipo_curso.id}-#{'%03i'%x.curso.grado}-#{'%03i'%x.seccion_numero}"}
+    @seccion = Seccion.where(:periodo_id=>periodo)
+
+    # cambiar todo en función a delete_if
+
     @tipos_curso = @seccion.collect{|y| y.tipo_curso}.uniq
     @tipos_nivel = @seccion.collect{|y| y.tipo_nivel}.uniq
     #render :text => "#{@seccion.collect{|x| x.horario_seccion2}.delete_if{|r| r.nil?}.inspect}"
@@ -92,29 +99,43 @@ class EstadoInscripcionController < ApplicationController
     @horarios = @seccion.collect{|z| z.horario}.uniq
 
 
+    # Filtro por Idioma
     if @filtro
       idioma_id , tipo_categoria_id = @filtro.split ","
-      @seccion = @seccion.delete_if{|x| !(x.periodo_id == periodo && x.idioma_id == idioma_id && x.tipo_categoria_id == tipo_categoria_id)}.sort_by{|x| "#{x.tipo_curso.id}-#{'%03i'%x.curso.grado}-#{x.horario}-#{x.seccion_numero}"}
-    end     
+      @seccion = @seccion.delete_if{|x| !(x.periodo_id == periodo && x.idioma_id == idioma_id && x.tipo_categoria_id == tipo_categoria_id)}
+      # @seccion = @seccion.where(:idioma_id => idioma_id, :tipo_categoria_id => tipo_categoria_id)
+    end  
 
-
+    # Filtro por Ubicacion
     if @filtro2
-      secciones = []
-      @seccion.each{|s|
-        aula = s.horario_seccion2.aula
-        secciones << s if aula && aula.tipo_ubicacion_id == @filtro2
-      }                
-      @seccion = secciones
-    end
-    
-    if @filtro3
-      @seccion = @seccion.delete_if{|s| !s.mach_horario?(@filtro3)}
-    end
 
-    if @filtro4
-      @seccion = @seccion.delete_if{|s| !(s.tipo_nivel_id ==  @filtro4)}
+      @seccion = @seccion.delete_if{|s| s.horario_seccion2.aula.nil? || s.horario_seccion2.aula.tipo_ubicacion_id != @filtro2}
+
+
+      # secciones = []
+      # @seccion.each{|s|
+      #   aula = s.horario_seccion2.aula
+      #   secciones << s if aula && aula.tipo_ubicacion_id == @filtro2
+      # }                
+      # @seccion = secciones
     end
     
+    # Filtro por Horario
+
+    @seccion = @seccion.delete_if{|s| s.horario != @filtro3} if @filtro3
+    # if @filtro3
+    #   @seccion = @seccion.delete_if{|s| !s.mach_horario?(@filtro3)}
+    # end
+    
+    # Filtro de Nivel
+
+    @seccion = @seccion.delete_if{|s| s.tipo_nivel_id != @filtro4 } if @filtro4
+
+    # if @filtro4
+    #   @seccion = @seccion.delete_if{|s| !(s.tipo_nivel_id ==  @filtro4)}
+    # end
+    # @seccion = @seccion.sort_by{|x| "#{x.tipo_curso.id}-#{'%03i'%x.curso.grado}-#{x.horario}-#{x.seccion_numero}"}
+
   end
   
   def ver_pdf_secciones

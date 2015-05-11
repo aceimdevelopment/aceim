@@ -38,6 +38,10 @@ class ParametroGeneral < ActiveRecord::Base
     ParametroGeneral.first(:conditions=>["id = ?", "INSCRIPCION_ABIERTA"]).valor == "SI"
   end
 
+  def self.inscripcion_abierta_ingles_adulto                                          
+    ParametroGeneral.first(:conditions=>["id = ?", "INSCRIPCION_ABIERTA_INGLES_ADULTO"]).valor == "SI"
+  end
+
   def self.inscripcion_cambio_abierta                                          
     ParametroGeneral.first(:conditions=>["id = ?", "INSCRIPCION_PERMITIR_CAMBIO_HORARIO"]).valor == "SI"
   end

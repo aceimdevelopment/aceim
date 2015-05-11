@@ -2,9 +2,28 @@ class InscripcionController < ApplicationController
   
   #before_filter :filtro_inscripcion_abierta, :except => ["paso0","paso0_guardar","planilla_inscripcion"] 
   #before_filter :filtro_primer_dia, :only => ["paso1","paso2"]
-  before_filter :filtro_logueado, :except => ["paso0","paso0_guardar"]
+  before_filter :filtro_logueado, :except => ["paso0_ingles", "paso0","paso0_guardar"]
   #before_filter :filtro_nuevos
-  
+  def paso0_ingles
+    reset_session
+    cargar_parametros_generales
+    if ParametroGeneral.inscripcion_abierta_ingles_adulto
+      redirect_to root
+    else
+      @titulo_pagina = "Inscripción de Nuevo en Inglés"  
+      @subtitulo_pagina = "Datos Básicos"
+      @usuario = Usuario.new
+
+    tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_inscripcion],
+      :tipo_categoria_id => 'AD', :idioma_id => 'IN').delete_if{|x|
+      x.curso.grado != 1
+      }.collect{|y| y.tipo_curso.id}.sort.uniq
+    end
+
+    tipo_curso = Seccion.where(:periodo_id => 'B-2015', :idioma_id => 'IN', :tipo_nivel_id => 'BI').collect{|y| y.tipo_curso.id}.sort.uniq
+    
+  end
+
   def paso0                    
     reset_session
     cargar_parametros_generales
@@ -13,6 +32,7 @@ class InscripcionController < ApplicationController
     @usuario = Usuario.new                    
     categorias = []
     categorias << "NI" if ParametroGeneral.inscripcion_ninos_abierta
+    # comentar esta siguoiente linea cuando este lista la inscripcion de ingles adultos
     categorias << "AD" if ParametroGeneral.inscripcion_nuevos_abierta
     categorias << "TE" if ParametroGeneral.inscripcion_nuevos_abierta
     tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_inscripcion],
