@@ -24,6 +24,18 @@ class InscripcionController < ApplicationController
     
   end
 
+
+  # def ingrese_cedula (idioma_id)
+
+  #   # Si idioma_id no esta dentro de los idiomas abiertos para inscribir
+  #   # retornar a inicio
+
+  #   if condition
+      
+  #   end
+    
+  # end
+
   def paso0                    
     reset_session
     cargar_parametros_generales

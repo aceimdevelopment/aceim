@@ -37,11 +37,6 @@ class Seccion < ActiveRecord::Base
   def horario_seccion
     HorarioSeccion.where(:periodo_id=>periodo_id,:idioma_id=>idioma_id,:tipo_categoria_id=>tipo_categoria_id,:tipo_nivel_id=>tipo_nivel_id,:seccion_numero=>seccion_numero)
   end
-    
-  # def horario_seccion2
-  #   HorarioSeccion.where(:periodo_id=>periodo_id,:idioma_id=>idioma_id,:tipo_categoria_id=>tipo_categoria_id,:tipo_nivel_id=>tipo_nivel_id,:seccion_numero=>seccion_numero).limit(0).first
-  # end
-
 
   belongs_to :curso,
     :class_name => 'Curso',
@@ -59,9 +54,6 @@ class Seccion < ActiveRecord::Base
   belongs_to :idioma,
   :class_name => 'Idioma',
   :foreign_key => ['idioma_id']
-
-
-
 
   def cupo
     cantidad = historial_academico.size
