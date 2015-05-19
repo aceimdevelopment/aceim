@@ -5,15 +5,11 @@ class TipoCurso < ActiveRecord::Base
   set_primary_keys :idioma_id,:tipo_categoria_id
 
   #autogenerado por db2models
-  belongs_to :idioma,
-    :class_name => 'Idioma',
-    :foreign_key => ['idioma_id']
+  belongs_to :idioma
 
   #autogenerado por db2models
-  belongs_to :tipo_categoria,
-    :class_name => 'TipoCategoria',
-    :foreign_key => ['tipo_categoria_id']  
-
+  belongs_to :tipo_categoria
+  
   has_many :cursos,
     :class_name => 'Curso',
     :foreign_key => ['idioma_id','tipo_categoria_id']

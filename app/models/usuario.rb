@@ -3,7 +3,7 @@ class Usuario < ActiveRecord::Base
 	
 	include ActiveModel::Validations    
 	attr_accessor :contrasena_confirmation
-  attr_accessible :ci,:nombres, :apellidos, :contrasena, :telefono_movil, :correo, :tipo_sexo_id
+  attr_accessible :ci,:nombres, :apellidos, :contrasena, :telefono_movil, :correo, :tipo_sexo_id, :fecha_nacimiento
   #autogenerado por db2models
   set_primary_key :ci
   #autogenerado por db2models
@@ -14,6 +14,10 @@ class Usuario < ActiveRecord::Base
   has_many :historiales_academicos,
     :class_name => 'HistorialAcademico',
     :foreign_key => [:usuario_ci]
+
+  has_many :estudiante_cursos,
+    :class_name => 'EstudianteCurso',
+    :foreign_key => ['usuario_ci']
 
   validates :ci, :presence => true,  
                  :uniqueness => true

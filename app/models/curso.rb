@@ -17,8 +17,13 @@ class Curso < ActiveRecord::Base
   has_many :historiales_academicos,
     :class_name => 'HistorialAcademico',
     :foreign_key => [:idioma_id,:tipo_categoria_id,:tipo_nivel_id]
-    
-  accepts_nested_attributes_for :historiales_academicos    
+  accepts_nested_attributes_for :historiales_academicos
+
+  has_many :cursos_periodos,
+    :class_name => 'CursoPeriodo',
+    :foreign_key => [:idioma_id,:tipo_categoria_id, :tipo_nivel_id]
+  accepts_nested_attributes_for :cursos_periodos
+
   def siguiente_nivel
     Curso.first(
     :conditions => ["idioma_id = ? AND tipo_categoria_id = ? \

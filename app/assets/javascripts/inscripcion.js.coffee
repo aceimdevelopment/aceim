@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/ 
 $ ->
-  if aceim.es_accion("paso1") or aceim.es_accion("paso1_guardar")
+  if aceim.es_accion("paso1") or aceim.es_accion("paso1_guardar") or aceim.es_accion("actualizar_datos_personales") or aceim.es_accion("guardar_datos_personales")
     $('.datepicker_nac').datepicker
       changeYear: true,
       changeMonth: true,

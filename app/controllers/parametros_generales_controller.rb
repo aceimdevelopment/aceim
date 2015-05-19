@@ -4,6 +4,8 @@ class ParametrosGeneralesController < ApplicationController
   
   def index
 
+    @tipo_cursos = TipoCurso.all.delete_if{|c| c.idioma_id.eql? 'OR'}
+
     @titulo_pagina = "Configuraciones Generales"
 
     @inscripcion_general = ParametroGeneral.find("INSCRIPCION_ABIERTA").valor
@@ -30,6 +32,21 @@ class ParametrosGeneralesController < ApplicationController
 
     @inscripcion_modo_ninos = ParametroGeneral.find("INSCRIPCION_MODO_NINOS").valor
 
+  end
+
+  def guardar_inscripcion_idioma
+    tipo_curso = params[:tipo_curso]
+
+    tipo_curso.each do |k,v|
+      # puts "#{k} es #{v}"
+
+      curso = TipoCurso.find k
+      curso.inscripcion_abierta = v
+      curso.save!
+
+    end
+    flash[:mensaje] = "Inscripones Modificadas con exito" 
+    redirect_to :action => 'index'
   end
   
 

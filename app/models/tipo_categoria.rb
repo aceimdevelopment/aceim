@@ -1,7 +1,14 @@
 #creada por db2models
 class TipoCategoria < ActiveRecord::Base
+
+
+  has_many :tipo_curso,
+    :class_name => 'TipoCurso',
+    :foreign_key => ['tipo_categoria_id']
+
+  has_many :idiomas, :through => :tipo_curso, :source => :idioma
 	
-	def complemento
+  def complemento
   	return "(#{descripcion})" if id !="AD"
     return ""
   end

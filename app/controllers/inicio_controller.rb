@@ -4,6 +4,31 @@ class InicioController < ApplicationController
   def index
 		reg = ContenidoWeb.where(:id => 'INI_CONTENT').first
     @content = reg.contenido
+
+    # categorias = TipoCurso.where(:inscripcion_abierta =>true).collect{|c| c.tipo_categoria_id}.uniq
+
+    # idiomas = TipoCurso.where(:inscripcion_abierta =>true).collect{|c| c.idioma_id}.uniq
+
+    # periodo_id =  ParametroGeneral.periodo_inscripcion.id
+
+    # secciones = Seccion.where(:periodo_id => periodo_id, :idioma_id => idiomas, :tipo_categoria_id => categorias, :esta_abierta => true).delete_if{|s| !s.hay_cupo?; s.curso.grado != 1}
+
+    secciones = Seccion.con_cupo_tipo_curso_abierto_nuevo_perido_actual
+
+    @tipo_cursos = secciones.collect{|y| y.tipo_curso}.sort.uniq
+
+    # tipo_curso = Seccion.where(:periodo_id => periodo_id,:tipo_categoria_id => categorias).delete_if{|x| x.curso.grado != 1 !(x.hay_cupo?)}.collect{|y| y.tipo_curso.id}.sort.uniq
+ 
+    # @idiomas = TipoCurso.all.delete_if{|x| !tipo_curso.index(x.id)}
+
+    # if @idiomas.size == 0
+    #   flash[:mensaje] = "No hay cursos disponibles"
+    #   redirect_to :controller => "inicio"
+    #   return
+    # end
+
+    # @idiomas_categorias = IdiomaCategoria.all
+    # @tipo_cursos = TipoCurso.all.delete_if{|c| c.idioma_id.eql? 'OR'}
   end
   
   def validar  

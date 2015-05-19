@@ -5,12 +5,15 @@
         %p{ :class => "ui-state-highlight ui-corner-all", :style => "margin-top: 20px; padding: 3px 3px" }
           %span.ui-icon.ui-icon-info{ :style =>"display:inline-block;" }
           #{flash[:mensaje]}  
-      =javascript_tag "$(document).ready(function(){ $('#mensaje-flash').show('pulsate',{},'fast'); });"
-    -if ParametroGeneral.inscripcion_nuevos_abierta || ParametroGeneral.inscripcion_ninos_abierta
-      %div{:class => "titulo center"}
-        %h2 
-          Inscripciones Nuevos
-          =button_to "Nuevo usuario", :action => "autenticacion_nuevo", :controller => "inicio"
+      =javascript_tag "$(document).ready(function(){ $('#mensaje-flash').show('pulsate',{},'fast'); });"  
+
+    %ul.titulo.center
+      %h2
+        %p Inscripciones Nuevos
+        -@tipo_cursos.each do |ic|
+          %li{:style => "display:inline-block;"}
+            = button_to "Inscripción #{ic.descripcion}", :action => "ingrese_ci", :controller => "inscripcion", :id => ic.id 
+
     .titulo
       =@content.html_safe
 

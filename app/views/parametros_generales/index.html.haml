@@ -1,4 +1,30 @@
 %br
+%h3 Inscripciones por Idioma
+=form_tag({:action => "guardar_inscripcion_idioma"}) do
+  %table.tablesorter.tablefilter.likert
+    %thead
+      %tr
+        %th{:style => 'width:80%;'}
+          Idioma
+        %th
+          SI
+        %th
+          NO
+        %th
+          Opciones
+    %tbody      
+      -@tipo_cursos.each do |curso|
+        %tr
+          %td= curso.descripcion
+          %td= radio_button_tag "[tipo_curso]#{curso.id}", true, (curso.inscripcion_abierta.eql? true)
+          %td= radio_button_tag "[tipo_curso]#{curso.id}", false, (curso.inscripcion_abierta.eql? false)
+          %td= button_to "programar"
+
+  %p= submit_tag 'Guardar'
+
+
+
+
 %h3 Variables de Entorno
 =form_tag({:action => "guardar_parametros"}) do
   %table.tablesorter.tablefilter.likert
@@ -104,8 +130,8 @@
   %p= submit_tag 'Guardar'
 
 %br
-%h3 Programar Apertura inscripción Alumnos Nuevos
-%p En construcción
+/ %h3 Programar Apertura inscripción Alumnos Nuevos
+/ %p En construcción
 -#form_tag({:action => "programar_inscripcion_nuevos"}) do
 
   -# datetime_select ('programar', 'hora')
