@@ -44,7 +44,7 @@ class InscripcionController < ApplicationController
   end
 
   def ingrese_ci_guardar
-    usuario_ci = params[:usuario][:ci]
+    usuario_ci = params[:usuario][:ci].delete(" ")
 
     tipo_curso = session[:tipo_curso]
 

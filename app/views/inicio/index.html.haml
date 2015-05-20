@@ -13,7 +13,9 @@
         -@tipo_cursos.each do |ic|
           %li{:style => "display:inline-block;"}
             = button_to "Inscripción #{ic.descripcion}", :action => "ingrese_ci", :controller => "inscripcion", :id => ic.id 
-
+    / .titulo
+    /   -@secciones.each do |s|
+    /     = "cupo: #{s.cupo}, horario: #{s.horario}"
     .titulo
       =@content.html_safe
 
