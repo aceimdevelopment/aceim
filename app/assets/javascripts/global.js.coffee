@@ -18,6 +18,8 @@ $ ->
   $('.tablesorter').tablesorter widgets:['zebra']
   $('.barraprogreso').progressbar value:0
 
+
+
 $ ->
   if aceim.es_accion("paso1") or aceim.es_accion("paso1_guardar") or aceim.es_accion("modificar_datos_personales") or aceim.es_accion("modificar") or aceim.es_accion("nuevo") or aceim.es_accion("datos")
     $('.datepicker_nac').datepicker

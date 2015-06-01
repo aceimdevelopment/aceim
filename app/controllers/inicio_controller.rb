@@ -16,9 +16,15 @@ class InicioController < ApplicationController
     @secciones = Seccion.con_cupo_tipo_curso_abierto_nuevo_perido_actual
 
     @tipo_cursos = @secciones.collect{|y| y.tipo_curso}.sort.uniq
-
+    @secciones = Seccion.secciones_para_inscripciones_cursos_abiertas
+    # @cursos_abiertos_nuevo = Inscripcion.where(:tipo_inscripcion_id => 'NU')
+    # @cursos_abiertos_nuevo = @secciones.delete_if{|x| x.tipo_curso.inscripcion.tipo_inscripcion_id!='NU'}.collect{|y| y.tipo_curso.inscripcion}.sort.uniq
     # tipo_curso = Seccion.where(:periodo_id => periodo_id,:tipo_categoria_id => categorias).delete_if{|x| x.curso.grado != 1 !(x.hay_cupo?)}.collect{|y| y.tipo_curso.id}.sort.uniq
  
+    @cursos_abiertos_nuevo = Inscripcion.where(:tipo_inscripcion_id => 'NU', :tipo_estado_inscripcion_curso_id => 'AB')
+
+    @periodo_inscripcion_id = ParametroGeneral.periodo_inscripcion.id
+
     # @idiomas = TipoCurso.all.delete_if{|x| !tipo_curso.index(x.id)}
 
     # if @idiomas.size == 0

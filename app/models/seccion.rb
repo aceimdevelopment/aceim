@@ -64,6 +64,13 @@ class Seccion < ActiveRecord::Base
     return secciones
   end
 
+  def self.secciones_para_inscripciones_cursos_abiertas
+    categorias = Inscripcion.where(:tipo_estado_inscripcion_curso_id => 'AB').collect{|c| c.tipo_categoria_id}.uniq
+    idiomas = Inscripcion.where(:tipo_estado_inscripcion_curso_id => 'AB').collect{|c| c.idioma_id}.uniq
+    periodo_id =  ParametroGeneral.periodo_inscripcion.id
+    secciones = Seccion.where(:periodo_id => periodo_id, :idioma_id => idiomas, :tipo_categoria_id => categorias, :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?} 
+    return secciones
+  end
 
   def cupo
     cantidad = historial_academico.size

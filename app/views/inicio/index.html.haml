@@ -12,7 +12,24 @@
         %p Inscripciones Nuevos
         -@tipo_cursos.each do |ic|
           %li{:style => "display:inline-block;"}
-            = button_to "Inscripción #{ic.descripcion}", :action => "ingrese_ci", :controller => "inscripcion", :id => ic.id 
+            = button_to "Inscripción #{ic.descripcion}", :action => "ingrese_ci", :controller => "inscripcion", :id => ic.id
+
+    %ul.titulo.center
+      %h2
+        %p Inscripciones Nuevos
+        -@cursos_abiertos_nuevo.each do |curso|
+          - secciones = curso.tipo_curso.secciones.where(:periodo_id => @periodo_inscripcion_id, :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?}
+          - catidad_secciones = secciones.count
+          - cupo = 0
+          - secciones.each{|s| cupo += s.cupo}
+          - if cupo <= 0
+            %li{:style => "display:inline-block;"}
+              = button_to "Cupos agotados para #{curso.tipo_curso.descripcion}",nil ,{:disabled => true}
+          - else
+            %li{:style => "display:inline-block;"}
+              = button_to "#{curso.tipo_curso.descripcion} - Cupos: #{cupo} (En #{catidad_secciones} Seccion(es))", :action => "ingrese_ci", :controller => "inscripcion", :id => curso.id
+
+
     / .titulo
     /   -@secciones.each do |s|
     /     = "cupo: #{s.cupo}, horario: #{s.horario}"

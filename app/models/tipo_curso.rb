@@ -10,6 +10,21 @@ class TipoCurso < ActiveRecord::Base
   #autogenerado por db2models
   belongs_to :tipo_categoria
   
+  has_many :inscripciones,
+    :class_name => 'Inscripcion',
+    :foreign_key => ['idioma_id','tipo_categoria_id']
+
+  accepts_nested_attributes_for :inscripciones
+
+  has_many :secciones,
+    :class_name => 'Seccion',
+    :foreign_key => ['idioma_id','tipo_categoria_id']
+
+  accepts_nested_attributes_for :secciones
+
+
+  # has_many :tipo_inscripciones, :through => :inscripcion, :source => :tipo_inscripcion
+
   has_many :cursos,
     :class_name => 'Curso',
     :foreign_key => ['idioma_id','tipo_categoria_id']

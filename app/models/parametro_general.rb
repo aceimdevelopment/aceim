@@ -1,6 +1,22 @@
 #creada por db2models
 class ParametroGeneral < ActiveRecord::Base
 
+  def self.revisar_programaciones
+    Inscripcion.all.each do |inscripcion|  
+      if inscripcion.abrir_ahora?
+        inscripcion.tipo_estado_inscripcion_curso_id = 'AB'
+        inscripcion.save
+      end
+
+      if inscripcion.cerrar_ahora?
+        inscripcion.tipo_estado_inscripcion_curso_id = 'CE'
+        inscripcion.save
+      end
+    end
+    
+  end
+
+
   def self.periodo_actual
     ide = ParametroGeneral.first(:conditions=>["id = ?", "PERIODO_ACTUAL"])
     Periodo.first(:conditions => ["id = ?" , ide.valor])
@@ -79,6 +95,14 @@ class ParametroGeneral < ActiveRecord::Base
     inscripcion_nuevos.valor = "SI"
     inscripcion_nuevos.save
   end
+
+  def self.cerrar_inscripcion_nuevos
+    inscripcion_nuevos = ParametroGeneral.find("INSCRIPCION_NUEVOS_ABIERTA")
+    inscripcion_nuevos.valor = "NO"
+    inscripcion_nuevos.save
+  end
+
+
 
   def self.abrir_listados
     listados_abiertos = ParametroGeneral.find("LISTADOS_ABIERTOS")

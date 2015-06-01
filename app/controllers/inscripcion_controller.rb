@@ -28,14 +28,20 @@ class InscripcionController < ApplicationController
 
   def ingrese_ci
     reset_session
-    cargar_parametros_generales    
-    @tipo_curso = TipoCurso.find(params[:id])
-    unless @tipo_curso && @tipo_curso.inscripcion_abierta
+    cargar_parametros_generales
+    # @tipo_curso = TipoCurso.find(params[:id])
+    @inscripcion = Inscripcion.find(params[:id]) 
+    periodo_id =  ParametroGeneral.periodo_inscripcion.id
+
+    secciones = Seccion.where(:periodo_id => periodo_id, :idioma_id => @inscripcion.tipo_curso.idioma_id, :tipo_categoria_id => @inscripcion.tipo_curso.tipo_categoria_id, :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?} 
+
+
+    unless @inscripcion && @inscripcion.abierta? && secciones.count < 1
       reset_session
       session[:flash] = "Error, No hay cursos abiertos para el idioma y categoria solicitado"
       rediret_to "index"
     else
-      session[:tipo_curso] = @tipo_curso
+      session[:inscripcion] = @inscripcion
 
       @titulo_pagina = "Inscripción de Curso #{@tipo_curso.descripcion}"  
       @subtitulo_pagina = "Paso 1: Registro de Cédula de Identidad"
@@ -46,9 +52,14 @@ class InscripcionController < ApplicationController
   def ingrese_ci_guardar
     usuario_ci = params[:usuario][:ci].delete(" ")
 
-    tipo_curso = session[:tipo_curso]
+    inscripcion = session[:inscripcion]
 
-    if tipo_curso.nil? or (tipo_curso.inscripcion_abierta.eql? false) or tipo_curso.nil?
+    periodo_id =  ParametroGeneral.periodo_inscripcion.id
+    
+    secciones = Seccion.where(:periodo_id => periodo_id, :idioma_id => inscripcion.tipo_curso.idioma_id, :tipo_categoria_id => inscripcion.tipo_curso.tipo_categoria_id, :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?} 
+
+
+    if inscripcion.nil? or (not inscripcion.abierta?) && secciones.count < 1
       reset_session
       session[:flash] = "Error, No hay cursos abiertos para el idioma y categoria solicitado"
       rediret_to "index"
@@ -91,34 +102,38 @@ class InscripcionController < ApplicationController
   end
 
   def seleccionar_horario
-    tipo_curso = session[:tipo_curso]
+    @inscripcion = session[:inscripcion]
     periodo_id =  ParametroGeneral.periodo_inscripcion.id
 
-    secciones = Seccion.where(:periodo_id => periodo_id, :idioma_id => tipo_curso.idioma_id, :tipo_categoria_id => tipo_curso.tipo_categoria_id, :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?} 
-    @horarios = secciones.collect{|s| s.horario}.uniq
+    secciones = Seccion.where(:periodo_id => periodo_id, :idioma_id => @inscripcion.tipo_curso.idioma_id, :tipo_categoria_id => @inscripcion.tipo_curso.tipo_categoria_id, :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?} 
 
-    @titulo_pagina = "Inscripción de Curso #{tipo_curso.descripcion}"  
-    @subtitulo_pagina = "Paso 2: Selección de horario"
+    unless @inscripcion && @inscripcion.abierta? && secciones.count < 1
+      reset_session
+      session[:flash] = "Error, No hay cursos abiertos para el idioma y categoria solicitado"
+      rediret_to "index"
+    else
 
 
+      secciones = Seccion.where(:periodo_id => periodo_id, :idioma_id => inscripcion.tipo_curso.idioma_id, :tipo_categoria_id => inscripcion.tipo_curso.tipo_categoria_id, :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?} 
+      @horarios = secciones.collect{|s| s.horario}.uniq
 
-    # @titulo_pagina = "Preinscripción - Paso 1 de 3"
-    # @subtitulo_pagina = "Selección de Horario"
+      @titulo_pagina = "Inscripción de Curso #{tipo_curso.descripcion}"  
+      @subtitulo_pagina = "Paso 2: Selección de horario"
 
-    ec = EstudianteCurso.find(session[:usuario], 
-      session[:tipo_curso].idioma_id, 
-      session[:tipo_curso].tipo_categoria_id)
-     
+      ec = EstudianteCurso.find(session[:usuario], 
+        session[:inscripçion].tipo_curso.idioma_id, 
+        session[:inscripçion].tipo_curso.tipo_categoria_id)
+       
 
-    @historial = nil
-    begin
-      @historial = ec.proximo_historial
-    rescue Exception => e
-      flash[:mensaje] = e.message
-      redirect_to :controller => "principal", :action => "principal"
-      return
+      @historial = nil
+      begin
+        @historial = ec.proximo_historial
+      rescue Exception => e
+        flash[:mensaje] = e.message
+        redirect_to :controller => "principal", :action => "principal"
+        return
+      end
     end
-
     # if @historial.tipo_nivel_id == "BI" 
     #   if !ParametroGeneral.inscripcion_nuevos_abierta 
     #     flash[:mensaje] = "En este momento no estan abiertas las inscripciones para básico I"
@@ -148,12 +163,23 @@ class InscripcionController < ApplicationController
 
 
   def seleccionar_horario_guardar
+    inscripcion = session[:inscripcion]
+    periodo_id =  ParametroGeneral.periodo_inscripcion.id
+    secciones = Seccion.where(:periodo_id => periodo_id, :idioma_id => inscripcion.tipo_curso.idioma_id, :tipo_categoria_id => inscripcion.tipo_curso.tipo_categoria_id, :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?} 
+
+
+    if inscripcion.nil? or (not inscripcion.abierta?) && secciones.count < 1
+      reset_session
+      session[:flash] = "Error, No hay cursos abiertos para el idioma y categoria solicitado"
+      rediret_to "index"
+    end
 
     seccion = session[:seccion]  
-    
+
     ec = EstudianteCurso.find(session[:usuario], 
-    session[:tipo_curso].idioma_id, 
-    session[:tipo_curso].tipo_categoria_id)
+      session[:inscripçion].tipo_curso.idioma_id, 
+      session[:inscripçion].tipo_curso.tipo_categoria_id)
+
     
     @historial = ec.proximo_historial
     

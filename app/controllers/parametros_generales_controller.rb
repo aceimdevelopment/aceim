@@ -4,7 +4,9 @@ class ParametrosGeneralesController < ApplicationController
   
   def index
 
-    @tipo_cursos = TipoCurso.all.delete_if{|c| c.idioma_id.eql? 'OR'}
+    @tipo_cursos = TipoCurso.all.delete_if{|c| c.idioma_id.eql? 'OR' or c.tipo_categoria_id.eql? 'BBVA'}
+
+    @cursos_a_inscribir = Inscripcion.all.sort_by{|i| i.tipo_curso}
 
     @titulo_pagina = "Configuraciones Generales"
 
@@ -35,17 +37,15 @@ class ParametrosGeneralesController < ApplicationController
   end
 
   def guardar_inscripcion_idioma
-    tipo_curso = params[:tipo_curso]
+    
+    @inscripcion = Inscripcion.find(params[:id].split(" "))
+    @inscripcion.tipo_estado_inscripcion_curso_id = 'PR'
 
-    tipo_curso.each do |k,v|
-      # puts "#{k} es #{v}"
-
-      curso = TipoCurso.find k
-      curso.inscripcion_abierta = v
-      curso.save!
-
+    if @inscripcion.update_attributes(params[:inscripcion])
+      flash[:mensaje] = 'Inscripción programada'
+    else
+      flash[:mensaje] = "#{@inscripcion.errors.count} error(es) impide(n) que sea programada la inscripción: #{@inscripcion.errors.full_messages.join(". ")}."
     end
-    flash[:mensaje] = "Inscripones Modificadas con exito" 
     redirect_to :action => 'index'
   end
   

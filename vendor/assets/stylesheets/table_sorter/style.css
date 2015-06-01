@@ -25,9 +25,22 @@ table.tablesorter tbody td {
 	background-color: #FFF;
 	vertical-align: top;
 }
+
 table.tablesorter tbody tr.odd td {
 	background-color:#F0F0F6;
 }
+table.tablesorter tbody tr.programada td {
+	background-color: lightseagreen 
+}
+
+table.tablesorter tbody tr.abierta td {
+	background-color: lightgreen 
+}
+
+table.tablesorter tbody tr.cerrada td {
+	background-color: lightcoral
+}
+
 table.tablesorter thead tr .headerSortUp {
 	background-image: url(/aceim/assets/table_sorter/asc.gif);
 }

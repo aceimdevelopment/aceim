@@ -13,7 +13,8 @@ class PrincipalController < ApplicationController
 
     @ha = HistorialAcademico.where(:idioma_id => 'IN', :usuario_ci => session[:usuario].ci, :tipo_categoria_id => 'AD', :periodo_id => ParametroGeneral.periodo_actual.id).first
     @descargar_planilla_inscripcion = ParametroGeneral.find("DESCARGAR_PLANILLA_INSCRIPCION").valor
-
+    @curso_abierto_regular = Inscripcion.where(:tipo_inscripcion_id => 'RE', :tipo_estado_inscripcion_curso_id => 'AB', :idioma_id => session[:tipo_curso].idioma_id,
+      :tipo_categoria_id => session[:tipo_curso].tipo_categoria_id).limit(1).first
   end
 
   def principal

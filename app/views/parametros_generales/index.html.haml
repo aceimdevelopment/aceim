@@ -22,8 +22,38 @@
 
   %p= submit_tag 'Guardar'
 
+%br
+%h3 Programar Inscripciones por Idioma
+%table.tablesorter.likert
+  %thead
+    %tr
+      %th{:style => 'width:10%;'}
+        Descripción del Curso
+      %th
+        Tipo
+      %th{:style => 'width:5%;'}
+        Permitir Cambio Horario
+      %th
+        Fecha y hora de Apertura
+      %th
+        Fecha y hora de Cierre
+      %th
+        Opciones
+  %tbody      
+    -@cursos_a_inscribir.each do |curso|
+      - estado = curso.tipo_estado_inscripcion_curso
+      - estado_clase = estado.nil? ? "" : estado.descripcion
 
-
+      %tr{:class => estado_clase}
+        %td= curso.tipo_curso.descripcion
+        %td= curso.tipo_inscripcion.descripcion
+        = form_for (curso,:url=>{:action => 'guardar_inscripcion_idioma'}) do |c|
+          = hidden_field_tag :id, curso.id
+          %td= c.check_box :permitir_cambio_horario
+          %td{:style => "font-size: 8px;"}= c.datetime_select :apertura
+          %td{:style => "font-size: 8px;"}= c.datetime_select :cierre
+          - @submit = (curso.tipo_estado_inscripcion_curso_id.eql? 'PR') ? "Actualizar" : "Programar" 
+          %td= button_to @submit
 
 %h3 Variables de Entorno
 =form_tag({:action => "guardar_parametros"}) do
@@ -210,4 +240,3 @@
         =@periodo_inscripcion
       %td
         =link_to_modal "Cambiar",{:action => "cambiar_periodo_modal",:title =>"Cambiar Período de Inscripción",:width=>300,:params => {:invocador => "cambiar_periodo_inscripcion"}}
-
