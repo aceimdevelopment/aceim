@@ -1,59 +1,53 @@
-%br
-%h3 Inscripciones por Idioma
-=form_tag({:action => "guardar_inscripcion_idioma"}) do
-  %table.tablesorter.tablefilter.likert
-    %thead
-      %tr
-        %th{:style => 'width:80%;'}
-          Idioma
-        %th
-          SI
-        %th
-          NO
-        %th
-          Opciones
-    %tbody      
-      -@tipo_cursos.each do |curso|
-        %tr
-          %td= curso.descripcion
-          %td= radio_button_tag "[tipo_curso]#{curso.id}", true, (curso.inscripcion_abierta.eql? true)
-          %td= radio_button_tag "[tipo_curso]#{curso.id}", false, (curso.inscripcion_abierta.eql? false)
-          %td= button_to "programar"
+#inscripciones
+  %ul
+    - @tipo_inscripciones.each do |tipo_inscripcion|
+      %li
+        = link_to tipo_inscripcion.descripcion, "##{tipo_inscripcion.id}"
 
-  %p= submit_tag 'Guardar'
+  -@tipo_inscripciones.each do |tipo_inscripcion|
+    %div{:id => tipo_inscripcion.id}
+      %h3=  "Programar Inscripciones para #{tipo_inscripcion.descripcion}"
+      %table
+        %tbody.likert
+          %tr
+            %td.abierta Abierta
+            %td.programada Programada
+            %td.cerrada Cerrada
+            %td Sin Información
 
-%br
-%h3 Programar Inscripciones por Idioma
-%table.tablesorter.likert
-  %thead
-    %tr
-      %th{:style => 'width:10%;'}
-        Descripción del Curso
-      %th
-        Tipo
-      %th{:style => 'width:5%;'}
-        Permitir Cambio Horario
-      %th
-        Fecha y hora de Apertura
-      %th
-        Fecha y hora de Cierre
-      %th
-        Opciones
-  %tbody      
-    -@cursos_a_inscribir.each do |curso|
-      - estado = curso.tipo_estado_inscripcion_curso
-      - estado_clase = estado.nil? ? "" : estado.descripcion
+      %table.tablesorter.likert
+        %thead
+          %tr
+            %th
+              Descripción del Curso
+            %th
+              Fecha y hora de Apertura
+            %th
+              Fecha y hora de Cierre
+            %th
+              Fecha y hora de Apertura Entrega Planilla
+            %th
+              Fecha y hora de Cierre Entrega de Planilla
+            %th
+              Opciones
+        %tbody
+          - @inscripciones = Inscripcion.where(:tipo_inscripcion_id => tipo_inscripcion.id).sort_by{|i| i.tipo_curso}
+          - @inscripciones.each do |curso|
+            - estado = curso.tipo_estado_inscripcion_curso
+            - estado_clase = estado.nil? ? "" : estado.descripcion
+            - @submit = 'Programar'
+            - @submit = 'Actualizar' if (estado and estado.id.eql? 'PR')
+            - @submit = 'Modificar' if (estado and estado.id.eql? 'AB')
 
-      %tr{:class => estado_clase}
-        %td= curso.tipo_curso.descripcion
-        %td= curso.tipo_inscripcion.descripcion
-        = form_for (curso,:url=>{:action => 'guardar_inscripcion_idioma'}) do |c|
-          = hidden_field_tag :id, curso.id
-          %td= c.check_box :permitir_cambio_horario
-          %td{:style => "font-size: 8px;"}= c.datetime_select :apertura
-          %td{:style => "font-size: 8px;"}= c.datetime_select :cierre
-          - @submit = (curso.tipo_estado_inscripcion_curso_id.eql? 'PR') ? "Actualizar" : "Programar" 
-          %td= button_to @submit
+            %tr{:class => estado_clase}
+              %td= curso.tipo_curso.descripcion
+              = form_for (curso,:url=>{:action => 'guardar_inscripcion_idioma'}) do |c|
+                = hidden_field_tag :id, curso.id
+                %td= c.datetime_select :apertura
+                %td= c.datetime_select :cierre
+                %td= c.datetime_select :apertura_entrega_planilla
+                %td= c.datetime_select :cierre_entrega_planilla                                
+                %td= button_to @submit
 
 %h3 Variables de Entorno
 =form_tag({:action => "guardar_parametros"}) do
@@ -76,60 +70,6 @@
         %td
           =radio_button_tag "descargar_planilla_inscripcion", "NO", (@descargar_planilla_inscripcion.eql? "NO")
 
-      %tr
-        %td
-          ¿Abrir la Inscripción General? (Alumnos Regulares)
-        %td
-          -if @inscripcion_general == "SI"
-            =radio_button_tag "inscripcion_general","SI",true
-          -else
-            =radio_button_tag "inscripcion_general","SI",false
-        %td
-          -if @inscripcion_general == "NO"
-            =radio_button_tag "inscripcion_general","NO",true
-          -else
-            =radio_button_tag "inscripcion_general","NO",false
-
-      %tr
-        %td
-          ¿Abrir la Inscripción con cambio de horario? (Alumnos Regulares)
-        %td
-          -if @cambio_de_horario == "SI"
-            =radio_button_tag "cambio_de_horario","SI",true
-          -else
-            =radio_button_tag "cambio_de_horario","SI",false
-        %td
-          -if @cambio_de_horario == "NO"
-            =radio_button_tag "cambio_de_horario","NO",true
-          -else
-            =radio_button_tag "cambio_de_horario","NO",false
-
-      %tr
-        %td
-          ¿Abrir la Inscripción de Alumnos Nuevos?
-        %td
-          -if @inscripcion_nuevos == "SI"
-            =radio_button_tag "inscripcion_nuevos","SI",true
-          -else
-            =radio_button_tag "inscripcion_nuevos","SI",false
-        %td
-          -if @inscripcion_nuevos == "NO"
-            =radio_button_tag "inscripcion_nuevos","NO",true
-          -else
-            =radio_button_tag "inscripcion_nuevos","NO",false
-      %tr
-        %td
-          ¿Inscripción abierta para Niños?
-        %td
-          -if @inscripcion_modo_ninos == "SI"
-            =radio_button_tag "inscripcion_modo_ninos","SI",true
-          -else
-            =radio_button_tag "inscripcion_modo_ninos","SI",false
-        %td
-          -if @inscripcion_modo_ninos == "NO"
-            =radio_button_tag "inscripcion_modo_ninos","NO",true
-          -else
-            =radio_button_tag "inscripcion_modo_ninos","NO",false
       %tr
         %td
           ¿Calificación Abierta?
@@ -240,3 +180,7 @@
         =@periodo_inscripcion
       %td
         =link_to_modal "Cambiar",{:action => "cambiar_periodo_modal",:title =>"Cambiar Período de Inscripción",:width=>300,:params => {:invocador => "cambiar_periodo_inscripcion"}}
+
+
+:javascript
+  $("#inscripciones").tabs();

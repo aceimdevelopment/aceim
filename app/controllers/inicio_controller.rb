@@ -2,8 +2,13 @@ class InicioController < ApplicationController
   layout "visitante"
   
   def index
+
 		reg = ContenidoWeb.where(:id => 'INI_CONTENT').first
     @content = reg.contenido
+
+    @tipo_inscripciones = TipoInscripcion.all.sort_by{|i| i.descripcion}
+
+    @tipo_cursos = TipoCurso.all.delete_if{|c| c.idioma_id.eql? 'OR' or c.tipo_categoria_id.eql? 'BBVA'}
 
     # categorias = TipoCurso.where(:inscripcion_abierta =>true).collect{|c| c.tipo_categoria_id}.uniq
 
@@ -15,7 +20,7 @@ class InicioController < ApplicationController
 
     @secciones = Seccion.con_cupo_tipo_curso_abierto_nuevo_perido_actual
 
-    @tipo_cursos = @secciones.collect{|y| y.tipo_curso}.sort.uniq
+    # @tipo_cursos = @secciones.collect{|y| y.tipo_curso}.sort.uniq
     @secciones = Seccion.secciones_para_inscripciones_cursos_abiertas
     # @cursos_abiertos_nuevo = Inscripcion.where(:tipo_inscripcion_id => 'NU')
     # @cursos_abiertos_nuevo = @secciones.delete_if{|x| x.tipo_curso.inscripcion.tipo_inscripcion_id!='NU'}.collect{|y| y.tipo_curso.inscripcion}.sort.uniq

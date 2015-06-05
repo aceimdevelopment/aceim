@@ -6,26 +6,6 @@ class InscripcionController < ApplicationController
   #before_filter :filtro_nuevos
 
 
-  # def paso0_ingles
-  #   reset_session
-  #   cargar_parametros_generales
-  #   if ParametroGeneral.inscripcion_abierta_ingles_adulto
-  #     redirect_to root
-  #   else
-  #     @titulo_pagina = "Inscripción de Nuevo en Inglés"  
-  #     @subtitulo_pagina = "Datos Básicos"
-  #     @usuario = Usuario.new
-
-  #   tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_inscripcion],
-  #     :tipo_categoria_id => 'AD', :idioma_id => 'IN').delete_if{|x|
-  #     x.curso.grado != 1
-  #     }.collect{|y| y.tipo_curso.id}.sort.uniq
-  #   end
-
-  #   tipo_curso = Seccion.where(:periodo_id => 'B-2015', :idioma_id => 'IN', :tipo_nivel_id => 'BI').collect{|y| y.tipo_curso.id}.sort.uniq
-    
-  # end
-
   def ingrese_ci
     reset_session
     cargar_parametros_generales
@@ -35,15 +15,16 @@ class InscripcionController < ApplicationController
 
     secciones = Seccion.where(:periodo_id => periodo_id, :idioma_id => @inscripcion.tipo_curso.idioma_id, :tipo_categoria_id => @inscripcion.tipo_curso.tipo_categoria_id, :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?} 
 
-
-    unless @inscripcion && @inscripcion.abierta? && secciones.count < 1
+    if @inscripcion.nil? or (not @inscripcion.abierta?) or secciones.count < 1
+    # unless @inscripcion && @inscripcion.abierta? && secciones.count < 1
       reset_session
-      session[:flash] = "Error, No hay cursos abiertos para el idioma y categoria solicitado"
-      rediret_to "index"
+      flash[:mensaje] = "Error, No hay cursos abiertos para el idioma solicitado #{secciones.count}"
+      redirect_to :controller => "inicio"
+      return
     else
       session[:inscripcion] = @inscripcion
 
-      @titulo_pagina = "Inscripción de Curso #{@tipo_curso.descripcion}"  
+      @titulo_pagina = "Inscripción de Curso #{@inscripcion.tipo_curso.descripcion}"  
       @subtitulo_pagina = "Paso 1: Registro de Cédula de Identidad"
     end
     render :layout => "nuevo"
@@ -59,10 +40,12 @@ class InscripcionController < ApplicationController
     secciones = Seccion.where(:periodo_id => periodo_id, :idioma_id => inscripcion.tipo_curso.idioma_id, :tipo_categoria_id => inscripcion.tipo_curso.tipo_categoria_id, :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?} 
 
 
-    if inscripcion.nil? or (not inscripcion.abierta?) && secciones.count < 1
+    unless @inscripcion && @inscripcion.abierta? && secciones.count < 1
       reset_session
-      session[:flash] = "Error, No hay cursos abiertos para el idioma y categoria solicitado"
-      rediret_to "index"
+      flash[:mensaje] = "Error, No hay cursos abiertos para el idioma solicitado"
+      redirect_to :controller => "inicio"
+      return
+
     end
     # Si hay idioma_categoria y TipoCurso correspondiente:
     # procedemos a localizar el usuario o a crearlo si no existe
@@ -107,10 +90,12 @@ class InscripcionController < ApplicationController
 
     secciones = Seccion.where(:periodo_id => periodo_id, :idioma_id => @inscripcion.tipo_curso.idioma_id, :tipo_categoria_id => @inscripcion.tipo_curso.tipo_categoria_id, :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?} 
 
-    unless @inscripcion && @inscripcion.abierta? && secciones.count < 1
+    if inscripcion.nil? or (not inscripcion.abierta?) or secciones.count < 1
       reset_session
-      session[:flash] = "Error, No hay cursos abiertos para el idioma y categoria solicitado"
-      rediret_to "index"
+      flash[:mensaje] = "Error, No hay cursos abiertos para el idioma y categoria solicitado #{secciones.count}"
+      redirect_to :controller => "inicio"
+      return
+
     else
 
 
@@ -426,8 +411,10 @@ class InscripcionController < ApplicationController
     end
 
     if @historial
+      inscripcion = session[:tipo_curso].first.inscripciones.where(:tipo_inscripcion_id => 'RE').first
       @horarios = @historial.horarios_disponibles(
-        session[:parametros][:inscripcion_permitir_cambio_horario] == "NO"
+        # session[:parametros][:inscripcion_permitir_cambio_horario] == "NO"
+        inscripcion.permitir_cambio_horario
       )              
       if @horarios.size == 0
         flash[:mensaje] = "En este momento no tenemos cupos."

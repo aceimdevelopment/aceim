@@ -32,15 +32,17 @@ table.tablesorter tbody tr.odd td {
 table.tablesorter tbody tr.programada td {
 	background-color: lightseagreen 
 }
+.programada {background-color: lightseagreen }
 
 table.tablesorter tbody tr.abierta td {
-	background-color: lightgreen 
-}
+	background-color: lightgreen }
+
+.abierta {background-color: lightgreen }
 
 table.tablesorter tbody tr.cerrada td {
 	background-color: lightcoral
 }
-
+.cerrada {background-color: lightcoral }
 table.tablesorter thead tr .headerSortUp {
 	background-image: url(/aceim/assets/table_sorter/asc.gif);
 }
