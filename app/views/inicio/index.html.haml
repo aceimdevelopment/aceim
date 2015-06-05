@@ -54,20 +54,20 @@
               %ul
                 %li
                   Fecha y Hora de Inicio de Inscripción:
-                  %b= curso.apertura ? I18n.localize(curso.apertura, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
+                  %b= (curso.apertura and !curso.tipo_estado_inscripcion_curso_id.eql? 'CE') ? I18n.localize(curso.apertura, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
                   %br
                   %br
                 %li
                   Fecha y Hora de Cierre de Inscripción:
-                  %b= curso.cierre ? I18n.localize(curso.cierre, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
+                  %b= (curso.cierre and !curso.tipo_estado_inscripcion_curso_id.eql? 'CE') ? I18n.localize(curso.cierre, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
                   %br
                   %br
                 %li
                   Entrega de Planilla: 
                   desde el
-                  %b= curso.apertura_entrega_planilla ? I18n.localize(curso.apertura_entrega_planilla, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
+                  %b= (curso.apertura_entrega_planilla and !curso.tipo_estado_inscripcion_curso_id.eql? 'CE') ? I18n.localize(curso.apertura_entrega_planilla, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
                   hasta el
-                  %b= curso.cierre_entrega_planilla ? I18n.localize(curso.cierre_entrega_planilla, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
+                  %b= (curso.cierre_entrega_planilla and !curso.tipo_estado_inscripcion_curso_id.eql? 'CE') ? I18n.localize(curso.cierre_entrega_planilla, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
                   %br
                   %br
                 %li
