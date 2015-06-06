@@ -12,8 +12,8 @@ class Inscripcion < ActiveRecord::Base
 	validates :apertura, :presence => { :message => "Debe incluir el momento de apertura" }
 	validates :cierre, :presence => {:message => "Debe incluir el momento de cierre"}
 
-	validates :apertura_entrega_planilla, :presence => { :message => "Debe incluir el momento de entrega de planilla" }
-	validates :cierre_entrega_planilla, :presence => {:message => "Debe incluir el momento de cierre de entrega de planilla"}
+	# validates :apertura_entrega_planilla, :presence => { :message => "Debe incluir el momento de entrega de planilla" }
+	# validates :cierre_entrega_planilla, :presence => {:message => "Debe incluir el momento de cierre de entrega de planilla"}
 
 	validate :apertura_menorque_cierre
 

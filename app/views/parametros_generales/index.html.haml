@@ -1,8 +1,39 @@
 #inscripciones
   %ul
     - @tipo_inscripciones.each do |tipo_inscripcion|
-      %li
-        = link_to tipo_inscripcion.descripcion, "##{tipo_inscripcion.id}"
+      %li= link_to tipo_inscripcion.descripcion, "##{tipo_inscripcion.id}"
+    %li= link_to 'nivelación', '#NI'
+
+  #NI
+    %h3=  "Programar Nivelaciones"
+    %table.tablesorter.likert
+      %thead
+        %tr
+          %th
+            Descripción del Curso
+          %th
+            Fecha y hora de Prueba Escrita
+          %th
+            Fecha y hora de Prueba Oral
+          %th
+            Opciones
+      %tbody
+        - @inscripciones = Inscripcion.where(:tipo_inscripcion_id => 'NI').sort_by{|i| i.tipo_curso}
+        - @inscripciones.each do |curso|
+          - estado = curso.tipo_estado_inscripcion_curso
+          - estado_clase = estado.nil? ? "" : estado.descripcion
+          - @submit = 'Programar'
+          - @submit = 'Actualizar' if (estado and estado.id.eql? 'PR')
+          - @submit = 'Modificar' if (estado and estado.id.eql? 'AB')
+
+          %tr{:class => estado_clase}
+            %td= curso.tipo_curso.descripcion
+            = form_for (curso,:url=>{:action => 'guardar_inscripcion_idioma'}) do |c|
+              = hidden_field_tag :id, curso.id
+              %td= c.datetime_select :apertura
+              %td= c.datetime_select :cierre                   
+              %td= button_to @submit
+
 
   -@tipo_inscripciones.each do |tipo_inscripcion|
     %div{:id => tipo_inscripcion.id}
@@ -31,7 +62,7 @@
             %th
               Opciones
         %tbody
-          - @inscripciones = Inscripcion.where(:tipo_inscripcion_id => tipo_inscripcion.id).sort_by{|i| i.tipo_curso}
+          - @inscripciones = tipo_inscripcion.inscripciones.sort_by{|i| i.tipo_curso}
           - @inscripciones.each do |curso|
             - estado = curso.tipo_estado_inscripcion_curso
             - estado_clase = estado.nil? ? "" : estado.descripcion

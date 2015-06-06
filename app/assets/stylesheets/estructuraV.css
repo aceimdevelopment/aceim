@@ -17,15 +17,18 @@ footer, header, nav, section, video, object, output {
 	display: block;
 }
 */
-.btn_idiomas{ margin: 5px;padding: 3px;color:white;}
+.btn_idiomas{ margin: 3px;padding: 3px;font-size: 15px;}
 
-#ALAD {  background-color: red;margin: 5px;padding: 5px;color:white;font-size: 16px;}
-#FRAD {  background-color: orange;margin: 5px;padding: 5px;color:white;font-size: 16px;}
-#INAD {  background-color: rgba(0, 128, 2, 0.75);margin: 5px;padding: 5px;color:white;font-size: 16px;}
-#INNI {  background-color: rgba(0, 128, 2, 0.65) ;margin: 5px;padding: 5px;color:white;font-size: 16px;}
-#INTE {  background-color: rgba(0, 128, 2, 0.5);margin: 5px;padding: 5px;color:white;font-size: 16px;}
-#ITAD {  background-color: blue;margin: 5px;padding: 5px;color:yellow;font-size: 16px;}
-#PGAD {  background-color: yellow;color:darkblue;margin: 5px;padding: 5px;font-size: 16px;}
+
+#ALAD {  background-color: indigo;}
+#FRAD {  background-color: orange;}
+#INAD {  background-color: chartreuse;}
+#INNI {  background-color: chartreuse;}
+#INTE {  background-color: chartreuse;}
+#ITAD {  background-color: maroon;}
+#PGAD {  background-color: gold;}
+#NIV {  background-color: aquamarine;}
+
 
 .boton_commit{border-color: lightgreen !important;}
 
