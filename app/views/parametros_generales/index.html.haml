@@ -12,9 +12,9 @@
           %th
             Descripción del Curso
           %th
-            Fecha y hora de Prueba Escrita
-          %th
             Fecha y hora de Prueba Oral
+          %th
+            Fecha y hora de Prueba Escrita
           %th
             Opciones
       %tbody
@@ -31,7 +31,7 @@
             = form_for (curso,:url=>{:action => 'guardar_inscripcion_idioma'}) do |c|
               = hidden_field_tag :id, curso.id
               %td= c.datetime_select :apertura
-              %td= c.datetime_select :cierre                   
+              %td= c.datetime_select :cierre
               %td= button_to @submit
 
 
