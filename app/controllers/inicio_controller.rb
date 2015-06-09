@@ -61,10 +61,16 @@ class InicioController < ApplicationController
       roles = []
       roles << "Administrador" if usuario.administrador
       roles << "Instructor" if usuario.instructor
-      ests = EstudianteCurso.where(:usuario_ci => login) 
+      ests = EstudianteCurso.where(:usuario_ci => login)
       ests.each{ |ec|
         roles << "Estudiante"
-      }                       
+      }
+      niv = EstudianteNivelacion.where(:usuario_ci=>login)
+
+      niv.each{ |ec|
+        roles << "Nivelacion"
+      }
+
       if roles.size == 0
         info_bitacora "No tiene roles el usuario #{login}"
         flash[:mensaje_login] = "Usuario sin rol"
@@ -89,17 +95,29 @@ class InicioController < ApplicationController
   
   def seleccionar_rol    
     usuario = session[:usuario]
+    usuario = Usuario.find(usuario.ci)
     @roles = []
     @roles << { :tipo => "Administrador", :descripcion => "Administrador"} if usuario.administrador
     @roles << { :tipo => "Instructor", :descripcion => "Instructor"} if usuario.instructor
+
     usuario.estudiante_curso.each{|ec|
       @roles << { 
         :tipo => "Estudiante",
         :descripcion => ec.descripcion,
         :tipo_categoria_id => ec.tipo_categoria_id,
         :idioma_id => ec.idioma_id
-      }  
-    }                                             
+      }
+    }
+
+    usuario.nivelaciones.each{|n|
+      @roles << {
+        :tipo => "Nivelacion",
+        :descripcion => n.descripcion,
+        :tipo_categoria_id => n.tipo_categoria_id,
+        :idioma_id => n.idioma_id
+      }
+    }
+
   end 
   
   def un_rol 
@@ -136,7 +154,29 @@ class InicioController < ApplicationController
         redirect_to :controller => "principal"
         return
       end
+    elsif tipo ==  "Nivelacion"
+      en = nil
+      if params[:tipo_categoria_id] && params[:idioma_id]
+        en = EstudianteNivelacion.where(
+          :usuario_ci => usuario.ci,
+          :tipo_categoria_id => params[:tipo_categoria_id],
+          :idioma_id => params[:idioma_id]).limit(1).first
+      else
+        en = EstudianteNivelacion.where(
+          :usuario_ci => usuario.ci).limit(1).first
+      end
+      if en      
+        session[:estudiante] = usuario.estudiante
+        session[:rol] = en.descripcion
+        session[:tipo_curso] = en.tipo_curso  
+        info_bitacora "Inicio de sesion del estudiante nivelacion"
+        redirect_to :controller => "principal"
+        return
+      end
     end
+
+
+
     flash[:mensaje_login] = "Inicio inválido"
     redirect_to :action => "index"
     return

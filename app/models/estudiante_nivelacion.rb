@@ -26,6 +26,11 @@ class EstudianteNivelacion < ActiveRecord::Base
       :idioma_id => idioma_id,
       :tipo_categoria_id => tipo_categoria_id).first
   end          
+
+  def descripcion 
+    "Estudiante Nivelación - #{tipo_curso.descripcion}"
+  end
+
   
   def estado
     return "Inscrito" if inscrito?

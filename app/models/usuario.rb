@@ -19,6 +19,13 @@ class Usuario < ActiveRecord::Base
     :class_name => 'EstudianteCurso',
     :foreign_key => ['usuario_ci']
 
+
+  has_many :nivelaciones,
+    :class_name => 'EstudianteNivelacion',
+    :foreign_key => ['usuario_ci']
+  accepts_nested_attributes_for :nivelaciones
+
+
   validates :ci, :presence => true,  
                  :uniqueness => true
                  
