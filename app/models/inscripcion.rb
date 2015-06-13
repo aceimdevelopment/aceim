@@ -17,6 +17,29 @@ class Inscripcion < ActiveRecord::Base
 
 	validate :apertura_menorque_cierre
 
+	def ninos_abierta?
+		tipo_estado_inscripcion_curso_id.eql? 'AB' and tipo_categoria_id.eql? 'NI'
+	end
+
+	def nuevos?
+		tipo_inscripcion_id.eql? 'NU'
+	end
+
+	def regulares?
+		tipo_inscripcion_id.eql? 'RE'
+	end
+
+	def regulares_o_nuevos?
+		tipo_inscripcion_id.eql? 'NU' or tipo_inscripcion_id.eql? 'RE'
+	end
+
+	def cambio_horario?
+		tipo_inscripcion_id.eql? 'CA'
+	end
+
+	def nuevo_abierta?
+		tipo_estado_inscripcion_curso_id.eql? 'AB' and tipo_inscripcion.eql? 'NU'
+	end
 
 	def abierta?
 		tipo_estado_inscripcion_curso_id.eql? 'AB'		

@@ -13,8 +13,17 @@ class PrincipalController < ApplicationController
 
     @ha = HistorialAcademico.where(:idioma_id => 'IN', :usuario_ci => session[:usuario].ci, :tipo_categoria_id => 'AD', :periodo_id => ParametroGeneral.periodo_actual.id).first
     @descargar_planilla_inscripcion = ParametroGeneral.find("DESCARGAR_PLANILLA_INSCRIPCION").valor
-    @curso_abierto_regular = Inscripcion.where(:tipo_inscripcion_id => 'RE', :tipo_estado_inscripcion_curso_id => 'AB', :idioma_id => session[:tipo_curso].idioma_id,
+
+    @curso_abierto_regular = Inscripcion.where(:tipo_inscripcion_id => 'RE', 
+      :tipo_estado_inscripcion_curso_id => 'AB', 
+      :idioma_id => session[:tipo_curso].idioma_id,
       :tipo_categoria_id => session[:tipo_curso].tipo_categoria_id).limit(1).first
+
+    @curso_abierto_cambio = Inscripcion.where(:tipo_inscripcion_id => 'CA', 
+      :tipo_estado_inscripcion_curso_id => 'AB', 
+      :idioma_id => session[:tipo_curso].idioma_id,
+      :tipo_categoria_id => session[:tipo_curso].tipo_categoria_id).limit(1).first
+
 
     @nivelaciones = EstudianteNivelacion.where(
       :usuario_ci => session[:usuario].ci,
@@ -25,6 +34,13 @@ class PrincipalController < ApplicationController
 
   def principal
     mensaje = flash[:mensaje]
+    # flash[:mensaje] = mensaje
+    # rol = session[:rol]
+    # accion = ""
+    # accion = "_admin" if rol == "Administrador"
+    # accion = "_instructor" if rol == "Instructor"
+    # redirect_to :controller => "principal#{accion}"
+    # return
     rol = session[:rol]
     if rol == "Administrador"
       flash[:mensaje] = mensaje

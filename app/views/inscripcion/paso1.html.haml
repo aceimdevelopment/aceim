@@ -1,4 +1,6 @@
+=@horario
 =form_tag :action => "paso1_guardar" do
+  =hidden_field_tag :id, @inscripcion.id.to_a
   %fieldset
     %legend Horarios
     %p

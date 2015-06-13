@@ -1,9 +1,18 @@
--if  !@preinscrito 
-	/ -if (ParametroGeneral.inscripcion_ninos_abierta && session[:tipo_curso].tipo_categoria_id == "NI") || ((ParametroGeneral.inscripcion_regulares_abierta || ParametroGeneral.inscripcion_cambio_abierta)&& session[:tipo_curso].tipo_categoria_id != "NI")
-	- unless @curso_abierto_regular.nil?
+ 
+/ -if (ParametroGeneral.inscripcion_ninos_abierta && session[:tipo_curso].tipo_categoria_id == "NI") || ((ParametroGeneral.inscripcion_regulares_abierta || ParametroGeneral.inscripcion_cambio_abierta)&& session[:tipo_curso].tipo_categoria_id != "NI")
+
+- if !@preinscrito
+	- if @curso_abierto_regular
 		%h3
-			=link_to "Preinscribirse: #{@curso_abierto_regular.descripcion}", :action => "paso1", :controller => "inscripcion"
-		%div.titulo Preinscribirse en el periodo #{session[:parametros][:periodo_inscripcion]} y obtener la Planilla           
+			=link_to "Preinscribirse: #{@curso_abierto_regular.descripcion}", :action => "paso1", :controller => "inscripcion", :id => @curso_abierto_regular.id
+		%div.titulo Preinscribirse en el periodo #{session[:parametros][:periodo_inscripcion]} como regular y obtener la Planilla
+
+	- if @curso_abierto_cambio
+		%h3
+			=link_to "Preinscribirse: #{@curso_abierto_cambio.descripcion}", :action => "paso1", :controller => "inscripcion", :id => @curso_abierto_cambio.id
+		%div.titulo Preinscribirse en el periodo #{session[:parametros][:periodo_inscripcion]} con cambio de horario y obtener la Planilla
+
+
 -if @preinscrito and @descargar_planilla_inscripcion.eql? "SI"
 	%h3
 		=link_to "Obtener Planilla de Preinscripción", :action => "planilla_inscripcion", :controller => "inscripcion"
@@ -13,7 +22,7 @@
 	- @nivelaciones.each do |en|
 		%h3
 			=link_to "Obtener Planilla #{en.descripcion}", :controller => 'estudiante_nivelaciones',:action => "planilla_nivelacion", :id => en.id
-		%div.titulo Obtener planilla #{en.descripcion} del periodo #{session[:parametros][:periodo_inscripcion]}
+		%div.titulo Obtener planilla #{en.descripcion} del periodo #{en.periodo_id}
 %h3
 	=link_to "Consultar Historial de Cursos", :action => "cursos", :controller => "estudiante"
 %div.titulo Consulta el listado de tus Cursos Realizados
