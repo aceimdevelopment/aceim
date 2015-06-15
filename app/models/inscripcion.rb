@@ -17,6 +17,42 @@ class Inscripcion < ActiveRecord::Base
 
 	validate :apertura_menorque_cierre
 
+	def fecha_apertura
+		I18n.localize(apertura, :format => "%A %d de %B de %Y a las %I:%M %p")
+	end
+
+	def fecha_cierre
+		I18n.localize(cierre, :format => "%A %d de %B de %Y a las %I:%M %p")
+	end
+
+	def fecha_inscripcion
+		fecha_formato apertura, cierre
+	end
+
+	def fecha_entrega_planilla
+		fecha_formato apertura_entrega_planilla, cierre_entrega_planilla
+	end
+
+	def fecha_formato (fecha_inicial, fecha_final)
+		if fecha_inicial.blank? or fecha_final.blank? or cerrada?
+			return "por definir"
+		else
+			if fecha_inicial.to_date.eql? fecha_final.to_date		
+				fecha = I18n.localize(fecha_inicial, :format => "El %A, %d de %B de %Y ")
+				if (fecha_inicial.hour < 12) and (fecha_final.hour > 12)
+					fecha += I18n.localize(fecha_inicial, :format => "desde las %I:%M %p hasta las 12:00m y desde las 2:00pm hasta las ")
+					fecha += I18n.localize(fecha_final, :format => "%I:%M %p")
+				else
+					fecha += I18n.localize(fecha_inicial, :format => "desde las %I:%M %p hasta las ")
+					fecha += I18n.localize(fecha_final, :format => "%I:%M %p")					
+				end	
+			else
+				fecha = "Desde el #{fecha_apertura} hasta el #{fecha_cierre}"
+			end			
+			return fecha
+		end
+	end
+
 	def ninos_abierta?
 		tipo_estado_inscripcion_curso_id.eql? 'AB' and tipo_categoria_id.eql? 'NI'
 	end
