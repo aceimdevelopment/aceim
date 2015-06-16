@@ -10,7 +10,7 @@ class InicioController < ApplicationController
 
     @tipo_cursos = TipoCurso.all.delete_if{|c| c.idioma_id.eql? 'OR' or c.tipo_categoria_id.eql? 'BBVA'}
 
-    @nivelaciones = TipoInscripcion.where(:id => 'NI').first.inscripciones
+    @nivelaciones = TipoInscripcion.where(:id => 'NI').first.inscripciones.order{|i| i.apertura}
 
     # categorias = TipoCurso.where(:inscripcion_abierta =>true).collect{|c| c.tipo_categoria_id}.uniq
 

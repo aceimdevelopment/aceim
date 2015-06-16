@@ -42,7 +42,7 @@
       %li=  link_to 'Nivelación', "#NIVE", :id => 'NIV', :class => 'btn_idiomas'
 
     - @tipo_cursos.each do |tipo_curso|
-      -@inscripciones = tipo_curso.inscripciones.delete_if{|i| i.tipo_inscripcion_id.eql? 'NI'}.sort_by{|i| i.descripcion}
+      -@inscripciones = tipo_curso.inscripciones.delete_if{|i| i.tipo_inscripcion_id.eql? 'NI'}.sort_by{|i| i.apertura}
       %div{:id => tipo_curso.id.join("_"), :style => 'background-color:white;' }
         %ul
           %li
