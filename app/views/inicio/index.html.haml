@@ -29,6 +29,7 @@
   .titulo
     =@content.html_safe
   - @por_definir = 'Por definir'
+
   #inscripciones
     %h2 Seleccione el Idioma de su interés para ampliar la información:
     %ul
@@ -44,46 +45,42 @@
     - @tipo_cursos.each do |tipo_curso|
       -@inscripciones = tipo_curso.inscripciones.delete_if{|i| i.tipo_inscripcion_id.eql? 'NI'}.sort_by{|i| i.apertura}
       %div{:id => tipo_curso.id.join("_"), :style => 'background-color:white;' }
-        %ul
-          %li
-            - @inscripciones.each do |curso|
-              %h2
-                %b= curso.tipo_inscripcion.descripcion
-              %ul
-                %li
-                  Fecha y Hora de Inscripción:
-                  %p
-                    %b= curso.fecha_inscripcion
-                %li
-                  Fecha y Hora de Entrega de Planilla:
-                  %p
-                    %b= curso.fecha_entrega_planilla                  
-                %li
-                  - @arancel = (curso.tipo_inscripcion_id.eql? 'NU') ? "#{ParametroGeneral.find("COSTO_NUEVOS").valor.to_i}Bs." : "#{TipoConvenio.find('REG').monto.to_i}Bs." 
-                  Arancel:
-                  %b= (curso.tipo_estado_inscripcion_curso_id.eql? 'PR' or curso.tipo_estado_inscripcion_curso_id.eql? 'AB') ? @arancel : @por_definir
+        - @inscripciones.each do |curso|
+          %h2{:style => "list-style-type: binary;"}
+            %b= curso.tipo_inscripcion.descripcion
+          %ul
+            %li
+              Fecha y Hora de Inscripción:
+              %p
+                %b= curso.fecha_inscripcion
+            %li
+              Fecha y Hora de Entrega de Planilla:
+              %p
+                %b= curso.fecha_entrega_planilla                  
+            %li
+              - @arancel = (curso.tipo_inscripcion_id.eql? 'NU') ? "#{ParametroGeneral.find("COSTO_NUEVOS").valor.to_i}Bs." : "#{TipoConvenio.find('REG').monto.to_i}Bs." 
+              Arancel:
+              %b= (curso.tipo_estado_inscripcion_curso_id.eql? 'PR' or curso.tipo_estado_inscripcion_curso_id.eql? 'AB') ? @arancel : @por_definir
 
 
     #NIVE{:style => 'background-color:white;'}
-      %ul
-        %li
-          - @nivelaciones.each do |nivelacion|
-            %h2
-              %b= nivelacion.tipo_curso.descripcion.capitalize
-            %ul
-              %li
-                Fecha Prueba Oral:
-                %b= (nivelacion.apertura and !nivelacion.tipo_estado_inscripcion_curso_id.eql? 'CE') ? I18n.localize(nivelacion.apertura, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
-                %br
-                %br
-              %li
-                Fecha Prueba Escrita:
-                %b= (nivelacion.cierre and !nivelacion.tipo_estado_inscripcion_curso_id.eql? 'CE') ? I18n.localize(nivelacion.cierre, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
-                %br
-                %br
-              %li
-                Arancel:
-                %b= (nivelacion.tipo_estado_inscripcion_curso_id.eql? 'PR' or nivelacion.tipo_estado_inscripcion_curso_id.eql? 'AB') ? ParametroGeneral.costo_examen : @por_definir
+      - @nivelaciones.each do |nivelacion|
+        %h2
+          %b= nivelacion.tipo_curso.descripcion.capitalize
+        %ul
+          %li
+            Fecha Prueba Oral:
+            %b= (nivelacion.apertura and !nivelacion.tipo_estado_inscripcion_curso_id.eql? 'CE') ? I18n.localize(nivelacion.apertura, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
+            %br
+            %br
+          %li
+            Fecha Prueba Escrita:
+            %b= (nivelacion.cierre and !nivelacion.tipo_estado_inscripcion_curso_id.eql? 'CE') ? I18n.localize(nivelacion.cierre, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
+            %br
+            %br
+          %li
+            Arancel:
+            %b= (nivelacion.tipo_estado_inscripcion_curso_id.eql? 'PR' or nivelacion.tipo_estado_inscripcion_curso_id.eql? 'AB') ? ParametroGeneral.costo_examen : @por_definir
   %br
   %br
   .center
