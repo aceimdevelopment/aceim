@@ -155,11 +155,16 @@ class InscripcionController < ApplicationController
       return
     end
     
-    @historial.save  
-    info_bitacora "Paso 1 realizado preinscripcion realizada en #{@historial.seccion.descripcion_con_periodo}"
-    flash[:mensaje] = "Preinscripción realizada, Su cupo está reservado"
-    redirect_to :action => "actualizar_datos_personales"
-    
+    if @historial.save
+      session[:tipo_curso] = @inscripcion.tipo_curso
+      info_bitacora "Paso 1 realizado preinscripcion realizada en #{@historial.seccion.descripcion_con_periodo}"
+      flash[:mensaje] = "Preinscripción realizada, Su cupo está reservado"
+      redirect_to :action => "actualizar_datos_personales"
+    else
+      flash[:mensaje] = "Error inesperado, no se pudo realizar la inscripción"
+      redirect_to :action => "seleccionar_horario"
+    end
+
   end
 
   def actualizar_datos_personales
@@ -435,7 +440,6 @@ class InscripcionController < ApplicationController
         redirect_to :controller => "principal", :action => "principal"
         return
       end
-      session[:tipo_curso] = @inscripcion.tipo_curso
       # Asigno la seccion ultima del curso realizado
       # seccion = session[:seccion]
 
@@ -482,10 +486,14 @@ class InscripcionController < ApplicationController
       @historial.seccion_numero = seccion
 
       # Inscribo
-      @historial.save  
-      info_bitacora "Paso 1 realizado preinscripcion realizada en #{@historial.seccion.descripcion_con_periodo}"
-      flash[:mensaje] = "Preinscripción realizada, Su cupo está reservado"
-      redirect_to :action => "paso2"
+      if @historial.save 
+        session[:tipo_curso] = @inscripcion.tipo_curso 
+        info_bitacora "Paso 1 realizado preinscripcion realizada en #{@historial.seccion.descripcion_con_periodo}"
+        flash[:mensaje] = "Preinscripción realizada, Su cupo está reservado"
+        redirect_to :action => "paso2"
+      else
+        redirect_to :action => 'paso1'
+      end
 
     end
 
@@ -576,11 +584,13 @@ class InscripcionController < ApplicationController
   end     
   
   def planilla_inscripcion
-    @inscripcion = Inscripcion.find(session[:inscripcion_id])
+
+    tipo_curso = session[:tipo_curso]
+
     @historial = HistorialAcademico.where(
       :usuario_ci => session[:usuario].ci,
-      :idioma_id => @inscripcion.idioma_id,
-      :tipo_categoria_id => @inscripcion.tipo_categoria_id,
+      :idioma_id => tipo_curso.idioma_id,
+      :tipo_categoria_id => tipo_curso.tipo_categoria_id,
       :periodo_id => session[:parametros][:periodo_inscripcion]).limit(1).first
     info_bitacora "Se busco la planilla de inscripcion en #{@historial.seccion.descripcion_con_periodo}"
     pdf = DocumentosPDF.planilla_inscripcion(@historial)
