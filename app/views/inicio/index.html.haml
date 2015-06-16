@@ -46,9 +46,9 @@
       -@inscripciones = tipo_curso.inscripciones.delete_if{|i| i.tipo_inscripcion_id.eql? 'NI'}.sort_by{|i| i.apertura}
       %div{:id => tipo_curso.id.join("_"), :style => 'background-color:white;' }
         - @inscripciones.each do |curso|
-          %h2{:style => "list-style-type: binary;"}
+          %h2
             %b= curso.tipo_inscripcion.descripcion
-          %ul
+          %ul{:style => "list-style-type: disc;"}
             %li
               Fecha y Hora de Inscripción:
               %p
