@@ -26,7 +26,7 @@ class Inscripcion < ActiveRecord::Base
 	end
 
 	def fecha_inscripcion
-		fecha_formato (apertura+20.minutes), (cierre+20.minutes)
+		fecha_formato apertura, cierre
 	end
 
 	def fecha_entrega_planilla
