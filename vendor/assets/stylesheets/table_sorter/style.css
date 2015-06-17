@@ -32,12 +32,12 @@ table.tablesorter tbody tr.odd td {
 table.tablesorter tbody tr.programada td {
 	background-color: lightseagreen 
 }
-.programada {background-color: lightseagreen }
+.programada {background-color: rgba(32, 178, 170, 0.5) }
 
 table.tablesorter tbody tr.abierta td {
 	background-color: lightgreen }
 
-.abierta {background-color: lightgreen }
+.abierta {background-color: rgba(144, 238, 144, 0.5)}
 
 table.tablesorter tbody tr.cerrada td {
 	background-color: lightcoral

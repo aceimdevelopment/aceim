@@ -34,7 +34,7 @@ class Inscripcion < ActiveRecord::Base
 	end
 
 	def fecha_formato (fecha_inicial, fecha_final)
-		if fecha_inicial.blank? or fecha_final.blank? or cerrada?
+		if fecha_inicial.blank? or fecha_final.blank? or !Date.today.month.eql?(cierre.to_date.month)
 			return "por definir"
 		else
 			if fecha_inicial.to_date.eql? fecha_final.to_date		
@@ -79,6 +79,10 @@ class Inscripcion < ActiveRecord::Base
 
 	def abierta?
 		tipo_estado_inscripcion_curso_id.eql? 'AB'		
+	end
+
+	def programada?
+		tipo_estado_inscripcion_curso_id.eql? 'PR'		
 	end
 
 	def cerrada?
