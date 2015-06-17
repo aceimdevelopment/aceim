@@ -26,7 +26,7 @@ class Inscripcion < ActiveRecord::Base
 	end
 
 	def fecha_inscripcion
-		fecha_formato apertura, cierre
+		fecha_formato (apertura+20.minutes), (cierre+20.minutes)
 	end
 
 	def fecha_entrega_planilla
@@ -90,11 +90,11 @@ class Inscripcion < ActiveRecord::Base
 	end
 
 	def abrir_ahora?
-		tipo_estado_inscripcion_curso_id.eql? 'PR' and apertura <= DateTime.now
+		tipo_estado_inscripcion_curso_id.eql? 'PR' and apertura <= DateTime.now-21.minutes
 	end
 
 	def cerrar_ahora?
-		tipo_estado_inscripcion_curso_id.eql? 'AB' and cierre <= DateTime.now
+		tipo_estado_inscripcion_curso_id.eql? 'AB' and cierre <= DateTime.now-21.minutes
 	end
 
     def descripcion

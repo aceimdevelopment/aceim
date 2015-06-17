@@ -2,17 +2,21 @@
 class ParametroGeneral < ActiveRecord::Base
 
   def self.revisar_programaciones
-    Inscripcion.all.each do |inscripcion|  
+    aux = ""
+    Inscripcion.all.each do |inscripcion|
+
       if inscripcion.abrir_ahora?
         inscripcion.tipo_estado_inscripcion_curso_id = 'AB'
-        puts "Inscripcion Abierta de #{inscripcion.descripcion} a las #{DateTime.now}" #if inscripcion.save
+        aux += "Inscripcion Abierta de #{inscripcion.descripcion} a las #{DateTime.now} | " if inscripcion.save
       end
 
       if inscripcion.cerrar_ahora?
         inscripcion.tipo_estado_inscripcion_curso_id = 'CE'
-        puts "Inscripcion Cerrada de #{inscripcion.descripcion} a las #{DateTime.now}" if inscripcion.save
+        aux += "Inscripcion Cerrada de #{inscripcion.descripcion} a las #{DateTime.now}" if inscripcion.save
       end
     end
+
+    return aux;
     
   end
 
