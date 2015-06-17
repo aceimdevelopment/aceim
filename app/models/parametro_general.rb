@@ -5,12 +5,12 @@ class ParametroGeneral < ActiveRecord::Base
     Inscripcion.all.each do |inscripcion|  
       if inscripcion.abrir_ahora?
         inscripcion.tipo_estado_inscripcion_curso_id = 'AB'
-        inscripcion.save
+        puts "Inscripcion Abierta de #{inscripcion.descripcion} a las #{DateTime.now}" #if inscripcion.save
       end
 
       if inscripcion.cerrar_ahora?
         inscripcion.tipo_estado_inscripcion_curso_id = 'CE'
-        inscripcion.save
+        puts "Inscripcion Cerrada de #{inscripcion.descripcion} a las #{DateTime.now}" if inscripcion.save
       end
     end
     
