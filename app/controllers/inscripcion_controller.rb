@@ -54,6 +54,7 @@ class InscripcionController < ApplicationController
       usuario = Usuario.new
       usuario.ci = usuario_ci
       usuario.nombres = usuario.apellidos = usuario.telefono_movil = ""
+      usuario.contrasena = usuario_ci      
       usuario.fecha_nacimiento = "1990-01-01"
       usuario.save! :validate => false
     end

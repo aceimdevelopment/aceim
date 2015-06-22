@@ -1,6 +1,6 @@
 class UsuarioController < ApplicationController
   before_filter :filtro_logueado
-  before_filter :filtro_super_administrador 
+  before_filter :filtro_super_administrador, :except => ["modificar", "modificar_guardar"] 
   def nuevo
     if session[:administrador].tipo_rol_id > 2 
       flash[:mensaje] = "Usted no posee los privilegios para acceder a esta función"
@@ -23,7 +23,7 @@ class UsuarioController < ApplicationController
   end
 
   def modificar
-    if session[:administrador].tipo_rol_id > 2 
+    if session[:administrador] and session[:administrador].tipo_rol_id > 2 
       flash[:mensaje] = "Usted no posee los privilegios para acceder a esta función"
       redirect_to :action => 'index'
     end
@@ -56,9 +56,10 @@ class UsuarioController < ApplicationController
         
         format.html { redirect_to(:controller=> controlador, :action=>accion) }
       else
+        flash[:mensaje] = "Errores en el formulario impiden completar la acción: #{@usuario.errors.full_messages.join(" | ")}"        
         format.xml  { render :xml => @usuario.errors, :status => :unprocessable_entity }
-        format.html { render :action => "modificar"}
       end
+        format.html { redirect_to(:controller=> controlador, :action=>accion) }      
     end
     
   end
