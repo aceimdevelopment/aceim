@@ -1,6 +1,7 @@
 class UsuarioController < ApplicationController
   before_filter :filtro_logueado
-  before_filter :filtro_super_administrador, :except => ["modificar", "modificar_guardar"] 
+  before_filter :filtro_super_administrador, :except => ['modificar', 'modificar_guardar']
+
   def nuevo
     if session[:administrador].tipo_rol_id > 2 
       flash[:mensaje] = "Usted no posee los privilegios para acceder a esta función"
