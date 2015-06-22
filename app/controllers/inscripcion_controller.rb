@@ -259,112 +259,6 @@ class InscripcionController < ApplicationController
   end
 
 
-
-  def paso0                    
-    reset_session
-    cargar_parametros_generales
-    @titulo_pagina = "Inscripción de Nuevo en Idioma"  
-    @subtitulo_pagina = "Datos Básicos"    
-    @usuario = Usuario.new                    
-    categorias = []
-    # categorias << "NI" if ParametroGeneral.inscripcion_ninos_abierta
-    categorias << "NI" if Inscripcion.where(:tipo_categoria_id => 'NI', :idioma_id => 'IN').first.ninos_abierta?
-
-    # comentar esta siguoiente linea cuando este lista la inscripcion de ingles adultos
-    categorias << "AD" if ParametroGeneral.inscripcion_nuevos_abierta
-    categorias << "TE" if ParametroGeneral.inscripcion_nuevos_abierta
-    tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_inscripcion],
-      :tipo_categoria_id => categorias).delete_if{|x|
-      x.curso.grado != 1
-      }.collect{|y| y.tipo_curso.id}.sort.uniq                                          
-    #puts tipo_curso.inspect
-    #if session[:parametros][:inscripcion_modo_ninos] == "SI"
-    #tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_inscripcion], :tipo_categoria_id => "NI").delete_if{|x|
-    #  x.curso.grado != 1
-    #  }.collect{|y| y.tipo_curso.id}.sort.uniq
-    #end
-    #puts tipo_curso.inspect
-    #puts session.inspect
-    @idiomas = TipoCurso.all.delete_if{|x| !tipo_curso.index(x.id)}
-    if @idiomas.size == 0
-      flash[:mensaje] = "No hay cursos disponibles"
-      redirect_to :controller => "inicio"
-      return
-    end
-    render :layout => "nuevo"
-  end
-  
-  def paso0_guardar
-    session[:nuevo] = true
-    usuario_ci = params[:usuario][:ci]
-    idioma_id, tipo_categoria_id = params[:seleccion][:idioma_id].split","
-    
-    @tipo_curso = TipoCurso.where(
-       :idioma_id => idioma_id,
-       :tipo_categoria_id => tipo_categoria_id).limit(1).first
-    #buscar en usuario
-    if usuario = Usuario.where(:ci => usuario_ci).limit(1).first
-      @usuario = usuario      
-      
-      if estudiante = Estudiante.where(:usuario_ci => usuario_ci).limit(1).first
-        @estudiante = estudiante           
-        
-        if ec = EstudianteCurso.where(:usuario_ci => usuario_ci,
-           :idioma_id => idioma_id,
-           :tipo_categoria_id => tipo_categoria_id).limit(1).first
-          @estudiante_curso = ec
-        else
-          @estudiante_curso = EstudianteCurso.new
-          @estudiante_curso.usuario_ci = usuario_ci
-          @estudiante_curso.idioma_id = idioma_id
-          @estudiante_curso.tipo_categoria_id = tipo_categoria_id
-          @estudiante_curso.tipo_convenio_id = "REG"
-          @estudiante_curso.save!
-        end
-      else
-        @estudiante = Estudiante.new
-        @estudiante.usuario_ci = usuario_ci
-        @estudiante.save!
-
-        @estudiante_curso = EstudianteCurso.new
-        @estudiante_curso.usuario_ci = usuario_ci
-        @estudiante_curso.idioma_id = idioma_id
-        @estudiante_curso.tipo_categoria_id = tipo_categoria_id
-        @estudiante_curso.tipo_convenio_id = "REG"
-        @estudiante_curso.save!
-      end
-    else
-      @usuario = Usuario.new
-      @usuario.ci = usuario_ci
-      @usuario.nombres = ""
-      @usuario.apellidos = ""
-      @usuario.telefono_movil = ""
-      @usuario.fecha_nacimiento = "1990-01-01"
-      @usuario.save! :validate => false
-
-      @estudiante = Estudiante.new
-      @estudiante.usuario_ci = usuario_ci
-      @estudiante.save!
-
-      @estudiante_curso = EstudianteCurso.new
-      @estudiante_curso.usuario_ci = usuario_ci
-      @estudiante_curso.idioma_id = idioma_id
-      @estudiante_curso.tipo_categoria_id = tipo_categoria_id
-      @estudiante_curso.tipo_convenio_id = "REG"
-      @estudiante_curso.save!
-
-
-    end
-    session[:usuario] = @usuario
-    session[:estudiante] = @estudiante
-    session[:rol] = @estudiante_curso.descripcion
-    session[:tipo_curso] = @tipo_curso
-    info_bitacora "Paso 0 realizado en #{@tipo_curso.descripcion}"
-    redirect_to :action => "paso1"
-    return
-  end
-
-
   def paso1
     unless params[:id]
       flash[:mensaje] = "Debe especificar el curso a inscribir"
@@ -630,6 +524,113 @@ class InscripcionController < ApplicationController
     end
     
   end
+
+
+
+
+  # def paso0                    
+  #   reset_session
+  #   cargar_parametros_generales
+  #   @titulo_pagina = "Inscripción de Nuevo en Idioma"  
+  #   @subtitulo_pagina = "Datos Básicos"    
+  #   @usuario = Usuario.new                    
+  #   categorias = []
+  #   # categorias << "NI" if ParametroGeneral.inscripcion_ninos_abierta
+  #   categorias << "NI" if Inscripcion.where(:tipo_categoria_id => 'NI', :idioma_id => 'IN').first.ninos_abierta?
+
+  #   # comentar esta siguoiente linea cuando este lista la inscripcion de ingles adultos
+  #   categorias << "AD" if ParametroGeneral.inscripcion_nuevos_abierta
+  #   categorias << "TE" if ParametroGeneral.inscripcion_nuevos_abierta
+  #   tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_inscripcion],
+  #     :tipo_categoria_id => categorias).delete_if{|x|
+  #     x.curso.grado != 1
+  #     }.collect{|y| y.tipo_curso.id}.sort.uniq                                          
+  #   #puts tipo_curso.inspect
+  #   #if session[:parametros][:inscripcion_modo_ninos] == "SI"
+  #   #tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_inscripcion], :tipo_categoria_id => "NI").delete_if{|x|
+  #   #  x.curso.grado != 1
+  #   #  }.collect{|y| y.tipo_curso.id}.sort.uniq
+  #   #end
+  #   #puts tipo_curso.inspect
+  #   #puts session.inspect
+  #   @idiomas = TipoCurso.all.delete_if{|x| !tipo_curso.index(x.id)}
+  #   if @idiomas.size == 0
+  #     flash[:mensaje] = "No hay cursos disponibles"
+  #     redirect_to :controller => "inicio"
+  #     return
+  #   end
+  #   render :layout => "nuevo"
+  # end
+  
+  # def paso0_guardar
+  #   session[:nuevo] = true
+  #   usuario_ci = params[:usuario][:ci]
+  #   idioma_id, tipo_categoria_id = params[:seleccion][:idioma_id].split","
+    
+  #   @tipo_curso = TipoCurso.where(
+  #      :idioma_id => idioma_id,
+  #      :tipo_categoria_id => tipo_categoria_id).limit(1).first
+  #   #buscar en usuario
+  #   if usuario = Usuario.where(:ci => usuario_ci).limit(1).first
+  #     @usuario = usuario      
+      
+  #     if estudiante = Estudiante.where(:usuario_ci => usuario_ci).limit(1).first
+  #       @estudiante = estudiante           
+        
+  #       if ec = EstudianteCurso.where(:usuario_ci => usuario_ci,
+  #          :idioma_id => idioma_id,
+  #          :tipo_categoria_id => tipo_categoria_id).limit(1).first
+  #         @estudiante_curso = ec
+  #       else
+  #         @estudiante_curso = EstudianteCurso.new
+  #         @estudiante_curso.usuario_ci = usuario_ci
+  #         @estudiante_curso.idioma_id = idioma_id
+  #         @estudiante_curso.tipo_categoria_id = tipo_categoria_id
+  #         @estudiante_curso.tipo_convenio_id = "REG"
+  #         @estudiante_curso.save!
+  #       end
+  #     else
+  #       @estudiante = Estudiante.new
+  #       @estudiante.usuario_ci = usuario_ci
+  #       @estudiante.save!
+
+  #       @estudiante_curso = EstudianteCurso.new
+  #       @estudiante_curso.usuario_ci = usuario_ci
+  #       @estudiante_curso.idioma_id = idioma_id
+  #       @estudiante_curso.tipo_categoria_id = tipo_categoria_id
+  #       @estudiante_curso.tipo_convenio_id = "REG"
+  #       @estudiante_curso.save!
+  #     end
+  #   else
+  #     @usuario = Usuario.new
+  #     @usuario.ci = usuario_ci
+  #     @usuario.nombres = ""
+  #     @usuario.apellidos = ""
+  #     @usuario.telefono_movil = ""
+  #     @usuario.fecha_nacimiento = "1990-01-01"
+  #     @usuario.save! :validate => false
+
+  #     @estudiante = Estudiante.new
+  #     @estudiante.usuario_ci = usuario_ci
+  #     @estudiante.save!
+
+  #     @estudiante_curso = EstudianteCurso.new
+  #     @estudiante_curso.usuario_ci = usuario_ci
+  #     @estudiante_curso.idioma_id = idioma_id
+  #     @estudiante_curso.tipo_categoria_id = tipo_categoria_id
+  #     @estudiante_curso.tipo_convenio_id = "REG"
+  #     @estudiante_curso.save!
+
+
+  #   end
+  #   session[:usuario] = @usuario
+  #   session[:estudiante] = @estudiante
+  #   session[:rol] = @estudiante_curso.descripcion
+  #   session[:tipo_curso] = @tipo_curso
+  #   info_bitacora "Paso 0 realizado en #{@tipo_curso.descripcion}"
+  #   redirect_to :action => "paso1"
+  #   return
+  # end
 
 
 end
