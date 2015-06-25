@@ -11,8 +11,13 @@ class PrincipalController < ApplicationController
       :tipo_categoria_id => session[:tipo_curso].tipo_categoria_id,
       :periodo_id => session[:parametros][:periodo_inscripcion]).limit(1).first
 
-    @ha = HistorialAcademico.where(:idioma_id => 'IN', :usuario_ci => session[:usuario].ci, :tipo_categoria_id => 'AD', :periodo_id => ParametroGeneral.periodo_actual.id).first
+    @periodo = ParametroGeneral.periodo_actual 
+    @ha = HistorialAcademico.where(:idioma_id => session[:tipo_curso].idioma_id, :usuario_ci => session[:usuario].ci, :tipo_categoria_id => 'AD', :periodo_id => @periodo.id).first
     @descargar_planilla_inscripcion = ParametroGeneral.find("DESCARGAR_PLANILLA_INSCRIPCION").valor
+
+    if @ha
+      @ha = nil if (@ha.idioma_id = 'FR' and (@ha.tipo_nivel_id.eql? "CB" or @ha.tipo_nivel_id.eql? "CI" or @ha.tipo_nivel_id.eql? "CA"))
+    end
 
     @curso_abierto_regular = Inscripcion.where(:tipo_inscripcion_id => 'RE', 
       :tipo_estado_inscripcion_curso_id => 'AB', 
