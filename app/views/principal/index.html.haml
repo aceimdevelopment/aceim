@@ -27,7 +27,7 @@
 	=link_to "Consultar Historial de Cursos", :action => "cursos", :controller => "estudiante"
 %div.titulo Consulta el listado de tus Cursos Realizados
 
-- if @ha
+- if @ha and @ha.session
 	- @nivel = @ha.tipo_nivel_id
 	- if @ha.idioma_id.eql? 'IN'
 		- @nivel += "-S" if ((@nivel.eql? "CB" or @nivel.eql? "CI") and @ha.seccion.bloque_horario.id.eql? 'H5')
