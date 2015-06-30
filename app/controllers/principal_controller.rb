@@ -15,9 +15,7 @@ class PrincipalController < ApplicationController
     @ha = HistorialAcademico.where(:idioma_id => session[:tipo_curso].idioma_id, :usuario_ci => session[:usuario].ci, :tipo_categoria_id => 'AD', :periodo_id => @periodo.id).first
     @descargar_planilla_inscripcion = ParametroGeneral.find("DESCARGAR_PLANILLA_INSCRIPCION").valor
 
-    if @ha
-      @ha = nil if (@ha.idioma_id = 'FR' and (@ha.tipo_nivel_id.eql? "CB" or @ha.tipo_nivel_id.eql? "CI" or @ha.tipo_nivel_id.eql? "CA"))
-    end
+    @ha = nil if (@ha and @ha.idioma_id.eql? 'FR' and (@ha.tipo_nivel_id.eql? "CB" or @ha.tipo_nivel_id.eql? "CI" or @ha.tipo_nivel_id.eql? "CA"))
 
     @curso_abierto_regular = Inscripcion.where(:tipo_inscripcion_id => 'RE', 
       :tipo_estado_inscripcion_curso_id => 'AB', 
