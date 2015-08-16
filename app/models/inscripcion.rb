@@ -34,7 +34,7 @@ class Inscripcion < ActiveRecord::Base
 	end
 
 	def fecha_formato (fecha_inicial, fecha_final)
-		if fecha_inicial.blank? or fecha_final.blank? or !Date.today.month.eql?(cierre.to_date.month)
+		if fecha_inicial.blank? or fecha_final.blank? or post_cierre
 			return "por definir"
 		else
 			if fecha_inicial.to_date.eql? fecha_final.to_date		
@@ -51,6 +51,10 @@ class Inscripcion < ActiveRecord::Base
 			end			
 			return fecha
 		end
+	end
+
+	def post_cierre
+		Date.today.yday > cierre.to_date.yday+10
 	end
 
 	def ninos_abierta?
