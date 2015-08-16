@@ -47,7 +47,7 @@
       %div{:id => tipo_curso.id.join("_"), :style => 'background-color:white;' }
         - @inscripciones.each do |curso|
 
-          - @culmino = (curso.cierre and Date.today.month.eql?(curso.cierre.to_date.month) and curso.cerrada?)
+          - @culmino = (curso.cierre and curso.cerrada? and !curso.post_cierre)
           - @clase = "well"
           - @clase += " abierta" if curso.abierta?
           - @clase += " programada" if curso.programada?
@@ -77,7 +77,7 @@
 
     #NIVE{:style => 'background-color:white;'}
       - @nivelaciones.each do |nivelacion|
-        - @culmino = (nivelacion.cierre and Date.today.month.eql?(nivelacion.cierre.to_date.month) and nivelacion.cerrada?)
+        - @culmino = (nivelacion.cierre and nivelacion.cerrada? and !nivelacion.post_cierre)
         - @clase = "well"
         - @clase += " abierta" if nivelacion.abierta?
         - @clase += " programada" if nivelacion.programada?
