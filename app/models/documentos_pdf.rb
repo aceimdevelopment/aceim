@@ -284,18 +284,7 @@ class DocumentosPDF
     tabla.data.replace datos  
     tabla.render_on(pdf)
     pdf.text "\n", :font_size => 10
-    
-    # ---- NORMAS -----
-		pdf.text to_utf16("<b>LEA CUIDADOSAMENTE LA SIGUIENTE INFORMACIÓN Y NORMATIVA DEL PROGRAMA</b>"), :font_size => 12
-		pdf.text "\n", :font_size => 10
-		pdf.text to_utf16("<C:bullet/>La inscripción es válida UNICAMENTE para el período indicado en esta planilla. NO SE CONGELAN CUPOS POR NINGÚN MOTIVO."), :font_size => 11, :justification => :full
-		pdf.text to_utf16("<C:bullet/>SOLO SE REINTEGRARÁ EL MONTO DE LA MATRÍCULA EN CASO DE QUE NO SE REUNA EL QUORUM NECESARIO PARA LA APERTURA DEL CURSO."), :font_size => 11, :justification => :full
-		pdf.text to_utf16("<C:bullet/>La asistencia a clases es obligatoria: Cursos <b>LUN-MIE</b>: Con 3 inasistencias se pierde el curso. Cursos <b>MAR-JUE</b>: Con 3 inasistencias se pierde el curso. Cursos <b>SÁBADOS</b>: Con 2 inasistencias se pierde el curso."), :font_size => 11, :justification => :full
-		pdf.text to_utf16("<C:bullet/>La nota mínima aprobatoria es de 15 puntos. El cupo mínimo es de 15 participantes."), :font_size => 11, :justification => :full
-		pdf.text to_utf16("<C:bullet/>NO SE PERMITEN CAMBIOS DE SECCIÓN."), :font_size => 11, :justification => :full
-		pdf.text to_utf16("<C:bullet/>El horario, sección y aula se reserva hasta la fecha indicada."), :font_size => 11, :justification => :full
-		pdf.text to_utf16("<C:bullet/>Únicamente DEPOSITOS en EFECTIVO (NO CHEQUES, NI TRANSFERENCIAS)."), :font_size => 11, :justification => :full
-    
+   
     # -- FIRMAS -----
 		pdf.text "\n", :font_size => 8
 		pdf.text "\n", :font_size => 8

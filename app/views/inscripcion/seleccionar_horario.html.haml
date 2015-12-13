@@ -1,4 +1,4 @@
-=form_tag :action => "seleccionar_horario_guardar" do
+=form_tag :action => "seleccionar_horario_guardar" do # Agregar onsubmit validate que se acepten los terminos y condiciones del curso
   %fieldset
     %legend Horarios
     %p
@@ -10,6 +10,7 @@
         Horarios Disponibles
         %span.req *
       =select :usuario, :horario, @horarios
+
   %p 
     %span.req *  
     Campos Obligatorios

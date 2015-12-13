@@ -86,6 +86,7 @@ class InscripcionController < ApplicationController
   end
 
   def seleccionar_horario
+
     @inscripcion = Inscripcion.find(session[:inscripcion_id])
     periodo_id =  ParametroGeneral.periodo_inscripcion.id
     secciones = Seccion.where(:periodo_id => periodo_id, 
@@ -99,10 +100,14 @@ class InscripcionController < ApplicationController
       redirect_to :controller => "inicio"
       return
     end
+
     # Se buscan los horarios que tienen las secciones selccionadas
     @horarios = secciones.collect{|s| s.horario}.uniq.sort
-    @titulo_pagina = "Inscripción de Curso #{@inscripcion.descripcion}"  
-    @subtitulo_pagina = "Paso 1: Selección de horario"
+
+    @titulo_pagina = "Preinscripción: Paso 1 de 3 - Selección de Horario"
+
+    # @titulo_pagina = "Inscripción de Curso #{@inscripcion.descripcion}"  
+    # @subtitulo_pagina = "Paso 1 de 3: Selección de horario"
     if @horarios.size == 0
       flash[:mensaje] = "En este momento no tenemos cupos."
       redirect_to :controller => 'inicio'
@@ -169,8 +174,7 @@ class InscripcionController < ApplicationController
   end
 
   def actualizar_datos_personales
-    @titulo_pagina = "Preinscripción - Paso 2 de 3"  
-    @subtitulo_pagina = "Actualización de Datos Personales"
+    @titulo_pagina = "Preinscripción: Paso 2 de 3 - Actualización de Datos Personales"
     @usuario = session[:usuario]
   end
 
@@ -238,15 +242,20 @@ class InscripcionController < ApplicationController
   end
 
   def imprimir_planilla
-    @titulo_pagina = "Preinscripción - Paso 3 de 3"  
-    @subtitulo_pagina = "Impresión de Planilla"
+
+    @titulo_pagina = "Preinscripción: Paso 3 de 3 - Normativa e Impresión de Planilla"
+
+
+    @texto = "<ul><li>La inscripción es válida UNICAMENTE para el período indicado. NO SE CONGELAN CUPOS POR NINGÚN MOTIVO.</li><li>La asistencia a clases es obligatoria: Cursos <b>LUN-MIE</b>: Con 3 inasistencias se pierde el curso. Cursos <b>MAR-JUE</b>: Con 3 inasistencias se pierde el curso. Cursos <b>SÁBADOS</b>: Con 2 inasistencias se pierde el curso.</li><li>La nota mínima aprobatoria es de 15 puntos. El cupo mínimo es de 15 participantes.</li><li>NO SE PERMITEN CAMBIOS DE SECCIÓN.</li><li>El horario, sección y aula se reserva hasta la fecha indicada.</li><li>Pago únicamente DEPOSITOS en EFECTIVO (NO CHEQUES, NI TRANSFERENCIAS).</li>"
+
     @inscripcion = Inscripcion.find(session[:inscripcion_id])
 
     @historial = HistorialAcademico.where(
       :usuario_ci => session[:usuario].ci,
       :idioma_id => @inscripcion.idioma_id,
       :tipo_categoria_id => @inscripcion.tipo_categoria_id,
-      :periodo_id => session[:parametros][:periodo_inscripcion]).limit(1).first    
+      :periodo_id => session[:parametros][:periodo_inscripcion]).limit(1).first 
+   
   end
 
 

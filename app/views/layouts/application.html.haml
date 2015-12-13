@@ -86,7 +86,7 @@
               #{flash[:mensaje]}  
           =javascript_tag "$(document).ready(function(){ $('#mensaje-flash').show('pulsate',{},'fast'); });"
         =yield
-        -if (controller_name != "principal" || action_name != "index") && (controller_name != "principal_admin" || action_name != "index") && (controller_name != "principal_instructor" || action_name != "index") && (controller_name != "reportes") && (controller_name != "planificacion") && (controller_name != "convenio") && (controller_name != "admin_seccion") && (controller_name != "gestionar_cartelera") && (action_name != "ingresar_horario_disponible_instructores") && (controller_name != "parametros_generales")
+        -if (controller_name != "principal" || action_name != "index") && (controller_name != "principal_admin" || action_name != "index") && (controller_name != "principal_instructor" || action_name != "index") && (controller_name != "reportes") && (controller_name != "planificacion") && (controller_name != "convenio") && (controller_name != "admin_seccion") && (controller_name != "gestionar_cartelera") && (action_name != "ingresar_horario_disponible_instructores") && (controller_name != "parametros_generales") && (controller_name != 'inscripcion')
           %p 
             =link_to "<< Regresar a principal", :controller => "principal", :action => "principal"
     #pie
