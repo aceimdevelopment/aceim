@@ -294,9 +294,10 @@ class DocumentosPDF
       col.width = 250
       col.justification = :center
     }
+    @persona = (historial_academico.tipo_categoria_id == "NI" || historial_academico.tipo_categoria_id == "TE") ? "Representante" : "Estudiante" 
     datos = []
     datos << { "nombre" => to_utf16("<b>__________________________</b>"), "valor" => to_utf16("<b>__________________________</b>") }
-    datos << { "nombre" => to_utf16("Firma Estudiante"), "valor" => to_utf16("Firma Autorizada y Sello") }
+    datos << { "nombre" => to_utf16("Firma #{@persona}"), "valor" => to_utf16("Firma Autorizada y Sello") }
     tabla.data.replace datos  
     tabla.render_on(pdf)
     pdf.text "\n", :font_size => 8
@@ -453,50 +454,12 @@ class DocumentosPDF
     datos_preinscripcion(historial_academico,pdf)
 
     datos_cuentas(historial_academico,pdf)
-    firmas(historial_academico,pdf)
+
+    firmas(historial_academico,pdf)      
+ 
 		pdf.text to_utf16("----- COPIA DEL ESTUDIANTE -----"), :font_size => 10, :justification => :center
 		pdf.text "________________________________________________________________________________________________________________________", :font_size => 8
 		# pdf.text to_utf16("#{t.strftime('%d/%m/%Y %I:%M%p')} - Página: 1 de 2"), :font_size => 10, :justification => :right
-		
-    if historial_academico.tipo_categoria_id == "NI" || historial_academico.tipo_categoria_id == "TE"
-      pdf.y = 650
-      pdf.new_page 
-      
-
-      pdf.add_image_from_file 'app/assets/images/logo_fhe_ucv.jpg', 465, 710, 50,nil
-      pdf.add_image_from_file 'app/assets/images/logo_eim.jpg', 515, 710+10, 50,nil
-      pdf.add_image_from_file 'app/assets/images/logo_ucv.jpg', 45, 710, 50,nil
-      pdf.add_text 100,745,to_utf16("Universidad Central de Venezuela"),11
-      pdf.add_text 100,735,to_utf16("Facultad de Humanidades y Educación"),11
-      pdf.add_text 100,725,to_utf16("Escuela de Idiomas Modernos"),11
-      pdf.add_text 100,715,to_utf16("Cursos de Extensión EIM-UCV"),11 
-      pdf.text to_utf16("NORMAS ADOLESCENTES Y NIÑOS\n"), :font_size => 14, :justification => :center
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-      pdf.text to_utf16("<b>Estimado representante:</b>"), :font_size => 12
-      pdf.text "\n", :font_size => 10
-      pdf.text to_utf16("<b>Le informamos que para poder inscribir a su representado en los cursos, debe apegarse a las siguientes condiciones:</b>"), :font_size => 12
-      pdf.text "\n", :font_size => 10
-      
-      pdf.text to_utf16("<C:bullet/>Traer su merienda para hacer el receso en el salón de clase. Sólo podrán ir al cafetín con una autorización escrita de su representante por cada sesión de clase. "), :font_size => 11, :justification => :full
-
-      pdf.text to_utf16("<C:bullet/>Cumplir el horario de entrada y salida de clase. Si necesitan ausentarse y/o retirarse antes de la clase deben presentar una autorización escrita de su representante o presentarse y hablar directamente con el profesor."), :font_size => 11, :justification => :full
-      pdf.text to_utf16("<C:bullet/>No llevar pelotas, patinetas, videojuegos u objetos similares al salón de clase."), :font_size => 11, :justification => :full
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-
-      pdf.text to_utf16("________________________________\n"), :font_size => 14, :justification => :center
-      pdf.text to_utf16("Firma Representante\n"), :font_size => 14, :justification => :center
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-
-      pdf.text to_utf16("****Es importante que usted conozca al profesor y a los coordinadores del curso de su representado y esté en comunicación con los mismos****\n"), :font_size => 12, :justification => :center
-    end
 
     # pdf.new_page
     # pdf.y = 756
@@ -507,48 +470,10 @@ class DocumentosPDF
     datos_preinscripcion(historial_academico,pdf)
     datos_facturacion(historial_academico,pdf)
     firmas(historial_academico,pdf)
+
+
 		pdf.text to_utf16("----- COPIA ADMINISTRACIÓN -----"), :font_size => 10, :justification => :center
-		# pdf.text to_utf16("#{t.strftime('%d/%m/%Y %I:%M%p')} - Página: 2 de 2"), :font_size => 10, :justification => :right
 
-    if historial_academico.tipo_categoria_id == "NI" || historial_academico.tipo_categoria_id == "TE"
-      pdf.y = 650
-      pdf.new_page 
-
-
-
-      pdf.add_image_from_file 'app/assets/images/logo_fhe_ucv.jpg', 465, 710, 50,nil
-      pdf.add_image_from_file 'app/assets/images/logo_eim.jpg', 515, 710+10, 50,nil
-      pdf.add_image_from_file 'app/assets/images/logo_ucv.jpg', 45, 710, 50,nil
-      pdf.add_text 100,745,to_utf16("Universidad Central de Venezuela"),11
-      pdf.add_text 100,735,to_utf16("Facultad de Humanidades y Educación"),11
-      pdf.add_text 100,725,to_utf16("Escuela de Idiomas Modernos"),11
-      pdf.add_text 100,715,to_utf16("Cursos de Extensión EIM-UCV"),11 
-      pdf.text to_utf16("NORMAS ADOLESCENTES Y NIÑOS\n"), :font_size => 14, :justification => :center
-
-      pdf.text to_utf16("<b>Estimado representante:</b>"), :font_size => 12
-      pdf.text "\n", :font_size => 10
-      pdf.text to_utf16("<b>Le informamos que para poder inscribir a su representado en los cursos, debe apegarse a las siguientes condiciones:</b>"), :font_size => 12
-      pdf.text "\n", :font_size => 10
-      
-      pdf.text to_utf16("<C:bullet/>Traer su merienda para hacer el receso en el salón de clase. Sólo podrán ir al cafetín con una autorización escrita de su representante por cada sesión de clase. "), :font_size => 11, :justification => :full
-
-      pdf.text to_utf16("<C:bullet/>Cumplir el horario de entrada y salida de clase. Si necesitan ausentarse y/o retirarse antes de la clase deben presentar una autorización escrita de su representante o presentarse y hablar directamente con el profesor."), :font_size => 11, :justification => :full
-      pdf.text to_utf16("<C:bullet/>No llevar pelotas, patinetas, videojuegos u objetos similares al salón de clase."), :font_size => 11, :justification => :full
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-
-      pdf.text to_utf16("________________________________\n"), :font_size => 14, :justification => :center
-      pdf.text to_utf16("Firma Representante\n"), :font_size => 14, :justification => :center
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-      pdf.text "\n", :font_size => 10
-
-      pdf.text to_utf16("****Es importante que usted conozca al profesor y a los coordinadores del curso de su representado y esté en comunicación con los mismos****\n"), :font_size => 12, :justification => :center
-    end
    
     return pdf
   end

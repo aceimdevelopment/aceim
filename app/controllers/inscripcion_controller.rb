@@ -245,7 +245,6 @@ class InscripcionController < ApplicationController
 
     @titulo_pagina = "Preinscripción: Paso 3 de 3 - Normativa e Impresión de Planilla"
 
-
     @texto = "<ul><li>La inscripción es válida UNICAMENTE para el período indicado. NO SE CONGELAN CUPOS POR NINGÚN MOTIVO.</li><li>La asistencia a clases es obligatoria: Cursos <b>LUN-MIE</b>: Con 3 inasistencias se pierde el curso. Cursos <b>MAR-JUE</b>: Con 3 inasistencias se pierde el curso. Cursos <b>SÁBADOS</b>: Con 2 inasistencias se pierde el curso.</li><li>La nota mínima aprobatoria es de 15 puntos. El cupo mínimo es de 15 participantes.</li><li>NO SE PERMITEN CAMBIOS DE SECCIÓN.</li><li>El horario, sección y aula se reserva hasta la fecha indicada.</li><li>Pago únicamente DEPOSITOS en EFECTIVO (NO CHEQUES, NI TRANSFERENCIAS).</li>"
 
     @inscripcion = Inscripcion.find(session[:inscripcion_id])
@@ -255,7 +254,12 @@ class InscripcionController < ApplicationController
       :idioma_id => @inscripcion.idioma_id,
       :tipo_categoria_id => @inscripcion.tipo_categoria_id,
       :periodo_id => session[:parametros][:periodo_inscripcion]).limit(1).first 
-   
+
+    if @historial.tipo_categoria_id.eql? 'TE' or @historial.tipo_categoria_id.eql? 'NI'
+      @texto += "<p><b>NORMATIVA PARA ADOLESCENTES Y NIÑOS</b></p><p><b>Estimado representante:</b></p><p><b>Le informamos que para poder inscribir a su representado en los cursos, debe apegarse a las siguientes condiciones:</b></p><ul><li>Traer su merienda para hacer el receso en el salón de clase. Sólo podrán ir al cafetín con una autorización escrita de su representante por cada sesión de clase.</li><li>Cumplir el horario de entrada y salida de clase. Si necesitan ausentarse y/o retirarse antes de la clase deben presentar una autorización escrita de su representante o presentarse y hablar directamente con el profesor.</li><li>No llevar pelotas, patinetas, videojuegos u objetos similares al salón de clase.</li></ul>"
+      @texto += "<p><b>****Es importante que usted conozca al profesor y a los coordinadores del curso de su representado y esté en comunicación con los mismos****</b></p>"
+    end
+
   end
 
 
@@ -473,13 +477,21 @@ class InscripcionController < ApplicationController
 
 
   def paso3 
-    @titulo_pagina = "Preinscripción - Paso 3 de 3"  
-    @subtitulo_pagina = "Impresión de Planilla"
+
+    @titulo_pagina = "Preinscripción: Paso 3 de 3 - Normativa e Impresión de Planilla"
+
+    @texto = "<ul><li>La inscripción es válida UNICAMENTE para el período indicado. NO SE CONGELAN CUPOS POR NINGÚN MOTIVO.</li><li>La asistencia a clases es obligatoria: Cursos <b>LUN-MIE</b>: Con 3 inasistencias se pierde el curso. Cursos <b>MAR-JUE</b>: Con 3 inasistencias se pierde el curso. Cursos <b>SÁBADOS</b>: Con 2 inasistencias se pierde el curso.</li><li>La nota mínima aprobatoria es de 15 puntos. El cupo mínimo es de 15 participantes.</li><li>NO SE PERMITEN CAMBIOS DE SECCIÓN.</li><li>El horario, sección y aula se reserva hasta la fecha indicada.</li><li>Pago únicamente DEPOSITOS en EFECTIVO (NO CHEQUES, NI TRANSFERENCIAS).</li></ul>"    
     @historial = HistorialAcademico.where(
       :usuario_ci => session[:usuario].ci,
       :idioma_id => session[:tipo_curso].idioma_id,
       :tipo_categoria_id => session[:tipo_curso].tipo_categoria_id,
       :periodo_id => session[:parametros][:periodo_inscripcion]).limit(1).first
+    if @historial.tipo_categoria_id.eql? 'TE' or @historial.tipo_categoria_id.eql? 'NI'
+      @texto += "<p><b>NORMATIVA PARA ADOLESCENTES Y NIÑOS</b></p><p><b>Estimado representante:</b></p><p><b>Le informamos que para poder inscribir a su representado en los cursos, debe apegarse a las siguientes condiciones:</b></p><ul><li>Traer su merienda para hacer el receso en el salón de clase. Sólo podrán ir al cafetín con una autorización escrita de su representante por cada sesión de clase.</li><li>Cumplir el horario de entrada y salida de clase. Si necesitan ausentarse y/o retirarse antes de la clase deben presentar una autorización escrita de su representante o presentarse y hablar directamente con el profesor.</li><li>No llevar pelotas, patinetas, videojuegos u objetos similares al salón de clase.</li></ul>"
+      @texto += "<p><b>****Es importante que usted conozca al profesor y a los coordinadores del curso de su representado y esté en comunicación con los mismos****</b></p>"
+    end
+
+
   end
 
   def paso3_guardar                                              
