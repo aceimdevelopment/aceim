@@ -266,15 +266,17 @@ class DocumentosPDF
     datos << { "nombre" => to_utf16("<b>Nro. de Cuenta:</b>"), "valor" => to_utf16("Cuenta Corriente #{historial_academico.cuenta_numero}") }
     datos << { "nombre" => to_utf16("<b>A nombre de:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_nombre}") }
     datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF.") }
+
     tabla.data.replace datos  
     tabla.render_on(pdf)
+    pdf.text to_utf16("<b>*** Acepté las condiciones y normativas del programa. ***</b>"), :font_size => 10
     pdf.text "\n", :font_size => 10
 
   end
 
   def self.firmas(historial_academico,pdf)
     # -- FIRMAS -----
-    pdf.text "\n\n\n", :font_size => 8
+    pdf.text "\n\n", :font_size => 8
     tabla = PDF::SimpleTable.new 
     tabla.font_size = 11
     tabla.orientation   = :center
@@ -297,7 +299,7 @@ class DocumentosPDF
     datos << { "nombre" => to_utf16("Firma Estudiante"), "valor" => to_utf16("Firma Autorizada y Sello") }
     tabla.data.replace datos  
     tabla.render_on(pdf)
-    pdf.text "\n\n", :font_size => 8
+    pdf.text "\n", :font_size => 8
     
   end
 
@@ -418,11 +420,10 @@ class DocumentosPDF
     }
     datos = []
     
-    datos << { "nombre" => to_utf16("<b>A Nombre de:</b>"), "valor" => to_utf16("________________________________") }
-    datos << { "nombre" => to_utf16("<b>CI ó RIF:</b>"), "valor" => to_utf16("________________________________") }
+    datos << { "nombre" => to_utf16("<b>A Nombre de:</b>"), "valor" => to_utf16("_________________________________________________________________________") }
+    datos << { "nombre" => to_utf16("<b>CI ó RIF:</b>"), "valor" => to_utf16("_________________________________ <b>TLF:</b> ___________________________________") }
     datos << { "nombre" => to_utf16("<b>Dirección:</b>"), "valor" => to_utf16("__________________________________________________________________________________________________________________________________________________") }
-    datos << { "nombre" => to_utf16("<b>TLF:</b>"), "valor" => to_utf16("________________________________") }
-    datos << { "nombre" => to_utf16("<b>Depósito No.:</b>"), "valor" => to_utf16("________________________________") }    
+    datos << { "nombre" => to_utf16("<b>Depósito No.:</b>"), "valor" => to_utf16("_________________________________________ / <b>Monto:</b> #{historial_academico.cuenta_monto} BsF.") }
     tabla.data.replace datos  
     tabla.render_on(pdf)
     pdf.text "\n", :font_size => 10
@@ -439,7 +440,7 @@ class DocumentosPDF
     pdf.add_image_from_file 'app/assets/images/logo_eim.jpg', 515, 710+10, 50,nil
     pdf.add_image_from_file 'app/assets/images/logo_ucv.jpg', 45, 710, 50,nil
     pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 600, nil, 100
-    pdf.add_text 480,600,to_utf16("---- #{historial_academico.usuario_ci} ----"),12
+    pdf.add_text 480,600,to_utf16("---- #{historial_academico.usuario_ci} ----"),11
     
     #texto del encabezado
     pdf.add_text 100,745,to_utf16("Universidad Central de Venezuela"),10
@@ -500,8 +501,8 @@ class DocumentosPDF
     # pdf.new_page
     # pdf.y = 756
     pdf.text "\n\n"
-    pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 290, nil, 100
-    pdf.add_text 480,290,to_utf16("---- #{historial_academico.usuario_ci} ----"),12
+    pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 280, nil, 100
+    pdf.add_text 480,280,to_utf16("---- #{historial_academico.usuario_ci} ----"),11
 
     datos_preinscripcion(historial_academico,pdf)
     datos_facturacion(historial_academico,pdf)
