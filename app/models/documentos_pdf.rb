@@ -203,75 +203,61 @@ class DocumentosPDF
     return pdf
   end
 
-  def self.planilla_inscripcion_pagina(historial_academico,pdf)
-    pdf.add_image_from_file 'app/assets/images/logo_fhe_ucv.jpg', 465, 710, 50,nil
-    pdf.add_image_from_file 'app/assets/images/logo_eim.jpg', 515, 710+10, 50,nil
-    pdf.add_image_from_file 'app/assets/images/logo_ucv.jpg', 45, 710, 50,nil
-    pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 450-10, 500+35, nil, 120
-    pdf.add_text 480-10,500+35,to_utf16("---- #{historial_academico.usuario_ci} ----"),11
-    
-    #texto del encabezado
-    pdf.add_text 100,745,to_utf16("Universidad Central de Venezuela"),11
-    pdf.add_text 100,735,to_utf16("Facultad de Humanidades y Educación"),11
-    pdf.add_text 100,725,to_utf16("Escuela de Idiomas Modernos"),11
-    pdf.add_text 100,715,to_utf16("Cursos de Extensión EIM-UCV"),11 
-    
+  def self.datos_preinscripcion(historial_academico,pdf)    
 
-    #titulo    
-    pdf.text "\n\n\n\n\n"
-    pdf.text to_utf16("Planilla de Inscripción (Sede Ciudad Universitaria)\n"), :font_size => 14, :justification => :center
+    #titulo
+    pdf.text to_utf16("Planilla de Inscripción (Sede Ciudad Universitaria)\n"), :font_size => 11, :justification => :center
     pdf.text to_utf16("Periodo #{historial_academico.periodo_id}"), :justification => :center
 
     # ------- DATOS DE LA PREINSCRIPCIO -------
-		pdf.text "\n", :font_size => 10
-		pdf.text to_utf16("<b>Datos de la Preinscripción:</b>"), :font_size => 12
+		pdf.text "\n", :font_size => 8
+		pdf.text to_utf16("<b>Datos de la Preinscripción:</b>"), :font_size => 11
     tabla = PDF::SimpleTable.new 
-    tabla.font_size = 12
+    tabla.font_size = 10
     tabla.show_lines    = :none
     tabla.show_headings = false 
     tabla.shade_rows = :none
     tabla.column_order = ["nombre", "valor"]
 
     tabla.columns["nombre"] = PDF::SimpleTable::Column.new("nombre") { |col|
-      col.width = 100
+      col.width = 90
       col.justification = :left
     }
     tabla.columns["valor"] = PDF::SimpleTable::Column.new("valor") { |col|
-      col.width = 400
+      col.width = 420
       col.justification = :left
     }
     datos = []
     
     datos << { "nombre" => to_utf16("<b>Estudiante:</b>"), "valor" => to_utf16("#{historial_academico.usuario.descripcion}\n#{historial_academico.usuario.datos_contacto}") }
-    datos << { "nombre" => to_utf16("<b>Curso:</b>"), "valor" => to_utf16("#{historial_academico.tipo_curso.descripcion}") }
-    datos << { "nombre" => to_utf16("<b>Nivel:</b>"), "valor" => to_utf16("#{historial_academico.tipo_nivel.descripcion}") }
+    datos << { "nombre" => to_utf16("<b>Curso:</b>"), "valor" => to_utf16("#{historial_academico.descripcion_completa}") }
     datos << { "nombre" => to_utf16("<b>Horario:</b>"), "valor" => to_utf16("#{historial_academico.seccion.horario}") }
-    datos << { "nombre" => to_utf16("<b>Sección:</b>"), "valor" => to_utf16("#{historial_academico.seccion_numero}") }
     datos << { "nombre" => to_utf16("<b>Aula:</b>"), "valor" => to_utf16("#{historial_academico.seccion.aula}") }
     if historial_academico.tipo_convenio_id != "REG"
       datos << { "nombre" => to_utf16("<b>Convenio:</b>"), "valor" => to_utf16("#{historial_academico.tipo_convenio.descripcion}") }
     end
     tabla.data.replace datos
     tabla.render_on(pdf)
-    
 
-    # -------- TABLA CUENTA -------
-    pdf.text "\n", :font_size => 10
-		pdf.text to_utf16("<b>Datos de Pago:</b>"), :font_size => 12
-		pdf.text "\n", :font_size => 8
+  end
+
+  def self.datos_cuentas(historial_academico,pdf)
+        # -------- TABLA CUENTA -------
+    pdf.text "\n", :font_size => 8
+    pdf.text to_utf16("<b>Datos de Pago:</b>"), :font_size => 11
     tabla = PDF::SimpleTable.new 
-    tabla.font_size = 12
+    tabla.font_size = 10
     tabla.show_lines    = :none
     tabla.show_headings = false 
     tabla.shade_rows = :none
     tabla.column_order = ["nombre", "valor"]
 
     tabla.columns["nombre"] = PDF::SimpleTable::Column.new("nombre") { |col|
-      col.width = 110
+      col.width = 90
       col.justification = :left
     }
     tabla.columns["valor"] = PDF::SimpleTable::Column.new("valor") { |col|
-      col.width = 400
+      col.width = 420
       col.justification = :left
     }
     datos = []
@@ -280,18 +266,17 @@ class DocumentosPDF
     datos << { "nombre" => to_utf16("<b>Nro. de Cuenta:</b>"), "valor" => to_utf16("Cuenta Corriente #{historial_academico.cuenta_numero}") }
     datos << { "nombre" => to_utf16("<b>A nombre de:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_nombre}") }
     datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF.") }
-    datos << { "nombre" => to_utf16("<b>Nro Depósito:</b>"), "valor" => to_utf16("______________________________") }
     tabla.data.replace datos  
     tabla.render_on(pdf)
     pdf.text "\n", :font_size => 10
-   
+
+  end
+
+  def self.firmas(historial_academico,pdf)
     # -- FIRMAS -----
-		pdf.text "\n", :font_size => 8
-		pdf.text "\n", :font_size => 8
-		pdf.text "\n", :font_size => 8
-		pdf.text "\n", :font_size => 8
+    pdf.text "\n\n\n", :font_size => 8
     tabla = PDF::SimpleTable.new 
-    tabla.font_size = 12 
+    tabla.font_size = 11
     tabla.orientation   = :center
     tabla.position      = :center
     tabla.show_lines    = :none
@@ -312,16 +297,9 @@ class DocumentosPDF
     datos << { "nombre" => to_utf16("Firma Estudiante"), "valor" => to_utf16("Firma Autorizada y Sello") }
     tabla.data.replace datos  
     tabla.render_on(pdf)
- 		pdf.text "\n", :font_size => 8
-		pdf.text "\n", :font_size => 8
-
-
-
-
+    pdf.text "\n\n", :font_size => 8
+    
   end
-
-
-
 
   def self.factura(factura)
     # require ActionView::Helpers::NumberHelper
@@ -418,7 +396,38 @@ class DocumentosPDF
 
 
 
+  def self.datos_facturacion(historial_academico,pdf)
 
+        # -------- TABLA CUENTA -------
+    pdf.text "\n", :font_size => 8
+    pdf.text to_utf16("<b>Datos de Facturación (Opcional):</b>"), :font_size => 11
+    tabla = PDF::SimpleTable.new 
+    tabla.font_size = 10
+    tabla.show_lines    = :none
+    tabla.show_headings = false 
+    tabla.shade_rows = :none
+    tabla.column_order = ["nombre", "valor"]
+
+    tabla.columns["nombre"] = PDF::SimpleTable::Column.new("nombre") { |col|
+      col.width = 90
+      col.justification = :left
+    }
+    tabla.columns["valor"] = PDF::SimpleTable::Column.new("valor") { |col|
+      col.width = 420
+      col.justification = :left
+    }
+    datos = []
+    
+    datos << { "nombre" => to_utf16("<b>A Nombre de:</b>"), "valor" => to_utf16("________________________________") }
+    datos << { "nombre" => to_utf16("<b>CI ó RIF:</b>"), "valor" => to_utf16("________________________________") }
+    datos << { "nombre" => to_utf16("<b>Dirección:</b>"), "valor" => to_utf16("__________________________________________________________________________________________________________________________________________________") }
+    datos << { "nombre" => to_utf16("<b>TLF:</b>"), "valor" => to_utf16("________________________________") }
+    datos << { "nombre" => to_utf16("<b>Depósito No.:</b>"), "valor" => to_utf16("________________________________") }    
+    tabla.data.replace datos  
+    tabla.render_on(pdf)
+    pdf.text "\n", :font_size => 10
+
+  end
 
 
 
@@ -426,10 +435,27 @@ class DocumentosPDF
     pdf = PDF::Writer.new(:paper => "letter")  #:orientation => :landscape, 
     t = Time.now
 
-    planilla_inscripcion_pagina(historial_academico,pdf)
-		pdf.text to_utf16("----- COPIA DEL ESTUDIANTE -----"), :font_size => 12, :justification => :center
-		pdf.text "\n", :font_size => 8
-		pdf.text to_utf16("#{t.strftime('%d/%m/%Y %I:%M%p')} - Página: 1 de 2"), :font_size => 10, :justification => :right
+    pdf.add_image_from_file 'app/assets/images/logo_fhe_ucv.jpg', 465, 710, 50,nil
+    pdf.add_image_from_file 'app/assets/images/logo_eim.jpg', 515, 710+10, 50,nil
+    pdf.add_image_from_file 'app/assets/images/logo_ucv.jpg', 45, 710, 50,nil
+    pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 600, nil, 100
+    pdf.add_text 480,600,to_utf16("---- #{historial_academico.usuario_ci} ----"),12
+    
+    #texto del encabezado
+    pdf.add_text 100,745,to_utf16("Universidad Central de Venezuela"),10
+    pdf.add_text 100,735,to_utf16("Facultad de Humanidades y Educación"),10
+    pdf.add_text 100,725,to_utf16("Escuela de Idiomas Modernos"),10
+    pdf.add_text 100,715,to_utf16("Cursos de Extensión EIM-UCV"),10
+
+    pdf.text "\n\n\n\n"
+
+    datos_preinscripcion(historial_academico,pdf)
+
+    datos_cuentas(historial_academico,pdf)
+    firmas(historial_academico,pdf)
+		pdf.text to_utf16("----- COPIA DEL ESTUDIANTE -----"), :font_size => 10, :justification => :center
+		pdf.text "________________________________________________________________________________________________________________________", :font_size => 8
+		# pdf.text to_utf16("#{t.strftime('%d/%m/%Y %I:%M%p')} - Página: 1 de 2"), :font_size => 10, :justification => :right
 		
     if historial_academico.tipo_categoria_id == "NI" || historial_academico.tipo_categoria_id == "TE"
       pdf.y = 650
@@ -471,12 +497,17 @@ class DocumentosPDF
       pdf.text to_utf16("****Es importante que usted conozca al profesor y a los coordinadores del curso de su representado y esté en comunicación con los mismos****\n"), :font_size => 12, :justification => :center
     end
 
-    pdf.new_page
-    pdf.y = 756
-    planilla_inscripcion_pagina(historial_academico,pdf)
-		pdf.text to_utf16("----- COPIA ADMINISTRACIÓN -----"), :font_size => 12, :justification => :center
-		pdf.text "\n", :font_size => 8
-		pdf.text to_utf16("#{t.strftime('%d/%m/%Y %I:%M%p')} - Página: 2 de 2"), :font_size => 10, :justification => :right
+    # pdf.new_page
+    # pdf.y = 756
+    pdf.text "\n\n"
+    pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 290, nil, 100
+    pdf.add_text 480,290,to_utf16("---- #{historial_academico.usuario_ci} ----"),12
+
+    datos_preinscripcion(historial_academico,pdf)
+    datos_facturacion(historial_academico,pdf)
+    firmas(historial_academico,pdf)
+		pdf.text to_utf16("----- COPIA ADMINISTRACIÓN -----"), :font_size => 10, :justification => :center
+		# pdf.text to_utf16("#{t.strftime('%d/%m/%Y %I:%M%p')} - Página: 2 de 2"), :font_size => 10, :justification => :right
 
     if historial_academico.tipo_categoria_id == "NI" || historial_academico.tipo_categoria_id == "TE"
       pdf.y = 650

@@ -62,6 +62,11 @@ class HistorialAcademico < ActiveRecord::Base
     :class_name => 'TipoNivel',
     :foreign_key => ['tipo_nivel_id']
   
+
+    def descripcion_completa
+      "#{tipo_curso.descripcion} - #{tipo_nivel.descripcion} - Sección: #{seccion_numero}"
+      
+    end
   
   def tipo_categoria
   	curso.tipo_curso.tipo_categoria
