@@ -423,13 +423,13 @@ class DocumentosPDF
     
     datos << { "nombre" => to_utf16("<b>A Nombre de:</b>"), "valor" => to_utf16("_________________________________________________________________________") }
     datos << { "nombre" => to_utf16("<b>CI ó RIF:</b>"), "valor" => to_utf16("_________________________________ <b>TLF:</b> ___________________________________") }
-    datos << { "nombre" => to_utf16("<b>Dirección:</b>"), "valor" => to_utf16("__________________________________________________________________________________________________________________________________________________") }
+    datos << { "nombre" => to_utf16("<b>Dirección:</b>"), "valor" => to_utf16("_________________________________________________________________________") }
     datos << { "nombre" => to_utf16("<b>Depósito No.:</b>"), "valor" => to_utf16("_________________________________________ / <b>Monto:</b> #{historial_academico.cuenta_monto} BsF.") }
     tabla.data.replace datos  
     tabla.render_on(pdf)
     pdf.text "\n", :font_size => 10
 
-  end
+  end  
 
 
 
@@ -463,7 +463,7 @@ class DocumentosPDF
 
     # pdf.new_page
     # pdf.y = 756
-    pdf.text "\n\n"
+    pdf.text "\n"
     pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 280, nil, 100
     pdf.add_text 480,280,to_utf16("---- #{historial_academico.usuario_ci} ----"),11
 
