@@ -1,7 +1,7 @@
 class PrincipalController < ApplicationController
-  
+
   before_filter :filtro_logueado
-  
+
   def index
     session[:nuevo] = nil 
     @titulo_pagina = "Principal"
