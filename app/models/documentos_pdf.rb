@@ -404,7 +404,7 @@ class DocumentosPDF
 
         # -------- TABLA CUENTA -------
     pdf.text "\n", :font_size => 8
-    pdf.text to_utf16("<b>Datos de Facturación (Opcional):</b>"), :font_size => 11
+    pdf.text to_utf16("<b>Si requiere una factura fiscal llene los siguientes campos:</b>"), :font_size => 11
     tabla = PDF::SimpleTable.new 
     tabla.font_size = 10
     tabla.show_lines    = :none
@@ -458,8 +458,15 @@ class DocumentosPDF
     firmas(historial_academico,pdf)      
  
 		pdf.text to_utf16("----- COPIA DEL ESTUDIANTE -----"), :font_size => 10, :justification => :center
-		pdf.text "________________________________________________________________________________________________________________________", :font_size => 8
-		# pdf.text to_utf16("#{t.strftime('%d/%m/%Y %I:%M%p')} - Página: 1 de 2"), :font_size => 10, :justification => :right
+
+    alto_tijeras = 393
+    alto_tijeras = alto_tijeras - 13 if historial_academico.tipo_convenio_id != "REG"
+
+    pdf.add_image_from_file 'app/assets/images/tijeras.jpg', 10, alto_tijeras, 20, nil
+    # pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 280, nil, 100
+    pdf.text to_utf16("-----------------------------------------------------------------------------------------------------------------------------------------------------------"), :font_size => 10
+  
+    # pdf.text to_utf16("#{t.strftime('%d/%m/%Y %I:%M%p')} - Página: 1 de 2"), :font_size => 10, :justification => :right
 
     # pdf.new_page
     # pdf.y = 756
