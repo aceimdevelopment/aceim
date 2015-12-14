@@ -203,7 +203,7 @@ class DocumentosPDF
     return pdf
   end
 
-  def self.datos_preinscripcion(historial_academico,pdf)    
+  def self.datos_preinscripcion(historial_academico,pdf,profesor=nil)    
 
     #titulo
     pdf.text to_utf16("Planilla de Inscripción (Sede Ciudad Universitaria)\n"), :font_size => 11, :justification => :center
@@ -236,6 +236,7 @@ class DocumentosPDF
     if historial_academico.tipo_convenio_id != "REG"
       datos << { "nombre" => to_utf16("<b>Convenio:</b>"), "valor" => to_utf16("#{historial_academico.tipo_convenio.descripcion}") }
     end
+    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF. / <b>Depósito No.</b>: _________________________________________") } if profesor
     tabla.data.replace datos
     tabla.render_on(pdf)
 
@@ -265,8 +266,8 @@ class DocumentosPDF
     datos << { "nombre" => to_utf16("<b>Banco:</b>"), "valor" => to_utf16("Banco de Venezuela") }
     datos << { "nombre" => to_utf16("<b>Nro. de Cuenta:</b>"), "valor" => to_utf16("Cuenta Corriente #{historial_academico.cuenta_numero}") }
     datos << { "nombre" => to_utf16("<b>A nombre de:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_nombre}") }
-    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF.") }
-
+    # datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF.") }
+    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF. / <b>Depósito No.</b>: _________________________________________") }
     tabla.data.replace datos  
     tabla.render_on(pdf)
     pdf.text to_utf16("<b>*** Acepté las condiciones y normativas del programa. ***</b>"), :font_size => 10
@@ -424,7 +425,6 @@ class DocumentosPDF
     datos << { "nombre" => to_utf16("<b>A Nombre de:</b>"), "valor" => to_utf16("_________________________________________________________________________") }
     datos << { "nombre" => to_utf16("<b>CI ó RIF:</b>"), "valor" => to_utf16("_________________________________ <b>TLF:</b> ___________________________________") }
     datos << { "nombre" => to_utf16("<b>Dirección:</b>"), "valor" => to_utf16("_________________________________________________________________________") }
-    datos << { "nombre" => to_utf16("<b>Depósito No.:</b>"), "valor" => to_utf16("_________________________________________ / <b>Monto:</b> #{historial_academico.cuenta_monto} BsF.") }
     tabla.data.replace datos  
     tabla.render_on(pdf)
     pdf.text "\n", :font_size => 10
@@ -467,7 +467,9 @@ class DocumentosPDF
     pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 280, nil, 100
     pdf.add_text 480,280,to_utf16("---- #{historial_academico.usuario_ci} ----"),11
 
-    datos_preinscripcion(historial_academico,pdf)
+    datos_preinscripcion(historial_academico,pdf,true)
+    # pdf.text to_utf16("  <b>Monto:</b>       #{historial_academico.cuenta_monto} BsF. / <b>Depósito No.</b>: _________________________________________"), :font_size => 10
+
     datos_facturacion(historial_academico,pdf)
     firmas(historial_academico,pdf)
 
