@@ -12,4 +12,10 @@ class NotaEnEvaluacion < ActiveRecord::Base
     :class_name => "TipoEvaluacion",
     :foreign_key => "tipo_evaluacion_id"
 
+
+  def nota_valor
+  	return "SC" if nota.to_i.eql? -2
+  	return "PI" if nota.to_i.eql? -1
+  	return nota.to_s
+  end
 end

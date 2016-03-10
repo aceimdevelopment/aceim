@@ -45,23 +45,40 @@ class CalificacionController < ApplicationController
     @horario = Seccion.horario(session)
     @seccion = session[:seccion_numero]
     @nivel = historial.tipo_nivel.descripcion
-    
-    @historiales.each{|historial|
-       if !historial.tiene_notas_adicionales? && historial.idioma_id.upcase == "IN"
-          historial.crear_notas_adicionales
+    @periodo = historial.periodo
+    @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
+    if @periodo.es_menor_que? @periodo_transicion
+
+      @historiales.each{|h|
+         if !h.tiene_notas_adicionales? && h.idioma_id.upcase == "IN"
+            h.crear_notas_adicionales
+          end
+      }
+      
+      if historial.idioma_id == "IN"
+        if (!historial.nota_en_evaluacion_sin_calificar? && !historial.sin_calificar? && saltar) && (session[:administrador] == nil)
+          redirect_to :action => "mostrar_calificaciones"
+          return
         end
-    }
-    
-    if historial.idioma_id == "IN"
+      elsif (!historial.sin_calificar? && saltar) && (session[:administrador] == nil)
+        redirect_to :action => "mostrar_calificaciones"
+        return
+      end
+    else
+      @historiales.each{|historial|
+
+          if historial.tiene_notas_adicionales?
+            historial.crear_nota_redaccion unless historial.tiene_nota_redaccion?
+          else
+            historial.crear_notas_adicionales
+          end
+      }
       if (!historial.nota_en_evaluacion_sin_calificar? && !historial.sin_calificar? && saltar) && (session[:administrador] == nil)
         redirect_to :action => "mostrar_calificaciones"
         return
       end
-    elsif (!historial.sin_calificar? && saltar) && (session[:administrador] == nil)
-      redirect_to :action => "mostrar_calificaciones"
-      return
-    end
-    
+    end      
+
   end
   
   def guardar_notas
@@ -112,6 +129,9 @@ class CalificacionController < ApplicationController
       @horario = Seccion.horario(session)
       @nivel = historial.tipo_nivel.descripcion
       @seccion = session[:seccion_numero]
+      @periodo = historial.periodo
+      @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
+
       info_bitacora("La seccion #{session[:seccion_numero]} del curso #{Seccion.idioma(historial.idioma_id)} del horario #{Seccion.horario(session)} no fue calificada por completo, periodo #{session[:parametros][:periodo_calificacion]}")
       render :action => "buscar_estudiantes"
       return
@@ -193,6 +213,8 @@ class CalificacionController < ApplicationController
     @horario = Seccion.horario(session)
     @nivel = historial.tipo_nivel.descripcion
     @seccion = session[:seccion_numero]
+    @periodo = historial.periodo
+    @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES    
     info_bitacora("La seccion #{session[:seccion_numero]} del curso #{Seccion.idioma(historial.idioma_id)} del horario #{Seccion.horario(session)} no fue calificada por completo, periodo #{session[:parametros][:periodo_calificacion]}")
     render :action => "buscar_estudiantes"
     return
@@ -229,6 +251,9 @@ class CalificacionController < ApplicationController
     @horario = Seccion.horario(session)
     @nivel = historial.tipo_nivel.descripcion
     @seccion = session[:seccion_numero]
+    @periodo = historial.periodo
+    @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
+
   end
   
   def generar_pdf

@@ -13,6 +13,7 @@ class HistorialAcademico < ActiveRecord::Base
   EXAMENESCRITO2 = "EXA_ESC_2"
   EXAMENORAL = "EXA_ORA"
   OTRAS = "OTRAS"
+  REDACCION = "REDACCION"
   
   #autogenerado por db2models
   set_primary_keys :usuario_ci,:idioma_id,:tipo_categoria_id,:tipo_nivel_id,:periodo_id,:seccion_numero
@@ -69,17 +70,17 @@ class HistorialAcademico < ActiveRecord::Base
     end
   
   def tipo_categoria
-  	curso.tipo_curso.tipo_categoria
+    curso.tipo_curso.tipo_categoria
   end
   
   def idioma
-  	#Idioma.find(idioma_id)
-  	curso.tipo_curso.idioma
+    #Idioma.find(idioma_id)
+    curso.tipo_curso.idioma
   end
   
- 	def tipo_nivel
-		curso.tipo_nivel
-	end
+  def tipo_nivel
+    curso.tipo_nivel
+  end
 
 
     
@@ -111,12 +112,12 @@ class HistorialAcademico < ActiveRecord::Base
   end
   
   
-	def curso
+  def curso
     Curso.first(:conditions => ["idioma_id = ? AND tipo_categoria_id = ? AND tipo_nivel_id = ?",
       idioma_id, tipo_categoria_id, tipo_nivel_id])
       #seccion.curso_periodo.curso
       #tipo_curso.curso
-	end
+  end
 
   def seccion_tentativa 
     secciones = Seccion.all(:conditions => ["tipo_nivel_id = ? AND idioma_id = ? AND \
@@ -141,20 +142,20 @@ class HistorialAcademico < ActiveRecord::Base
     horarios_hay << HorarioSeccion.where(:seccion => secciones.first)
     
     secciones.each do |s|
-    	horario_seccion = HorarioSeccion.where(:seccion => s)
-    	if s.hay_cupo?
-    		horario_seccion.each do |h|
-    			no_esta = false
-    			horarios_hay.each do |hay|
-    				
-    				unless ((hay.tipo_bloque == h.tipo_bloque) and no_esta) 
-    				no_esta = true
-    				end
-    			end
-    			horarios_hay << horario_seccion if no_esta
-    		end
-    	end
-    	
+      horario_seccion = HorarioSeccion.where(:seccion => s)
+      if s.hay_cupo?
+        horario_seccion.each do |h|
+          no_esta = false
+          horarios_hay.each do |hay|
+            
+            unless ((hay.tipo_bloque == h.tipo_bloque) and no_esta) 
+            no_esta = true
+            end
+          end
+          horarios_hay << horario_seccion if no_esta
+        end
+      end
+      
     end
         
     return horario_seccion
@@ -237,9 +238,9 @@ class HistorialAcademico < ActiveRecord::Base
                            :tipo_evaluacion_id => EXAMENESCRITO1).limit(1).count > 0   
    
   end
-  
+
   def crear_notas_adicionales
-    arreglo = [EXAMENESCRITO1,EXAMENESCRITO2,EXAMENORAL,OTRAS]
+    arreglo = [EXAMENESCRITO1,EXAMENESCRITO2,EXAMENORAL,OTRAS, REDACCION]
     arreglo.each{ |a|
       nee = NotaEnEvaluacion.new(:usuario_ci => usuario_ci,
                            :idioma_id => idioma_id, 
@@ -253,16 +254,39 @@ class HistorialAcademico < ActiveRecord::Base
      nee.save
     }
   end
+# temporal para verificar y crear notas de redaccion
+# --------------------------------------------------------------------------
+  def tiene_nota_redaccion?
+    NotaEnEvaluacion.where(:usuario_ci => usuario_ci, :idioma_id => idioma_id, 
+                           :tipo_categoria_id => tipo_categoria_id, 
+                           :tipo_nivel_id => tipo_nivel_id,
+                           :periodo_id => periodo_id, 
+                           :seccion_numero => seccion_numero,
+                           :tipo_evaluacion_id => REDACCION).limit(1).count > 0
+  end
 
+  def crear_nota_redaccion
+      nee = NotaEnEvaluacion.new(:usuario_ci => usuario_ci,
+                           :idioma_id => idioma_id, 
+                           :tipo_categoria_id => tipo_categoria_id, 
+                           :tipo_nivel_id => tipo_nivel_id, 
+                           :periodo_id => periodo_id, 
+                           :seccion_numero => seccion_numero, 
+                           :tipo_evaluacion_id => REDACCION,
+                           :nota => -2
+                           )
+     nee.save
+  end
+# --------------------------------------------------------------------------
 
-  def nota_en_evaluacion(nota)
+  def nota_en_evaluacion(tipo_evalu)
       NotaEnEvaluacion.where(:usuario_ci => usuario_ci,
                            :idioma_id => idioma_id, 
                            :tipo_categoria_id => tipo_categoria_id, 
                            :tipo_nivel_id => tipo_nivel_id, 
                            :periodo_id => periodo_id, 
                            :seccion_numero => seccion_numero, 
-                           :tipo_evaluacion_id => nota
+                           :tipo_evaluacion_id => tipo_evalu
                            ).limit(0).first
   end
   

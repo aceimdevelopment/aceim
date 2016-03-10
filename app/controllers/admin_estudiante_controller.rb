@@ -360,10 +360,12 @@ end
                                             :periodo_id => pa[:periodo_id],
                                             :seccion_numero => pa[:seccion_numero]
    ).limit(1).first
-      @n1 = @historial.nota_en_evaluacion("EXA_ESC_1").nota if @historial.nota_en_evaluacion("EXA_ESC_1")
-      @n2 = @historial.nota_en_evaluacion("EXA_ESC_2").nota if @historial.nota_en_evaluacion("EXA_ESC_2")
-      @n3 = @historial.nota_en_evaluacion("EXA_ORA").nota if @historial.nota_en_evaluacion("EXA_ORA")
-      @n4 = @historial.nota_en_evaluacion("OTRAS").nota if @historial.nota_en_evaluacion("OTRAS")
+      @n1 = @historial.nota_en_evaluacion("EXA_ESC_1").nota_valor if @historial.nota_en_evaluacion("EXA_ESC_1")
+      @n2 = @historial.nota_en_evaluacion("EXA_ESC_2").nota_valor if @historial.nota_en_evaluacion("EXA_ESC_2")
+      @n3 = @historial.nota_en_evaluacion("EXA_ORA").nota_valor if @historial.nota_en_evaluacion("EXA_ORA")
+      @n5 = @historial.nota_en_evaluacion("REDACCION").nota_valor if @historial.nota_en_evaluacion("REDACCION")
+      @n4 = @historial.nota_en_evaluacion("OTRAS").nota_valor if @historial.nota_en_evaluacion("OTRAS")
+
       render :layout => false
     else
       redirect_to :action => "opciones_menu"

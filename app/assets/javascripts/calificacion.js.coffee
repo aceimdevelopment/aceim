@@ -95,34 +95,69 @@ $ ->
   
   
 #nota1,2,3,4_cedula.change, para asignar la nota (solo ingles, por ahora)
-  for i in [1..4]    
-    elementos("nota"+i+"_").change ->
-      cedula = $(this).attr("id").substring(6)
-      nota1 = tomar_nota $("#nota1_"+ cedula).val()
-      nota2 = tomar_nota $("#nota2_"+ cedula).val()
-      nota3 = tomar_nota $("#nota3_"+ cedula).val()
-      nota4 = tomar_nota $("#nota4_"+ cedula).val()
+
+  if elementos("nota_5_").count > 0
+    for i in [1..5]    
+      elementos("nota"+i+"_").change ->
+        cedula = $(this).attr("id").substring(6)
+        nota1 = tomar_nota $("#nota1_"+ cedula).val()
+        nota2 = tomar_nota $("#nota2_"+ cedula).val()
+        nota3 = tomar_nota $("#nota3_"+ cedula).val()
+        nota4 = tomar_nota $("#nota4_"+ cedula).val()
+        nota5 = tomar_nota $("#nota5_"+ cedula).val()
+
+          
+        if isNaN(nota1) or isNaN(nota2) or isNaN(nota3) or isNaN(nota4) or isNaN(nota5)
+          $('#nota_final_'+cedula).html("NI")
+          $('#notafinal_'+cedula).val("NI")
+          $('#descripcion_'+cedula).html(palabra "NI")
+          agregar_remover_clase this,true,6
+        else  if isPi(nota1) or isPi(nota2) or isPi(nota3) or isPi(nota4) or isNaN(nota5)
         
-      if isNaN(nota1) or isNaN(nota2) or isNaN(nota3) or isNaN(nota4)
-        $('#nota_final_'+cedula).html("NI")
-        $('#notafinal_'+cedula).val("NI")
-        $('#descripcion_'+cedula).html(palabra "NI")
-        agregar_remover_clase this,true,6
-      else  if isPi(nota1) or isPi(nota2) or isPi(nota3) or isPi(nota4)
-      
-#mosca!!! -------------------------      
-        for i in [1..4]
-          if $("#nota"+i+"_"+cedula).val() == "" or $("#nota"+i+"_"+cedula).val().toUpperCase() == "PI"
-            $("#nota"+i+"_"+cedula).val("PI")
-#mosca!!! -------------------------
-        $('#nota_final_'+cedula).html("PI")
-        $('#notafinal_'+cedula).val(-1)
-        $('#descripcion_'+cedula).html(palabra "PI")
-        agregar_remover_clase this,false,6
-      else
-        nota_final = Math.round(nota1*0.3 + nota2*0.3 + nota3*0.2 + nota4*0.2)
-        $('#nota_final_'+cedula).html(nota_final)
-        $('#notafinal_'+cedula).val(nota_final)
-        $('#descripcion_'+cedula).html(palabra nota_final.toString())
-        agregar_remover_clase this,false,6
-      
+  #mosca!!! -------------------------      
+          for i in [1..5]
+            if $("#nota"+i+"_"+cedula).val() == "" or $("#nota"+i+"_"+cedula).val().toUpperCase() == "PI"
+              $("#nota"+i+"_"+cedula).val("PI")
+  #mosca!!! -------------------------
+          $('#nota_final_'+cedula).html("PI")
+          $('#notafinal_'+cedula).val(-1)
+          $('#descripcion_'+cedula).html(palabra "PI")
+          agregar_remover_clase this,false,6
+        else
+          nota_final = Math.round(nota1*0.3 + nota2*0.3 + nota3*0.2 + nota4*0.1 + nota5*0.1)
+          $('#nota_final_'+cedula).html(nota_final)
+          $('#notafinal_'+cedula).val(nota_final)
+          $('#descripcion_'+cedula).html(palabra nota_final.toString())
+          agregar_remover_clase this,false,6
+  else
+
+    for i in [1..4]    
+      elementos("nota"+i+"_").change ->
+        cedula = $(this).attr("id").substring(6)
+        nota1 = tomar_nota $("#nota1_"+ cedula).val()
+        nota2 = tomar_nota $("#nota2_"+ cedula).val()
+        nota3 = tomar_nota $("#nota3_"+ cedula).val()
+        nota4 = tomar_nota $("#nota4_"+ cedula).val()
+          
+        if isNaN(nota1) or isNaN(nota2) or isNaN(nota3) or isNaN(nota4)
+          $('#nota_final_'+cedula).html("NI")
+          $('#notafinal_'+cedula).val("NI")
+          $('#descripcion_'+cedula).html(palabra "NI")
+          agregar_remover_clase this,true,6
+        else  if isPi(nota1) or isPi(nota2) or isPi(nota3) or isPi(nota4)
+        
+  #mosca!!! -------------------------      
+          for i in [1..4]
+            if $("#nota"+i+"_"+cedula).val() == "" or $("#nota"+i+"_"+cedula).val().toUpperCase() == "PI"
+              $("#nota"+i+"_"+cedula).val("PI")
+  #mosca!!! -------------------------
+          $('#nota_final_'+cedula).html("PI")
+          $('#notafinal_'+cedula).val(-1)
+          $('#descripcion_'+cedula).html(palabra "PI")
+          agregar_remover_clase this,false,6
+        else
+          nota_final = Math.round(nota1*0.3 + nota2*0.3 + nota3*0.2 + nota4*0.2)
+          $('#nota_final_'+cedula).html(nota_final)
+          $('#notafinal_'+cedula).val(nota_final)
+          $('#descripcion_'+cedula).html(palabra nota_final.toString())
+          agregar_remover_clase this,false,6

@@ -42,6 +42,9 @@ class DocumentosPDF
     #titulo
     pdf.fill_color(Color::RGB.new(0,0,0))
     historial = historiales.first
+    @periodo = historial.periodo
+    @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
+
     #periodo_calificacion
     
     pdf.add_text_wrap 50,650,510,to_utf16("#{Seccion.idioma(historial.idioma_id)} (#{Seccion.tipo_categoria(historial.tipo_categoria_id)} - Sección #{historial.seccion_numero})"), 12,:center
@@ -72,24 +75,32 @@ class DocumentosPDF
     tabla.shade_rows = :striped
     tabla.orientation   = :center
     tabla.position      = :center
-    if !historiales.first.tiene_notas_adicionales?
-      tabla.column_order = ["#", "nombre", "cedula", "nota", "descripcion"]
+
+    if @periodo.es_menor_que? @periodo_transicion
+
+      if !historiales.first.tiene_notas_adicionales?
+        tabla.column_order = ["#", "nombre", "cedula", "nota", "descripcion"]
+      else
+        tabla.column_order = ["#", "nombre", "cedula", "nota1","nota2","nota3","nota4","nota5", "descripcion"]
+      end
     else
-      tabla.column_order = ["#", "nombre", "cedula", "nota1","nota2","nota3","nota4","nota5", "descripcion"]
+      tabla.column_order = ["#", "nombre", "cedula", "nota1","nota2","nota3","nota6","nota4","nota5","descripcion"]
     end
 
     tabla.columns["#"] = PDF::SimpleTable::Column.new("#") { |col|
-      col.width = 30
+      col.width = 20
       col.heading = to_utf16("<b>#</b>")
       col.heading.justification = :center
       col.justification = :center
     }
+
     tabla.columns["cedula"] = PDF::SimpleTable::Column.new("cedula") { |col|
       col.width = 60
       col.heading = to_utf16("<b>Cédula</b>")
       col.heading.justification = :center
       col.justification = :center
     }
+
     tabla.columns["nombre"] = PDF::SimpleTable::Column.new("nombre") { |col|
       if !historiales.first.tiene_notas_adicionales?
         col.width = 190
@@ -100,10 +111,11 @@ class DocumentosPDF
       col.heading.justification = :left
       col.justification = :left
     }
+    
     if !historiales.first.tiene_notas_adicionales?
       tabla.columns["nota"] = PDF::SimpleTable::Column.new("nota") { |col|
         col.width = 80
-        col.heading = to_utf16("<b>Nota</b>")
+        col.heading = to_utf16("<b>Final</b>")
         col.heading.justification = :center
         col.justification = :center
       }
@@ -133,17 +145,26 @@ class DocumentosPDF
         col.justification = :center
       }
       tabla.columns["nota5"] = PDF::SimpleTable::Column.new("nota5") { |col|
-        col.width = 60
+        col.width = 50
         col.heading = to_utf16("<b>Nota</b>")
         col.heading.justification = :center
         col.justification = :center
       }
+      unless @periodo.es_menor_que? @periodo_transicion
+        tabla.columns["nota6"] = PDF::SimpleTable::Column.new("nota6") { |col|
+          col.width = 50
+          col.heading = to_utf16("<b>Redac.</b>")
+          col.heading.justification = :center
+          col.justification = :center
+        }
+      end
     end
+
     tabla.columns["descripcion"] = PDF::SimpleTable::Column.new("descripcion") { |col|
       if !historiales.first.tiene_notas_adicionales?
         col.width = 100
       else
-        col.width = 60
+        col.width = 70
       end
       col.heading = to_utf16("<b>Descripción</b>")
       col.heading.justification = :left
@@ -153,48 +174,49 @@ class DocumentosPDF
     data = []
 
     historiales.each_with_index{|h,i|
+      nota_descripcion = to_utf16(HistorialAcademico::NOTASPALABRAS[h.nota_final + 2])
       if !historiales.first.tiene_notas_adicionales?
         data << {"#" => "#{i+1}",
           "cedula" => to_utf16(h.usuario.ci),
           "nombre" => to_utf16(h.usuario.nombre_completo),
           "nota" => to_utf16(HistorialAcademico.colocar_nota(h.nota_final)),
-          "descripcion" => to_utf16(HistorialAcademico::NOTASPALABRAS[h.nota_final + 2])
+          "descripcion" => nota_descripcion 
         }
       else
-        nota1 = nil
-        nota2 = nil
-        nota3 = nil
-        nota4 = nil
-        if h.nota_en_evaluacion(HistorialAcademico::EXAMENESCRITO1).nota == -1
-          nota1 = "PI" 
+        nota1 = h.nota_en_evaluacion(HistorialAcademico::EXAMENESCRITO1).nota_valor 
+        nota2 = h.nota_en_evaluacion(HistorialAcademico::EXAMENESCRITO2).nota_valor
+        nota3 = h.nota_en_evaluacion(HistorialAcademico::EXAMENORAL).nota_valor
+        nota4 = h.nota_en_evaluacion(HistorialAcademico::OTRAS).nota_valor
+
+        unless @periodo.es_menor_que? @periodo_transicion
+          nota6 = h.nota_en_evaluacion(HistorialAcademico::REDACCION).nota_valor
+  
+          data << {"#" => "#{i+1}",
+            "cedula" => to_utf16(h.usuario.ci),
+            "nombre" => to_utf16(h.usuario.nombre_completo),
+            "nota1" => to_utf16(nota1),
+            "nota2" => to_utf16(nota2),
+            "nota3" => to_utf16(nota3),
+            "nota4" => to_utf16(nota4),
+            "nota5" => to_utf16(HistorialAcademico.colocar_nota(h.nota_final)),
+            "nota6" => to_utf16(nota6),            
+            "descripcion" => nota_descripcion
+          }
+
         else
-          nota1 = h.nota_en_evaluacion(HistorialAcademico::EXAMENESCRITO1).nota.to_s
+          data << {"#" => "#{i+1}",
+            "cedula" => to_utf16(h.usuario.ci),
+            "nombre" => to_utf16(h.usuario.nombre_completo),
+            "nota1" => to_utf16(nota1),
+            "nota2" => to_utf16(nota2),
+            "nota3" => to_utf16(nota3),
+            "nota4" => to_utf16(nota4),
+            "nota5" => to_utf16(HistorialAcademico.colocar_nota(h.nota_final)),
+            "descripcion" => nota_descripcion
+          }
+
         end
-        if h.nota_en_evaluacion(HistorialAcademico::EXAMENESCRITO2).nota == -1
-          nota2 = "PI" 
-        else
-          nota2 = h.nota_en_evaluacion(HistorialAcademico::EXAMENESCRITO2).nota.to_s
-        end
-        if h.nota_en_evaluacion(HistorialAcademico::EXAMENORAL).nota == -1
-          nota3 = "PI" 
-        else
-          nota3 = h.nota_en_evaluacion(HistorialAcademico::EXAMENORAL).nota.to_s
-        end
-        if h.nota_en_evaluacion(HistorialAcademico::OTRAS).nota == -1
-          nota4 = "PI" 
-        else
-          nota4 = h.nota_en_evaluacion(HistorialAcademico::OTRAS).nota.to_s
-        end
-        data << {"#" => "#{i+1}",
-          "cedula" => to_utf16(h.usuario.ci),
-          "nombre" => to_utf16(h.usuario.nombre_completo),
-          "nota1" => to_utf16(nota1),
-          "nota2" => to_utf16(nota2),
-          "nota3" => to_utf16(nota3),
-          "nota4" => to_utf16(nota4),
-          "nota5" => to_utf16(HistorialAcademico.colocar_nota(h.nota_final)),
-          "descripcion" => to_utf16(HistorialAcademico::NOTASPALABRAS[h.nota_final + 2])
-        }
+        
       end
     }
     tabla.data.replace data
