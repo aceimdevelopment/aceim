@@ -186,5 +186,23 @@ class PrincipalAdminController < ApplicationController
     pdf = DocumentosPDF.generar_carnets_instructores(consulta,session[:parametros][:periodo_actual])
     send_data pdf.render,:filename => "carnet_instructores.pdf",:type => "application/pdf", :disposition => "attachment"
   end
+
+  def cargar_pdf
+    @idioma_id = params[:idioma_id]
+    @nivel_id = params[:nivel_id]
+  end
+
+
+  def actualizar_pdf
+    begin
+      data = params[:archivo][:datafile].tempfile
+      archivo = "#{params[:idioma_id]}/#{params[:nivel_id]}.pdf"
+      File.open("#{Rails.root}/attachments/syllabus/#{archivo}", "wb") {|file| file.write data.read}
+      flash[:mensaje] = "Archivo '#{archivo}' Actualizado."
+    rescue Error => e
+      flash[:mensaje] = "Error: #{e}"
+    end
+    redirect_to :action => 'index'
+  end
   
 end
