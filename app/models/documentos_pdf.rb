@@ -43,6 +43,7 @@ class DocumentosPDF
     pdf.fill_color(Color::RGB.new(0,0,0))
     historial = historiales.first
     @periodo = historial.periodo
+    @tipo_nivel_id = historial.tipo_nivel_id
     @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
 
     #periodo_calificacion
@@ -83,8 +84,10 @@ class DocumentosPDF
       else
         tabla.column_order = ["#", "nombre", "cedula", "nota1","nota2","nota3","nota4","nota5", "descripcion"]
       end
-    else
+    elsif @tipo_nivel_id.eql? 'BI' or  @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI'
       tabla.column_order = ["#", "nombre", "cedula", "nota1","nota2","nota3","nota6","nota4","nota5","descripcion"]
+    else
+      tabla.column_order = ["#", "nombre", "cedula", "nota1","nota2","nota3","nota4","nota5", "descripcion"]
     end
 
     tabla.columns["#"] = PDF::SimpleTable::Column.new("#") { |col|
@@ -150,7 +153,7 @@ class DocumentosPDF
         col.heading.justification = :center
         col.justification = :center
       }
-      unless @periodo.es_menor_que? @periodo_transicion
+      if (not @periodo.es_menor_que? @periodo_transicion) or ( @tipo_nivel_id.eql? 'BI' or @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI')
         tabla.columns["nota6"] = PDF::SimpleTable::Column.new("nota6") { |col|
           col.width = 50
           col.heading = to_utf16("<b>Redac.</b>")
@@ -187,8 +190,8 @@ class DocumentosPDF
         nota2 = h.nota_en_evaluacion(HistorialAcademico::EXAMENESCRITO2).nota_valor
         nota3 = h.nota_en_evaluacion(HistorialAcademico::EXAMENORAL).nota_valor
         nota4 = h.nota_en_evaluacion(HistorialAcademico::OTRAS).nota_valor
-
-        unless @periodo.es_menor_que? @periodo_transicion
+        
+        if (not @periodo.es_menor_que? @periodo_transicion) or ( @tipo_nivel_id.eql? 'BI' or @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI')
           nota6 = h.nota_en_evaluacion(HistorialAcademico::REDACCION).nota_valor
   
           data << {"#" => "#{i+1}",

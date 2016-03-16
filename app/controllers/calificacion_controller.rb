@@ -45,6 +45,7 @@ class CalificacionController < ApplicationController
     @horario = Seccion.horario(session)
     @seccion = session[:seccion_numero]
     @nivel = historial.tipo_nivel.descripcion
+    @tipo_nivel_id = session[:tipo_nivel_id]
     @periodo = historial.periodo
     @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
     if @periodo.es_menor_que? @periodo_transicion
@@ -164,11 +165,23 @@ class CalificacionController < ApplicationController
     exitoso_local = true
     nota_float = -2
     historial = nil
-    arreglo = [{:nota1 => HistorialAcademico::EXAMENESCRITO1},
-               {:nota2 => HistorialAcademico::EXAMENESCRITO2},
-               {:nota3 => HistorialAcademico::EXAMENORAL},
-               {:nota4 => HistorialAcademico::OTRAS},
-               {:notafinal => "nota_final"}]
+    @tipo_nivel_id = session[:tipo_nivel_id]
+
+    if @tipo_nivel_id.eql? 'BI' or  @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI'
+      arreglo = [{:nota1 => HistorialAcademico::EXAMENESCRITO1},
+                 {:nota2 => HistorialAcademico::EXAMENESCRITO2},
+                 {:nota3 => HistorialAcademico::EXAMENORAL},
+                 {:nota5 => HistorialAcademico::REDACCION},
+                 {:nota4 => HistorialAcademico::OTRAS},
+                 {:notafinal => "nota_final"}]
+    else
+      arreglo = [{:nota1 => HistorialAcademico::EXAMENESCRITO1},
+                 {:nota2 => HistorialAcademico::EXAMENESCRITO2},
+                 {:nota3 => HistorialAcademico::EXAMENORAL},
+                 {:nota4 => HistorialAcademico::OTRAS},
+                 {:notafinal => "nota_final"}]
+    end
+
     arreglo.each{|a|
       params[a.keys[0]].each_with_index{|nota,i|
         exitoso_local = true
@@ -253,7 +266,7 @@ class CalificacionController < ApplicationController
     @seccion = session[:seccion_numero]
     @periodo = historial.periodo
     @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
-
+    @tipo_nivel_id = session[:tipo_nivel_id]
   end
   
   def generar_pdf
