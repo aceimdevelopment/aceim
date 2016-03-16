@@ -360,6 +360,8 @@ end
                                             :periodo_id => pa[:periodo_id],
                                             :seccion_numero => pa[:seccion_numero]
    ).limit(1).first
+
+      @evaluaciones = @historial.notas_en_evaluaciones
       @n1 = @historial.nota_en_evaluacion("EXA_ESC_1").nota_valor if @historial.nota_en_evaluacion("EXA_ESC_1")
       @n2 = @historial.nota_en_evaluacion("EXA_ESC_2").nota_valor if @historial.nota_en_evaluacion("EXA_ESC_2")
       @n3 = @historial.nota_en_evaluacion("EXA_ORA").nota_valor if @historial.nota_en_evaluacion("EXA_ORA")

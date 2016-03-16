@@ -1,21 +1,11 @@
 %table.tablesorter
   %thead
     %tr
-      %th E. Teórico 1 (30%)
-      %th E. Teórico 2 (30%)
-      %th E. Oral (20%)
-      - if @n5
-        %th Redacción (10%)
-        %th Otros (10%)
-      - else
-        %th Otros (20%)      
-      %th Nota Final (100%)
-  %tbody
-    %tr
-      %td=@n1
-      %td=@n2
-      %td=@n3
-      -if @n5
-        %td=@n5
-      %td=@n4
-      %td=@historial.nota_final.to_i
+      - @evaluaciones.each do |eva|
+        %th= eva.tipo_evaluacion.descripcion
+      %th Nota Final
+    %tbody
+      %tr
+        - @evaluaciones.each do |eva|
+          %td= eva.nota
+        %td= @historial.nota_final.to_i

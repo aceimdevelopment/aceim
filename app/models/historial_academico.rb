@@ -18,6 +18,12 @@ class HistorialAcademico < ActiveRecord::Base
   #autogenerado por db2models
   set_primary_keys :usuario_ci,:idioma_id,:tipo_categoria_id,:tipo_nivel_id,:periodo_id,:seccion_numero
 
+  has_many :notas_en_evaluaciones,
+    :class_name => 'NotaEnEvaluacion',
+    :foreign_key => ['usuario_ci', 'idioma_id', 'tipo_categoria_id', 
+                     'tipo_nivel_id', 'periodo_id', 'seccion_numero']
+  accepts_nested_attributes_for :notas_en_evaluaciones
+  
   #autogenerado por db2models
   belongs_to :tipo_convenio,
     :class_name => 'TipoConvenio',
