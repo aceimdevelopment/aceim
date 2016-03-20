@@ -199,7 +199,7 @@ class PrincipalAdminController < ApplicationController
       archivo = "#{params[:idioma_id]}/#{params[:nivel_id]}.pdf"
       File.open("#{Rails.root}/attachments/syllabus/#{archivo}", "wb") {|file| file.write data.read}
       flash[:mensaje] = "Archivo '#{archivo}' Actualizado."
-    rescue Error => e
+    rescue 
       flash[:mensaje] = "Error: #{e}"
     end
     redirect_to :action => 'index'
