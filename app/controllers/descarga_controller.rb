@@ -2,7 +2,7 @@ class DescargaController < ApplicationController
 	before_filter :filtro_logueado
 
 	def fechas
-		send_file "#{Rails.root}/attachments/FECHAS C_2015.pdf", :type => "application/pdf", :x_sendfile => true, :disposition => "attachment"
+		send_file "#{Rails.root}/attachments/FECHAS.pdf", :type => "application/pdf", :x_sendfile => true, :disposition => "attachment"
 	end
 
 	def syllabus

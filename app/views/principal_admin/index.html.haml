@@ -2,8 +2,10 @@
 -if session[:administrador].tipo_rol_id
   %ul.navegador
     %li    
-      %a.desplegable{:href=>"#"} Syllabus
+      %a.desplegable{:href=>"#"} Syllabus & Fecha
       %ul.subnavegador
+        %p
+          =link_to "Fechas", :controller => 'descarga', :action => 'fechas'
         - @cursos.each do |curso|
           - nivel = curso.tipo_nivel
           - if (curso.idioma_id.eql? 'IN') 
