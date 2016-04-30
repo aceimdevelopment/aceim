@@ -1,0 +1,25 @@
+%h1= @titulo
+
+= link_to 'Agregar Examen', {:action => 'wizard_paso1' }, :class => "btn" 
+%br
+.well
+	%table.tablesorter.tablefilter.likert
+		%thead
+			%tr
+				%th= 'Descripción de Curso'
+				%th= 'Total de Examenes'
+				%th= 'Opciones'
+		%tbody
+			-@cursos.each do |curso|
+				-if curso.examenes.count > 0
+					%tr
+						%td= curso.descripcion
+						%td= curso.examenes.count
+						%td
+							- curso.examenes.each do |e| 
+								%p= link_to e.descripcion_full, :action => 'wizard_paso2', :id => e.id
+
+:javascript
+	$(function() {
+		$( ".btn" ).button();
+	});

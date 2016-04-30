@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  clave: MyString
+  respuesta: MyString
+  siguiente_pregunta_id: 1
+
+two:
+  clave: MyString
+  respuesta: MyString
+  siguiente_pregunta_id: 1

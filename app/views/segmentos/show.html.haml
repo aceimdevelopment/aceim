@@ -1,0 +1,34 @@
+%p#notice= notice
+
+%p
+  %b Titulo:
+  = @segmento.titulo
+%p
+  %b Tipo segmento:
+  = @segmento.tipo_segmento_id
+%p
+  %b Curso idioma:
+  = @segmento.curso_idioma_id
+%p
+  %b Curso tipo categoria:
+  = @segmento.curso_tipo_categoria_id
+%p
+  %b Curso tipo nivel:
+  = @segmento.curso_tipo_nivel_id
+
+%h2= "Agregar Pregunta:"
+= form_for([@segmento, @segmento.preguntas.build]) do |f|
+  .field
+    = f.label :clave
+    %br
+    = f.text_field :clave
+  .field
+    = f.label :respuesta
+    %br
+    = f.text_area :respuesta
+  .actions
+    = f.submit
+
+= link_to 'Edit', edit_segmento_path(@segmento)
+|
+= link_to 'Back', segmentos_path

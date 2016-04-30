@@ -1,0 +1,9 @@
+%p#notice= notice
+
+%p
+  %b Nombre:
+  = @tipo_segmento.nombre
+
+= link_to 'Edit', edit_tipo_segmento_path(@tipo_segmento)
+\|
+= link_to 'Back', tipo_segmentos_path

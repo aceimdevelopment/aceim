@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  descripcion: MyString
+  duracion: 1
+  orden: MyString
+  curso_idioma_id: MyString
+  curso_tipo_categoria_id: MyString
+  curso_tipo_nivel_id: MyString
+
+two:
+  descripcion: MyString
+  duracion: 1
+  orden: MyString
+  curso_idioma_id: MyString
+  curso_tipo_categoria_id: MyString
+  curso_tipo_nivel_id: MyString

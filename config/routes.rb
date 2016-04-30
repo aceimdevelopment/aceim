@@ -1,6 +1,27 @@
 Aceim::Application.routes.draw do
 
 
+  resources :tipo_segmentos do
+    resources :segmentos
+  end
+
+  resources :examenes do
+    resources :segmentos do
+      resources :preguntas
+    end
+  end
+
+  resources :segmentos do
+    resources :preguntas
+    resources :textos
+  end
+
+  resources :preguntas
+
+  resources :textos
+
+  resources :adjuntos
+
   resources :facturas do
     resources :detalle_facturas
 

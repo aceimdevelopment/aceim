@@ -1,0 +1,19 @@
+%h1 Listing tipo_segmentos
+
+%table
+  %tr
+    %th Nombre
+    %th
+    %th
+    %th
+
+  - @tipo_segmentos.each do |tipo_segmento|
+    %tr
+      %td= tipo_segmento.nombre
+      %td= link_to 'Show', tipo_segmento
+      %td= link_to 'Edit', edit_tipo_segmento_path(tipo_segmento)
+      %td= link_to 'Destroy', tipo_segmento, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Tipo segmento', new_tipo_segmento_path

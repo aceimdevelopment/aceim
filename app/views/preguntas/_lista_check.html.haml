@@ -1,0 +1,18 @@
+%table.likert{:style => 'width:90%; border:1px solid rgba(101, 99, 91, 0.45)'}
+	%thead
+		%tr
+			%th
+			%th= "LIKES"
+			%th= "DOESN'T MIND"
+			%th= "DOESN'T LIKE"
+	%tbody
+		- @preguntas.each do |pregunta|
+			%tr
+				%td.border= "#{pregunta.clave}"
+				- val = (pregunta.respuesta.to_i.eql? 1) ? "x" : ""
+				%td.center.border= val
+				- val = (pregunta.respuesta.to_i.eql? 2) ? "X" : ""
+				%td.center.border= val
+				- val = (pregunta.respuesta.to_i.eql? 3) ? "X" : ""
+				%td.center.border= val
+.division				

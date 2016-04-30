@@ -1,0 +1,61 @@
+%p#notice= notice
+
+%p
+  %b Descripcion:
+  = @examen.descripcion
+%p
+  %b Duracion:
+  = @examen.duracion
+%p
+  %b Orden:
+  = @examen.orden
+%p
+  %b Curso idioma:
+  = @examen.curso_idioma_id
+%p
+  %b Curso tipo categoria:
+  = @examen.curso_tipo_categoria_id
+%p
+  %b Curso tipo nivel:
+  = @examen.curso_tipo_nivel_id
+
+%h2 Segmentos
+- @examen.segmentos.each do |segmento|
+  %p
+    = "#{segmento.id}.- "
+    = segmento.descripcion
+
+
+= form_for([@examen, @examen.segmentos.build]) do |f|
+  = f.hidden_field :curso_idioma_id, :value => @examen.curso_idioma_id
+  = f.hidden_field :curso_tipo_categoria_id, :value => @examen.curso_tipo_categoria_id
+  = f.hidden_field :curso_tipo_nivel_id, :value => @examen.curso_tipo_nivel_id
+
+  %table
+    %tr.req
+      %td.derecha.separado
+        %b= "*titulo:"
+      %td
+        = f.text_field :titulo
+
+    %tr.req
+      %td.derecha.separado
+        %b= "*Tipo de Segmento:"
+      %td
+        = f.collection_select :tipo_segmento_id, TipoSegmento.all, :id, :nombre, :prompt => true
+    %tr.req
+      %td.derecha.separado
+        %b= "*Cantidad de Preguntas:"
+      %td
+        = f.number_field :cantidad_preguntas        
+    %tr.req
+      %td.derecha.separado
+        %b= "*Puntaje de las preguntas:"
+      %td
+        = f.number_field :valor_preguntas
+  .actions
+    =f.submit
+
+= link_to 'Edit', edit_examen_path(@examen)
+\|
+= link_to 'Back', examenes_path

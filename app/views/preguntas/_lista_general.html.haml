@@ -1,0 +1,36 @@
+
+
+%div{:id => "segmento_#{@segmento.id}"}
+	-if @segmento.textos.count > 0
+
+		= text_area_tag :contenido, @segmento.textos.first.contenido, :class => :texto, :readonly => true
+	- else
+		= form_for([@segmento, @segmento.textos.build]) do |f|
+			%table
+				%tr
+					%td.derecha.separado
+						%b= "Texto:"
+					%td
+						= f.text_area :contenido, :class => :texto
+					%td
+						%input.btn.small{:type => 'submit', :value => 'Agregar Texto', :name => 'commit'}
+
+- @preguntas.each_with_index do |pregunta,i|
+	%table.likert
+		%tr
+			%thead
+				%th #
+				%th Pregunta
+				%th Respuesta
+				%th Opciones
+		%tr
+			%td
+				%b= "#{i}"
+			%td
+				= pregunta.clave
+			%td
+				= pregunta.respuesta
+			%td
+				= link_to 'Eliminar pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn small", :style => 'background-color: lightsalmon;'
+.division
+				

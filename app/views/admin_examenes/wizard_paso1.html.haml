@@ -1,0 +1,48 @@
+%h1= @titulo
+.well.factura
+	.center
+		%br
+		%h2 Universidad Central de Venezuela
+		%h2 Facultad de Humanidades y Educación
+		%h2 Escuela de Idiomas Modernos
+	.well
+		%h2= "Datos Básicos del Examen"
+		= form_for (@examen, :url => {:action => 'generar'}) do |e|
+			%table
+				%tr.req
+					%td.derecha.separado
+						%b= "*Seleccione el Curso:"
+					%td
+						=e.collection_select :curso_idioma_id, @idiomas, :id, :descripcion, :prompt => 'Sel. Idioma', :class => 'ui-selectmenu-button ui-button ui-widget ui-selectmenu-button-closed ui-corner-all'
+						=e.collection_select :curso_tipo_categoria_id, @categorias, :id, :descripcion, :prompt => 'Sel. Categoria', :class => 'ui-selectmenu-button ui-button ui-widget ui-selectmenu-button-closed ui-corner-all'
+						=e.collection_select :curso_tipo_nivel_id, @niveles, :id, :descripcion, :prompt => 'Sel. Nivel', :class => 'ui-selectmenu-button ui-button ui-widget ui-selectmenu-button-closed ui-corner-all'
+				%tr
+					%td.derecha.separado
+						%b= "Descripción:"
+					%td
+						= e.text_field :descripcion
+						= "(para futuras búsquedas)"
+
+				%tr.req
+					%td.derecha.separado
+						%b= "*Duración:"
+					%td
+						= e.number_field :duracion
+						= "(minutos)"
+				%tr.req
+					%td.derecha.separado
+						%b= "*Orden:"
+					%td
+						=e.select :orden, ['primero', 'segundo']
+				%tr.req
+					%td
+					%td
+						%b= "* Requeridos" 
+				%tr.acciones
+					%td
+					%td
+						= e.submit "Siguiente >>", :disable_with => 'Guardando...', :class => 'btn'
+
+
+:javascript
+	$( ".btn" ).button();

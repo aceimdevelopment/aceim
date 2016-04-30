@@ -1,6 +1,17 @@
 
 -if session[:administrador].tipo_rol_id
   %ul.navegador
+
+    %li    
+      %a.desplegable{:href=>"#"} Gestionar Examenes
+      %ul.subnavegador
+        %p
+          =link_to "Nuevo Examen", :controller => 'admin_examenes', :action => 'wizard_paso1'
+        %p
+          =link_to "Listado de Examenes", :controller => 'admin_examenes'
+
+
+
     %li    
       %a.desplegable{:href=>"#"} Syllabus & Fecha
       %ul.subnavegador

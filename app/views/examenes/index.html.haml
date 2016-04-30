@@ -1,0 +1,29 @@
+%h1 Listing examenes
+
+%table
+  %tr
+    %th Descripcion
+    %th Duracion
+    %th Orden
+    %th Curso idioma
+    %th Curso tipo categoria
+    %th Curso tipo nivel
+    %th
+    %th
+    %th
+
+  - @examenes.each do |examen|
+    %tr
+      %td= examen.descripcion
+      %td= examen.duracion
+      %td= examen.orden
+      %td= examen.curso_idioma_id
+      %td= examen.curso_tipo_categoria_id
+      %td= examen.curso_tipo_nivel_id
+      %td= link_to 'Show', examen
+      %td= link_to 'Edit', edit_examen_path(examen)
+      %td= link_to 'Destroy', examen, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Examen', new_examen_path

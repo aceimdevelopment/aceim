@@ -1,0 +1,27 @@
+%h1 Listing segmentos
+
+%table
+  %tr
+    %th Titulo
+    %th Tipo segmento
+    %th Curso idioma
+    %th Curso tipo categoria
+    %th Curso tipo nivel
+    %th
+    %th
+    %th
+
+  - @segmentos.each do |segmento|
+    %tr
+      %td= segmento.titulo
+      %td= segmento.tipo_segmento_id
+      %td= segmento.curso_idioma_id
+      %td= segmento.curso_tipo_categoria_id
+      %td= segmento.curso_tipo_nivel_id
+      %td= link_to 'Show', segmento
+      %td= link_to 'Edit', edit_segmento_path(segmento)
+      %td= link_to 'Destroy', segmento, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Segmento', new_segmento_path

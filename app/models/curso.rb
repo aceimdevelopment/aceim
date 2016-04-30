@@ -14,6 +14,16 @@ class Curso < ActiveRecord::Base
     :class_name => 'TipoCurso',
     :foreign_key => ['idioma_id','tipo_categoria_id']
 
+  has_many :segmentos,
+    :class_name => 'Segmento',
+    :foreign_key => [:curso_idioma_id,:curso_tipo_categoria_id, :curso_tipo_nivel_id]
+  accepts_nested_attributes_for :segmentos
+
+  has_many :examenes,
+    :class_name => 'Examen',
+    :foreign_key => [:curso_idioma_id,:curso_tipo_categoria_id, :curso_tipo_nivel_id]
+  accepts_nested_attributes_for :examenes
+
   has_many :historiales_academicos,
     :class_name => 'HistorialAcademico',
     :foreign_key => [:idioma_id,:tipo_categoria_id,:tipo_nivel_id]

@@ -1,0 +1,43 @@
+%h1= @titulo
+.well.factura
+	.center
+		%br
+		%h2 Universidad Central de Venezuela
+		%h2 Facultad de Humanidades y Educación
+		%h2 Escuela de Idiomas Modernos
+	.well
+		%h2= "Datos Básicos del Examen"
+
+		%table
+			%tr 
+				%td.derecha
+					= 'Curso:'
+				%td
+					%b= "#{@examen.curso.descripcion} - #{@examen.orden.capitalize} Examen"
+			%tr
+				%td.derecha
+					='Duración:'
+				%td
+					%b= "#{@examen.duracion} minutos"
+
+					= link_to 'Eliminar examen', {:action => 'eliminar_examen', :id => @examen.id} , :data =>  { :confirm => '¿Está seguro?' },  :class => "btn small" 
+.division
+	.well
+		#accordion
+			=render :partial => '/segmentos/wizard_list'
+
+		=render :partial => '/segmentos/wizard_form' 
+
+
+
+:javascript
+	$(function() {
+		$( "#accordion" ).accordion();
+		$( ".btn" ).button();
+		$( ".radio" ).buttonset();
+	});
+
+	function eliminar_pregunta(id, segemnto_id){
+		return $.get("/aceim/preguntas/22?data-method=delete",		
+			function(data){ alert("Data: " + data + "\nStatus: " + status);} );
+	};
