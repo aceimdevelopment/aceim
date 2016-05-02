@@ -1,34 +1,14 @@
 %h1= @titulo
 .well.factura
-	.center
-		%br
-		%h2 Universidad Central de Venezuela
-		%h2 Facultad de Humanidades y Educación
-		%h2 Escuela de Idiomas Modernos
 	.well
+		%br
 		= link_to 'Eliminar examen', {:action => 'eliminar_examen', :id => @examen.id} , :data =>  { :confirm => '¿Está seguro?' },  :class => "btn small flotar_derecha"
-		%h2= "Datos Básicos del Examen"
-
-		%table
-			%tr 
-				%td.derecha
-					= 'Curso:'
-				%td
-					%b= "#{@examen.curso.descripcion} - #{@examen.orden.capitalize} Examen"
-			- if @examen.periodo
-				%tr
-					%td.derecha
-						='Período:'
-					%td
-						%b= @examen.periodo.ordenado
-			%tr
-				%td.derecha
-					='Duración:'
-				%td
-					%b= "#{@examen.duracion} minutos"
-
-
-.division
+		%b{:style => 'float:left;'}= "Duración: #{@examen.duracion} minutos"
+		.center
+			%h3 Universidad Central de Venezuela
+			%h3 Facultad de Humanidades y Educación
+			%h3 Escuela de Idiomas Modernos
+			%h3= @examen.titulo
 	.well
 		#accordion
 			=render :partial => '/segmentos/wizard_list'

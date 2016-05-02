@@ -45,7 +45,7 @@ class AdminExamenesController < ApplicationController
 	def wizard_paso2
 
 		id = params[:id]
-
+		@titulo = "Nuevo Examen"
 		@examen = Examen.find(id)
 
 
