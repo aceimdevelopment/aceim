@@ -1,0 +1,14 @@
+-if @segmento.textos.count > 0
+	= text_area_tag :contenido, @segmento.textos.first.contenido, :class => :texto, :readonly => true
+- else
+	= link_to 'Incluir Texto en la actividad', 'javascript:void(0)' , :class => "btn small", :onclick => "$(form_segmento_#{@segmento.id}).show('slow'); $(this).remove();"
+	%div{:id => "form_segmento_#{@segmento.id}", :style => 'display:none;'}
+		= form_for([@segmento, @segmento.textos.build]) do |f|
+			%table
+				%tr.req
+					%td.derecha.separado
+						%b= "*Contenido:"
+					%td
+						= f.text_area :contenido, :class => :texto
+					%td
+						%input.btn.small{:type => 'submit', :value => 'Incluir texto en la actividad', :name => 'commit'}

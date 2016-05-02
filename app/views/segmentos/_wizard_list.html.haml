@@ -1,5 +1,6 @@
 - @segmentos = @examen.segmentos
 - @segmentos.each_with_index do |@segmento,i|
+	- @preguntas = @segmento.preguntas
 	%p
 		%span= "#{i+1} - #{@segmento.descripcion}"
 
@@ -8,8 +9,10 @@
 			= "#{i+1} - #{@segmento.descripcion}"
 			=# link_to 'Eliminar segmento', '#' , :data =>  { :confirm => '¿Está seguro?' }, :class => "btn small", :onclick => "return eliminar_segmento(#{@segmento.id})"
 			= link_to 'Eliminar actividad', {:action => 'eliminar_segmento', :id => @segmento.id} , :data =>  { :confirm => '¿Está seguro?'}, :class => "btn small flotar_derecha"
-			.division
-		- @preguntas = @segmento.preguntas
+		=render :partial => '/segmentos/incluir_texto'
+	
+		.division
+
 		.small.well.factura
 			="Agregar Pregunta/Ítem:"
 			- case @segmento.tipo_segmento_id 
@@ -37,7 +40,3 @@
 				-else
 					=render :partial => '/preguntas/lista_general'
 					=render :partial => '/preguntas/form_general'
-
-
-
-

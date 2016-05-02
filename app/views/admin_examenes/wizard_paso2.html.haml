@@ -32,8 +32,10 @@
 	.well
 		#accordion
 			=render :partial => '/segmentos/wizard_list'
-
-		=render :partial => '/segmentos/wizard_form' 
+		.division
+		= link_to 'Agregar Actividad', 'javascript:void(0)' , :class => "btn", :onclick => "$(form_segmento).show('slow'); $(this).remove();"
+		%div{:id => "form_segmento", :style => 'display:none;'}
+			=render :partial => '/segmentos/wizard_form' 
 
 
 
