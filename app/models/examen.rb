@@ -28,8 +28,9 @@ class Examen < ActiveRecord::Base
 	validates :orden, :presence => true
 
 	def descripcion_full
-		"#{id}.- #{descripcion}"
-		
+		aux = periodo ? "#{periodo.ordenado}-#{orden}-" : "#{orden}-"
+		aux += "#{curso.descripcion}"
+		aux += descripcion
 	end
 
 end

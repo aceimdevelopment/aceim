@@ -1,6 +1,12 @@
 #creada por db2models
 class Periodo < ActiveRecord::Base
 	PERIODO_TRANSICION_NOTAS_PARCIALES = "A-2016"
+
+
+	def self.lista_ordenada
+		Periodo.all.collect{|x| x}.sort_by{|x| "#{x.ano} #{x.id}"}.reverse()
+	end
+
 	def ordenado
 		ident,ano = id.split("-")
 		"#{ano}-#{ident}"		

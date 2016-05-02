@@ -15,7 +15,7 @@ class AdminExamenesController < ApplicationController
 		@idiomas = Idioma.all.delete_if{|i| i.id.eql? 'OR'}
 		@categorias = TipoCategoria.all.delete_if{|cat| ['BBVA','TR'].include? cat.id}
 		@niveles = TipoNivel.where(:id => ['BI','BII','BIII','MI','MII','MIII','AI','AII','AIII'])
-		@periodos = Periodo.all.collect{|x| x}.sort_by{|x| "#{x.ano} #{x.id}"}.reverse()
+		@periodos = Periodo.lista_ordenada
 	end
 
 	def generar
