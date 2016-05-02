@@ -1,0 +1,21 @@
+%div{:id => "segmento_#{@segmento.id}"}
+
+	%ol
+		- @preguntas.each_with_index do |pregunta,i|
+			- @separado = pregunta.clave.split("_").uniq.delete_if{|x| x.eql? ""}
+
+			- @respuestas = pregunta.respuesta.split(",")
+			- @total = []
+			- @separado.each do |separado|
+				- @total << separado
+				- @total << "<u><b>#{@respuestas.shift}</b></u>"
+				- @respuestas = @respuestas.unshift
+					 
+			%li
+				%p= "Pregunta Original:#{pregunta.clave}"
+				%p= "Respuesta(s): #{pregunta.respuesta}"
+				%p
+					= "Respuesta Completa:"
+					= raw @total.to_s
+					= link_to 'Eliminar pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn small", :style => 'background-color: lightsalmon;'
+

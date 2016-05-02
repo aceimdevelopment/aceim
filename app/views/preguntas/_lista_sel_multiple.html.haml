@@ -1,0 +1,18 @@
+%div{:id => "segmento_#{@segmento.id}"}
+
+	%ol
+		- @preguntas.each_with_index do |pregunta,i|
+			- @clave, @opciones  = pregunta.clave.split('(')
+			- @opciones = @opciones.delete(')') if @opciones
+			- @opciones = @opciones.split(',') if @opciones
+			%li
+				%p
+					= "#{@clave} (R= #{pregunta.respuesta})"
+					= link_to 'Eliminar pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn small", :style => 'background-color: lightsalmon;'
+
+				%ul
+					- @opciones.each do |op| 
+						%li
+							= radio_button_tag 'opciones', op
+							= op
+.division
