@@ -2,17 +2,14 @@
 	%thead
 		%tr
 			%th
-			%th= "LIKES"
-			%th= "DOESN'T MIND"
-			%th= "DOESN'T LIKE"
+			- @repuestas.each do |respuesta|
+				%th= respuesta
+
 	%tbody
 		- @preguntas.each do |pregunta|
 			%tr
 				%td.border= "#{pregunta.clave}"
-				- val = (pregunta.respuesta.to_i.eql? 1) ? "x" : ""
-				%td.center.border= val
-				- val = (pregunta.respuesta.to_i.eql? 2) ? "X" : ""
-				%td.center.border= val
-				- val = (pregunta.respuesta.to_i.eql? 3) ? "X" : ""
-				%td.center.border= val
+				- @repuestas.each do |respuesta|
+					- val = (respuesta.eql? pregunta.respuesta) ? "X" : ""
+					%td.center.border= val
 .division			

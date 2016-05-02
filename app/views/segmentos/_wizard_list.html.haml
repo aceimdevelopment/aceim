@@ -17,6 +17,7 @@
 			="Agregar Pregunta/Ítem:"
 			- case @segmento.tipo_segmento_id 
 				- when 'CHECK'
+					- @repuestas = @preguntas.collect{|p| p.respuesta}.uniq
 					=render :partial => '/preguntas/lista_check'
 					=render :partial => '/preguntas/form_check'
 				- when 'TEXT'

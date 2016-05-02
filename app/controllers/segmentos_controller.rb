@@ -53,7 +53,7 @@ class SegmentosController < ApplicationController
     respond_to do |format|
       if @segmento.save
         # if params[:examen_id]
-          flash[:mensaje] = 'Segmento creado con éxito.'
+          flash[:mensaje] = 'Actividad creado con éxito.'
           format.html { redirect_to :controller => "admin_examenes", :action => "wizard_paso2", :id => @examen.id}
         # else
           # format.html { redirect_to examen_path(@examen), :notice => 'Segmento was successfully created.' }          
