@@ -13,9 +13,10 @@
 					%td.derecha.separado
 						%b= "*Seleccione el Curso:"
 					%td
-						=e.collection_select :curso_idioma_id, @idiomas, :id, :descripcion, :prompt => 'Sel. Idioma', :class => 'ui-selectmenu-button ui-button ui-widget ui-selectmenu-button-closed ui-corner-all'
-						=e.collection_select :curso_tipo_categoria_id, @categorias, :id, :descripcion, :prompt => 'Sel. Categoria', :class => 'ui-selectmenu-button ui-button ui-widget ui-selectmenu-button-closed ui-corner-all'
-						=e.collection_select :curso_tipo_nivel_id, @niveles, :id, :descripcion, :prompt => 'Sel. Nivel', :class => 'ui-selectmenu-button ui-button ui-widget ui-selectmenu-button-closed ui-corner-all'
+						=e.collection_select :curso_idioma_id, @idiomas, :id, :descripcion, :prompt => 'Sel. Idioma', :class => 'select'
+						=e.collection_select :curso_tipo_categoria_id, @categorias, :id, :descripcion, :prompt => 'Sel. Categoria', :class => 'select'
+						=e.collection_select :curso_tipo_nivel_id, @niveles, :id, :descripcion, :prompt => 'Sel. Nivel', :class => 'select'
+						=e.collection_select :periodo_id, @periodos, :id, :ordenado, :prompt => 'Sel. Periodo', :class => 'select'
 				%tr
 					%td.derecha.separado
 						%b= "Descripción:"

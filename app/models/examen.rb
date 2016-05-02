@@ -1,10 +1,12 @@
 class Examen < ActiveRecord::Base
 	# ATRIBUTOS ACCESIBLES 
-	attr_accessible :id, :descripcion, :duracion, :curso_idioma_id, :curso_tipo_categoria_id, :curso_tipo_nivel_id, :orden
+	attr_accessible :id, :descripcion, :duracion, :curso_idioma_id, :curso_tipo_categoria_id, :curso_tipo_nivel_id, :orden, :periodo_id
 
 	# Asociaciones
 	belongs_to :curso,
 		:foreign_key => [:curso_idioma_id,:curso_tipo_categoria_id, :curso_tipo_nivel_id]
+
+	belongs_to :periodo
 
 	# Pendiente para incluir esto
 
