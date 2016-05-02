@@ -2,17 +2,17 @@
 	%table
 		%tr.req
 			%td.derecha.separado
-				%b= "*Pregunta:"
+				%b= "*Pregunta/Ítem:"
 			%td{:style => 'width: 100%;'}
 				= f.text_field :clave, :html => {:style => 'width: 300px;'}
 				= "(recuerde finalizar con signo de interrogación '?')"
 		%tr.req
 			%td.derecha.separado
-				%b= "*Pregunta:"
+				%b= "*Respuesta:"
 			%td
 				= f.text_field :respuesta, :html => {:style => 'width: 300px;'}
 
 		%tr
 			%td
 			%td
-				%input.btn.small{:type => 'submit', :value => 'Agregar Pregunta', :name => 'commit'}
+				%input.btn.small{:type => 'submit', :value => 'Agregar Pregunta/Ítem', :name => 'commit'}

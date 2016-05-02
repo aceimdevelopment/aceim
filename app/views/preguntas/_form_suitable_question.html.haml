@@ -2,7 +2,7 @@
 	%table
 		%tr.req
 			%td.derecha.separado
-				%b= "*Respuesta:"
+				%b= "*Pregunta/Ítem::"
 			%td
 				= f.text_field :clave, :html => {:style => 'width: 300px;'}
 		%tr.req
@@ -14,4 +14,4 @@
 		%tr
 			%td
 			%td
-				%input.btn.small{:type => 'submit', :value => 'Agregar Pregunta', :name => 'commit'}
+				%input.btn.small{:type => 'submit', :value => 'Agregar Pregunta/Ítem', :name => 'commit'}

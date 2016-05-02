@@ -7,34 +7,36 @@
 		%p
 			= "#{i+1} - #{@segmento.descripcion}"
 			=# link_to 'Eliminar segmento', '#' , :data =>  { :confirm => '¿Está seguro?' }, :class => "btn small", :onclick => "return eliminar_segmento(#{@segmento.id})"
-			= link_to 'Eliminar segmento', {:action => 'eliminar_segmento', :id => @segmento.id} , :data =>  { :confirm => '¿Está seguro?'}, :class => "btn small"
+			= link_to 'Eliminar actividad', {:action => 'eliminar_segmento', :id => @segmento.id} , :data =>  { :confirm => '¿Está seguro?'}, :class => "btn small"
 			.division
 		- @preguntas = @segmento.preguntas
-		- case @segmento.tipo_segmento_id 
-			- when 'CHECK'
-				=render :partial => '/preguntas/lista_check'
-				=render :partial => '/preguntas/form_check'
-			- when 'TEXT'
-				=render :partial => '/preguntas/lista_text'
-				=render :partial => '/preguntas/form_text'
-			- when 'SUITABLE_QUESTION'
-				=render :partial => '/preguntas/lista_suitable_question'
-				=render :partial => '/preguntas/form_suitable_question'
-			- when 'GENERAL'
-				=render :partial => '/preguntas/lista_general'
-				=render :partial => '/preguntas/form_general'
-			-when 'PREPOSITION'
-				=render :partial => '/preguntas/lista_preposition'
-				=render :partial => '/preguntas/form_preposition'
-			-when 'PRONOUN'
-				=render :partial => '/preguntas/lista_pronoun'
-				=render :partial => '/preguntas/form_pronoun'
-			-when 'VERB'
-				=render :partial => '/preguntas/lista_verb'
-				=render :partial => '/preguntas/form_verb'
-			-else
-				=render :partial => '/preguntas/lista_general'
-				=render :partial => '/preguntas/form_general'
+		.small.well.factura
+			="Agregar Pregunta/Ítem:"
+			- case @segmento.tipo_segmento_id 
+				- when 'CHECK'
+					=render :partial => '/preguntas/lista_check'
+					=render :partial => '/preguntas/form_check'
+				- when 'TEXT'
+					=render :partial => '/preguntas/lista_text'
+					=render :partial => '/preguntas/form_text'
+				- when 'SUITABLE_QUESTION'
+					=render :partial => '/preguntas/lista_suitable_question'
+					=render :partial => '/preguntas/form_suitable_question'
+				- when 'GENERAL'
+					=render :partial => '/preguntas/lista_general'
+					=render :partial => '/preguntas/form_general'
+				-when 'PREPOSITION'
+					=render :partial => '/preguntas/lista_preposition'
+					=render :partial => '/preguntas/form_preposition'
+				-when 'PRONOUN'
+					=render :partial => '/preguntas/lista_pronoun'
+					=render :partial => '/preguntas/form_pronoun'
+				-when 'VERB'
+					=render :partial => '/preguntas/lista_verb'
+					=render :partial => '/preguntas/form_verb'
+				-else
+					=render :partial => '/preguntas/lista_general'
+					=render :partial => '/preguntas/form_general'
 
 
 
