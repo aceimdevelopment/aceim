@@ -3,12 +3,15 @@
 	- @preguntas = @segmento.preguntas
 	%p
 		%span= "#{i+1} - #{@segmento.descripcion}"
-
 	%div		
 		%p
 			= "#{i+1} - #{@segmento.descripcion}"
+			=render :partial => 'form_actualizar_segmento'
 			=# link_to 'Eliminar segmento', '#' , :data =>  { :confirm => '¿Está seguro?' }, :class => "btn small", :onclick => "return eliminar_segmento(#{@segmento.id})"
+
+			= link_to 'Actualizar Actividad', 'javascript:void(0)' , :class => "btn small", :onclick => "$(actualizar_segmento_#{@segmento.id}).show('slow'); $(this).remove();"
 			= link_to 'Eliminar actividad', {:action => 'eliminar_segmento', :id => @segmento.id} , :data =>  { :confirm => '¿Está seguro?'}, :class => "btn small flotar_derecha"
+			.division
 		=render :partial => '/segmentos/incluir_texto'
 		.small.well.factura
 			="Preguntas/Ítems:"

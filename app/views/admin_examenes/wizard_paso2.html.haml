@@ -18,6 +18,16 @@
 			=render :partial => '/segmentos/wizard_form' 
 
 
+	%ul
+		%li#draggable.ui-state-highlight Drag me down
+
+	%ul#sortable
+		%li.ui-state-default= 'Item 1'
+		%li.ui-state-default= 'Item 2'
+		%li.ui-state-default= 'Item 3'
+		%li.ui-state-default= 'Item 4'
+		%li.ui-state-default= 'Item 5'
+
 
 :javascript
 	$(function() {
@@ -30,3 +40,17 @@
 		return $.get("/aceim/preguntas/22?data-method=delete",		
 			function(data){ alert("Data: " + data + "\nStatus: " + status);} );
 	};
+
+	$(function() {
+		$( "#sortable" ).sortable({
+		revert: true
+	});
+	
+	$( "#draggable" ).draggable({
+		connectToSortable: "#sortable",
+		helper: "clone",
+		revert: "invalid"
+	});
+	
+	$( "ul, li" ).disableSelection();
+	});

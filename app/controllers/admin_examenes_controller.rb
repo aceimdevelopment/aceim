@@ -59,6 +59,18 @@ class AdminExamenesController < ApplicationController
     	# render :partial => "preguntas/preguntas_text", :locals => {:segmento => @segmento}
 	end
 
+	def actualizar_segmento
+
+		@segmento = Segmento.find(params[:id])
+
+		if @segmento.update_attributes(params[:segmento])
+			flash[:mensaje] = "Datos elementales de la actividad actualizados"
+		else
+			flash[:mensaje] = "No se pudo actualizar los datos de la actividad"
+		end
+		redirect_to :back
+	end
+
 	def eliminar_segmento
 		@segmento = Segmento.find(params[:id])
 		@examen = @segmento.examen
