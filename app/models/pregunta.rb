@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Pregunta < ActiveRecord::Base
 	# Pendiente Por ampliar
 	# has_many :pregunta_segmentos,

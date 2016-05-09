@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class EstudianteMailer < ActionMailer::Base
   # default :from => "fundeim@ucv.ve"      
   default :from => "fundeimucv@gmail.com"

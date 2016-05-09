@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class BloqueHorario < ActiveRecord::Base
 
   belongs_to :tipo_hora,

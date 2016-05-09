@@ -1,3 +1,4 @@
+#encoding: utf-8
 class Inscripcion < ActiveRecord::Base
 	attr_accessible :tipo_inscripcion_id, :idioma_id, :tipo_categoria_id, :permitir_cambio_horario, :apertura, :cierre, :tipo_estado_inscripcion_curso_id, :apertura_entrega_planilla, :cierre_entrega_planilla
  	set_primary_keys [:tipo_inscripcion_id, :idioma_id, :tipo_categoria_id]

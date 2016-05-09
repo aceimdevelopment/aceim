@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 #creada por db2models
 class Aula < ActiveRecord::Base
   attr_accessible :id, :tipo_ubicacion_id, :descripcion, :conjunto_disponible, :usada

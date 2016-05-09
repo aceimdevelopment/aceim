@@ -1,3 +1,4 @@
+#encoding: utf-8
 class String
   def normalizar
     string = self.strip.gsub(" ","")

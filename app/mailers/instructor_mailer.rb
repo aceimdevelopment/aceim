@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class InstructorMailer < ActionMailer::Base
   # default :from => "fundeim@ucv.ve"
   default :from => "fundeimucv@gmail.com", :bcc => 'aceim.development@gmail.com'

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 #creada por db2models
 class HistorialAcademico < ActiveRecord::Base
   NOTAS = (-2..20).to_a

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class TipoEstadoInscripcionCurso < ActiveRecord::Base
 
   has_many :inscripciones,

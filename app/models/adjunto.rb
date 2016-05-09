@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Adjunto < ActiveRecord::Base
 
 	# Atributos Accesibles

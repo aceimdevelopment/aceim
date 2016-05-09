@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class TipoSegmentosController < ApplicationController
   # GET /tipo_segmentos
   # GET /tipo_segmentos.json

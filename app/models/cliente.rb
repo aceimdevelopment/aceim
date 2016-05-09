@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Cliente < ActiveRecord::Base
 	attr_accessible :rif, :razon_social, :domicilio, :telefono_fijo, :telefono_movil, :correo_electronico
 # epecifica clave primaria rif

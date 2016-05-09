@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class DetalleFactura < ActiveRecord::Base
 	attr_accessible :factura_codigo, :periodo_id , :idioma_id , :tipo_categoria_id , :tipo_nivel_id, :cantidad, :total, :costo_unitario, :descripcion
 

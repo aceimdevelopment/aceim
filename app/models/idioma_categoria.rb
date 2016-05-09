@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class IdiomaCategoria < ActiveRecord::Base
 
 	set_primary_keys [:idioma_id, :tipo_categoria_id]

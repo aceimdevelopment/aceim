@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Factura < ActiveRecord::Base
 	attr_accessible :codigo, :numero_control, :fecha, :cliente_rif
 	set_primary_keys :codigo	

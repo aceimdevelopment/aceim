@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class InscripcionController < ApplicationController
   
   #before_filter :filtro_inscripcion_abierta, :except => ["paso0","paso0_guardar","planilla_inscripcion"] 

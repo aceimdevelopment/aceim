@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class MailJob
   #Para levantar la cola correr QUEUE=cola_de_correos rake enviroment resque:work
   #Para matar ps -e -o pid,command | grep [r]esque y hacer kill -9 a cada uno o

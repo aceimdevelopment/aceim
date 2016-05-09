@@ -8,3 +8,6 @@ config/database.yml
 codigos_barra/
 *.xls
 .DS_Store
+Gemfile
+Gemfile.lock
+Gemfile.old

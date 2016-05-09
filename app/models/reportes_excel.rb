@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class ReportesExcel
 
   def self.listado(convenio_id, periodo,guardar=false)

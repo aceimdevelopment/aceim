@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 #creada por db2models
 # class Administrador < Usuario
 class Administrador < ActiveRecord::Base

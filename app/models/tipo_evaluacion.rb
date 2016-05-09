@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class TipoEvaluacion < ActiveRecord::Base
 
   set_primary_key :id

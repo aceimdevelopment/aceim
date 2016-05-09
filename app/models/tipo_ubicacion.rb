@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 #creada por db2models
 class TipoUbicacion < ActiveRecord::Base
   attr_accessible :id, :descripcion, :descripcion_corta
