@@ -1,20 +1,27 @@
 # encoding: utf-8
 
 class Pregunta < ActiveRecord::Base
-	# Pendiente Por ampliar
-	# has_many :pregunta_segmentos,
-	# 	:class_name => 'SegmentoTienePregunta'
 
-	# accepts_nested_attributes_for :pregunta_segmentos
+	# ATRIBUTOS ACCESIBLES
+	attr_accessible :id, :valor, :actividad_id
 
-	# has_many :segmentos, :through => :pregunta_segmentos, :source => :segmento
+	# ASOCIACIONES
+	belongs_to :actividad
 
-	belongs_to :segmento
+	has_many :opciones,
+		:class_name => 'Opcion'
 
-	has_one :siguiente_pregunta,
-		:class_name => 'Pregunta',
-		:foreign_key => :siguiente_pregunta_id
+	accepts_nested_attributes_for :opciones
 
-	accepts_nested_attributes_for :siguiente_pregunta
+	has_many :respuestas,
+		:class_name => 'Respuesta'
+
+	accepts_nested_attributes_for :respuestas
+
+	#VALIDACIONES
+	validates :id, :presence => true
+	validates :valor, :presence => true
+	validates :actividad_id, :presence => true
+
 
 end

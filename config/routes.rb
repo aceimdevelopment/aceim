@@ -5,18 +5,31 @@ Aceim::Application.routes.draw do
     resources :segmentos
   end
 
+  resources :tipo_actividades do
+    resources :actividades
+  end
+
+
   resources :examenes do
     resources :segmentos do
       resources :preguntas
     end
   end
 
-  resources :segmentos do
+  resources :actividades do
     resources :preguntas
     resources :textos
+    resources :adjuntos    
   end
 
-  resources :preguntas
+  resources :preguntas do
+    resources :opciones
+    resources :respuestas
+  end
+
+  resources :opciones
+
+  resources :respuestas
 
   resources :textos
 

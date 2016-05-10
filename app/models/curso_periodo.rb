@@ -21,6 +21,11 @@ class CursoPeriodo < ActiveRecord::Base
     :foreign_key => ['periodo_id' , 'idioma_id' , 'tipo_categoria_id' , 'tipo_nivel_id']
   accepts_nested_attributes_for :detalles_facturas
 
+  has_many :examenes,
+    :class_name => 'Examen',
+    :foreign_key => [:periodo_id, :curso_idioma_id,:curso_tipo_categoria_id, :curso_tipo_nivel_id]
+  accepts_nested_attributes_for :examenes
+
   has_many :secciones,
     :class_name => 'Seccion',
     :foreign_key => ['periodo_id' , 'idioma_id' , 'tipo_categoria_id' , 'tipo_nivel_id']

@@ -2,13 +2,24 @@
 
 class Examen < ActiveRecord::Base
 	# ATRIBUTOS ACCESIBLES 
-	attr_accessible :id, :descripcion, :duracion, :curso_idioma_id, :curso_tipo_categoria_id, :curso_tipo_nivel_id, :orden, :periodo_id
+	attr_accessible :id, :descripcion, :duracion, :orden, :inicio_aplicacion, :cierre_aplicacion, :periodo_id, :curso_idioma_id, :curso_tipo_categoria_id, :curso_tipo_nivel_id
 
-	# Asociaciones
-	belongs_to :curso,
-		:foreign_key => [:curso_idioma_id,:curso_tipo_categoria_id, :curso_tipo_nivel_id]
+	# ASOCIACIONES
+	belongs_to :curso_periodo,
+		:foreign_key => [:periodo_id, :curso_idioma_id,:curso_tipo_categoria_id, :curso_tipo_nivel_id]
 
-	belongs_to :periodo
+	has_many :bloques_examenes,
+	:class_name => 'BloqueExamen',
+	:foreign_key => :tipo_bloque_examen_id
+
+	accepts_nested_attributes_for :bloques_examenes
+
+	has_many :tipo_bloques_examenes, 
+	:class_name => 'TipoBloqueExamen',
+	:through => :bloques_examenes
+	
+	accepts_nested_attributes_for :tipo_bloques_examenes
+
 
 	# Pendiente para incluir esto
 
@@ -19,13 +30,14 @@ class Examen < ActiveRecord::Base
 
 		# has_many :segmentos, :through => :examen_segementos, :source => :segmento 
 
-	has_many :segmentos, :dependent => :destroy
-	accepts_nested_attributes_for :segmentos
+	# has_many :segmentos, :dependent => :destroy
+	# accepts_nested_attributes_for :segmentos
 	
-# Validaciones
+# VALIDACIONES
 	validates :curso_idioma_id, :presence => true
 	validates :curso_tipo_categoria_id, :presence => true
 	validates :curso_tipo_nivel_id, :presence => true
+	validates :periodo_id, :presence => true
 	validates :duracion, :presence => true
 	validates :orden, :presence => true
 
