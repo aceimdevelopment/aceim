@@ -1,9 +1,12 @@
 -if @actividad.textos.count > 0
 	= text_area_tag :contenido, @actividad.textos.first.contenido, :class => :texto, :readonly => true
 - else
-	= link_to 'Incluir Texto en la actividad', 'javascript:void(0)' , :class => "btn small", :onclick => "$(form_actividad_#{@actividad.id}).show('slow'); $(this).remove();"
-	%div{:id => "form_actividad_#{@actividad.id}", :style => 'display:none;'}
+	= link_to 'Incluir texto en la actividad', 'javascript:void(0)' , :class => "btn small", :onclick => "$(form_texto_#{@actividad.id}).show('slow'); $(this).remove();"
+	%div{:id => "form_texto_#{@actividad.id}", :style => 'display:none;'}
+
 		= form_for(@actividad.textos.build, :url=>{:controller => 'textos',:action => "create"}) do |f|
+			=hidden_field_tag "actividad_id", @actividad.id
+			=hidden_field_tag "examen_id", @examen_id
 			%table
 				%tr.req
 					%td.derecha.separado

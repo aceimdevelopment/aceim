@@ -133,18 +133,44 @@ class PreguntasController < ApplicationController
     else
       flash[:mensaje] = "La respuesta no se encuentra entre las opciones. Por favor verifique la respuesta e inténtelo nuevamente."
     end
-    puts "------------------------------------------------------------------------------"
-    puts "------------------------------------------------------------------------------"
-    puts "------------------------------------------------------------------------------"
+    # puts "------------------------------------------------------------------------------"
+    # puts "------------------------------------------------------------------------------"
+    # puts "------------------------------------------------------------------------------"
 
-    puts "Mensaje: #{flash[:mensaje]}"
+    # puts "Mensaje: #{flash[:mensaje]}"
 
-    puts "------------------------------------------------------------------------------"
-    puts "------------------------------------------------------------------------------"
-    puts "------------------------------------------------------------------------------"
+    # puts "------------------------------------------------------------------------------"
+    # puts "------------------------------------------------------------------------------"
+    # puts "------------------------------------------------------------------------------"
 
     redirect_to :controller => 'admin_examenes', :action => 'wizard_paso2', :id => params[:examen_id]
     # redirect_to :back
+  end
+
+
+  def agregar_completacion
+
+    respuestas = params[:respuestas]
+
+    pregunta = Pregunta.new(params[:pregunta])
+
+    if pregunta.save
+      flash[:mensaje] = "Pregunta Agregada satisfactoriamente."
+      agregadas = 0
+      respuestas.each do |respuesta|
+        respuesta = Respuesta.new respuesta
+
+        respuesta.pregunta_id = pregunta.id
+
+        agregadas += 1 if respuesta.save
+      end
+      flash[:mensaje] += "#{agregadas} respuestas agregadas."
+    else
+      flash[:mensaje] = "No se pudo agregar la pregunta: #{@pregunta.errors.full_messages.join('-')}."
+    end
+
+    redirect_to :controller => 'admin_examenes', :action => 'wizard_paso2', :id => params[:examen_id]
+
   end
 
 end

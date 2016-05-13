@@ -1,8 +1,7 @@
 %h1= @titulo
 .well.factura
+	%h3= link_to 'Eliminar examen', {:action => 'eliminar_examen', :id => @examen.id} , :data =>  { :confirm => '¿Está seguro?' },  :class => "btn_eliminar small flotar_derecha"
 	.well
-		%br
-		= link_to 'Eliminar examen', {:action => 'eliminar_examen', :id => @examen.id} , :data =>  { :confirm => '¿Está seguro?' },  :class => "btn small flotar_derecha"
 		%b{:style => 'float:left;'}= "Duración: #{@examen.duracion} minutos"
 		.center
 			%h3 Universidad Central de Venezuela

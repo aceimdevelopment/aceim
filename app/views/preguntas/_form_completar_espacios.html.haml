@@ -1,23 +1,56 @@
-= form_for([@segmento, @preguntas.build]) do |f|
-	%table
-		%tr.req
-			%td.derecha.separado
-				%b= "*Pregunta/Ítem:"
-			%td{:style => 'width: 100%;'}
-				= f.text_area :clave, :size => '100x5;'
-		%tr
-			%td
-			%td= "IMPORTANTE:Recuerde que por cada secuencia de '_' debe incluir su correspondiente respuesta en siguiente cuadro de opciones."
-		%tr.req
-			%td.derecha.separado
-				%b= "*Opción(es):"
-			%td
-				= f.text_field :respuesta, :style => 'width: 100%;'
-		%tr
-			%td
+%div.well.well_small{:id => "form_pregunta_#{@actividad.id}", :style => 'display:none;'}
+	%h2= "Agregar Nueva Preguta"
+	= form_tag "/aceim/preguntas/agregar_completacion" do
+		=  hidden_field_tag :actividad_id, @actividad.id 
+		=  hidden_field_tag :examen_id, @examen_id
+		=  hidden_field_tag "pregunta[actividad_id]", @actividad.id 
+		%table
+			%tr.req
+				%td.derecha.separado
+					%b= "*Pregunta/Ítem:"
+				%td{:style => 'width: 100%;'}
+					= text_area_tag "pregunta[valor]", nil, {:style => 'width: 100%;'}
+			%tr.req
+				%td.separado
+					%b Respuestas:
+				%td
+					.input_fields_wrap_complete
+						%div
+							= text_field_tag nil, nil, {:placeholder => 'Respuesta', :name => "respuestas[][valor]", :style => 'width: 170px;'}
+							= text_field_tag nil, nil, {:placeholder => 'Respuesta Alternativa1', :name => "respuestas[][valor_alternativa1]", :style => 'width: 170px;'}
+							= text_field_tag nil, nil, {:placeholder => 'Respuesta Alternativa2', :name => "respuestas[][valor_alternativa2]", :style => 'width: 170px;'}							
+							%label Puntaje: 
+							= number_field_tag nil, 2, {:min => 1, :max => 20, :step => 0.5, :name =>  "respuestas[][puntaje]"}
 
-			%td= "IMPORTANTE: Recuerde separar por coma cada opción."
-		%tr
-			%td
-			%td
-				%input.btn.small{:type => 'submit', :value => 'Agregar Pregunta/Ítem', :name => 'commit'}
+							%button.add_field_button_complete.btn_agregar.small= " respuesta"
+
+		%table
+			%tr
+				%td
+					%input.btn_agregar.small{:type => 'submit', :value => 'Agregar Pregunta/Ítem', :name => 'commit'}
+	
+.division
+= link_to " Pregunta a la actividad" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_pregunta_"+@actividad.id.to_s+").show('slow'); $(this).remove();" 
+
+
+:javascript
+
+	$(document).ready(function() {
+		var max_fields      = 10; //maximum input boxes allowed
+		var wrapper         = ".input_fields_wrap_complete"; //Fields wrapper
+		var add_button      = $(".add_field_button_complete"); //Add button ID
+	   
+		var x = 1; //initlal text box count
+		$(add_button).click(function(e){ //on add input button click
+			e.preventDefault();
+			if(x < max_fields){ //max input box allowed
+				x++; //text box increment
+				$(wrapper).append('<div><input name="respuestas[][valor]" placeholder="Respuesta" style="width: 170px;" type="text"><input name="respuestas[][valor_alternativa1]" placeholder="Respuesta Altarnativa1" style="width: 170px;" type="text"><input name="respuestas[][valor_alternativa2]" placeholder="Respuesta Alternativa2" style="width: 170px;" type="text"><label>Puntaje:</label><input max="20" min="1" name="respuestas[][puntaje]" step="0.5" value="2" type="number"><a href="#" class="remove_field">Remove</a></div>'); //add input box
+			}
+		})
+		$(wrapper).on("click",".remove_field", function(e_alternativa2){ //user click on remove text
+			e.preventDefault(); $(this).parent('div').remove(); x--;
+		})
+	});
+
+                              

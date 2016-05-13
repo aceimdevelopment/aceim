@@ -3,16 +3,16 @@
 class Respuesta < ActiveRecord::Base
 
 	# ATRIBUTOS ACCESIBLES
-	attr_accessible :id, :valor, :puntaje, :pregunta_id, :orden, :otra_respuesta_id
+	attr_accessible :id, :valor, :valor_alternativa1, :valor_alternativa2, :puntaje, :pregunta_id, :orden, :otra_respuesta_id
 
 	# ASOCIACIONES
 	belongs_to :pregunta
 
-	has_many :otras_respuestas,
-		:class_name => 'Respuesta',
-		:foreign_key => :otra_respuesta_id
+	# has_many :otras_respuestas,
+	# 	:class_name => 'Respuesta',
+	# 	:foreign_key => :otra_respuesta_id
 
-	accepts_nested_attributes_for :otras_respuestas
+	# accepts_nested_attributes_for :otras_respuestas
 
 	#VALIDACIOENS
 	validates :valor, :presence => true

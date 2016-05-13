@@ -14,10 +14,10 @@
 				%td.separado
 					%b Opciones:
 				%td
-					.input_fields_wrap
+					.input_fields_wrap_multisel
 						%div
 							= text_field_tag nil, nil, {:placeholder => 'Opción', :name => "opciones[]", :style => 'width: 300px;'}
-							%button.add_field_button.btn_agregar.small= " opciones"
+							%button.add_field_button_multisel.btn_agregar.small= " opciones"
 			%tr.req
 				%td.derecha.separado
 					%b= "*Respuesta Correcta:"
@@ -27,7 +27,7 @@
 			%tr.req
 				%td.derecha.separado
 					%b= "*Puntaje:"
-				%td{:style => 'width: 100%;'}
+				%td
 					= number_field_tag "respuesta[puntaje]"
 
 
@@ -44,8 +44,8 @@
 
 	$(document).ready(function() {
 		var max_fields      = 10; //maximum input boxes allowed
-		var wrapper         = ".input_fields_wrap"; //Fields wrapper
-		var add_button      = $(".add_field_button"); //Add button ID
+		var wrapper         = ".input_fields_wrap_multisel"; //Fields wrapper
+		var add_button      = $(".add_field_button_multisel"); //Add button ID
 	   
 		var x = 1; //initlal text box count
 		$(add_button).click(function(e){ //on add input button click
