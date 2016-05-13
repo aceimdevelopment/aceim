@@ -25,22 +25,20 @@ class Actividad < ActiveRecord::Base
 	has_many :adjuntos, :dependent => :destroy
 	accepts_nested_attributes_for :adjuntos
 
+	# parte_examen_actividades
+	has_many :parte_examen_actividades, :dependent => :destroy
+	# :class_name => 'ParteExamenActividad',
+	# :primary_key => [:parte_id, :examen_id, :actividad_id]
+	# :foreign_key => :actividad_id
 
-	# Actividades_tiene_bloques_exmamens
-	has_many :tiene_bloques_examenes,
-	:class_name => 'BloqueExamenTieneActividad',
-	:id => [:actividad_id, :bloque_examen_tipo_bloque_examen_id, :bloque_examen_examen_id]
-	:foreign_key => :actividad_id
+	accepts_nested_attributes_for :parte_examen_actividades
 
-	accepts_nested_attributes_for :tiene_bloques_examenes
+	# parte_examenes
+	has_many :parte_examenes, 
+	# :class_name => 'ParteExamen',
+	:through => :parte_examen_actividades
 
-	# bloques_examenes
-	has_many :bloques_examenes, 
-	:class_name => 'BloqueExamen',
-	:through => :tiene_bloques_examenes
-
-	accepts_nested_attributes_for :bloques_examenes
-
+	accepts_nested_attributes_for :parte_examenes
 
 	# VALIDACION
 	validates :instrucciones, :presence => true
@@ -52,11 +50,23 @@ class Actividad < ActiveRecord::Base
 
 
 	def descripcion
-		"#{tipo_segmento.nombre} - #{titulo}. #{cantidad_preguntas} preguntas de #{valor_preguntas} c/u. (Total= #{cantidad_preguntas*valor_preguntas if (cantidad_preguntas and valor_preguntas) } Pts.)"
+		"#{tipo_actividad.descripcion} - #{instrucciones}. #{total_preguntas} preguntas de #{valor_cada_pregunta} c/u. (Total= #{total_preguntas*valor_cada_pregunta} Pts.)"
 	end
 
-	def descripcion_con_if
-		"#{tipo_segmento.id} #{tipo_segmento.nombre} - #{titulo}. #{cantidad_preguntas} preguntas de #{valor_preguntas} c/u. (Total= #{cantidad_preguntas*valor_preguntas if (cantidad_preguntas and valor_preguntas) } Pts.)"
+	def total_preguntas
+		total = 0
+		preguntas.each{|pre| total += pre.respuestas.count}
+		return total
+	end
+
+	def valor_cada_pregunta
+		valor = 0
+		valor = preguntas.first.valor_cada_pregunta if preguntas.first 
+		return valor
+	end
+
+	def descripcion_con_id
+		"#{tipo_actividad.id} #{descripcion}"
 	end
 
 	# belongs_to :examen

@@ -20,3 +20,5 @@ table td.border{border:1px solid rgba(101, 99, 91, 0.45)}
 .box {border:1px solid blue; padding-left: 10px;}
 
 .division {border-top:1px solid orange;}
+
+.division_interna {border-top:0,5px solid orange;}

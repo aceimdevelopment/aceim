@@ -21,21 +21,25 @@ class AdminExamenesController < ApplicationController
 	end
 
 	def generar
-		
 		@examen = Examen.new(params[:examen])
 
 		respond_to do |format|
 			if @examen.save
-				flash[:mensaje] = 'Datos básicos almacenados con éxito.'
+				exito = 0
+				Parte.all.each do |parte|
+					exito += 1 if @examen.parte_examenes.create(:parte_id => parte.id)  
+				end	
+				resultado_bloques = "#{exito} Partes del examen añadidas."
+				flash[:mensaje] = "Datos básicos almacenados con éxito.#{resultado_bloques}"
 				format.html { redirect_to :action => 'wizard_paso2', :id => @examen.id}
 				format.json { render :json => @examen, :status => :created, :location => @examen }
 			else
-				@titulo_pagina = "Nueva Examen"
+				@titulo = "Nueva Examen"
 				@accion = "registrar"
 				@idiomas = Idioma.all.delete_if{|i| i.id.eql? 'OR'}
 				@categorias = TipoCategoria.all.delete_if{|cat| ['BBVA','TR'].include? cat.id}
 				@niveles = TipoNivel.where(:id => ['BI','BII','BIII','MI','MII','MIII','AI','AII','AIII'])
-				
+				@periodos = Periodo.lista_ordenada		
 				flash[:mensaje] = "#{@examen.errors.count} error(es) impiden el registro de la factura: #{@examen.errors.full_messages.join(". ")}."
 				format.html { render :action => "wizard_paso1" }
 				format.json { render :json => @factura.errors, :status => :unprocessable_entity }
@@ -45,27 +49,42 @@ class AdminExamenesController < ApplicationController
 	end
 
 	def wizard_paso2
-
 		id = params[:id]
 		@titulo = "Nuevo Examen"
 		@examen = Examen.find(id)
-
+		@actividad = Actividad.new
 
 	end
 
 	def eliminar_pregunta
 		@pregunta = Pregunta.find(params[:id])
-		@segmento = @pregunta.segmento
+		@actividad = @pregunta.actividad
 		@pregunta.destroy
 		redirect_to :back
-    	# render :partial => "preguntas/preguntas_text", :locals => {:segmento => @segmento}
+    	# render :partial => "preguntas/preguntas_text", :locals => {:actividad => @actividad}
 	end
 
-	def actualizar_segmento
+	def registrar_actividad
+		@parte_examen = (ParteExamen.where (params[:parte_examen])).limit(1).first
 
-		@segmento = Segmento.find(params[:id])
+		if @parte_examen
 
-		if @segmento.update_attributes(params[:segmento])
+			@actividad = Actividad.new(params[:actividad])
+			if @actividad.save and @parte_examen.parte_examen_actividades.create(:actividad_id => @actividad.id)
+				flash[:mensaje] = "Actividad agregar con éxito"
+			else
+				flash[:mensaje] = "No se pudo agregar la actividad. Por favor verifique los campos e intentelo nuevamente."
+			end
+		else
+			flash[:mensaje] = "Falló la inclusión de la nueva actividad, No se encontró la parte del examen requerida. Por Favor Verifique e intentelo nuevamente."
+		end
+		
+		redirect_to :action => 'wizard_paso2', :id => "#{params[:parte_examen][:examen_id]}"
+	end
+
+	def actualizar_actividad
+		@actividad = Actividad.find(params[:id])
+		if @actividad.update_attributes(params[:actividad])
 			flash[:mensaje] = "Datos elementales de la actividad actualizados"
 		else
 			flash[:mensaje] = "No se pudo actualizar los datos de la actividad"
@@ -73,18 +92,19 @@ class AdminExamenesController < ApplicationController
 		redirect_to :back
 	end
 
-	def eliminar_segmento
-		@segmento = Segmento.find(params[:id])
-		@examen = @segmento.examen
-		@segmento.destroy
+	def eliminar_actividad
+		@actividad = actividad.find(params[:id])
+		@examen = @actividad.examen
+		@actividad.destroy
 		redirect_to :back
-		# render :partial => "segmentos/wizard_list", :locals => {:examen => @examen}
+		# render :partial => "actividads/wizard_list", :locals => {:examen => @examen}
 	end
 
 	def eliminar_examen
-		@segmento = Examen.find(params[:id])
-		@segmento.destroy
+		@actividad = Examen.find(params[:id])
+		@actividad.destroy
 		redirect_to :action => 'wizard_paso1'
-		# render :partial => "segmentos/wizard_list", :locals => {:examen => @examen}
+		# render :partial => "actividads/wizard_list", :locals => {:examen => @examen}
 	end
+
 end

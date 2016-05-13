@@ -9,48 +9,55 @@
 			%h3 Facultad de Humanidades y Educación
 			%h3 Escuela de Idiomas Modernos
 			%h3= @examen.titulo
-	.well
-		#accordion
-			=render :partial => '/segmentos/wizard_list'
-		.division
-		= link_to 'Agregar Actividad', 'javascript:void(0)' , :class => "btn", :onclick => "$(form_segmento).show('slow'); $(this).remove();"
-		%div{:id => "form_segmento", :style => 'display:none;'}
-			=render :partial => '/segmentos/wizard_form' 
-
-
+	
+- @parte_examenes = @examen.parte_examenes
+#parte
 	%ul
-		%li#draggable.ui-state-highlight Drag me down
+		- @parte_examenes.each do |parte_examen|
+			%li=  link_to parte_examen.parte.nombre, "##{parte_examen.parte_id}", :class => 'btn_idiomas'
 
-	%ul#sortable
-		%li.ui-state-default= 'Item 1'
-		%li.ui-state-default= 'Item 2'
-		%li.ui-state-default= 'Item 3'
-		%li.ui-state-default= 'Item 4'
-		%li.ui-state-default= 'Item 5'
+	- @parte_examenes.each do |parte_examen|
+		%div{:id => parte_examen.parte_id}
+			= render :partial => '/actividades/wizard_list', :locals => {:parte_examen => parte_examen}
 
+			%div{:id => "form_actividad_#{parte_examen.parte_id}", :style => 'display:none;'}
+				=render :partial => '/actividades/wizard_form', :locals => {:parte_examen => parte_examen}
+			.division
+			= link_to " Actividad en #{parte_examen.parte.nombre}" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_actividad_"+parte_examen.parte_id+").show('slow'); $(this).remove();" 
 
 :javascript
-	$(function() {
-		$( "#accordion" ).accordion();
-		$( ".btn" ).button();
-		$( ".radio" ).buttonset();
+	
+	$("#parte").tabs();
+
+	$( ".btn" ).button();
+	
+	$( ".btn_editar").button({
+		icons: {
+		primary: "ui-icon-pencil"
+		}
+	});	
+	
+	$( ".btn_eliminar").button({
+		icons: {
+		primary: "ui-icon-trash"
+		}
 	});
 
-	function eliminar_pregunta(id, segemnto_id){
-		return $.get("/aceim/preguntas/22?data-method=delete",		
+	$( ".btn_agregar").button({
+		icons: {
+		primary: "ui-icon-circle-plus"
+		}
+	});
+	
+	$( ".btn_remover").button({
+		icons: {
+		primary: " ui-icon-circle-minus"
+		}
+	});	
+	
+	$( ".radio" ).buttonset();
+
+	function eliminar_pregunta(id, actividad_id){
+		return $.get("/aceim/preguntas/"+"?data-method=delete",		
 			function(data){ alert("Data: " + data + "\nStatus: " + status);} );
 	};
-
-	$(function() {
-		$( "#sortable" ).sortable({
-		revert: true
-	});
-	
-	$( "#draggable" ).draggable({
-		connectToSortable: "#sortable",
-		helper: "clone",
-		revert: "invalid"
-	});
-	
-	$( "ul, li" ).disableSelection();
-	});

@@ -1,9 +1,9 @@
-= form_for @segmento do |f|
-  -if @segmento.errors.any?
+= form_for @actividad do |f|
+  -if @actividad.errors.any?
     #error_explanation
-      %h2= "#{pluralize(@segmento.errors.count, "error")} prohibited this segmento from being saved:"
+      %h2= "#{pluralize(@actividad.errors.count, "error")} prohibited this actividad from being saved:"
       %ul
-        - @segmento.errors.full_messages.each do |msg|
+        - @actividad.errors.full_messages.each do |msg|
           %li= msg
 
   .field

@@ -1,28 +1,65 @@
-= form_for @examen do |f|
+
+= form_for @examen do |e|
+  ="Error?: #{@examen.errors.any?}> "
   -if @examen.errors.any?
+    
     #error_explanation
-      %h2= "#{pluralize(@examen.errors.count, "error")} prohibited this examen from being saved:"
+      -flash[:mensaje] = "#{pluralize(@examen.errors.count, "error")} impiden que el examen sea registrado:"
       %ul
         - @examen.errors.full_messages.each do |msg|
-          %li= msg
+          %li= msg      
 
-  .field
-    = f.label :descripcion
-    = f.text_field :descripcion
-  .field
-    = f.label :duracion
-    = f.number_field :duracion
-  .field
-    = f.label :orden
-    = f.text_field :orden
-  .field
-    = f.label :curso_idioma_id
-    = f.text_field :curso_idioma_id
-  .field
-    = f.label :curso_tipo_categoria_id
-    = f.text_field :curso_tipo_categoria_id
-  .field
-    = f.label :curso_tipo_nivel_id
-    = f.text_field :curso_tipo_nivel_id
-  .actions
-    = f.submit 'Save'
+  %table
+    %tr.req
+      %td.derecha.separado
+        %b= "*Seleccione el Curso:"
+      %td
+        =e.collection_select :curso_idioma_id, @idiomas, :id, :descripcion, :prompt => 'Sel. Idioma', :class => 'select'
+        =e.collection_select :curso_tipo_categoria_id, @categorias, :id, :descripcion, :prompt => 'Sel. Categoria', :class => 'select'
+        =e.collection_select :curso_tipo_nivel_id, @niveles, :id, :descripcion, :prompt => 'Sel. Nivel', :class => 'select'
+        =e.collection_select :periodo_id, @periodos, :id, :ordenado, :prompt => 'Sel. Periodo', :class => 'select'
+    %tr
+      %td.derecha.separado
+        %b= "Descripción:"
+      %td
+        = e.text_field :descripcion
+        = "(para futuras búsquedas)"
+
+    %tr.req
+      %td.derecha.separado
+        %b= "*Duración:"
+      %td
+        = e.number_field :duracion
+        = "(minutos)"
+    %tr.req
+      %td.derecha.separado
+        %b= "*Orden:"
+      %td
+        =e.select :orden, ['primero', 'segundo']
+    %tr.req
+      %td.derecha.separado
+        %b= "Fecha y hora de inicio:"
+      %td
+        =e.datetime_select  :inicio_aplicacion
+    %tr.req
+      %td.derecha.separado
+        %b= "Fecha y hora de inicio:"
+      %td
+        =e.datetime_select  :cierre_aplicacion
+
+
+
+    %tr.req
+      %td
+
+      %td
+        %b= "* Requeridos" 
+    %tr.acciones
+      %td
+      %td
+        = e.submit "Siguiente >>", :disable_with => 'Guardando...', :class => 'btn'
+
+
+:javascript
+  $( ".btn" ).button();
+

@@ -1,0 +1,15 @@
+-if @actividad.textos.count > 0
+	= text_area_tag :contenido, @actividad.textos.first.contenido, :class => :texto, :readonly => true
+- else
+	= link_to 'Incluir Texto en la actividad', 'javascript:void(0)' , :class => "btn small", :onclick => "$(form_actividad_#{@actividad.id}).show('slow'); $(this).remove();"
+	%div{:id => "form_actividad_#{@actividad.id}", :style => 'display:none;'}
+		= form_for(@actividad.textos.build, :url=>{:controller => 'textos',:action => "create"}) do |f|
+			%table
+				%tr.req
+					%td.derecha.separado
+						%b= "*Contenido:"
+					%td
+						= f.text_area :contenido, :class => :texto
+					%td
+						%input.btn.small{:type => 'submit', :value => 'Incluir texto en la actividad', :name => 'commit'}
+.division

@@ -8,30 +8,11 @@ class Examen < ActiveRecord::Base
 	belongs_to :curso_periodo,
 		:foreign_key => [:periodo_id, :curso_idioma_id,:curso_tipo_categoria_id, :curso_tipo_nivel_id]
 
-	has_many :bloques_examenes,
-	:class_name => 'BloqueExamen',
-	:foreign_key => :tipo_bloque_examen_id
+	has_many :parte_examenes, :dependent => :destroy
+	accepts_nested_attributes_for :parte_examenes
 
-	accepts_nested_attributes_for :bloques_examenes
-
-	has_many :tipo_bloques_examenes, 
-	:class_name => 'TipoBloqueExamen',
-	:through => :bloques_examenes
-	
-	accepts_nested_attributes_for :tipo_bloques_examenes
-
-
-	# Pendiente para incluir esto
-
-		# has_many :examen_segementos,
-		# 	:class_name => 'ExamenTieneSegmento'
-
-		# accepts_nested_attributes_for :examen_segementos
-
-		# has_many :segmentos, :through => :examen_segementos, :source => :segmento 
-
-	# has_many :segmentos, :dependent => :destroy
-	# accepts_nested_attributes_for :segmentos
+	has_many :partes, :through => :parte_examenes, :source => :parte
+	accepts_nested_attributes_for :partes
 	
 # VALIDACIONES
 	validates :curso_idioma_id, :presence => true
@@ -48,9 +29,8 @@ class Examen < ActiveRecord::Base
 	end
 
 	def titulo
-		aux = curso.descripcion
-		aux += " - #{periodo.ordenado}" if periodo
-		return aux
+		curso_periodo.descripcion
+
 	end
 
 end

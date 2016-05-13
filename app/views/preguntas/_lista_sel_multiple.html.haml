@@ -1,18 +1,23 @@
-%div{:id => "segmento_#{@segmento.id}"}
 
-	%ol
-		- @preguntas.each_with_index do |pregunta,i|
-			- @clave, @opciones  = pregunta.clave.split('(')
-			- @opciones = @opciones.delete(')') if @opciones
-			- @opciones = @opciones.split(',') if @opciones
-			%li
-				%p
-					= "#{@clave} (R= #{pregunta.respuesta})"
-					= link_to 'Eliminar pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn small", :style => 'background-color: lightsalmon;'
+%div{:id => "actividad_#{@actividad.id}"}
 
-				%ul
-					- @opciones.each do |op| 
-						%li
-							= radio_button_tag 'opciones', op
-							= op
+	- @preguntas.each_with_index do |pregunta,i|
+		- respuesta = pregunta.respuestas.first.valor if pregunta.respuestas.first 
+		.well.well_small
+			%p
+				%b
+					= pregunta.valor
+					= "(#{respuesta})"
+					= link_to 'Eliminar pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small", :style => 'background-color: lightsalmon;'
+
+			%table.likert.tablefilter
+				- pregunta.opciones.each_with_index do |opc,i|
+					%tr
+						%td= "#{i+1}."
+						%td{:style => "min-width:300px;"}= opc.valor
+						%td= radio_button_tag "opciones[#{opc.valor}]", nil, (opc.valor.casecmp(respuesta).zero?), :disabled => true, :class => 'radio'
+
+						
+		.division_interna
+
 .division

@@ -9,11 +9,16 @@ Aceim::Application.routes.draw do
     resources :actividades
   end
 
+  resources :parte_examenes do
+    resources :parte_examen_actividades
+  end
+
+  resources :parte_examen_actividades do
+    resources :actividades
+  end
 
   resources :examenes do
-    resources :segmentos do
-      resources :preguntas
-    end
+    resources :parte_examenes
   end
 
   resources :actividades do

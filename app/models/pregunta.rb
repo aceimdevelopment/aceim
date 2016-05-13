@@ -8,20 +8,24 @@ class Pregunta < ActiveRecord::Base
 	# ASOCIACIONES
 	belongs_to :actividad
 
-	has_many :opciones,
+	has_many :opciones, :dependent => :destroy,
 		:class_name => 'Opcion'
-
 	accepts_nested_attributes_for :opciones
 
-	has_many :respuestas,
+	has_many :respuestas, :dependent => :destroy,
 		:class_name => 'Respuesta'
-
 	accepts_nested_attributes_for :respuestas
 
 	#VALIDACIONES
-	validates :id, :presence => true
+	# validates :id, :presence => true
 	validates :valor, :presence => true
 	validates :actividad_id, :presence => true
 
+	def valor_cada_pregunta
+		puntaje = 0
+		respuesta = respuestas.first
+		puntaje = respuesta.puntaje if respuesta
+		return puntaje
+	end
 
 end
