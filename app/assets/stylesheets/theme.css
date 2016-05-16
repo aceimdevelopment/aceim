@@ -23,7 +23,7 @@
 	border-top:1px dotted #CCCCCC;
 }
 .formulario input.text, .formulario textarea.textarea{
-	border:;
+	border:none;
 }
 .formulario .instruccion{
 	border:1px solid #E6E6E6;
@@ -86,7 +86,7 @@
 	color:#333333;
 	font-size:100%;
 }
-{* Custom Fonts Break Dropdown Selection in IE *}
+/* Custom Fonts Break Dropdown Selection in IE */
 .formulario input.text, .formulario textarea.textarea, .formulario input.file{ 
 	font-family:inherit;
 }
@@ -118,11 +118,11 @@ li.leftThird small, li.middleThird small, li.rightThird small,
 /* ----- Button Styles ----- */
 
 .formulario input.btTxt{
-	font-size:;
-	font-family:;
-	font-weight:;
-	font-style:;
-	color:;
+	font-size:none;
+	font-family:none;
+	font-weight:none;
+	font-style:none;
+	color:none;
 }
 
 /* ----- Highlight Styles ----- */
