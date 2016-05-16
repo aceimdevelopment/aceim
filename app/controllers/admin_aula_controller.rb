@@ -456,7 +456,7 @@ class AdminAulaController < ApplicationController
   def eliminar
     @aula = Aula.find(params[:id])
     flash[:mensaje] = @aula.destroy ? "Aula Eliminada con éxito" : "El Aula no pudo ser eliminada"
-    redirect_to (:controller => "admin_aula")
+    redirect_to(:controller => "admin_aula")
 
   end
 

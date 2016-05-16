@@ -3,7 +3,7 @@
 #creada por db2models
 class HistorialAcademico < ActiveRecord::Base
   NOTAS = (-2..20).to_a
-  NOTASSTRING = ("0".."20").to_a + ("00".."09").to_a  + "-1".to_a
+  NOTASSTRING = ("0".."20").to_a + ("00".."09").to_a -1
   NOTASPALABRAS = ["Sin Calificar","Pérdida por Inasistencia","Cero","Uno","Dos",
                    "Tres","Cuatro","Cinco", "Seis", "Siete", "Ocho","Nueve","Diez",
                    "Once","Doce","Trece","Catorce","Quince","Dieciseis","Diecisiete",
