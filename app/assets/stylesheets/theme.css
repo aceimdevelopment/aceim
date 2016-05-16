@@ -86,7 +86,7 @@
 	color:#333333;
 	font-size:100%;
 }
-/* Custom Fonts Break Dropdown Selection in IE */
+
 .formulario input.text, .formulario textarea.textarea, .formulario input.file{ 
 	font-family:inherit;
 }
