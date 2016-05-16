@@ -50,7 +50,7 @@ class Actividad < ActiveRecord::Base
 
 
 	def descripcion
-		"#{tipo_actividad.descripcion} - #{instrucciones}. #{total_preguntas} preguntas de #{valor_cada_pregunta} c/u. (Total= #{total_preguntas*valor_cada_pregunta} Pts.)"
+		"#{tipo_actividad.descripcion} - #{instrucciones}. #{total_preguntas} preguntas de #{valor_cada_pregunta} c/u."
 	end
 
 	def total_preguntas

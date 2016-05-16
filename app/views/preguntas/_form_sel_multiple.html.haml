@@ -14,10 +14,12 @@
 				%td.separado
 					%b Opciones:
 				%td
-					.input_fields_wrap_multisel
+
+					.div{:id => "input_fields_wrap_multisel_#{@actividad.id}"}
 						%div
 							= text_field_tag nil, nil, {:placeholder => 'Opción', :name => "opciones[]", :style => 'width: 300px;'}
-							%button.add_field_button_multisel.btn_agregar.small= " opciones"
+							= link_to " Opciones" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "agregar_opcion_multisel(#{@actividad.id});"
+
 			%tr.req
 				%td.derecha.separado
 					%b= "*Respuesta Correcta:"
@@ -42,21 +44,8 @@
 
 :javascript
 
-	$(document).ready(function() {
-		var max_fields      = 10; //maximum input boxes allowed
-		var wrapper         = ".input_fields_wrap_multisel"; //Fields wrapper
-		var add_button      = $(".add_field_button_multisel"); //Add button ID
-	   
-		var x = 1; //initlal text box count
-		$(add_button).click(function(e){ //on add input button click
-			e.preventDefault();
-			if(x < max_fields){ //max input box allowed
-				x++; //text box increment
-				$(wrapper).before('<div><input type="text" style="width: 300px;" placeholder="Opción" name="opciones[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
-			}
-		});
-	
-		$(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-			e.preventDefault(); $(this).parent('div').remove(); x--;
-		})
-	});
+	function agregar_opcion_multisel(actividad_id){
+
+		$("#input_fields_wrap_multisel_"+actividad_id).append('<div><input type="text" style="width: 300px;" placeholder="Opción" name="opciones[]"/></div>'); //add input box
+
+	};

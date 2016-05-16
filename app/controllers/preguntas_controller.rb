@@ -166,7 +166,7 @@ class PreguntasController < ApplicationController
       end
       flash[:mensaje] += "#{agregadas} respuestas agregadas."
     else
-      flash[:mensaje] = "No se pudo agregar la pregunta: #{@pregunta.errors.full_messages.join('-')}."
+      flash[:mensaje] = "No se pudo agregar la pregunta: #{pregunta.errors.full_messages.join('-')}."
     end
 
     redirect_to :controller => 'admin_examenes', :action => 'wizard_paso2', :id => params[:examen_id]
