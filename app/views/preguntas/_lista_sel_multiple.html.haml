@@ -1,9 +1,8 @@
-
 %div{:id => "actividad_#{@actividad.id}"}
 
 	- @preguntas.each_with_index do |pregunta,i|
 		- respuesta = pregunta.respuestas.first.valor if pregunta.respuestas.first 
-		.well.well_small
+		.well
 			%p
 				%b
 					= pregunta.valor
@@ -18,6 +17,6 @@
 						%td= radio_button_tag "opciones[#{opc.valor}]", nil, (opc.valor.casecmp(respuesta).zero?), :disabled => true, :class => 'radio'
 
 						
-		.division_interna
+		%p.division
 
 .division

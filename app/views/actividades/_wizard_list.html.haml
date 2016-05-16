@@ -3,16 +3,15 @@
 		-@actividades = parte_examen.actividades
 		- @actividades.each_with_index do |actividad,i|
 			- @preguntas = actividad.preguntas
-			%div	
-				%p
-					%b= "#{i+1} - #{actividad.descripcion}"
-					-@actividad = actividad
-					= link_to 'Editar Actividad', 'javascript:void(0)' , :class => "small btn_editar", :onclick => "$(actualizar_actividad_#{actividad.id}).show('slow'); $(this).remove();"
-					= link_to 'Eliminar actividad', {:action => 'eliminar_actividad', :id => actividad.id} , :data =>  { :confirm => '¿Está seguro?'}, :class => "btn_eliminar small flotar_derecha"
-					=render :partial => 'form_actualizar_actividad'#, :locals => {:actividad => actividad}
-					=# link_to 'Eliminar actividad', '#' , :data =>  { :confirm => '¿Está seguro?' }, :class => "btn small", :onclick => "return eliminar_actividad(#{actividad.id})"
+			%p.division_actividad
+				%b= "#{i+1} - #{actividad.descripcion}"
+				-@actividad = actividad
+				= link_to 'Editar Actividad', 'javascript:void(0)' , :class => "small btn_editar", :onclick => "$(actualizar_actividad_#{actividad.id}).show('slow'); $(this).remove();"
+				= link_to 'Eliminar actividad', {:action => 'eliminar_actividad', :id => actividad.id} , :data =>  { :confirm => '¿Está seguro?'}, :class => "btn_eliminar small flotar_derecha"
+				=render :partial => 'form_actualizar_actividad'#, :locals => {:actividad => actividad}
+				=# link_to 'Eliminar actividad', '#' , :data =>  { :confirm => '¿Está seguro?' }, :class => "btn small", :onclick => "return eliminar_actividad(#{actividad.id})"
+			.well
 
-					.division
 				- @examen_id = parte_examen.examen_id
 				=render :partial => '/actividades/incluir_texto'
 				.small.well.factura

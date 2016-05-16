@@ -1,5 +1,17 @@
 -if @actividad.textos.count > 0
-	= text_area_tag :contenido, @actividad.textos.first.contenido, :class => :texto, :readonly => true
+	= form_tag(:controller => "textos", :action => "actualizar") do
+		=hidden_field_tag "actividad_id", @actividad.id
+		=hidden_field_tag "examen_id", @examen_id
+		=hidden_field_tag "texto_id", @actividad.textos.first.id
+
+		%table
+			%tr.req
+				%td.derecha.separado
+					%b= "*Contenido:"
+				%td
+					= text_area_tag :contenido, @actividad.textos.first.contenido, :class => :texto
+				%td
+					%input.btn.small{:type => 'submit', :value => 'Actualizar texto', :name => 'commit'}
 - else
 	= link_to 'Incluir texto en la actividad', 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_texto_#{@actividad.id}).show('slow'); $(this).remove();"
 	%div{:id => "form_texto_#{@actividad.id}", :style => 'display:none;'}
@@ -15,4 +27,4 @@
 						= f.text_area :contenido, :class => :texto
 					%td
 						%input.btn.small{:type => 'submit', :value => 'Incluir texto en la actividad', :name => 'commit'}
-.division
+%p.division

@@ -4,25 +4,23 @@
 	.well
 		%b{:style => 'float:left;'}= "Duración: #{@examen.duracion} minutos"
 		.center
-			%h3 Universidad Central de Venezuela
-			%h3 Facultad de Humanidades y Educación
-			%h3 Escuela de Idiomas Modernos
-			%h3= @examen.titulo
+			%h2= @examen.titulo
+			%h3= "Puntaje Total: #{@examen.puntaje_total} / 80"
 	
-- @parte_examenes = @examen.parte_examenes
-#parte
-	%ul
-		- @parte_examenes.each do |parte_examen|
-			%li=  link_to parte_examen.parte.nombre, "##{parte_examen.parte_id}", :class => 'btn_idiomas'
+		- @parte_examenes = @examen.parte_examenes
+		#parte
+			%ul
+				- @parte_examenes.each do |parte_examen|
+					%li=  link_to parte_examen.parte.nombre, "##{parte_examen.parte_id}", :class => 'btn_idiomas'
 
-	- @parte_examenes.each do |parte_examen|
-		%div{:id => parte_examen.parte_id}
-			= render :partial => '/actividades/wizard_list', :locals => {:parte_examen => parte_examen}
+			- @parte_examenes.each do |parte_examen|
+				%div{:id => parte_examen.parte_id}
+					= render :partial => '/actividades/wizard_list', :locals => {:parte_examen => parte_examen}
 
-			%div{:id => "form_actividad_#{parte_examen.parte_id}", :style => 'display:none;'}
-				=render :partial => '/actividades/wizard_form', :locals => {:parte_examen => parte_examen}
-			.division
-			= link_to " Actividad en #{parte_examen.parte.nombre}" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_actividad_"+parte_examen.parte_id+").show('slow'); $(this).remove();" 
+					%div{:id => "form_actividad_#{parte_examen.parte_id}", :style => 'display:none;'}
+						=render :partial => '/actividades/wizard_form', :locals => {:parte_examen => parte_examen}
+					.division
+					= link_to " Actividad en #{parte_examen.parte.nombre}" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_actividad_"+parte_examen.parte_id+").show('slow'); $(this).remove();" 
 
 :javascript
 	
