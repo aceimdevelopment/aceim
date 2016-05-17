@@ -28,4 +28,11 @@ class Pregunta < ActiveRecord::Base
 		return puntaje
 	end
 
+	def total_puntaje_respuesta
+		total = 0
+		respuestas.each {|res| total += res.puntaje}
+
+		return total
+	end
+
 end

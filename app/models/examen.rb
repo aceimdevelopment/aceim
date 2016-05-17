@@ -31,4 +31,15 @@ class Examen < ActiveRecord::Base
 
 	end
 
+	def puntaje_total
+		total = 0
+		parte_examenes.each do |pe|
+			pe.actividades.each do |act|
+				act.preguntas.each {|preg| total += preg.total_puntaje_respuesta}
+			end
+		end
+		return total
+		
+	end
+
 end
