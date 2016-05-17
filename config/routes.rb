@@ -1,10 +1,5 @@
 Aceim::Application.routes.draw do
 
-
-  resources :tipo_segmentos do
-    resources :segmentos
-  end
-
   resources :tipo_actividades do
     resources :actividades
   end
