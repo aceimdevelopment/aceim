@@ -15,7 +15,8 @@ class TextosController < ApplicationController
         # format.html { redirect_to @pregunta, :notice => 'Pregunta was successfully created.' }
         # format.json { render :json => @pregunta, :status => :created, :location => @pregunta }
       else
-        flash[:mensaje] = 'No se pudo agregar el texto. Favor verifique e intentelo nuevamente.'
+
+        flash[:mensaje] = 'Error intentando agregar el texto. Favor verifique e intente de nuevo'
         # format.html { render :action => "new" }
         # format.json { render :json => @texto.errors, :status => :unprocessable_entity }
       end
@@ -25,12 +26,12 @@ class TextosController < ApplicationController
 
   def actualizar
     @texto = Texto.find(params[:texto_id])
-
+    
     respond_to do |format|
       if @texto.update_attributes(:contenido => params[:contenido])
-        flash[:mensaje] = 'Texto actualizado con éxito.'
+        flash[:mensaje] = 'Texto agregado con éxito.'
       else
-        flash[:mensaje] = 'Imposible actualizar el texto. Favor verifique e intentelo nuevamente.'
+        flash[:mensaje] = 'Error intentando actualizar el texto. Favor verifique e intente de nuevo'
       end
       format.html { redirect_to :controller => "admin_examenes", :action => "wizard_paso2", :id => params[:examen_id]}
     end

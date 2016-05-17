@@ -1,3 +1,4 @@
+%h1 Título
 %h1= @titulo
 .well.factura
 	%h3= link_to 'Eliminar examen', {:action => 'eliminar_examen', :id => @examen.id} , :data =>  { :confirm => '¿Está seguro?' },  :class => "btn_eliminar small flotar_derecha"

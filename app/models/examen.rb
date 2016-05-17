@@ -35,11 +35,12 @@ class Examen < ActiveRecord::Base
 		total = 0
 		parte_examenes.each do |pe|
 			pe.actividades.each do |act|
-				act.preguntas.each {|preg| total += preg.total_puntaje_respuesta}
+				act.preguntas.each do |pre|
+					total += pre.respuestas.sum(:puntaje)
+				end
 			end
 		end
 		return total
-		
 	end
 
 end
