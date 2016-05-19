@@ -12,9 +12,11 @@
 			%table.likert.tablefilter
 				- pregunta.opciones.each_with_index do |opc,i|
 					%tr
+						- eql = false
 						%td= "#{i+1}."
 						%td{:style => "min-width:300px;"}= opc.valor
-						%td= radio_button_tag "opciones[#{opc.valor}]", nil, (opc.valor.casecmp(respuesta).zero?), :disabled => true, :class => 'radio'
+						- eql = opc.valor.casecmp(respuesta).zero? if (opc.valor and respuesta)
+						%td= radio_button_tag "opciones[#{opc.valor}]", nil, eql, :disabled => true, :class => 'radio'
 
 						
 		%p.division
