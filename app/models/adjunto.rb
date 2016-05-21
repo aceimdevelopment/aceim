@@ -1,9 +1,7 @@
-# encoding: utf-8
-
 class Adjunto < ActiveRecord::Base
 
 	# Atributos Accesibles
-	attr_accessible :archivo, :segmento_id
+	attr_accessible :archivo, :actividad_id
 
-	belongs_to :segmento
+	belongs_to :actividad
 end

@@ -4,7 +4,7 @@ class AdminExamenesController < ApplicationController
 
 	before_filter :filtro_logueado
 	before_filter :filtro_administrador
-  	skip_before_filter  :verify_authenticity_token  
+	skip_before_filter  :verify_authenticity_token  
 	
 	def index
 		@cursos = Curso.order(['idioma_id', 'grado']).all
@@ -26,7 +26,7 @@ class AdminExamenesController < ApplicationController
 		respond_to do |format|
 			if @examen.save
 				exito = 0
-				Parte.all.each do |parte|
+				 Parte.order('orden ASC').all.each do |parte|
 					exito += 1 if @examen.parte_examenes.create(:parte_id => parte.id)  
 				end	
 				resultado_bloques = "#{exito} Partes del examen añadidas."

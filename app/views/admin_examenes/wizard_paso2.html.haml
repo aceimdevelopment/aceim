@@ -7,7 +7,8 @@
 			%h2= @examen.titulo
 			%h3= "Puntaje Total: #{@examen.puntaje_total} / 80"
 	
-		- @parte_examenes = @examen.parte_examenes
+		- @parte_examenes = @examen.parte_examenes.joins(:parte).order('parte.orden ASC')
+
 		#parte
 			%ul
 				- @parte_examenes.each do |parte_examen|

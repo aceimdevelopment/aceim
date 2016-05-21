@@ -1,0 +1,32 @@
+%h3= "Total de Archivos adjuntados a actividad: #{@actividad.adjuntos.count}"
+- @actividad.adjuntos.each do |adjunto|
+	
+
+	- nombre, extension = adjunto.archivo.split('.')
+	- imagenes = ['png', 'jpeg', 'jpg']
+	- audios = ['mp3', 'mpeg', 'ogg', 'wav']
+
+	.well.small
+		- if imagenes.include? extension 
+			%h3
+				= "Imagen adjunto:#{adjunto.archivo}"
+				= link_to 'Eliminar', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => 'btn_eliminar small derecha'
+			= image_tag "../aceim/assets/examenes/#{adjunto.archivo}", :size => '200x100'
+		- elsif audios.include? extension
+			%h3
+				= "Audio adjunto:#{adjunto.archivo}"
+				= link_to 'Eliminar', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => ' btn_eliminar small derecha' 
+			= audio_tag "/assets/../aceim/assets/examenes/#{adjunto.archivo}", :class => "audio-play", :controls => true
+			
+
+		- else
+			= "Formato desconocido: #{adjunto.archivo}"
+			= link_to 'Eliminar', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => 'btn_eliminar small'
+
+
+= link_to 'Incluir archivo adjunto', 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_archivo_#{@actividad.id}).show('slow'); $(this).remove();"
+
+%div{:id => "form_archivo_#{@actividad.id}", :style => 'display:none;'}
+	= render 'adjuntos/importar'
+
+.division

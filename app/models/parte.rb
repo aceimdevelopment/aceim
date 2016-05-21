@@ -1,9 +1,7 @@
-# encoding: utf-8
-
 class Parte < ActiveRecord::Base
 
 	# ATRIBUTOS ACCESIBLES
-	attr_accessible :id, :nombre
+	attr_accessible :id, :nombre, :orden
 
 	# ASOCIACIONES
 	has_many :parte_examenes
