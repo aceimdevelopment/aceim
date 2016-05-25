@@ -8,4 +8,4 @@ config/database.yml
 codigos_barra/
 *.xls
 .DS_Store
-
+app/assets/images/examenes/
