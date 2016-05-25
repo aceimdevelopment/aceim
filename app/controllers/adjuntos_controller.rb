@@ -112,6 +112,7 @@ class AdjuntosController < ApplicationController
     begin
       data = params[:archivo][:datafile]
       nombre = data.original_filename
+      nombre = "#{params[:actividad_id]}_#{nombre}"
       archivo = "#{Rails.root}/app/assets/images/examenes/#{nombre}"
       data = data.tempfile
       @adjunto = Adjunto.new

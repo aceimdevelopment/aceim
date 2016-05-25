@@ -1,5 +1,6 @@
-%h3= "Total de Archivos adjuntados a actividad: #{@actividad.adjuntos.count}"
-- @host = "http://fundeim.human.ucv.ve/aceim/assets/examenes/"
+-# @host = "http://fundeim.human.ucv.ve/aceim/assets/examenes/"
+- @host = "#{request.protocol}#{request.host_with_port}/aceim/assets/examenes/"
+
 - @actividad.adjuntos.each do |adjunto|
 	
 

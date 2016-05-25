@@ -93,16 +93,17 @@ class AdminExamenesController < ApplicationController
 	end
 
 	def eliminar_actividad
-		@actividad = actividad.find(params[:id])
-		@examen = @actividad.examen
-		@actividad.destroy
+		@actividad = Actividad.find(params[:id])
+		flash[:mensaje] = "Actividad Eliminada con éxito" if @actividad.destroy
+
 		redirect_to :back
-		# render :partial => "actividads/wizard_list", :locals => {:examen => @examen}
 	end
 
 	def eliminar_examen
-		@actividad = Examen.find(params[:id])
-		@actividad.destroy
+		@examen = Examen.find(params[:id])
+		@examen.destroy
+		flash[:mensaje] = "Examen Eliminado con éxito" if @examen.destroy		
+
 		redirect_to :action => 'wizard_paso1'
 		# render :partial => "actividads/wizard_list", :locals => {:examen => @examen}
 	end

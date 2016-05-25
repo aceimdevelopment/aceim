@@ -1,3 +1,4 @@
+=link_to " Listado de Exámenes", {:controller => 'admin_examenes'}, {:class => 'btn_atras'}
 %h1= @titulo
 .well.factura
 	%h3= link_to 'Eliminar examen', {:action => 'eliminar_examen', :id => @examen.id} , :data =>  { :confirm => '¿Está seguro?' },  :class => "btn_eliminar small flotar_derecha"
@@ -41,6 +42,12 @@
 		}
 	});
 
+	$( ".btn_atras").button({
+		icons: {
+		primary: "ui-icon-carat-1-w"
+		}
+	});
+
 	$( ".btn_agregar").button({
 		icons: {
 		primary: "ui-icon-circle-plus"
@@ -54,6 +61,8 @@
 	});	
 	
 	$( ".radio" ).buttonset();
+
+	$(".form").validate();
 
 	function eliminar_pregunta(id, actividad_id){
 		return $.get("/aceim/preguntas/"+"?data-method=delete",		

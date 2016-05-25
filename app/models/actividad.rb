@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class Actividad < ActiveRecord::Base
 	# ATRIBUTOS ACCESIBLES
 	attr_accessible :id, :instrucciones, :tipo_actividad_id, :curso_idioma_id, :curso_tipo_categoria_id, :curso_tipo_nivel_id, :cantidad_preguntas

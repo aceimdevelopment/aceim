@@ -1,6 +1,6 @@
 .well
 	#accordion
-		-@actividades = parte_examen.actividades
+		- @actividades = parte_examen.actividades
 		- @actividades.each_with_index do |actividad,i|
 			- @preguntas = actividad.preguntas
 			%p.division_actividad

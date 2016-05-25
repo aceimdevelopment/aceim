@@ -1,4 +1,4 @@
-= form_tag({:controller => 'adjuntos',:action => 'importar_archivo'}, :multipart => true) do
+= form_tag({:controller => 'adjuntos',:action => 'importar_archivo'}, {:multipart => true, :class => 'form'}) do
 	=hidden_field_tag "actividad_id", @actividad.id
 	=hidden_field_tag "examen_id", @examen_id
 	%fieldset
