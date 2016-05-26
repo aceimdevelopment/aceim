@@ -7,7 +7,7 @@
 				%b
 					= pregunta.valor
 					= "(#{respuesta})"
-					= link_to 'Eliminar pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small", :style => 'background-color: lightsalmon;'
+					= link_to 'Eliminar Pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small", :style => 'background-color: lightsalmon;'
 
 			%table.likert.tablefilter
 				- pregunta.opciones.each_with_index do |opc,i|

@@ -1,7 +1,7 @@
 =link_to " Listado de Exámenes", {:controller => 'admin_examenes'}, {:class => 'btn_atras'}
 %h1= @titulo
 .well.factura
-	%h3= link_to 'Eliminar examen', {:action => 'eliminar_examen', :id => @examen.id} , :data =>  { :confirm => '¿Está seguro?' },  :class => "btn_eliminar small flotar_derecha"
+	%h3= link_to 'Eliminar Examen', {:action => 'eliminar_examen', :id => @examen.id} , :data =>  { :confirm => '¿Está seguro?' },  :class => "btn_eliminar small flotar_derecha"
 	.well
 		%b{:style => 'float:left;'}= "Duración: #{@examen.duracion} minutos"
 		.center
@@ -22,7 +22,7 @@
 					%div{:id => "form_actividad_#{parte_examen.parte_id}", :style => 'display:none;'}
 						=render :partial => '/actividades/wizard_form', :locals => {:parte_examen => parte_examen}
 					.division
-					= link_to " Actividad en #{parte_examen.parte.nombre}" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_actividad_"+parte_examen.parte_id+").show('slow'); $(this).remove();" 
+					= link_to "Agregar Actividad en Bloque de #{parte_examen.parte.nombre}" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_actividad_"+parte_examen.parte_id+").show('slow'); $(this).remove();" 
 
 :javascript
 	

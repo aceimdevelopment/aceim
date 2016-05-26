@@ -1,5 +1,5 @@
 %div.well.well_small{:id => "form_pregunta_#{@actividad.id}", :class => 'form', :style => 'display:none;'}
-	%h2= "Agregar Nueva Preguta"
+	%h2= "Nueva Preguta/Ítem:"
 	= form_tag "/aceim/preguntas/agregar_sel_multiple" do
 		=  hidden_field_tag :actividad_id, @actividad.id 
 		=  hidden_field_tag :examen_id, @examen_id
@@ -38,7 +38,7 @@
 					%input.btn_agregar.small{:type => 'submit', :value => 'Agregar Pregunta/Ítem', :name => 'commit'}
 	
 .division
-= link_to " Pregunta a la actividad" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_pregunta_"+@actividad.id.to_s+").show('slow'); $(this).remove();" 
+= link_to "Agregar Pregunta" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_pregunta_"+@actividad.id.to_s+").show('slow'); $(this).remove();" 
 
 
 :javascript

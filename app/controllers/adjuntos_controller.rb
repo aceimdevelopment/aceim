@@ -111,15 +111,17 @@ class AdjuntosController < ApplicationController
 
     begin
       data = params[:archivo][:datafile]
-      nombre = data.original_filename
-      nombre = "#{params[:actividad_id]}_#{nombre}"
+
+      @actividad = Actividad.find params[:actividad_id]
+
+      ext = data.original_filename.split('.').last
+      nombre = "actividad_#{@actividad.id}_adjunto_#{@actividad.adjuntos.count+1}.#{ext}"
       archivo = "#{Rails.root}/app/assets/images/examenes/#{nombre}"
-      data = data.tempfile
       @adjunto = Adjunto.new
-
       @adjunto.archivo = nombre
-      @adjunto.actividad_id = params[:actividad_id]
-
+      @adjunto.actividad_id = @actividad.id
+      @adjunto.original_filename = data.original_filename
+      data = data.tempfile
       File.open("#{archivo}", "wb") {|file| file.write data.read}
       flash[:mensaje] = "Archivo guardado."
       flash[:mensaje] += "Adjunto agregado." if @adjunto.save

@@ -11,22 +11,22 @@
 	.well.small
 		- if imagenes.include? extension 
 			%h3
-				= "Imagen adjunto:#{adjunto.archivo}"
-				= link_to 'Eliminar', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => 'btn_eliminar small derecha'
+				= "Imagen Adjunta: #{adjunto.archivo} (#{adjunto.original_filename})"
+				= link_to 'Eliminar Imagen Adjunta', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => 'btn_eliminar small derecha'
 			= image_tag @host+adjunto.archivo, :size => '200x100'
 
 		- elsif audios.include? extension
 			%h3
-				= "Audio adjunto:#{adjunto.archivo}"
-				= link_to 'Eliminar', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => ' btn_eliminar small derecha' 
+				= "Audio Adjunto: #{adjunto.archivo} (#{adjunto.original_filename})"
+				= link_to 'Eliminar Audio Adjunto', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => ' btn_eliminar small derecha' 
 			= audio_tag @host+adjunto.archivo, :class => "audio-play", :controls => true
 			
 
 		- else
-			= "Formato desconocido: #{adjunto.archivo}"
-			= link_to 'Eliminar', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => 'btn_eliminar small'
+			= "Formato Desconocido: #{adjunto.archivo}"
+			= link_to 'Eliminar Archivo Adjunto', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => 'btn_eliminar small'
 
-= link_to 'Incluir archivo adjunto', 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_archivo_#{@actividad.id}).show('slow'); $(this).remove();"
+= link_to 'Incluir Archivo (Audio/Imagen) Adjunto', 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_archivo_#{@actividad.id}).show('slow'); $(this).remove();"
 
 %div{:id => "form_archivo_#{@actividad.id}", :style => 'display:none;'}
 	= render 'adjuntos/importar'
