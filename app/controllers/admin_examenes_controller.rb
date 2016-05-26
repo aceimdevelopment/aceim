@@ -56,6 +56,15 @@ class AdminExamenesController < ApplicationController
 
 	end
 
+
+	def previsualizar
+		id = params[:id]
+		@titulo = "Vista Previa de Examen"
+		@examen = Examen.find(id)
+		@host = "#{request.protocol}#{request.host_with_port}/aceim/assets/examenes/"
+		
+	end
+
 	def eliminar_pregunta
 		@pregunta = Pregunta.find(params[:id])
 		@actividad = @pregunta.actividad

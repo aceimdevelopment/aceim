@@ -1,5 +1,11 @@
+
 =link_to " Listado de Exámenes", {:controller => 'admin_examenes'}, {:class => 'btn_atras'}
-%h1= @titulo
+
+%h3
+	= @titulo
+	=link_to 'Previsualizar', {:action => 'previsualizar', :id => @examen.id},  :class => "btn btn_previsualizar"
+
+
 .well.factura
 	%h3= link_to 'Eliminar Examen', {:action => 'eliminar_examen', :id => @examen.id} , :data =>  { :confirm => '¿Está seguro?' },  :class => "btn_eliminar small flotar_derecha"
 	.well
@@ -39,6 +45,13 @@
 	$( ".btn_eliminar").button({
 		icons: {
 		primary: "ui-icon-trash"
+		}
+	});
+
+
+	$( ".btn_previsualizar").button({
+		icons: {
+		primary: "ui-icon-arrow-4-diag "
 		}
 	});
 

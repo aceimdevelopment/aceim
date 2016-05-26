@@ -1,19 +1,19 @@
 %div{:id => "actividad_#{@actividad.id}"}
-	%al
-		- @preguntas.each_with_index do |pregunta,i|
-			- respuesta = pregunta.respuestas.first.valor if pregunta.respuestas.first 
-			.well.well_small
-				%li 
-					= pregunta.valor
-					= link_to 'Eliminar pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small", :style => 'background-color: lightsalmon;'
+	- @preguntas.each_with_index do |pregunta,i|
+		- respuesta = pregunta.respuestas.first.valor if pregunta.respuestas.first 
 
-					- @respuestas = pregunta.respuestas
-					%ol	
-						- @respuestas.each do |respuesta|
-							%li
-								=respuesta.valor
-								=" / #{respuesta.valor_alternativa1}" unless respuesta.valor_alternativa1.blank?
-								=" / #{respuesta.valor_alternativa2}" unless respuesta.valor_alternativa2.blank?
-			%p.division
+		.well 
+			= pregunta.valor
+			- if action_name.eql? 'wizard_paso2' 
+				= link_to 'Eliminar pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small", :style => 'background-color: lightsalmon;'
+
+			- @respuestas = pregunta.respuestas
+			%ol	
+				- @respuestas.each do |respuesta|
+					%li
+						=respuesta.valor
+						=" / #{respuesta.valor_alternativa1}" unless respuesta.valor_alternativa1.blank?
+						=" / #{respuesta.valor_alternativa2}" unless respuesta.valor_alternativa2.blank?
+		%p.division
 
 .division

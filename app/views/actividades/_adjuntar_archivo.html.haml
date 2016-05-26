@@ -3,19 +3,18 @@
 
 - @actividad.adjuntos.each do |adjunto|
 	
-
-	- nombre, extension = adjunto.archivo.split('.')
+	- ext = adjunto.archivo.split('.').last
 	- imagenes = ['png', 'jpeg', 'jpg']
 	- audios = ['mp3', 'mpeg', 'ogg', 'wav']
 
 	.well.small
-		- if imagenes.include? extension 
+		- if imagenes.include? ext 
 			%h3
 				= "Imagen Adjunta: #{adjunto.archivo} (#{adjunto.original_filename})"
 				= link_to 'Eliminar Imagen Adjunta', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => 'btn_eliminar small derecha'
 			= image_tag @host+adjunto.archivo, :size => '200x100'
 
-		- elsif audios.include? extension
+		- elsif audios.include? ext
 			%h3
 				= "Audio Adjunto: #{adjunto.archivo} (#{adjunto.original_filename})"
 				= link_to 'Eliminar Audio Adjunto', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => ' btn_eliminar small derecha' 
