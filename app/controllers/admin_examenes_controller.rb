@@ -59,7 +59,7 @@ class AdminExamenesController < ApplicationController
 
 	def previsualizar
 		id = params[:id]
-		@titulo = "Vista Previa de Examen"
+		@titulo = "Vista Previa del Examen"
 		@examen = Examen.find(id)
 		@host = "#{request.protocol}#{request.host_with_port}/aceim/assets/examenes/"
 		

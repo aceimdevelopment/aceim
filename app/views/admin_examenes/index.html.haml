@@ -7,19 +7,33 @@
 		%thead
 			%tr
 				%th= 'Descripción de Curso'
-				%th= 'Total de Examenes'
-				%th= 'Opciones'
+				%th= 'Examenes'
 		%tbody
 			-@cursos.each do |curso|
 				-if curso.examenes.count > 0
 					%tr
 						%td= curso.descripcion
-						%td= curso.examenes.count
 						%td
 							- curso.examenes.each do |e| 
-								%p= link_to e.descripcion_full, :action => 'wizard_paso2', :id => e.id
+								%p
+									= e.descripcion_full
+									= link_to 'Editar', {:action => 'wizard_paso2', :id => e.id}, {:class => 'btn_editar small'}
+									|
+									= link_to 'Vista Previa', {:action => 'previsualizar', :id => e.id}, {:class => 'btn_previsualizar small'}
 
 :javascript
 	$(function() {
 		$( ".btn" ).button();
+	});
+
+	$( ".btn_editar").button({
+		icons: {
+		primary: "ui-icon-pencil"
+		}
+	});	
+
+	$( ".btn_previsualizar").button({
+		icons: {
+		primary: "ui-icon-arrow-4-diag "
+		}
 	});

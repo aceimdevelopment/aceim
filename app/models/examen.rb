@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class Examen < ActiveRecord::Base
 	# ATRIBUTOS ACCESIBLES 
 	attr_accessible :id, :descripcion, :duracion, :orden, :inicio_aplicacion, :cierre_aplicacion, :periodo_id, :curso_idioma_id, :curso_tipo_categoria_id, :curso_tipo_nivel_id
