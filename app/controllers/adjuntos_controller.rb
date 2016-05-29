@@ -95,8 +95,8 @@ class AdjuntosController < ApplicationController
 
   def eliminar_archivo
     @adjunto = Adjunto.find(params[:id])
-    # archivo = "#{Rails.root}/app/assets/images/examenes/#{@adjunto.nombre}"
-    archivo = "190.169.176.5/examenes/#{@adjunto.nombre}"
+    archivo = "#{Rails.root}/app/assets/images/examenes/#{@adjunto.nombre}"
+    # archivo = "190.169.176.5/examenes/#{@adjunto.nombre}"
 
     begin
       File.delete(archivo)
@@ -118,8 +118,8 @@ class AdjuntosController < ApplicationController
 
       ext = data.original_filename.split('.').last
       nombre = "actividad_#{@actividad.id}_adjunto_#{@actividad.adjuntos.count+1}.#{ext}"
-      # archivo = "#{Rails.root}/app/assets/images/examenes/#{nombre}"
-      archivo = "190.169.176.5/examenes/#{nombre}"
+      archivo = "#{Rails.root}/app/assets/images/examenes/#{nombre}"
+      # archivo = "190.169.176.5/examenes/#{nombre}"
       @adjunto = Adjunto.new
       @adjunto.archivo = nombre
       @adjunto.actividad_id = @actividad.id
