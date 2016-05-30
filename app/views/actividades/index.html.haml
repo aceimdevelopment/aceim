@@ -1,27 +1,22 @@
-%h1 Listing segmentos
+%h1 Listing Actividades
 
 %table
   %tr
-    %th Titulo
-    %th Tipo segmento
-    %th Curso idioma
-    %th Curso tipo categoria
-    %th Curso tipo nivel
-    %th
-    %th
+    %th Instrucciones
+    %th Tipo Actividad
+    %th Curso
     %th
 
-  - @segmentos.each do |segmento|
+  - @actividades.each do |actividad|
     %tr
-      %td= segmento.titulo
-      %td= segmento.tipo_segmento_id
-      %td= segmento.curso_idioma_id
-      %td= segmento.curso_tipo_categoria_id
-      %td= segmento.curso_tipo_nivel_id
-      %td= link_to 'Show', segmento
-      %td= link_to 'Edit', edit_segmento_path(segmento)
-      %td= link_to 'Destroy', segmento, :confirm => 'Are you sure?', :method => :delete
+      %td= actividad.instrucciones
+      %td= actividad.tipo_actividad.descripcion
+      %td= actividad.curso.descripcion
+      %td
+        = link_to 'Ver', actividad
+        = link_to 'Editar', edit_actividad_path(actividad)
+        = link_to 'Eliminar', actividad, :confirm => '¿Está Seguro?', :method => :delete
 
 %br
 
-= link_to 'New Segmento', new_segmento_path
+= link_to 'New Actividad', new_actividad_path

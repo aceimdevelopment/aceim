@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class ParteExamen < ActiveRecord::Base
 
 	# CLAVE PRIMARIA COMPUESTA

@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class TipoActividad < ActiveRecord::Base
 
 	# ATRIBUTOS ACCESIBLES	

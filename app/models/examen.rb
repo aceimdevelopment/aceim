@@ -1,10 +1,12 @@
 class Examen < ActiveRecord::Base
 	# ATRIBUTOS ACCESIBLES 
-	attr_accessible :id, :descripcion, :duracion, :orden, :inicio_aplicacion, :cierre_aplicacion, :periodo_id, :curso_idioma_id, :curso_tipo_categoria_id, :curso_tipo_nivel_id
+	attr_accessible :id, :descripcion, :duracion, :orden, :inicio_aplicacion, :cierre_aplicacion, :periodo_id, :curso_idioma_id, :curso_tipo_categoria_id, :curso_tipo_nivel_id, :tipo_estado_examen_id
 
 	# ASOCIACIONES
 	belongs_to :curso_periodo,
 		:foreign_key => [:periodo_id, :curso_idioma_id,:curso_tipo_categoria_id, :curso_tipo_nivel_id]
+
+	belongs_to :tipo_estado_examen
 
 	has_many :parte_examenes, :dependent => :destroy
 	accepts_nested_attributes_for :parte_examenes
@@ -24,9 +26,17 @@ class Examen < ActiveRecord::Base
 		"#{curso_periodo.descripcion}-#{orden}-#{descripcion}"
 	end
 
+
+	def descripcion_completa
+		aux = ""
+		parte_examenes.each do |parte_examen|
+			aux += "#{parte_examen.parte.id}: #{parte_examen.actividades.count} Act. " if parte_examen.actividades.count > 0
+		end
+		"#{descripcion}. Partes: #{aux} / Total: #{puntaje_total} Puntos."
+	end
+
 	def titulo
 		curso_periodo.descripcion
-
 	end
 
 	def puntaje_total

@@ -1,29 +1,47 @@
-%h1 Listing examenes
+%h1= @titulo
 
-%table
-  %tr
-    %th Descripcion
-    %th Duracion
-    %th Orden
-    %th Curso idioma
-    %th Curso tipo categoria
-    %th Curso tipo nivel
-    %th
-    %th
-    %th
-
-  - @examenes.each do |examen|
-    %tr
-      %td= examen.descripcion
-      %td= examen.duracion
-      %td= examen.orden
-      %td= examen.curso_idioma_id
-      %td= examen.curso_tipo_categoria_id
-      %td= examen.curso_tipo_nivel_id
-      %td= link_to 'Show', examen
-      %td= link_to 'Edit', edit_examen_path(examen)
-      %td= link_to 'Destroy', examen, :confirm => 'Are you sure?', :method => :delete
-
+= link_to 'Agregar Examen', {:action => 'wizard_paso1' }, :class => "btn" 
 %br
+.well
 
-= link_to 'New Examen', new_examen_path
+  %p= text_field_tag "filtro_particular", nil, :placeholder => "Filtrar Exámenes..."
+  %table.tablesorter.tablefilter.likert
+    %thead
+      %tr
+        %th Periodo
+        %th= 'Descripción de Curso'
+        %th Nivel
+        %th Examenes
+        %th Estado
+        %th Opciones
+    %tbody
+      -@examenes.each do |examen|
+        %tr
+          %td= examen.curso_periodo.periodo.ordenado
+          %td= examen.curso_periodo.descripcion_categoria
+          %td= examen.curso_periodo.tipo_nivel.descripcion
+          %td= examen.descripcion_completa
+          %td= examen.tipo_estado_examen.nombre if examen.tipo_estado_examen
+          %td
+            = link_to 'Editar Actividades', {:action => 'wizard_paso2', :id => examen.id}, {:class => 'btn_editar small'}
+            |
+            = link_to 'Editar Parámetros Generales', edit_examen_path(examen), {:class => 'btn_editar small'}
+            |
+            = link_to 'Vista Previa', examen, {:class => 'btn_previsualizar small'}
+
+:javascript
+  $(function() {
+    $( ".btn" ).button();
+  });
+
+  $( ".btn_editar").button({
+    icons: {
+    primary: "ui-icon-pencil"
+    }
+  }); 
+
+  $( ".btn_previsualizar").button({
+    icons: {
+    primary: "ui-icon-arrow-4-diag "
+    }
+  });

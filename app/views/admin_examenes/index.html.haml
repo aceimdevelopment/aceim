@@ -3,23 +3,32 @@
 = link_to 'Agregar Examen', {:action => 'wizard_paso1' }, :class => "btn" 
 %br
 .well
+
+	%p= text_field_tag "filtro_particular", nil, :placeholder => "Filtrar Exámenes..."
 	%table.tablesorter.tablefilter.likert
 		%thead
 			%tr
+				%th Periodo
 				%th= 'Descripción de Curso'
-				%th= 'Examenes'
+				%th Nivel
+				%th Examenes
+				%th Estado
+				%th Opciones
 		%tbody
-			-@cursos.each do |curso|
-				-if curso.examenes.count > 0
-					%tr
-						%td= curso.descripcion
-						%td
-							- curso.examenes.each do |e| 
-								%p
-									= e.descripcion_full
-									= link_to 'Editar', {:action => 'wizard_paso2', :id => e.id}, {:class => 'btn_editar small'}
-									|
-									= link_to 'Vista Previa', {:action => 'previsualizar', :id => e.id}, {:class => 'btn_previsualizar small'}
+			-@examenes.each do |examen|
+				%tr
+					%td= examen.curso_periodo.periodo.ordenado
+					%td= examen.curso_periodo.descripcion_categoria
+					%td= examen.curso_periodo.tipo_nivel.descripcion
+					%td= examen.descripcion_completa
+					%td= examen.tipo_estado_examen.nombre if examen.tipo_estado_examen
+					%td
+						= link_to 'Editar Actividades', {:action => 'wizard_paso2', :id => examen.id}, {:class => 'btn_editar small'}
+
+						= link_to 'Editar Parámetros Generales', edit_examen_path(examen), {:class => 'btn_editar small'}						
+						|
+						= link_to 'Vista Previa', {:action => 'previsualizar', :id => examen.id}, {:class => 'btn_previsualizar small'}
+
 
 :javascript
 	$(function() {

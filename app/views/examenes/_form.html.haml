@@ -1,6 +1,5 @@
 
 = form_for @examen do |e|
-  ="Error?: #{@examen.errors.any?}> "
   -if @examen.errors.any?
     
     #error_explanation
@@ -46,12 +45,14 @@
         %b= "Fecha y hora de inicio:"
       %td
         =e.datetime_select  :cierre_aplicacion
-
-
+    %tr
+      %td.derecha.separado
+        %b= "¿Examen de prueba?:"
+      %td
+        =e.check_box :tipo_estado_examen_id
 
     %tr.req
       %td
-
       %td
         %b= "* Requeridos" 
     %tr.acciones

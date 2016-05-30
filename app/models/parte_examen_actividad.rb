@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class ParteExamenActividad < ActiveRecord::Base
 	# ATRIBUTOS ACCESIBLES
 	attr_accessible :parte_id, :examen_id, :actividad_id

@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 #creada por db2models
 class CursoPeriodo < ActiveRecord::Base
 
@@ -54,6 +52,9 @@ class CursoPeriodo < ActiveRecord::Base
     	Idioma.find(idioma_id)
     end
 
+    def descripcion_categoria
+      "#{idioma.descripcion} #{tipo_categoria.descripcion}"
+    end
 
     def descripcion
       "Curso de #{idioma.descripcion} #{tipo_categoria.descripcion} - Nivel #{tipo_nivel.descripcion} (Periodo#{periodo.id})"

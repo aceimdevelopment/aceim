@@ -1,4 +1,19 @@
 -if @actividad.textos.count > 0
+
+	%script{:charset => "utf-8", :type => "text/javascript"}
+		$().ready(function() {
+		var opts = {
+		lang         : 'es',
+		styleWithCSS : false,
+		height       : 400,
+		toolbar      : 'normal',        // Se pueden usar las siguientes opciones: 'tiny', 'compact', 'normal', 'complete', 'maxi'
+		allowSource  : false,
+		};
+
+		var editor = new elRTE(document.getElementById('contenido'), opts);
+
+		});
+
 	= form_tag({:controller => "textos", :action => "actualizar"},{:class => 'form'}) do
 		=hidden_field_tag "actividad_id", @actividad.id
 		=hidden_field_tag "examen_id", @examen_id

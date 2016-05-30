@@ -9,6 +9,9 @@ class AdminExamenesController < ApplicationController
 	def index
 		@cursos = Curso.order(['idioma_id', 'grado']).all
 		@titulo = "Examentes Listados por Curso"
+
+		@examenes = Examen.order([:curso_idioma_id]).all
+
 	end
 
 	def wizard_paso1
@@ -22,6 +25,7 @@ class AdminExamenesController < ApplicationController
 
 	def generar
 		@examen = Examen.new(params[:examen])
+		@examen.tipo_estado_examen_id = 'PRUEBA' if params[:tipo_estado_examen_id]
 
 		respond_to do |format|
 			if @examen.save

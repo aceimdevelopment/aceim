@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 #creada por db2models
 class Periodo < ActiveRecord::Base
 	PERIODO_TRANSICION_NOTAS_PARCIALES = "A-2016"
