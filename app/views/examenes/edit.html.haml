@@ -2,6 +2,14 @@
 
 = render 'form'
 
-= link_to 'Show', @examen
-\|
-= link_to 'Back', examenes_path
+= link_to 'Atrás', {:controller => 'admin_examenes'}, :class => 'btn_atras'
+
+:javascript
+	$( ".btn" ).button();
+
+
+	$( ".btn_atras").button({
+		icons: {
+		primary: "ui-icon-carat-1-w"
+		}
+	});
