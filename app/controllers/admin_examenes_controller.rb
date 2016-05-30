@@ -19,7 +19,7 @@ class AdminExamenesController < ApplicationController
 		@examen = Examen.new
 		@idiomas = Idioma.all.delete_if{|i| i.id.eql? 'OR'}
 		@categorias = TipoCategoria.all.delete_if{|cat| ['BBVA','TR'].include? cat.id}
-		@niveles = TipoNivel.where(:id => ['BI','BII','BIII','MI','MII','MIII','AI','AII','AIII'])
+		@niveles = TipoNivel.where(:id => ['BI','BII','BIII','MI','MII','MIII','AI','AII','AIII', 'CB', 'CI', 'CA'])
 		@periodos = Periodo.lista_ordenada
 	end
 
