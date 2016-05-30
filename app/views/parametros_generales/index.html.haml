@@ -28,7 +28,7 @@
 
           %tr{:class => estado_clase}
             %td= curso.tipo_curso.descripcion
-            = form_for (curso,:url=>{:action => 'guardar_inscripcion_idioma'}) do |c|
+            = form_for(curso,:url=>{:action => 'guardar_inscripcion_idioma'}) do |c|
               = hidden_field_tag :id, curso.id
               %td= c.datetime_select :apertura
               %td= c.datetime_select :cierre
@@ -72,7 +72,7 @@
 
             %tr{:class => estado_clase}
               %td= curso.tipo_curso.descripcion
-              = form_for (curso,:url=>{:action => 'guardar_inscripcion_idioma'}) do |c|
+              = form_for(curso,:url=>{:action => 'guardar_inscripcion_idioma'}) do |c|
                 = hidden_field_tag :id, curso.id
                 %td= c.datetime_select :apertura
                 %td= c.datetime_select :cierre
@@ -81,7 +81,7 @@
                 %td= button_to @submit
 
 %h3 Variables de Entorno
-=form_tag({:action => "guardar_parametros"}) do
+= form_tag({:action => "guardar_parametros"}) do
   %table.tablesorter.tablefilter.likert
     %thead
       %tr
