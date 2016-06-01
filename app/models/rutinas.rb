@@ -290,7 +290,7 @@ Prof. Joyce Gutiérrez
   def self.crear_codigo_barra(texto)
     barcode = Barby::Code128B.new(texto)
     ruta = File.join(Rails.root,"codigos_barra","#{texto}.jpg")
-    File.open(ruta, 'w'){|f|  f.write barcode.to_jpg }
+    File.open(ruta, 'wb'){|f|  f.write barcode.to_jpg }
     return ruta
   end
 
