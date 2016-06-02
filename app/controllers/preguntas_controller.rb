@@ -172,4 +172,16 @@ class PreguntasController < ApplicationController
 
   end
 
+  def actualizar_puntaje_respuesta
+    @examen = Examen.find(params[:examen_id])
+    @respuesta = Respuesta.find(params[:id])
+    @respuesta.update_attribute :puntaje, params[:puntaje]
+    respond_to do |format|
+      flash[:mensaje] = "Actualización correcta"
+      format.html {redirect_to :back}
+      format.js
+    end
+  end
+
+
 end
