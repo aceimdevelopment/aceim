@@ -177,7 +177,6 @@ class PreguntasController < ApplicationController
     @respuesta = Respuesta.find(params[:id])
     @respuesta.update_attribute :puntaje, params[:puntaje]
     respond_to do |format|
-      flash[:mensaje] = "Actualización correcta"
       format.html {redirect_to :back}
       format.js
     end

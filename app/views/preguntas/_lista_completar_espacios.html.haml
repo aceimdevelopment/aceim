@@ -11,15 +11,22 @@
 				%ol	
 					- @respuestas.each do |respuesta|
 						%li
-							%p
-								= form_tag({:controller => 'preguntas',:action => "actualizar_puntaje_respuesta"}, {:class => "inline", :remote => true} ) do
-									= hidden_field_tag :id, respuesta.id
-									= hidden_field_tag :examen_id, @examen.id
+							- if action_name.eql? 'wizard_paso2'
+								%p
+									= form_tag({:controller => 'preguntas',:action => "actualizar_puntaje_respuesta"}, {:class => "inline", :remote => true} ) do
+										= hidden_field_tag :id, respuesta.id
+										= hidden_field_tag :examen_id, @examen.id
+										= text_field_tag nil, respuesta.valor, {:readonly => true}
+										=" / #{respuesta.valor_alternativa1}" unless respuesta.valor_alternativa1.blank?
+										=" / #{respuesta.valor_alternativa2}" unless respuesta.valor_alternativa2.blank?
+										= '/ Puntaje:'
+										= number_field_tag :puntaje, respuesta.puntaje, {:min => 1, :max => 20, :step => 0.5}
+										= submit_tag "actualizar", :id => "submit", :name => "submit", :class => "btn small", :disable_with => "Actualizando..."
+									.span2{:id => "respuesta_#{respuesta.id}", :style => 'padding:3px 3px; margin:2px 0px;'}
+							- else
+								%p
 									= text_field_tag nil, respuesta.valor, {:readonly => true}
 									=" / #{respuesta.valor_alternativa1}" unless respuesta.valor_alternativa1.blank?
 									=" / #{respuesta.valor_alternativa2}" unless respuesta.valor_alternativa2.blank?
-									= '/ Puntaje:'
-									= number_field_tag :puntaje, respuesta.puntaje, {:min => 1, :max => 20, :step => 0.5}
-									= submit_tag "actualizar", :id => "submit", :name => "submit", :class => "form_submit", :disable_with => "Actualizando..."
-								.span2{:id => "respuesta_#{respuesta.id}", :style => 'padding:3px 3px; margin:2px 0px;'}
+
 			%p.division
