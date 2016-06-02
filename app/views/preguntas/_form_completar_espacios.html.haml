@@ -9,7 +9,7 @@
 				%td.derecha.separado
 					%b= "*Pregunta/Ítem:"
 				%td{:style => 'width: 100%;'}
-					= text_area_tag "pregunta[valor]", nil, {:style => 'width: 100%;', :required => true, :maxlength=>"254"}
+					= text_area_tag "pregunta[valor]", nil, {:style => 'width: 100%;', :required => true}
 			%tr.req
 				%td.separado
 					%b Respuestas:
@@ -32,7 +32,7 @@
 					%input.btn_agregar.small{:type => 'submit', :value => 'Agregar Pregunta/Ítem', :name => 'commit'}
 	
 .division
-= link_to " Pregunta a la actividad" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_pregunta_"+@actividad.id.to_s+").show('slow'); $(this).remove();" 
+= link_to " Agregar Pregunta" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_pregunta_"+@actividad.id.to_s+").show('slow'); $(this).remove();" 
 
 
 :javascript

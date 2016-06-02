@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class PrincipalController < ApplicationController
 
   before_filter :filtro_logueado

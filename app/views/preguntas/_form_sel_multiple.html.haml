@@ -9,7 +9,7 @@
 				%td.derecha.separado
 					%b= "*Pregunta/Ítem:"
 				%td{:style => 'width: 100%;'}
-					= text_field_tag "pregunta[valor]", nil, {:placeholder => 'Pregunta/Ítem', :style => 'width: 100%;', :required => true}
+					= text_area_tag "pregunta[valor]", nil, {:style => 'width: 100%;', :required => true}
 			%tr
 				%td.separado
 					%b Opciones:

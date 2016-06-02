@@ -5,7 +5,7 @@
 			%li
 				%p
 					%b
-						= pregunta.valor
+						= raw pregunta.valor
 						= "(#{respuesta})"
 						- if action_name.eql? 'wizard_paso2' 
 							= link_to 'Eliminar Pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small", :style => 'background-color: lightsalmon;'

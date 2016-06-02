@@ -149,7 +149,6 @@ class PreguntasController < ApplicationController
 
 
   def agregar_completacion
-
     respuestas = params[:respuestas]
 
     pregunta = Pregunta.new(params[:pregunta])

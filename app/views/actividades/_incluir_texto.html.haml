@@ -1,34 +1,23 @@
 -if @actividad.textos.count > 0
-	=javascript_include_tag "elrte.min.js"
-	=javascript_include_tag "/aceim/assets/elrte.min"
+	- @texto = @actividad.textos.first
+	%div
+		.well= raw @texto.contenido		
+		= link_to 'Editar Texto', 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "return editar_texto(#{@actividad.id}, this);"
 
-	%script{:charset => "utf-8", :type => "text/javascript"}
-		$().ready(function() {
-		var opts = {
-		lang         : 'es',
-		styleWithCSS : false,
-		height       : 400,
-		toolbar      : 'normal',        // Se pueden usar las siguientes opciones: 'tiny', 'compact', 'normal', 'complete', 'maxi'
-		allowSource  : false,
-		};
+	%div{:id => "form_editar_texto_#{@actividad.id}", :style => 'display:none;'}
+		= form_tag({:controller => "textos", :action => "actualizar"},{:class => 'form'}) do
+			=hidden_field_tag "actividad_id", @actividad.id
+			=hidden_field_tag "examen_id", @examen_id
+			=hidden_field_tag "texto_id", @actividad.textos.first.id
 
-		var editor = new elRTE(document.getElementById('contenido'), opts);
-
-		});
-
-	= form_tag({:controller => "textos", :action => "actualizar"},{:class => 'form'}) do
-		=hidden_field_tag "actividad_id", @actividad.id
-		=hidden_field_tag "examen_id", @examen_id
-		=hidden_field_tag "texto_id", @actividad.textos.first.id
-
-		%table
-			%tr.req
-				%td.derecha.separado
-					%b= "*Contenido:"
-				%td
-					= text_area_tag :contenido, @actividad.textos.first.contenido, :class => :texto, :required => true, :style => 'width:600px;'
-				%td
-					%input.btn.small{:type => 'submit', :value => 'Actualizar texto', :name => 'commit'}
+			%table
+				%tr.req
+					%td.derecha.separado
+						%b= "*Contenido:"
+					%td
+						= text_area_tag :contenido, @actividad.textos.first.contenido, :style => 'width:600px;', :id => "contenido_texto_#{@actividad.id}"
+					%td
+						%input.btn.small{:type => 'submit', :value => 'Actualizar texto', :name => 'commit'}
 - else
 	= link_to 'Agregar Texto', 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_texto_#{@actividad.id}).show('slow'); $(this).remove();"
 	%div{:id => "form_texto_#{@actividad.id}", :style => 'display:none;'}
@@ -44,3 +33,25 @@
 						= f.text_area :contenido, :class => :texto, :required => true, :style => 'width:600px;'
 					%td
 						%input.btn.small{:type => 'submit', :value => 'Agregar Texto', :name => 'commit'}
+
+:javascript
+
+
+	function editar_texto(actividad_id, div){
+		var opts = {
+			absoluteURLs: false,
+			cssClass : 'el-rte',
+			lang     : 'es',
+			width    : 600,
+			height   : 350,
+			toolbar  : 'maxi' // Se pueden usar las siguientes opciones: 'maxi',tiny', 'compact', 'normal'
+		}
+
+		$('#form_editar_texto_'+actividad_id).show('slow');
+
+		$('#contenido_texto_'+actividad_id).elrte(opts);
+
+		$(div).parent().remove();
+
+
+	};

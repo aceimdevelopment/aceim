@@ -3,10 +3,9 @@
 		- @preguntas.each_with_index do |pregunta,i|
 			- respuesta = pregunta.respuestas.first.valor if pregunta.respuestas.first 
 			%li
-				%p
-					%b= pregunta.valor
-					- if action_name.eql? 'wizard_paso2' 
-						= link_to 'Eliminar pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small", :style => 'background-color: lightsalmon;'
+				%div= raw pregunta.valor				
+				- if action_name.eql? 'wizard_paso2' 
+					= link_to 'Eliminar pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small", :style => 'background-color: lightsalmon;'
 
 				- @respuestas = pregunta.respuestas
 				%ol	
