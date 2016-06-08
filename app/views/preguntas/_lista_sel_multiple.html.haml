@@ -9,8 +9,7 @@
 
 							= form_tag({:controller => 'preguntas',:action => "actualizar_puntaje_respuesta"}, {:class => "inline", :remote => true} ) do
 								= "(#{respuesta.valor})"
-								- if action_name.eql? 'wizard_paso2' 
-									= link_to 'Eliminar Pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small", :style => 'background-color: lightsalmon;'
+								= link_to 'Eliminar Pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small", :style => 'background-color: lightsalmon;'
 
 								= hidden_field_tag :id, respuesta.id
 								= hidden_field_tag :examen_id, @examen.id
@@ -21,15 +20,39 @@
 						- else
 							= raw pregunta.valor
 
+				- @opciones = pregunta.opciones
+				
+				- if action_name.eql? 'presentar'
+					- @eer = @estudiante_examen.estudiante_examen_respuestas.where(:respuesta_id => respuesta.id).limit(1).first
 
-				%table.likert.tablefilter
-					- pregunta.opciones.each_with_index do |opc,i|
-						%tr
-							- eql = false
-							%td= "#{i+1}."
-							%td{:style => "min-width:300px;"}= opc.valor
-							- eql = opc.valor.casecmp(respuesta.valor).zero? if (opc.valor and respuesta)
-							%td= radio_button_tag "opciones[#{opc.valor}]", nil, eql, :disabled => true, :class => 'radio'
+					= form_tag({:action => 'guardar_respuesta'}, {:class => "inline", :remote => true} ) do
+
+						= hidden_field_tag 'eer[estudiante_ci]', @estudiante_examen.estudiante_ci
+						= hidden_field_tag 'eer[examen_id]', @estudiante_examen.examen_id
+						= hidden_field_tag 'eer[respuesta_id]', respuesta.id
+						%table.likert.tablefilter
+							- @opciones.each_with_index do |opc,i|
+								
+								%tr
+									- eql = false
+									- eql = true if (@eer and @eer.valor and (@eer.valor.casecmp(opc.valor).zero?))
+
+									%td= "#{i+1}."
+									%td{:style => "min-width:300px;"}= opc.valor
+									%td= radio_button_tag "eer[valor]", opc.valor, eql, :class => 'radio'
+						= submit_tag "Guardar respuesta", :id => "submit", :name => "submit", :class => "btn small flotar_derecha", :disable_with => "Guardando..."
+					.mensaje{:id => "respuesta_#{respuesta.id}", :style => 'padding:3px 3px; margin:2px 0px;'}
+
+				- else
+					%table.likert.tablefilter
+						- @opciones.each_with_index do |opc,i|
+							%tr
+								- eql = false
+								- eql = true if (respuesta and (respuesta.valor.casecmp(opc.valor).zero?))
+
+								%td= "#{i+1}."
+								%td{:style => "min-width:300px;"}= opc.valor
+								%td= radio_button_tag "opciones[#{opc.valor}]", nil, eql, :disabled => true, :class => 'radio'
 
 			%p.division
 

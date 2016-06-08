@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class Respuesta < ActiveRecord::Base
 
 	# ATRIBUTOS ACCESIBLES
@@ -13,6 +11,10 @@ class Respuesta < ActiveRecord::Base
 	# 	:foreign_key => :otra_respuesta_id
 
 	# accepts_nested_attributes_for :otras_respuestas
+
+	has_many :estudiante_examen_respuesta
+	accepts_nested_attributes_for :estudiante_examen_respuesta
+
 
 	#VALIDACIOENS
 	validates :valor, :presence => true

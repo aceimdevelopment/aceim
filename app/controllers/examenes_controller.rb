@@ -3,7 +3,7 @@
 class ExamenesController < ApplicationController
 
   before_filter :filtro_logueado
-  before_filter :filtro_administrador
+  before_filter :filtro_administrador, :except => 'presentar'
   skip_before_filter  :verify_authenticity_token  
 
   # GET /examenes
@@ -194,12 +194,6 @@ class ExamenesController < ApplicationController
   end
 
   # Avances
-  def presentar
-    params[:id] = ["15573230",5]
-    @estudiante_examen = EstudianteExamen.find params[:id]
-    @examen = @estudiante_examen.examen
-    @host = "#{request.protocol}#{request.host_with_port}/aceim/assets/examenes/"   
-  end
 
 
   # Funcionalidades CRUD propias de las actividades 
@@ -248,6 +242,37 @@ class ExamenesController < ApplicationController
       # render :partial => "preguntas/preguntas_text", :locals => {:actividad => @actividad}
   end
 
+# PRESENTAR EXAMENES
+
+  def presentar
+    params[:id] = ["19563876",5]
+    @estudiante_examen = EstudianteExamen.find params[:id]
+    @examen = @estudiante_examen.examen
+
+    @estudiante_examen.estado_parte_id = @examen.parte_examenes.first.parte_id
+    # @estudiante_examen.save!
+
+    @host = "#{request.protocol}#{request.host_with_port}/aceim/assets/examenes/"   
+  end
+
+  def guardar_respuesta
+    eer = params[:eer]
+    estudiante_ci = eer[:estudiante_ci]
+    examen_id = eer[:examen_id]
+    @respuesta_id = eer[:respuesta_id]
+    @eer = EstudianteExamenRespuesta.find_or_initialize_by_estudiante_ci_and_examen_id_and_respuesta_id(estudiante_ci,examen_id,@respuesta_id)
+    @eer.update_attributes eer
+    respond_to do |format|
+      format.html {redirect_to :back}
+      format.js
+    end
+    
+  end
+
+  def siguiente_parte
+    @estudiante_examen = EstudianteExamen.find params[:id]
+
+  end
 
 end
 

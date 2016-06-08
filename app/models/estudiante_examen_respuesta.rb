@@ -6,11 +6,14 @@ class EstudianteExamenRespuesta < ActiveRecord::Base
 	set_primary_keys [:estudiante_ci, :examen_id, :respuesta_id]
 
 	# ASOCIACIONES
-	belongs_to :actividad
+	# belongs_to :actividad
 
 	belongs_to :estudiante_examen,
 	:primary_key =>  [:estudiante_ci, :examen_id],
 	:foreign_key => [:estudiante_ci, :examen_id]
+
+	belongs_to :respuesta
+
 
 	#VALIDACIONES
 	validates :estudiante_ci, :presence => true
