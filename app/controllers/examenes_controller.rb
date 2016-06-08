@@ -245,7 +245,7 @@ class ExamenesController < ApplicationController
 # PRESENTAR EXAMENES
 
   def presentar
-    params[:id] = ["19563876",5]
+    # params[:id] = ["19563876",5]
     @estudiante_examen = EstudianteExamen.find params[:id]
     @examen = @estudiante_examen.examen
 
