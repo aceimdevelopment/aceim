@@ -1,5 +1,6 @@
 
 = form_for @examen do |e|
+  = e.hidden_field :tipo_estado_examen_id, :value => 'GENERADO'
   -if @examen.errors.any?
     
     #error_explanation
@@ -49,7 +50,7 @@
       %td.derecha.separado
         %b= "¿Examen de prueba?:"
       %td
-        =e.check_box :tipo_estado_examen_id
+        = e.check_box :prueba
 
     %tr.req
       %td
@@ -58,7 +59,7 @@
     %tr.acciones
       %td
       %td
-        = e.submit "Siguiente >>", :disable_with => 'Guardando...', :class => 'btn'
+        = e.submit "Guardar", :disable_with => 'Guardando...', :class => 'btn'
 
 
 :javascript

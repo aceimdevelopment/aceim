@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 #creada por db2models
 class Estudiante < ActiveRecord::Base
 
@@ -20,6 +18,12 @@ class Estudiante < ActiveRecord::Base
     :foreign_key => ['usuario_ci']
 
   accepts_nested_attributes_for :estudiante_cursos
+
+  has_many :estudiante_examenes, 
+    :foreign_key => :estudiante_ci
+
+  accepts_nested_attributes_for :estudiante_examenes
+
     
    def preinscrito?          
      @periodo = ParametroGeneral.periodo_actual

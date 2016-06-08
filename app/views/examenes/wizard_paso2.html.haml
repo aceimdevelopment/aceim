@@ -1,18 +1,20 @@
+=javascript_include_tag "elrte.min.js"
+=javascript_include_tag "/aceim/assets/elrte.min"
 
-=link_to " Listado de Exámenes", {:controller => 'admin_examenes'}, {:class => 'btn_atras'}
+
+=link_to " Listado de Exámenes", examenes_path, {:class => 'btn_atras'}
 
 %h3
 	= @titulo
-	=link_to 'Vista Previa', {:action => 'previsualizar', :id => @examen.id},  :class => "btn btn_previsualizar"
-
+	= link_to 'Vista Previa', @examen, {:class => 'btn_previsualizar small'}
 
 .well.factura
-	%h3= link_to 'Eliminar Examen', {:action => 'eliminar_examen', :id => @examen.id} , :data =>  { :confirm => '¿Está seguro?' },  :class => "btn_eliminar small flotar_derecha"
+	%h3= link_to 'Eliminar Examen', @examen, :confirm => '¿Está Seguro de Esta Acción?. Las actividades se mantendrán almacenadas pero se desvincularán de éste examen.', :method => :delete,  :class => "btn_eliminar small flotar_derecha"
 	.well
 		%b{:style => 'float:left;'}= "Duración: #{@examen.duracion} minutos"
 		.center
 			%h2= @examen.titulo
-			%h3= "Puntaje Total: #{@examen.puntaje_total} / 80"
+			%h3#puntaje_total= "Puntaje Total: #{@examen.puntaje_total} / 80"
 	
 		- @parte_examenes = @examen.parte_examenes.joins(:parte).order('parte.orden ASC')
 

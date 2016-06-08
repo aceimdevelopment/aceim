@@ -106,7 +106,7 @@ class AdjuntosController < ApplicationController
       flash[:mensaje] = "Error al intentar eliminar. #{e.message}"
     end
     
-    redirect_to :controller => "admin_examenes", :action => "wizard_paso2", :id => params[:examen_id]
+    redirect_to :controller => "examenes", :action => "wizard_paso2", :id => params[:examen_id]
   end
 
   def importar_archivo
@@ -131,7 +131,7 @@ class AdjuntosController < ApplicationController
     rescue Exception => e
       flash[:mensaje] = "Error: #{e.message}"
     end
-    redirect_to :controller => "admin_examenes", :action => "wizard_paso2", :id => params[:examen_id]
+    redirect_to :controller => "examenes", :action => "wizard_paso2", :id => params[:examen_id]
   end
 
 end

@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class TipoActividadesController < ApplicationController
 
   before_filter :filtro_logueado
@@ -50,7 +48,7 @@ class TipoActividadesController < ApplicationController
 
     respond_to do |format|
       if @tipo_actividad.save
-        format.html { redirect_to @tipo_actividad, :notice => 'Tipo segmentocreado satisfactoriamente.' }
+        format.html { redirect_to @tipo_actividad, :notice => 'Tipo Actividad creada satisfactoriamente.' }
         format.json { render :json => @tipo_actividad, :status => :created, :location => @tipo_actividad }
       else
         format.html { render :action => "new" }
@@ -66,7 +64,7 @@ class TipoActividadesController < ApplicationController
 
     respond_to do |format|
       if @tipo_actividad.update_attributes(params[:tipo_actividad])
-        format.html { redirect_to @tipo_actividad, :notice => 'Tipo segmento actualizado satisfactoriamente.' }
+        format.html { redirect_to @tipo_actividad, :notice => 'Tipo Activiadad actualizado satisfactoriamente.' }
         format.json { head :ok }
       else
         format.html { render :action => "edit" }

@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class Segmento < ActiveRecord::Base
 	# ATRIBUTOS ACCESIBLES
 	attr_accessible :id, :titulo, :tipo_segmento_id, :curso_idioma_id, :curso_tipo_categoria_id, :curso_tipo_nivel_id, :cantidad_preguntas, :valor_preguntas

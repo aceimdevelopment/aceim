@@ -34,5 +34,6 @@ table td.border{border:1px solid rgba(101, 99, 91, 0.45)}
 	padding: 5px;
 }
 
+.prueba{font-weight: bold; font-style: italic;}
 
 .division_interna {border-top:0,5px solid orange;}

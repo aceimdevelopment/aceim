@@ -57,7 +57,7 @@ class PreguntasController < ApplicationController
     respond_to do |format|
       if @pregunta.save
           flash[:mensaje] = 'Pregunta agregada con éxito.'
-          format.html { redirect_to :controller => "admin_examenes", :action => "wizard_paso2", :id => @actividad.examen.id}
+          format.html { redirect_to :controller => "examenes", :action => "wizard_paso2", :id => @actividad.examen.id}
 
         # format.html { redirect_to @pregunta, :notice => 'Pregunta was successfully created.' }
         # format.json { render :json => @pregunta, :status => :created, :location => @pregunta }
@@ -143,7 +143,7 @@ class PreguntasController < ApplicationController
     # puts "------------------------------------------------------------------------------"
     # puts "------------------------------------------------------------------------------"
 
-    redirect_to :controller => 'admin_examenes', :action => 'wizard_paso2', :id => params[:examen_id]
+    redirect_to :controller => 'examenes', :action => 'wizard_paso2', :id => params[:examen_id]
     # redirect_to :back
   end
 
@@ -168,7 +168,7 @@ class PreguntasController < ApplicationController
       flash[:mensaje] = "No se pudo agregar la pregunta: #{pregunta.errors.full_messages.join('-')}."
     end
 
-    redirect_to :controller => 'admin_examenes', :action => 'wizard_paso2', :id => params[:examen_id]
+    redirect_to :controller => 'examenes', :action => 'wizard_paso2', :id => params[:examen_id]
 
   end
 

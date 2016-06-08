@@ -22,7 +22,7 @@
               =#Texto Agregado 
               - if actividad.textos.count > 0
                 .well
-                  %p= actividad.textos.first.contenido
+                  %div= raw actividad.textos.first.contenido
               - @actividad = actividad
               =#Adjuntos
               - actividad.adjuntos.each do |adjunto|
