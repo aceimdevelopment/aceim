@@ -1,0 +1,9 @@
+
+$(".mensaje").html("")
+$(".mensaje").removeClass("ui-state-highlight ui-corner-all")
+var ele = $("#respuesta_#{@respuesta_id}")
+ele.addClass('ui-state-highlight ui-corner-all')
+ele.html("Respuesta Guardada")
+ele.parent().css({"background-color": "cadetblue"})
+
+ele.parent().addClass('ui-corner-all')
