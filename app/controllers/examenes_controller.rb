@@ -6,6 +6,10 @@ class ExamenesController < ApplicationController
   before_filter :filtro_administrador, :except => 'presentar'
   skip_before_filter  :verify_authenticity_token  
 
+  layout :resolver_layout
+
+
+
   # GET /examenes
   # GET /examenes.json
   def index
@@ -244,6 +248,14 @@ class ExamenesController < ApplicationController
 
 # PRESENTAR EXAMENES
 
+  def indicaciones
+    @estudiante_examen = EstudianteExamen.first
+    # La linea anterior debe ser sustituida con esta:
+    # @estudiante_examen = EstudianteExamen.find params[id]
+    redirect_to :action => 'index' if @estudiante_examen.blank?
+
+  end
+
   def presentar
     # params[:id] = ["19563876",5]
     @estudiante_examen = EstudianteExamen.find params[:id]
@@ -273,6 +285,19 @@ class ExamenesController < ApplicationController
     @estudiante_examen = EstudianteExamen.find params[:id]
 
   end
+
+  private
+
+  def resolver_layout
+    case action_name
+    when 'presentar', 'indicaciones'
+      'presentar_examen'
+    else
+      'application'
+    end
+  end
+
+
 
 end
 

@@ -1,0 +1,21 @@
+%br
+.well{:style => 'text-align: justify;'}
+
+	%h1= 'Es importante que te tomes unos minutos para leer atentamente las siguientes indicaciones:'
+
+	%ul
+		%li
+			%h3= 'El examen deberá realizarse en forma individual.'
+		%li
+			%h3= 'El examen cuenta con un cantidad de preguntas fijas y un límite de tiempo para realizarlo.'
+		%li
+			%h3= 'IMPORTANTE: una vez comenzado un examen, deberás completarlo en su totalidad. Si cancelas a abandonas el sitio en medio de un examen, el resultado del mismo será el que habías obtenido hasta la última pregunta respondida. Podrás ver en la esquina superior derecha el tiempo que te queda para hacerlo.'
+		%li
+			%h3= 'En cada ítem deberás contestar cada pregunta y presionar luego el botón guardar respuesta para que ésta sea almacenada. La respuesta será marcada y resaltada. Posteriormente, podrás cambiar tu respuesta mientras te encuentres dentro de los límites de tiempo establecidos.'
+
+	= link_to 'He leído las indicaciones y deseo comenzar el examen', {:action => 'presentar', :id => @estudiante_examen.id.to_s}, {:class => 'btn center', :style => 'text-align: center;' }
+
+
+:javascript
+	
+	$( ".btn" ).button();
