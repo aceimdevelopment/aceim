@@ -189,6 +189,7 @@ class ExamenesController < ApplicationController
 
     total = 0
     @examen.estudiante_examenes.each do |ee| 
+      ee.estudiante_examen_respuestas.each{|eer| eer.delete}
       total += 1 if ee.delete
     end
     flash[:mensaje] = "#{total} examenes eliminados"
