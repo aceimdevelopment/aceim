@@ -61,4 +61,23 @@ class Examen < ActiveRecord::Base
 		return total
 	end
 
+	def total_preguntas
+		total = 0
+		parte_examenes.each do |pe|
+			pe.actividades.each do |act|
+				total += act.preguntas.count
+			end
+		end
+		return total
+	end
+
+	def total_actividades
+		total = 0
+		parte_examenes.each do |pe|
+			total += pe.actividades.count
+		end
+		return total
+	end
+
+
 end

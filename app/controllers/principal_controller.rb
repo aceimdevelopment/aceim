@@ -33,6 +33,8 @@ class PrincipalController < ApplicationController
       :idioma_id => session[:tipo_curso].idioma_id,
       :tipo_categoria_id => session[:tipo_curso].tipo_categoria_id,
       :periodo_id => session[:parametros][:periodo_inscripcion])
+
+    @estudiante_examenes = EstudianteExamen.where(:estudiante_ci => session[:usuario].ci)
   end
 
   def principal

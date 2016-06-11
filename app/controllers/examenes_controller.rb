@@ -3,7 +3,7 @@
 class ExamenesController < ApplicationController
 
   before_filter :filtro_logueado
-  before_filter :filtro_administrador, :except => 'presentar'
+  before_filter :filtro_administrador, :except => ['presentar', 'indicaciones', 'resultado', 'guardar_respuesta', 'completar']
   skip_before_filter  :verify_authenticity_token  
 
   layout :resolver_layout
@@ -249,9 +249,16 @@ class ExamenesController < ApplicationController
 # PRESENTAR EXAMENES
 
   def indicaciones
-    @estudiante_examen = EstudianteExamen.first
+    # @estudiante_examen = EstudianteExamen.first
     # La linea anterior debe ser sustituida con esta:
-    # @estudiante_examen = EstudianteExamen.find params[id]
+
+    @usuario = session[:usuario]
+    @examen_id = params[:id]
+    id = "#{@usuario.ci},#{@examen_id}"
+
+    id = "21121853,#{@examen_id}" if session[:rol].eql? 'Administrador'
+
+    @estudiante_examen = EstudianteExamen.find id
     redirect_to :action => 'index' if @estudiante_examen.blank?
 
   end
@@ -259,12 +266,17 @@ class ExamenesController < ApplicationController
   def presentar
     # params[:id] = ["19563876",5]
     @estudiante_examen = EstudianteExamen.find params[:id]
-    @examen = @estudiante_examen.examen
 
+    @estudiante_examen.tipo_estado_estudiante_examen_id = 'INICIADO'
+    @estudiante_examen.save
+    @examen = @estudiante_examen.examen
+    # session[:estudiante_examen] = @estudiante_examen
+    session[:estudiante_examen_id] = @estudiante_examen.id
     @estudiante_examen.estado_parte_id = @examen.parte_examenes.first.parte_id
     # @estudiante_examen.save!
 
     @host = "#{request.protocol}#{request.host_with_port}/aceim/assets/examenes/"   
+
   end
 
   def guardar_respuesta
@@ -281,8 +293,36 @@ class ExamenesController < ApplicationController
     
   end
 
-  def siguiente_parte
-    @estudiante_examen = EstudianteExamen.find params[:id]
+  def completar
+    @estudiante_examen = EstudianteExamen.find session[:estudiante_examen_id].to_s
+    @estudiante_examen.tipo_estado_estudiante_examen_id = 'COMPLETADO'
+    if @estudiante_examen.save
+      session[:estudiante_examen_id] = nil
+      flash[:mensaje] = 'Examen Complatado con Éxito'
+    end
+
+    redirect_to :action => :resultado, :id => @estudiante_examen.id.to_s
+
+  end
+
+  def resultado
+    # Variables Globales
+    @estudiante_examen = EstudianteExamen.find params[:id].to_s
+
+    @usuario = session[:usuario]
+
+    rol = session[:rol]
+
+    @titulo = "Resultado del examen: #{@estudiante_examen.examen.descripcion}"
+    @examen = @estudiante_examen.examen
+
+    @total_actividades = @examen.total_actividades
+    @total_preguntas = @examen.total_preguntas
+    @total_puntos = @examen.puntaje_total
+    
+    @total_puntos_correctos = @estudiante_examen.total_puntos_correctos
+    @total_respuestas_correctas = @estudiante_examen.total_respuestas_correctas
+    @total_respuestas_incorrectas = @total_preguntas - @total_respuestas_correctas
 
   end
 
@@ -290,7 +330,7 @@ class ExamenesController < ApplicationController
 
   def resolver_layout
     case action_name
-    when 'presentar', 'indicaciones'
+    when 'presentar', 'indicaciones', 'resultado'
       'presentar_examen'
     else
       'application'

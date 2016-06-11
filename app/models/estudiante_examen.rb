@@ -29,4 +29,20 @@ class EstudianteExamen < ActiveRecord::Base
 	validates :estudiante_ci, :presence => true
 	validates :examen_id, :presence => true
 
+	def total_puntos_correctos
+		total = 0
+		estudiante_examen_respuestas.each do |eer|
+			total += eer.respuesta.puntaje if eer.es_correcta?
+		end 
+		return total
+	end
+
+	def total_respuestas_correctas
+		total = 0
+		estudiante_examen_respuestas.each do |eer|
+			total += 1 if eer.es_correcta?
+		end
+		return total
+	end
+
 end

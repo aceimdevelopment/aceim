@@ -39,7 +39,7 @@
 
 									%td= "#{i+1}."
 									%td{:style => "min-width:300px;"}= opc.valor
-									%td= radio_button_tag "eer[valor]", opc.valor, eql, :class => 'radio'
+									%td= radio_button_tag "eer[valor]", opc.valor, eql, :class => 'radio', :required => true
 						= submit_tag "Guardar respuesta", :id => "submit", :name => "submit", :class => "btn small flotar_derecha", :disable_with => "Guardando..."
 					.mensaje{:id => "respuesta_#{respuesta.id}", :style => 'padding:3px 3px; margin:2px 0px;'}
 

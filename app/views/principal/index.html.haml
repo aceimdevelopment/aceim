@@ -39,7 +39,16 @@
 			%li No llevar pelotas, patinetas, videojuegos u objetos similares al salón de clase.
 		%h4{:style => 'color:crimson;'} **** Es importante que usted conozca al profesor y a los coordinadores del curso de su representado y esté en comunicación con los mismos ****
 
-
+-if @estudiante_examenes.count > 0
+	%H3 Exámenes:
+	- @estudiante_examenes.each do |ee|
+		- titulo = ee.examen.descripcion_full
+		- titulo = "Examen de prueba" if ee.examen.prueba and ee.examen.prueba.eql? true
+		= ee.tipo_estado_estudiante_examen_id
+		- if ee.tipo_estado_estudiante_examen_id.eql? 'PREPARADO'
+			=link_to "Presentar #{titulo}", {:controller => 'examenes', :action => 'indicaciones', :id => ee.examen_id}
+		- else
+			=link_to "Resutlado #{titulo}", {:controller => 'examenes', :action => 'resultado', :id => ee.id.to_s}
 
 - if !@preinscrito
 	- if @curso_abierto_regular

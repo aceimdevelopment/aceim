@@ -20,4 +20,12 @@ class EstudianteExamenRespuesta < ActiveRecord::Base
 	validates :examen_id, :presence => true
 	validates :respuesta_id, :presence => true
 
+	def es_correcta?
+		correcta = false
+		correcta = true if valor and respuesta.valor and valor.casecmp(respuesta.valor).zero?
+		correcta = true if valor and respuesta.valor_alternativa1 and valor.casecmp(respuesta.valor_alternativa1).zero?				
+		correcta = true if valor and respuesta.valor_alternativa2 and valor.casecmp(respuesta.valor_alternativa2).zero?
+		return correcta
+	end
+
 end

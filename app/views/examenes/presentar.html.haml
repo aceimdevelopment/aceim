@@ -59,8 +59,7 @@
                   -else
                     =render :partial => '/preguntas/lista_general'
 
-%h2=#link_to "He Terminado el Examen", {:action =>'siguiente_parte', :id => @estudiante_examen.id}, {:disabled => true, :class => 'btn flotar_derecha',  :data =>  { :confirm => '¿Confirma que ha finalizado el Examen. Este proceso es irreversible?' }}
-
+%h2=link_to "He Terminado el Examen", {:action =>'completar', :id => @estudiante_examen.id.to_s}, {:disabled => true, :class => 'btn flotar_derecha',  :data =>  { :confirm => '¿Confirma que ha finalizado el Examen. Este proceso es irreversible?' }}
 
 
 :javascript

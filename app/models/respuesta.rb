@@ -21,4 +21,12 @@ class Respuesta < ActiveRecord::Base
 	validates :puntaje, :presence => true
 	validates :pregunta_id, :presence => true
 
+	def correcta
+
+		aux = valor
+		aux += " / #{valor_alternativa1}" unless valor_alternativa1.blank?
+		aux += " / #{valor_alternativa2}" unless valor_alternativa2.blank?  
+		
+	end
+
 end

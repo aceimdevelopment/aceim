@@ -1,0 +1,22 @@
+.well
+	%h2= @titulo
+	%table.well
+		%thead
+			%tr
+				/ %td Tiempo:
+				%td=# @estudiante_examen.tiempo.min if @estudiante_examen.tiempo
+			%tr
+				%td Total de Actividades:
+				%td=@total_actividades
+			%tr
+				%td Total Preguntas / Ítems:
+				%td= @total_preguntas
+			%tr
+				%td Total Puntos:
+				%td= @total_puntos
+			%tr
+				%td Total Respuestas Correctas:
+				%td= @total_respuestas_correctas
+			%tr
+				%td Puntaje Total obtenido:
+				%td= "#{@total_puntos_correctos} / 80 (#{sprintf('%.2f',(@total_puntos_correctos/20))}/20)"
