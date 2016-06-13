@@ -1,19 +1,17 @@
 
-%h1= @titulo
 =link_to_function "Regresar", "history.back()", :class => 'btn_atras' unless action_name.eql? 'presentar' 
 
 .well
   %h3{:style => 'float:left;'}= "Duración: #{@examen.duracion} minutos"
   .center
-    =#Datos del Examen
-    %h2= @examen.descripcion
+    %h1= @titulo
   - @parte_examenes = @examen.parte_examenes.joins(:parte).order('parte.orden ASC')
   #parte
     %ul
       - @parte_examenes.each do |parte_examen|
         - if parte_examen.actividades.count > 0 
           %li=  link_to parte_examen.parte.nombre, "##{parte_examen.parte_id}", :class => 'btn_idiomas'
-    #siempre_tope.well{:style => 'background-color: black; color: white; margin-left:730px; position: fixed;'}
+    #siempre_tope.well.small{:style => 'background-color: black; color: greenyellow; margin-top:210px; position: fixed;'}
       =hidden_field_tag 'duracion', @examen.duracion
       %p
         %b

@@ -271,10 +271,9 @@ class ExamenesController < ApplicationController
     @estudiante_examen.tipo_estado_estudiante_examen_id = 'INICIADO'
     @estudiante_examen.save
     @examen = @estudiante_examen.examen
-
+    @titulo = @examen.descripcion_simple
     if @examen.prueba and @examen.prueba.eql? true
       @estudiante_examen.estudiante_examen_respuestas.delete_all
-
     end
     # session[:estudiante_examen] = @estudiante_examen
     session[:estudiante_examen_id] = @estudiante_examen.id
@@ -304,7 +303,7 @@ class ExamenesController < ApplicationController
     @estudiante_examen.tipo_estado_estudiante_examen_id = 'COMPLETADO'
     if @estudiante_examen.save
       session[:estudiante_examen_id] = nil
-      flash[:mensaje] = 'Examen Complatado con Éxito'
+      flash[:mensaje] = 'Examen Completado con Éxito'
     end
 
     redirect_to :action => :resultado, :id => @estudiante_examen.id.to_s

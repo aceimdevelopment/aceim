@@ -36,6 +36,13 @@ class Examen < ActiveRecord::Base
 		"#{curso_periodo.descripcion}-#{orden}-#{descripcion}"
 	end
 
+	def descripcion_simple
+		if prueba and prueba.eql? true
+			"Examen de prueba de #{curso_periodo.idioma.descripcion}"
+		else
+			"Examen de #{curso_periodo.descripcion}"
+		end
+	end
 
 	def descripcion_completa
 		aux = ""
