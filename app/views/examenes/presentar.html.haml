@@ -27,7 +27,7 @@
           =#Actividades
           - @actividades = parte_examen.actividades
           - @actividades.each do |actividad|
-            %H2= actividad.descripcion
+            %H2= actividad.descripcion_sin_tipo
             =#Texto Agregado 
             - if actividad.textos.count > 0
               .well

@@ -51,6 +51,10 @@ class Actividad < ActiveRecord::Base
 		"#{tipo_actividad.descripcion} - #{instrucciones}. #{total_preguntas} preguntas de #{valor_cada_pregunta} c/u."
 	end
 
+	def descripcion_sin_tipo
+		"#{instrucciones}. #{total_preguntas} preguntas de #{valor_cada_pregunta} c/u."		
+	end
+
 	def total_preguntas
 		total = 0
 		preguntas.each{|pre| total += pre.respuestas.count}

@@ -5,8 +5,14 @@
   %ul
   - @estudiante_examen.estudiante_examen_respuestas.each do |eer|  
     - unless eer.es_correcta?
-      .well.req
+      .well
         %li
-          %p
-            = text_field_tag nil, eer.valor, :disabled => true
-            = "Respuesta correcta: #{eer.respuesta.correcta} (#{eer.respuesta.puntaje} puntos)"
+          %table
+            %tr
+              %td Pregunta:
+              %td= eer.respuesta.pregunta.valor
+            %tr
+              %td Respuesta:
+              %td
+                = text_field_tag nil, eer.valor, :disabled => true
+                (Incorrecta)

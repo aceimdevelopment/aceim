@@ -257,7 +257,7 @@ class ExamenesController < ApplicationController
     @examen_id = params[:id]
     id = "#{@usuario.ci},#{@examen_id}"
 
-    id = "21121853,#{@examen_id}" if session[:rol].eql? 'Administrador'
+    # id = "21121853,#{@examen_id}" if session[:rol].eql? 'Administrador'
 
     @estudiante_examen = EstudianteExamen.find id
     redirect_to :action => 'index' if @estudiante_examen.blank?

@@ -18,5 +18,5 @@
 				%td Total Respuestas Correctas:
 				%td= @total_respuestas_correctas
 			%tr
-				%td Puntaje Total obtenido:
-				%td= "#{@total_puntos_correctos} / 80 (#{sprintf('%.2f',(@total_puntos_correctos/20))}/20)"
+				%td Puntaje Total Obtenido:
+				%td= "#{@total_puntos_correctos} / #{@total_puntos} (#{sprintf('%.2f',(((@total_puntos_correctos*20)/@total_puntos)))}/20)"
