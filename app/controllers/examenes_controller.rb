@@ -271,6 +271,11 @@ class ExamenesController < ApplicationController
     @estudiante_examen.tipo_estado_estudiante_examen_id = 'INICIADO'
     @estudiante_examen.save
     @examen = @estudiante_examen.examen
+
+    if @examen.prueba and @examen.prueba.eql? true
+      @estudiante_examen.estudiante_examen_respuestas.delete_all
+
+    end
     # session[:estudiante_examen] = @estudiante_examen
     session[:estudiante_examen_id] = @estudiante_examen.id
     @estudiante_examen.estado_parte_id = @examen.parte_examenes.first.parte_id
