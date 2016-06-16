@@ -29,6 +29,27 @@ class EstudianteExamen < ActiveRecord::Base
 	validates :estudiante_ci, :presence => true
 	validates :examen_id, :presence => true
 
+	def preparado?
+		tipo_estado_estudiante_examen_id.eql? 'PREPARADO'
+	end
+
+	def agotado?
+		tipo_estado_estudiante_examen_id.eql? 'AGOTADO'
+	end
+
+	def iniciado?
+		tipo_estado_estudiante_examen_id.eql? 'INICIADO'
+	end
+
+	def completado?
+		tipo_estado_estudiante_examen_id.eql? 'COMPLETADO'
+	end
+
+	def estado
+		tipo_estado_estudiante_examen
+	end
+
+
 	def total_puntos_correctos
 		total = 0
 		estudiante_examen_respuestas.each do |eer|

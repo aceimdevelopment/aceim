@@ -66,19 +66,19 @@ class ExamenesController < ApplicationController
 
   # POST /examenes
   # POST /examenes.json
-  def create
-    @examen = Examen.new(params[:examen])
+  # def create
+  #   @examen = Examen.new(params[:examen])
 
-    respond_to do |format|
-      if @examen.save
-        format.html { redirect_to @examen, :notice => 'Examen was successfully created.' }
-        format.json { render :json => @examen, :status => :created, :location => @examen }
-      else
-        format.html { render :action => "new" }
-        format.json { render :json => @examen.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
+  #   respond_to do |format|
+  #     if @examen.save
+  #       format.html { redirect_to @examen, :notice => 'Examen was successfully created.' }
+  #       format.json { render :json => @examen, :status => :created, :location => @examen }
+  #     else
+  #       format.html { render :action => "new" }
+  #       format.json { render :json => @examen.errors, :status => :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
   def create
     @examen = Examen.new(params[:examen])
@@ -247,6 +247,14 @@ class ExamenesController < ApplicationController
       # render :partial => "preguntas/preguntas_text", :locals => {:actividad => @actividad}
   end
 
+  def habilitar_para_presentar
+      @estudiante_examen = EstudianteExamen.find params[:id]
+
+      @estudiante_examen.tipo_estado_estudiante_examen_id = 'PREPARADO'
+      flash[:mensaje] = "Estado del examen actualizado con exito" if @estudiante_examen.save
+      redirect_to :back
+  end
+
 # PRESENTAR EXAMENES
 
   def indicaciones
@@ -265,23 +273,38 @@ class ExamenesController < ApplicationController
   end
 
   def presentar
-    # params[:id] = ["19563876",5]
-    @estudiante_examen = EstudianteExamen.find params[:id]
+    usuario = session[:usuario]
 
-    @estudiante_examen.tipo_estado_estudiante_examen_id = 'INICIADO'
-    @estudiante_examen.save
-    @examen = @estudiante_examen.examen
-    @titulo = @examen.descripcion_simple
-    if @examen.prueba and @examen.prueba.eql? true
-      @estudiante_examen.estudiante_examen_respuestas.delete_all
+    @examen = Examen.where(:id => params[:id]).limit(1).first
+
+    if not @examen 
+
+      flash[:mensaje] = 'Examen no encontrado'
+      redirect_to :controller => 'principal'
+    else
+
+      @estudiante_examen = @examen.estudiante_examenes.where(:estudiante_ci => usuario.ci).limit(1).first
+
+      if @estudiante_examen and @examen.se_puede_presentar? and @estudiante_examen.preparado?
+        @estudiante_examen.tipo_estado_estudiante_examen_id = 'INICIADO'
+        @estudiante_examen.tiempo = @examen.duracion if @estudiante_examen.tiempo.eql? 0
+        @estudiante_examen.save
+        # session[:tiempo] = @examen.duracion
+        @titulo = @examen.descripcion_simple
+        if @examen.prueba and @examen.prueba.eql? true
+          @estudiante_examen.estudiante_examen_respuestas.delete_all
+        end
+        # session[:estudiante_examen] = @estudiante_examen
+        session[:estudiante_examen_id] = @estudiante_examen.id
+        @estudiante_examen.estado_parte_id = @examen.parte_examenes.first.parte_id
+        # @estudiante_examen.save!
+
+        @host = "#{request.protocol}#{request.host_with_port}/aceim/assets/examenes/"
+      else
+        flash[:mensaje] = 'Examen no disponible'
+        redirect_to :controller => 'principal'
+      end
     end
-    # session[:estudiante_examen] = @estudiante_examen
-    session[:estudiante_examen_id] = @estudiante_examen.id
-    @estudiante_examen.estado_parte_id = @examen.parte_examenes.first.parte_id
-    # @estudiante_examen.save!
-
-    @host = "#{request.protocol}#{request.host_with_port}/aceim/assets/examenes/"   
-
   end
 
   def guardar_respuesta
@@ -291,6 +314,9 @@ class ExamenesController < ApplicationController
     @respuesta_id = eer[:respuesta_id]
     @eer = EstudianteExamenRespuesta.find_or_initialize_by_estudiante_ci_and_examen_id_and_respuesta_id(estudiante_ci,examen_id,@respuesta_id)
     @eer.update_attributes eer
+
+    @eer.estudiante_examen.tiempo = params[:tiempo].to_i + 1
+    @eer.estudiante_examen.save
     respond_to do |format|
       format.html {redirect_to :back}
       format.js

@@ -24,6 +24,8 @@
 %div.titulo
   -if @historial.size()>0
     =render "cursos"
+    - if @estudiante_examenes.count > 0
+      =render "examenes"
   -else
     %h4{:style =>"color:#061D9E"}
       El estudiante no dispone de un historial académico

@@ -1,0 +1,18 @@
+%table.tablesorter.liker
+  %thead
+    %tr
+      %th{:width => "30%"} Examen
+      %th Estado
+      %th Calificación
+      %th Opciones
+
+  %tbody
+    -@estudiante_examenes.each do |ee|
+      %tr
+        %td
+          =ee.examen.descripcion_simple
+        %td
+          =ee.estado.nombre
+        %td 20
+        %td
+          =link_to "Habitar Para Presentar", {:controller => 'examenes', :action => 'habilitar_para_presentar', :id => ee.id.to_s}, :class => 'btn'

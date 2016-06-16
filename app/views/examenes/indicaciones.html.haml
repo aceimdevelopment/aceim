@@ -25,7 +25,7 @@
 			= 'El examen cuenta con una cantidad de preguntas fijas y un límite de tiempo para realizarlo.'
 		%br
 		%li
-			= raw '<b><i>IMPORTANTE:</i></b> Una vez comenzado el examen, deberá completarlo en su totalidad. Si cancela o abandona el sitio en medio del examen, el resultado del mismo será el que había obtenido hasta la última pregunta respondida. Podrá ver en la esquina superior derecha el tiempo que queda para completarlo.'
+			= raw '<b><i>IMPORTANTE:</i></b> Una vez comenzado el examen, deberá completarlo en su totalidad. Si cancela o abandona el sitio en medio del examen, el resultado del mismo será el que había obtenido hasta la última pregunta respondida. Podrá ver el tiempo restante para completar el examen en la esquina inferior izquierda.'
 		%br
 		%li
 			= 'Si tiene problemas mientras presenta el examen (fallas de electricidad o de internet), envíenos un correo a fundeimucv@gmail.com con sus datos personales (Nombres, Apellidos, Idioma, Nivel, Sección, Problema y Captura de pantalla) de manera inmediata o más tardar el día posterior a la presentación del examen.'
@@ -193,7 +193,7 @@
 						%td{:style => 'border:1px solid;'} Alt + 234
 						%td = õ
 	.center
-		= link_to 'He leído las indicaciones y deseo comenzar el examen', {:action => 'presentar', :id => @estudiante_examen.id.to_s}, {:class => 'btn'}
+		= link_to 'He leído las indicaciones y deseo comenzar el examen', {:action => 'presentar', :id => @estudiante_examen.examen.id}, {:class => 'btn'}
 
 
 :javascript

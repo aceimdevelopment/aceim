@@ -141,6 +141,8 @@ end
     @nivelaciones = EstudianteNivelacion.where(:usuario_ci=>ci)
     @titulo_pagina = "Modificar Estudiante: #{@usuario.descripcion}"
     @subtitulo_pagina = "Opciones"
+
+    @estudiante_examenes = EstudianteExamen.joins(:examen).where('estudiante_examen.estudiante_ci' => ci, "examen.periodo_id" => periodo_actual)
   end
   
   def cambiar_convenio_sel_curso

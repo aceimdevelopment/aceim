@@ -21,7 +21,7 @@ class Estudiante < ActiveRecord::Base
 
   has_many :estudiante_examenes, 
     :foreign_key => :estudiante_ci
-
+  
   accepts_nested_attributes_for :estudiante_examenes
 
     

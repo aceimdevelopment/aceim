@@ -27,6 +27,14 @@ class Examen < ActiveRecord::Base
 	validates :orden, :presence => true
 
 # FUNCINALIDADES
+	def se_puede_presentar?
+		if Time.now > inicio_aplicacion and Time.now < cierre_aplicacion
+			return true
+		else
+			false
+		end
+	end
+
 
 	def es_prueba?
 		prueba.eql? true

@@ -42,22 +42,21 @@
 - if @estudiante_examenes.count > 0
 	%H3 Exámenes:
 	- @estudiante_examenes.each do |ee|
+		- titulo = ee.examen.descripcion_simple 
 		- if ee.examen.prueba and ee.examen.prueba.eql? true
-			- titulo = "Examen de prueba" 
 			=#ee.tipo_estado_estudiante_examen_id
 			%h3
 				=link_to "Presentar #{titulo} - #{ee.examen.curso_periodo.idioma.descripcion} ", {:controller => 'examenes', :action => 'indicaciones', :id => ee.examen_id}
-				- if ee.tipo_estado_estudiante_examen_id.eql? 'COMPLETADO'
+				- if ee.completado?
 					|
 					=link_to "Resultado #{titulo} - #{ee.examen.curso_periodo.idioma.descripcion}", {:controller => 'examenes', :action => 'resultado', :id => ee.id.to_s}
 		- else 
-			- titulo = ee.examen.descripcion_full
 			%h3
-				- if ee.tipo_estado_estudiante_examen_id.eql? 'PREPARADO'
-					=link_to "Presentar #{titulo} - #{ee.examen.curso_periodo.idioma.descripcion}#{titulo}", {:controller => 'examenes', :action => 'indicaciones', :id => ee.examen_id}
+				- if ee.preparado?
+					= link_to "Presentar #{titulo}", {:controller => 'examenes', :action => 'indicaciones', :id => ee.examen_id} if ee.examen.se_puede_presentar? 
 				- else
 					=link_to "Resultado #{titulo} - #{ee.examen.curso_periodo.idioma.descripcion}", {:controller => 'examenes', :action => 'resultado', :id => ee.id.to_s}
-		%div.titulo Lista de Exámenes presentados y sus resultados
+	%div.titulo Lista de exámenes y resultados
 
 
 - if !@preinscrito

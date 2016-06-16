@@ -30,6 +30,7 @@
 						= hidden_field_tag 'eer[estudiante_ci]', @estudiante_examen.estudiante_ci
 						= hidden_field_tag 'eer[examen_id]', @estudiante_examen.examen_id
 						= hidden_field_tag 'eer[respuesta_id]', respuesta.id
+						= hidden_field_tag 'tiempo', nil, :class => 'tiempo'
 						%table.likert.tablefilter
 							- @opciones.each_with_index do |opc,i|
 								

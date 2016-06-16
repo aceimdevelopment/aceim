@@ -2,6 +2,17 @@ class PrincipalController < ApplicationController
 
   before_filter :filtro_logueado
 
+  def tiempo_agotado    
+    @estudiante_examen = EstudianteExamen.find session[:estudiante_examen_id].to_s
+    @estudiante_examen.tiempo = 0
+    @estudiante_examen.tipo_estado_estudiante_examen_id = 'AGOTADO'
+    if @estudiante_examen.save
+      session[:estudiante_examen_id] = nil
+      flash[:mensaje] = 'Puede ver su resultado haciendo click en el enlace de correspondiente'
+    end
+    redirect_to :action => 'index'
+  end
+
   def index
     session[:nuevo] = nil 
     @titulo_pagina = "Principal"
@@ -34,7 +45,8 @@ class PrincipalController < ApplicationController
       :tipo_categoria_id => session[:tipo_curso].tipo_categoria_id,
       :periodo_id => session[:parametros][:periodo_inscripcion])
 
-    @estudiante_examenes = EstudianteExamen.where(:estudiante_ci => session[:usuario].ci)
+    @estudiante_examenes = EstudianteExamen.joins(:examen).where('estudiante_examen.estudiante_ci' => session[:usuario].ci, "examen.periodo_id" => @periodo.id)
+
   end
 
   def principal

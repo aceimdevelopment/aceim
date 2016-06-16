@@ -12,11 +12,11 @@
         - if parte_examen.actividades.count > 0 
           %li=  link_to parte_examen.parte.nombre, "##{parte_examen.parte_id}", :class => 'btn_idiomas'
     #siempre_tope.well.small{:style => 'background-color: black; color: greenyellow; margin-top:210px; position: fixed;'}
-      =hidden_field_tag 'duracion', @examen.duracion
+      = hidden_field_tag 'tiempo', @estudiante_examen.tiempo, :class => 'tiempo'
       %p
         %b
           = 'El examen se termina en'
-          %span#time= @examen.duracion
+          %span#time= @estudiante_examen.tiempo
           = 'minutos'
 
     - @parte_examenes.each do |parte_examen|
@@ -57,8 +57,8 @@
                   -else
                     =render :partial => '/preguntas/lista_general'
 
-%h2=link_to "He Terminado el Examen", {:action =>'completar', :id => @estudiante_examen.id.to_s}, {:disabled => true, :class => 'btn flotar_derecha',  :data =>  { :confirm => '¿Confirma que ha finalizado el Examen. Este proceso es irreversible?' }}
-
+%h2=link_to "He Terminado el Examen", {:action =>'completar', :id => @estudiante_examen.id.to_s}, {:class => 'btn flotar_derecha', :data =>  { :confirm => '¿Confirma que ha finalizado el Examen. Este proceso es irreversible?' }, :id => 'terminar'}
+=#link_to "", {:action =>'completar', :id => @estudiante_examen.id.to_s}, {:id => 'terminar', :class => 'btn flotar_derecha'}
 
 :javascript
   
@@ -114,9 +114,10 @@
           seconds = seconds < 10 ? "0" + seconds : seconds;
 
           display.textContent = minutes + ":" + seconds;
-
-          if (--timer < 0) {
-              timer = duration;
+          $('.tiempo').val(minutes)
+          if (--timer == 0) {
+              alert ('Terminó su tiempo');
+              $(location).attr('href', '/aceim/principal/tiempo_agotado');
           }
       }, 1000);
   }
@@ -124,7 +125,7 @@
   window.onload = function () {
       var fiveMinutes,
       display = document.querySelector('#time');
-      valor = $('#duracion').val()
+      valor = $('#tiempo').val()
       minutes = 60 * valor
       startTimer(minutes, display);
   };
