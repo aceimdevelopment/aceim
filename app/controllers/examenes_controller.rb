@@ -284,14 +284,14 @@ class ExamenesController < ApplicationController
     else
 
       @estudiante_examen = @examen.estudiante_examenes.where(:estudiante_ci => usuario.ci).limit(1).first
-
+      @estudiante_examen.tipo_estado_estudiante_examen_id = 'PREPARADO' if @examen.prueba
       if @estudiante_examen and @examen.se_puede_presentar? and @estudiante_examen.preparado?
         @estudiante_examen.tipo_estado_estudiante_examen_id = 'INICIADO'
-        @estudiante_examen.tiempo = @examen.duracion if @estudiante_examen.tiempo.eql? 0
+        @estudiante_examen.tiempo = @examen.duracion if @estudiante_examen.tiempo.eql? 0 or (@examen.prueba)
         @estudiante_examen.save
         # session[:tiempo] = @examen.duracion
         @titulo = @examen.descripcion_simple
-        if @examen.prueba and @examen.prueba.eql? true
+        if @examen.prueba
           @estudiante_examen.estudiante_examen_respuestas.delete_all
         end
         # session[:estudiante_examen] = @estudiante_examen
@@ -326,7 +326,7 @@ class ExamenesController < ApplicationController
 
   def completar
     @estudiante_examen = EstudianteExamen.find session[:estudiante_examen_id].to_s
-    @estudiante_examen.tipo_estado_estudiante_examen_id = 'COMPLETADO'
+    @estudiante_examen.tipo_estado_estudiante_examen_id = 'COMPLETADO' unless @estudiante_examen.examen.prueba
     if @estudiante_examen.save
       session[:estudiante_examen_id] = nil
       flash[:mensaje] = 'Examen Completado con Éxito'
