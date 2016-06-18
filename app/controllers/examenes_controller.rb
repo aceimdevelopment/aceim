@@ -247,13 +247,43 @@ class ExamenesController < ApplicationController
       # render :partial => "preguntas/preguntas_text", :locals => {:actividad => @actividad}
   end
 
+  def reseteo_completo
+
+      @estudiante_examen = EstudianteExamen.find params[:id]
+
+      @estudiante_examen.tipo_estado_estudiante_examen_id = 'PREPARADO'
+      @estudiante_examen.tiempo = @estudiante_examen.examen.duracion
+      @estudiante_examen.estudiante_examen_respuestas.delete_all
+
+      flash[:mensaje] = ""
+      flash[:mensaje] += "Reseteo completado con exito." if @estudiante_examen.save
+      flash[:mensaje] += "Respuestas limpiadas" if @estudiante_examen.estudiante_examen_respuestas.count.eql? 0
+      redirect_to :back    
+  end
+
   def habilitar_para_presentar
       @estudiante_examen = EstudianteExamen.find params[:id]
 
       @estudiante_examen.tipo_estado_estudiante_examen_id = 'PREPARADO'
-      flash[:mensaje] = "Estado del examen actualizado con exito" if @estudiante_examen.save
+      flash[:mensaje] = "Estado del examen actualizado con exito." if @estudiante_examen.save
       redirect_to :back
   end
+
+  def resetear_tiempo
+      @estudiante_examen = EstudianteExamen.find params[:id]
+
+      @estudiante_examen.tiempo = @estudiante_examen.examen.duracion
+      flash[:mensaje] = "Tiempo reiniciao con exito." if @estudiante_examen.save
+      redirect_to :back
+  end
+
+  def borrar_respuestas
+      @estudiante_examen = EstudianteExamen.find params[:id]
+      @estudiante_examen.estudiante_examen_respuestas.delete_all
+      flash[:mensaje] = "Respuestas limpiadas con exito." if @estudiante_examen.estudiante_examen_respuestas.count.eql? 0
+      redirect_to :back
+  end
+
 
 # PRESENTAR EXAMENES
 

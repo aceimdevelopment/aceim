@@ -3,6 +3,8 @@
     %tr
       %th{:width => "30%"} Examen
       %th Estado
+      %th Tiempo Restante
+      %th Preguntas Respondidas
       %th Calificación
       %th Opciones
 
@@ -11,6 +13,17 @@
       %tr
         %td= ee.examen.descripcion_simple
         %td= ee.estado.nombre
+        %td= ee.tiempo ? "#{ee.tiempo} minutos" : "--"
+        %td= ee.estudiante_examen_respuestas.count
         %td= total_and_sobre_20 ee
         %td
+          =link_to "Limpiar Todo", {:controller => 'examenes', :action => 'reseteo_completo', :id => ee.id.to_s}, :class => 'btn'
+          (
           =link_to "Habitar Para Presentar", {:controller => 'examenes', :action => 'habilitar_para_presentar', :id => ee.id.to_s}, :class => 'btn'
+          |
+          =link_to "Resetear Tiempo", {:controller => 'examenes', :action => 'resetear_tiempo', :id => ee.id.to_s}, :class => 'btn'
+          |
+          =link_to "Borrar Respuestas", {:controller => 'examenes', :action => 'borrar_respuestas', :id => ee.id.to_s}, :class => 'btn'
+          )
+
+
