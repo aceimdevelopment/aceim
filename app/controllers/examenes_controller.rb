@@ -287,7 +287,7 @@ class ExamenesController < ApplicationController
       @estudiante_examen.tipo_estado_estudiante_examen_id = 'PREPARADO' if @examen.prueba
       if @estudiante_examen and @examen.se_puede_presentar? and @estudiante_examen.preparado?
         @estudiante_examen.tipo_estado_estudiante_examen_id = 'INICIADO'
-        @estudiante_examen.tiempo = @examen.duracion if @estudiante_examen.tiempo.eql? 0 or (@examen.prueba)
+        @estudiante_examen.tiempo = @examen.duracion if @estudiante_examen.tiempo.nil? or (@estudiante_examen.tiempo.eql? 0) or (@examen.prueba)
         @estudiante_examen.save
         # session[:tiempo] = @examen.duracion
         @titulo = @examen.descripcion_simple
