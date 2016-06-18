@@ -19,8 +19,8 @@ class Estudiante < ActiveRecord::Base
 
   accepts_nested_attributes_for :estudiante_cursos
 
-  has_many :estudiante_examenes, 
-    :foreign_key => :estudiante_ci
+  has_many :estudiante_examenes,
+    :foreign_key => :usuario_ci
   
   accepts_nested_attributes_for :estudiante_examenes
 

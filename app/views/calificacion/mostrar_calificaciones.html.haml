@@ -17,10 +17,10 @@
     =colocar_tabla(@usuarios,@historiales,false)
   - else
     =colocar_tabla_ingles(@usuarios,@historiales,false)
-- elsif @tipo_nivel_id.eql? 'BI' or  @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI'
-  =colocar_tabla_general(@usuarios,@historiales,false)
-- else
+- elsif ((session[:idioma_id] != "IT") and (@tipo_nivel_id.eql? 'CB' or  @tipo_nivel_id.eql? 'CI' or @tipo_nivel_id.eql? 'CA')) 
   =colocar_tabla_ingles(@usuarios,@historiales,false)
+- else
+  =colocar_tabla_general(@usuarios,@historiales,false)
 
 %br
 =link_to "Obtener constancia de calificación" , :action => "generar_pdf"#:action => "buscar_estudiantes", :saltar => 1

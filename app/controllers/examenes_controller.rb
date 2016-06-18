@@ -316,6 +316,7 @@ class ExamenesController < ApplicationController
     @eer.update_attributes eer
 
     @eer.estudiante_examen.tiempo = params[:tiempo].to_i + 1
+    @eer.estudiante_examen.transfrir_nota_escrita2_a_historial if not @eer.estudiante_examen.examen.prueba
     @eer.estudiante_examen.save
     respond_to do |format|
       format.html {redirect_to :back}
@@ -325,14 +326,25 @@ class ExamenesController < ApplicationController
   end
 
   def completar
-    @estudiante_examen = EstudianteExamen.find session[:estudiante_examen_id].to_s
-    @estudiante_examen.tipo_estado_estudiante_examen_id = 'COMPLETADO' unless @estudiante_examen.examen.prueba
-    if @estudiante_examen.save
+    @ee = EstudianteExamen.find session[:estudiante_examen_id].to_s
+    @ee.tipo_estado_estudiante_examen_id = 'COMPLETADO' #unless @estudiante_examen.examen.prueba
+    @ee.tiempo = params[:tiempo]
+
+    # PENDIENTE POR GUARDAR EN EXAMEN TEORICO 2 LA NOTA @estudiante_examen.total_puntos_correctos_base_20
+
+    flash[:mensaje] = ""
+
+    if @ee.save
       session[:estudiante_examen_id] = nil
-      flash[:mensaje] = 'Examen Completado con Éxito'
+      flash[:mensaje] += 'Examen Completado con Éxito.'
     end
 
-    redirect_to :action => :resultado, :id => @estudiante_examen.id.to_s
+    unless @ee.examen.prueba
+
+      flash[:mensaje] += 'La calificación no se puedo guardar (Notifique al personal administrativo para tomar las correcciones respectivas).' if @ee.transfrir_nota_escrita2_a_historial
+    end
+
+    redirect_to :action => :resultado, :id => @ee.id.to_s
 
   end
 
@@ -344,7 +356,7 @@ class ExamenesController < ApplicationController
 
     rol = session[:rol]
 
-    @titulo = "Resultado del examen: #{@estudiante_examen.examen.descripcion}"
+    @titulo = "Resultado del #{@estudiante_examen.examen.descripcion_simple}"
     @examen = @estudiante_examen.examen
 
     @total_actividades = @examen.total_actividades
@@ -358,6 +370,10 @@ class ExamenesController < ApplicationController
   end
 
   private
+
+  def guardar_calificacion ee
+    
+  end
 
   def resolver_layout
     case action_name

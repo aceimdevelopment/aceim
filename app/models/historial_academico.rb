@@ -239,6 +239,8 @@ class HistorialAcademico < ActiveRecord::Base
   end
   
   def tiene_notas_adicionales?
+
+    # "usuario_ci = ? AND idioma_id = ? AND tipo_categoria_id AND "
     NotaEnEvaluacion.where(:usuario_ci => usuario_ci, :idioma_id => idioma_id, 
                            :tipo_categoria_id => tipo_categoria_id, 
                            :tipo_nivel_id => tipo_nivel_id,
@@ -247,6 +249,16 @@ class HistorialAcademico < ActiveRecord::Base
                            :tipo_evaluacion_id => EXAMENESCRITO1).limit(1).count > 0   
    
   end
+
+  def notas_adicionales
+    # "usuario_ci = ? AND idioma_id = ? AND tipo_categoria_id AND "
+    NotaEnEvaluacion.where(:usuario_ci => usuario_ci, :idioma_id => idioma_id, 
+                           :tipo_categoria_id => tipo_categoria_id, 
+                           :tipo_nivel_id => tipo_nivel_id,
+                           :periodo_id => periodo_id, 
+                           :seccion_numero => seccion_numero)
+  end
+
 
   def crear_notas_adicionales
     arreglo = [EXAMENESCRITO1,EXAMENESCRITO2,EXAMENORAL,OTRAS, REDACCION]
@@ -263,6 +275,15 @@ class HistorialAcademico < ActiveRecord::Base
      nee.save
     }
   end
+
+  def guargar_nota_adicional(tipo_evalu_id, calificacion)
+    nee = NotaEnEvaluacion.find_or_initialize_by_usuario_ci_and_idioma_id_and_tipo_categoria_id_and_tipo_nivel_id_and_periodo_id_and_seccion_numero_and_tipo_evaluacion_id(usuario_ci,
+    idioma_id,tipo_categoria_id, tipo_nivel_id, periodo_id, seccion_numero, tipo_evalu_id)
+
+    nee.nota = calificacion
+    nee.save
+  end
+
 # temporal para verificar y crear notas de redaccion
 # --------------------------------------------------------------------------
   def tiene_nota_redaccion?

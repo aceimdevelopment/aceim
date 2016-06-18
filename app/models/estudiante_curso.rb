@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 #creada por db2models
 class EstudianteCurso < ActiveRecord::Base
    
@@ -30,6 +28,10 @@ class EstudianteCurso < ActiveRecord::Base
     :foreign_key => [:usuario_ci,:idioma_id,:tipo_categoria_id]
     
   accepts_nested_attributes_for :historiales_academicos
+
+  belongs_to :estudiante,
+    :class_name => 'Estudiante',
+    :foreign_key => ['usuario_ci']
     
   def descripcion 
     "Estudiante - #{tipo_curso.descripcion}"
@@ -38,10 +40,6 @@ class EstudianteCurso < ActiveRecord::Base
   def estudiante_nivelacion
     EstudianteNivelacion.where(:usuario_ci => usuario_ci, :idioma_id => idioma_id, :tipo_categoria_id => tipo_categoria_id)
   end
-
-  belongs_to :estudiante,
-    :class_name => 'Estudiante',
-    :foreign_key => ['usuario_ci']
 
   def ultimo_historial
     HistorialAcademico.where(

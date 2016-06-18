@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class NotaEnEvaluacion < ActiveRecord::Base
 
   set_primary_keys :usuario_ci, :idioma_id, :tipo_categoria_id, :tipo_nivel_id, 

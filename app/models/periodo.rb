@@ -12,6 +12,10 @@ class Periodo < ActiveRecord::Base
 		"#{ano}-#{ident}"		
 	end
 
+	def es_mayor_que? periodo3_id
+		not es_menor_que? periodo3_id
+	end
+
 	def es_menor_que? periodo2_id
 		es_menor = false
 

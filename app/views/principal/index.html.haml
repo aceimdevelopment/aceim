@@ -43,7 +43,7 @@
 	%H3 Exámenes:
 	- @estudiante_examenes.each do |ee|
 		- titulo = ee.examen.descripcion_simple 
-		- if ee.examen.prueba and ee.examen.prueba.eql? true
+		- if ee.examen.prueba #and ee.examen.prueba.eql? true
 			=#ee.tipo_estado_estudiante_examen_id
 			%h3
 				=link_to "Presentar #{titulo} - #{ee.examen.curso_periodo.idioma.descripcion} ", {:controller => 'examenes', :action => 'indicaciones', :id => ee.examen_id}

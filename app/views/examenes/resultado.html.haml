@@ -2,17 +2,16 @@
 
 .well
   %h2 Detalles de las respuestas incorrectas:
-  %ul
   - @estudiante_examen.estudiante_examen_respuestas.each do |eer|  
     - unless eer.es_correcta?
       .well
-        %li
-          %table
-            %tr
-              %td Pregunta:
-              %td= eer.respuesta.pregunta.valor
-            %tr
-              %td Respuesta:
-              %td
-                = text_field_tag nil, eer.valor, :disabled => true
-                (Incorrecta)
+        %table
+          %tr
+            %td
+              %b= eer.respuesta.pregunta.valor
+          %tr
+            %td 
+              %b Respuesta:
+            %td
+              = text_field_tag nil, eer.valor, :disabled => true
+              (Incorrecta)

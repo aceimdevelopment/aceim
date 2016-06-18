@@ -169,20 +169,38 @@ class CalificacionController < ApplicationController
     historial = nil
     @tipo_nivel_id = session[:tipo_nivel_id]
 
-    if @tipo_nivel_id.eql? 'BI' or  @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI'
+
+
+    if ((session[:idioma_id] != "IT") and (@tipo_nivel_id.eql? 'CB' or  @tipo_nivel_id.eql? 'CI' or @tipo_nivel_id.eql? 'CA')) 
+
       arreglo = [{:nota1 => HistorialAcademico::EXAMENESCRITO1},
                  {:nota2 => HistorialAcademico::EXAMENESCRITO2},
                  {:nota3 => HistorialAcademico::EXAMENORAL},
-                 {:nota5 => HistorialAcademico::REDACCION},
                  {:nota4 => HistorialAcademico::OTRAS},
                  {:notafinal => "nota_final"}]
     else
       arreglo = [{:nota1 => HistorialAcademico::EXAMENESCRITO1},
                  {:nota2 => HistorialAcademico::EXAMENESCRITO2},
                  {:nota3 => HistorialAcademico::EXAMENORAL},
+                 {:nota5 => HistorialAcademico::REDACCION},
                  {:nota4 => HistorialAcademico::OTRAS},
                  {:notafinal => "nota_final"}]
     end
+
+    # if @tipo_nivel_id.eql? 'BI' or  @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI'
+    #   arreglo = [{:nota1 => HistorialAcademico::EXAMENESCRITO1},
+    #              {:nota2 => HistorialAcademico::EXAMENESCRITO2},
+    #              {:nota3 => HistorialAcademico::EXAMENORAL},
+    #              {:nota5 => HistorialAcademico::REDACCION},
+    #              {:nota4 => HistorialAcademico::OTRAS},
+    #              {:notafinal => "nota_final"}]
+    # else
+    #   arreglo = [{:nota1 => HistorialAcademico::EXAMENESCRITO1},
+    #              {:nota2 => HistorialAcademico::EXAMENESCRITO2},
+    #              {:nota3 => HistorialAcademico::EXAMENORAL},
+    #              {:nota4 => HistorialAcademico::OTRAS},
+    #              {:notafinal => "nota_final"}]
+    # end
 
     arreglo.each{|a|
       params[a.keys[0]].each_with_index{|nota,i|

@@ -19,4 +19,4 @@
 				%td= @total_respuestas_correctas
 			%tr
 				%td Puntaje Total Obtenido:
-				%td= "#{@total_puntos_correctos} / #{@total_puntos} (#{sprintf('%.2f',(((@total_puntos_correctos*20)/@total_puntos)))}/20)"
+				%td= total_and_sobre_20 @estudiante_examen

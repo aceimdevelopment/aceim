@@ -29,7 +29,13 @@
     =colocar_tabla(@usuarios,@historiales,true)
   - else
     =colocar_tabla_ingles(@usuarios,@historiales,true)
-- elsif @tipo_nivel_id.eql? 'BI' or  @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI'
-  =colocar_tabla_general(@usuarios,@historiales,true)
-- else
+
+- elsif ((session[:idioma_id] != "IT") and (@tipo_nivel_id.eql? 'CB' or  @tipo_nivel_id.eql? 'CI' or @tipo_nivel_id.eql? 'CA')) 
   =colocar_tabla_ingles(@usuarios,@historiales,true)
+- else
+  =colocar_tabla_general(@usuarios,@historiales,true)
+
+-# elsif @tipo_nivel_id.eql? 'BI' or  @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI'
+  =#colocar_tabla_general(@usuarios,@historiales,true)
+-# else
+  =#colocar_tabla_ingles(@usuarios,@historiales,true)

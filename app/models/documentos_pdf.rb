@@ -86,10 +86,10 @@ class DocumentosPDF
       else
         tabla.column_order = ["#", "nombre", "cedula", "nota1","nota2","nota3","nota4","nota5", "descripcion"]
       end
-    elsif @tipo_nivel_id.eql? 'BI' or  @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI'
-      tabla.column_order = ["#", "nombre", "cedula", "nota1","nota2","nota3","nota6","nota4","nota5","descripcion"]
-    else
+    elsif ((historial.idioma_id != "IT") and (@tipo_nivel_id.eql? 'CB' or  @tipo_nivel_id.eql? 'CI' or @tipo_nivel_id.eql? 'CA')) 
       tabla.column_order = ["#", "nombre", "cedula", "nota1","nota2","nota3","nota4","nota5", "descripcion"]
+    else
+      tabla.column_order = ["#", "nombre", "cedula", "nota1","nota2","nota3","nota6","nota4","nota5","descripcion"]
     end
 
     tabla.columns["#"] = PDF::SimpleTable::Column.new("#") { |col|
@@ -155,7 +155,10 @@ class DocumentosPDF
         col.heading.justification = :center
         col.justification = :center
       }
-      if (not @periodo.es_menor_que? @periodo_transicion) or ( @tipo_nivel_id.eql? 'BI' or @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI')
+      # if (not @periodo.es_menor_que? @periodo_transicion) or ( @tipo_nivel_id.eql? 'BI' or @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI')
+      if (@periodo.es_mayor_que? @periodo_transicion) or (historial.idioma_id.eql? 'IT' or (@tipo_nivel_id != 'CB' and @tipo_nivel_id != 'CI' and @tipo_nivel_id != 'CA'))
+      # if ((historial.idioma_id != "IT") and (@tipo_nivel_id.eql? 'CB' or  @tipo_nivel_id.eql? 'CI' or @tipo_nivel_id.eql? 'CA')) 
+
         tabla.columns["nota6"] = PDF::SimpleTable::Column.new("nota6") { |col|
           col.width = 50
           col.heading = to_utf16("<b>Redac.</b>")
@@ -193,7 +196,9 @@ class DocumentosPDF
         nota3 = h.nota_en_evaluacion(HistorialAcademico::EXAMENORAL).nota_valor
         nota4 = h.nota_en_evaluacion(HistorialAcademico::OTRAS).nota_valor
         
-        if (not @periodo.es_menor_que? @periodo_transicion) or ( @tipo_nivel_id.eql? 'BI' or @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI')
+        # if (not @periodo.es_menor_que? @periodo_transicion) or ( @tipo_nivel_id.eql? 'BI' or @tipo_nivel_id.eql? 'MI' or @tipo_nivel_id.eql? 'AI')
+        if (@periodo.es_mayor_que? @periodo_transicion) or (historial.idioma_id.eql? 'IT' or (@tipo_nivel_id != 'CB' and @tipo_nivel_id != 'CI' and @tipo_nivel_id != 'CA'))
+        
           nota6 = h.nota_en_evaluacion(HistorialAcademico::REDACCION).nota_valor
   
           data << {"#" => "#{i+1}",
