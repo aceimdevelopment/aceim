@@ -310,14 +310,10 @@ class HistorialAcademico < ActiveRecord::Base
 # --------------------------------------------------------------------------
 
   def nota_en_evaluacion(tipo_evalu)
-      NotaEnEvaluacion.where(:usuario_ci => usuario_ci,
-                           :idioma_id => idioma_id, 
-                           :tipo_categoria_id => tipo_categoria_id, 
-                           :tipo_nivel_id => tipo_nivel_id, 
-                           :periodo_id => periodo_id, 
-                           :seccion_numero => seccion_numero, 
-                           :tipo_evaluacion_id => tipo_evalu
-                           ).limit(0).first
+      #NotaEnEvaluacion.where(:usuario_ci => usuario_ci,:idioma_id => idioma_id, :tipo_categoria_id => tipo_categoria_id, :tipo_nivel_id => tipo_nivel_id, :periodo_id => periodo_id, :seccion_numero => seccion_numero, :tipo_evaluacion_id => tipo_evalu).limit(0).first
+      
+      NotaEnEvaluacion.find_or_initialize_by_usuario_ci_and_idioma_id_and_tipo_categoria_id_and_tipo_nivel_id_and_periodo_id_and_seccion_numero_and_tipo_evaluacion_id(usuario_ci, idioma_id,tipo_categoria_id, tipo_nivel_id, periodo_id, seccion_numero, tipo_evalu)
+
   end
   
   def cambiar_estado_calificacion(tipo_categoria)

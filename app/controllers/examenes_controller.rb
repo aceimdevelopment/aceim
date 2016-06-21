@@ -8,7 +8,7 @@ class ExamenesController < ApplicationController
 
   layout :resolver_layout
 
-
+  HOST = "/aceim/assets/examenes/"
 
   # GET /examenes
   # GET /examenes.json
@@ -28,7 +28,7 @@ class ExamenesController < ApplicationController
   def show
     @titulo = "Vista Previa del Examen"
     @examen = Examen.find(params[:id])
-    @host = "#{request.protocol}#{request.host_with_port}/aceim/assets/examenes/"
+    @host = "#{request.protocol}#{request.host_with_port}"+HOST
 
     respond_to do |format|
       format.html # show.html.erb
@@ -329,7 +329,7 @@ class ExamenesController < ApplicationController
         @estudiante_examen.estado_parte_id = @examen.parte_examenes.first.parte_id
         # @estudiante_examen.save!
 
-        @host = "#{request.protocol}#{request.host_with_port}/aceim/assets/examenes/"
+        @host = "#{request.protocol}#{request.host_with_port}"+HOST
       else
         flash[:mensaje] = 'Examen no disponible'
         redirect_to :controller => 'principal'
