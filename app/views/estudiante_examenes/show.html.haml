@@ -1,9 +1,8 @@
+=link_to_function "Regresar", "history.back()", :class => 'btn_atras'
 
-
-=link_to_function "Regresar", "history.back()", :class => 'btn_atras' unless action_name.eql? 'presentar' 
+= render :partial => 'examenes/totales'
 
 .well
-  %h3{:style => 'float:left;'}= "Duración: #{@examen.duracion} minutos"
   .center
     %h1= @titulo
   - @parte_examenes = @examen.parte_examenes.joins(:parte).order('parte.orden ASC')
@@ -21,9 +20,6 @@
           - @actividades.each do |actividad|
             %H2= actividad.descripcion_sin_tipo
             =#Texto Agregado 
-            - if actividad.textos.count > 0
-              .well
-                %div= raw actividad.textos.first.contenido
             - @actividad = actividad
             =#Adjuntos
             - actividad.adjuntos.each do |adjunto|
@@ -50,8 +46,6 @@
                     =render :partial => '/preguntas/lista_completar_espacios'
                   -else
                     =render :partial => '/preguntas/lista_general'
-
-%h2=link_to "He Terminado el Examen", {:action =>'completar', :id => @estudiante_examen.id.to_s}, {:class => 'btn flotar_derecha', :data =>  { :confirm => '¿Confirma que ha finalizado el Examen. Este proceso es irreversible?' }, :id => 'terminar'}
 
 :javascript
   
@@ -94,7 +88,3 @@
     primary: " ui-icon-circle-minus"
     }
   }); 
-
-
-
-

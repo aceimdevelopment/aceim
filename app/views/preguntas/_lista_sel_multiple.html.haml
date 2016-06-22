@@ -1,7 +1,7 @@
 %div{:id => "actividad_#{@actividad.id}"}
 	%ol{:type => 'A'}
 		- @preguntas.each_with_index do |pregunta,i|
-			- respuesta = pregunta.respuestas.first
+			- respuesta = pregunta.respuestas.last
 			%li
 				%p
 					%b
@@ -19,11 +19,12 @@
 							.span2{:id => "respuesta_#{respuesta.id}", :style => 'padding:3px 3px; margin:2px 0px;'}
 						- else
 							= raw pregunta.valor
+							= raw "(#{pregunta.respuestas.first.valor})" if controller_name.eql? 'estudiante_examenes'
 
 				- @opciones = pregunta.opciones
 				
+				- @eer = @estudiante_examen.estudiante_examen_respuestas.where(:respuesta_id => respuesta.id).limit(1).first
 				- if action_name.eql? 'presentar'
-					- @eer = @estudiante_examen.estudiante_examen_respuestas.where(:respuesta_id => respuesta.id).limit(1).first
 
 					= form_tag({:action => 'guardar_respuesta'}, {:class => "inline", :remote => true} ) do
 
@@ -43,6 +44,21 @@
 									%td= radio_button_tag "eer[valor]", opc.valor, eql, :class => 'radio', :required => true
 						= submit_tag "Guardar respuesta", :id => "submit", :name => "submit", :class => "btn small flotar_derecha", :disable_with => "Guardando..."
 					.mensaje{:id => "respuesta_#{respuesta.id}", :style => 'padding:3px 3px; margin:2px 0px;'}
+				- elsif controller_name.eql? 'estudiante_examenes'
+					-# @eer = @estudiante_examen.estudiante_examen_respuestas.where(:respuesta_id => respuesta.id).limit(1).first
+					= form_tag({:action => 'guardar_respuesta'}, {:class => "inline", :remote => true} ) do
+
+						%table.likert.tablefilter
+							- @opciones.each_with_index do |opc,i|
+								
+								%tr
+									- eql = false
+									- eql = true if (@eer and @eer.valor and (@eer.valor.casecmp(opc.valor).zero?))
+
+									%td= "#{i+1}."
+									%td{:style => "min-width:300px;"}= opc.valor
+									%td= radio_button_tag "eer[valor]", opc.valor, eql, :class => 'radio', :disabled => true
+							=#@eer.es_correcta? ? '(Correcta)' : '(Incorrecta)' 
 
 				- else
 					%table.likert.tablefilter

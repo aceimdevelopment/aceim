@@ -20,25 +20,25 @@
   
   
 %h3
-  Historial Académico
-%div.titulo
-  -if @historial.size()>0
-    =render "cursos"
-    - if @estudiante_examenes.count > 0
-      =render "examenes"
-  -else
-    %h4{:style =>"color:#061D9E"}
-      El estudiante no dispone de un historial académico
-%h3
   Estado de los Cursos en el Período Actual
 %div.titulo
   -if @historial_actual.size()>0
     =render "curso_actual"
+    - if @estudiante_examenes.count > 0
+      =render "examenes"
   -else
     %h4{:style =>"color:#061D9E"}
       El estudiante no dispone de cursos en actual período
 -if @estudiante_curso.size()>0
   =render "convenios"
+%h3
+  Historial Académico
+%div.titulo
+  -if @historial.size()>0
+    =render "cursos"
+  -else
+    %h4{:style =>"color:#061D9E"}
+      El estudiante no dispone de un historial académico
 -if session[:administrador].tipo_rol_id <= 3
   %h3
     =link_to "Inscribir Curso", :controller=> "inscripcion_admin", :action => "paso0"

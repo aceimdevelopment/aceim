@@ -6,6 +6,7 @@
     =javascript_include_tag "/aceim/assets/application"
     =javascript_include_tag "/aceim/assets/#{controller_name}"
   %body
+    = render 'tiempo' if action_name.eql? 'presentar'
     #banner
       #banner_barra
         #banner_contenido

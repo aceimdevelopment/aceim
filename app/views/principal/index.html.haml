@@ -46,23 +46,23 @@
 		- if ee.examen.prueba #and ee.examen.prueba.eql? true
 			=#ee.tipo_estado_estudiante_examen_id
 			%h3
-				=link_to "Presentar #{titulo} - #{ee.examen.curso_periodo.idioma.descripcion} ", {:controller => 'examenes', :action => 'indicaciones', :id => ee.examen_id}
+				= link_to "Presentar #{titulo} - #{ee.examen.curso_periodo.idioma.descripcion} ", {:controller => 'examenes', :action => 'indicaciones', :id => ee.examen_id}
 				- if ee.completado? or ee.iniciado?
 					|
-					=link_to "Resultado #{titulo} - #{ee.examen.curso_periodo.idioma.descripcion}", {:controller => 'examenes', :action => 'resultado', :id => ee.id.to_s}
+					= link_to "Resultado #{titulo} - #{ee.examen.curso_periodo.idioma.descripcion}", {:controller => 'examenes', :action => 'resultado', :id => ee.id.to_s}
 		- else 
 			%h3
 				- if ee.preparado?
 					= link_to "Presentar #{titulo}", {:controller => 'examenes', :action => 'indicaciones', :id => ee.examen_id} if ee.examen.se_puede_presentar? 
 				- else
-					=link_to "Resultado #{titulo} - #{ee.examen.curso_periodo.idioma.descripcion}", {:controller => 'examenes', :action => 'resultado', :id => ee.id.to_s}
+					= link_to "Resultado #{titulo} - #{ee.examen.curso_periodo.idioma.descripcion}", {:controller => 'examenes', :action => 'resultado', :id => ee.id.to_s}
 	%div.titulo Lista de exámenes y resultados
 
 
 - if !@preinscrito
 	- if @curso_abierto_regular
 		%h3
-			=link_to "Preinscribirse: #{@curso_abierto_regular.descripcion}", :action => "paso1", :controller => "inscripcion", :id => @curso_abierto_regular.id
+			= link_to "Preinscribirse: #{@curso_abierto_regular.descripcion}", :action => "paso1", :controller => "inscripcion", :id => @curso_abierto_regular.id
 		%div.titulo Preinscribirse en el periodo #{session[:parametros][:periodo_inscripcion]} como regular y obtener la Planilla
 
 	- if @curso_abierto_cambio

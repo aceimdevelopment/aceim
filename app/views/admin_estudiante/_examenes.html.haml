@@ -12,7 +12,7 @@
     -@estudiante_examenes.each do |ee|
       %tr
         %td= ee.examen.descripcion_simple
-        %td= ee.estado.nombre
+        %td= link_to_if (not ee.estado.id.eql? 'PREPARADO'), ee.estado.nombre, {:controller => 'estudiante_examenes', :action => 'show', :id => ee.id.to_s}
         %td= ee.tiempo ? "#{ee.tiempo} minutos" : "--"
         %td= ee.estudiante_examen_respuestas.count
         %td= total_and_sobre_20 ee

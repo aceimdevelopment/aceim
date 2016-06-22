@@ -370,8 +370,11 @@ class ExamenesController < ApplicationController
     end
 
     unless @ee.examen.prueba
-
-      flash[:mensaje] += 'La calificación no se puedo guardar (Notifique al personal administrativo para tomar las correcciones respectivas).' if @ee.transfrir_nota_escrita2_a_historial
+      if @ee.transfrir_nota_escrita2_a_historial
+        flash[:mensaje] += 'Calificación asignada.' 
+      else
+        flash[:mensaje] += 'Su calificación no pudo ser asignada. (Notifique al personal administrativo para tomar las correcciones respectivas).'
+      end
     end
 
     redirect_to :action => :resultado, :id => @ee.id.to_s
@@ -400,10 +403,6 @@ class ExamenesController < ApplicationController
   end
 
   private
-
-  def guardar_calificacion ee
-    
-  end
 
   def resolver_layout
     case action_name
