@@ -23,8 +23,8 @@
 
 				- @opciones = pregunta.opciones
 				
-				- @eer = @estudiante_examen.estudiante_examen_respuestas.where(:respuesta_id => respuesta.id).limit(1).first
 				- if action_name.eql? 'presentar'
+					- @eer = @estudiante_examen.estudiante_examen_respuestas.where(:respuesta_id => respuesta.id).limit(1).first
 
 					= form_tag({:action => 'guardar_respuesta'}, {:class => "inline", :remote => true} ) do
 
@@ -45,7 +45,7 @@
 						= submit_tag "Guardar respuesta", :id => "submit", :name => "submit", :class => "btn small flotar_derecha", :disable_with => "Guardando..."
 					.mensaje{:id => "respuesta_#{respuesta.id}", :style => 'padding:3px 3px; margin:2px 0px;'}
 				- elsif controller_name.eql? 'estudiante_examenes'
-					-# @eer = @estudiante_examen.estudiante_examen_respuestas.where(:respuesta_id => respuesta.id).limit(1).first
+					- @eer = @estudiante_examen.estudiante_examen_respuestas.where(:respuesta_id => respuesta.id).limit(1).first
 					= form_tag({:action => 'guardar_respuesta'}, {:class => "inline", :remote => true} ) do
 
 						%table.likert.tablefilter

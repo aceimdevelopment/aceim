@@ -45,6 +45,7 @@
               = "/#{total_pendientes}"
               - if total > 0 and (examen.tipo_estado_examen_id.eql? 'GENERADO' or examen.tipo_estado_examen_id.eql? 'LISTO')
                 = link_to 'Eliminar Examenes', {:action => 'eliminar_etudiante_examenes', :id => examen.id}, {:class => 'btn_eliminar small', :confirm => '¿Está Seguro?. Se eliminaran todos los exámenes. . Este proceso toma de 1 a 2 minutos', :disable_with => '...Por favor espere', :title => 'Eliminar los exámenes ya generados para todos los estudiantes de este curso'}
+                = link_to "Ver Detalle", {:controller => 'estudiante_examenes', :action => 'index', :id => examen.id}, :class => 'btn_agregar small'                
               - else
                 = link_to 'Generar Examenes', {:action => 'generar_estudiante_examenes', :id => examen.id}, { :disable_with => '...Por favor espere', :class => 'btn_generar small', :confirm => '.Este proceso toma de 1 a 2 minutos. ¿Confirma la generación de los exámenes?', :title => 'Generar los exámenes para todos los estudiantes de este curso'}
 
@@ -58,41 +59,3 @@
             = link_to 'Vista Previa', examen, {:class => 'btn_previsualizar small', :title => 'Previsualizar'}
             |
             = link_to 'Eliminar Examen', @examen, :confirm => '¿Está Seguro de Esta Acción?. Las actividades se mantendrán almacenadas pero se desvincularán de éste examen.', :method => :delete,  :class => "btn_eliminar small"
-            
-
-:javascript
-  $(function() {
-    $( ".btn" ).button();
-    $( document ).tooltip();
-  });
-
-  $( ".btn_editar").button({
-    icons: {
-    primary: "ui-icon-pencil"
-    }
-  }); 
-
-  $( ".btn_previsualizar").button({
-    icons: {
-    primary: "ui-icon-arrow-4-diag "
-    }
-  });
-
-  $( ".btn_eliminar").button({
-    icons: {
-    primary: "ui-icon-trash"
-    }
-  });
-
-  $( ".btn_agregar").button({
-    icons: {
-    primary: "ui-icon-plus"
-    }
-  });
-
-
-  $( ".btn_generar").button({
-    icons: {
-    primary: "ui-icon-gear"
-    }
-  });

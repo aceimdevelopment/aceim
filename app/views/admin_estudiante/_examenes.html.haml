@@ -12,7 +12,7 @@
     -@estudiante_examenes.each do |ee|
       %tr
         %td= ee.examen.descripcion_simple
-        %td= link_to_if (not ee.estado.id.eql? 'PREPARADO'), ee.estado.nombre, {:controller => 'estudiante_examenes', :action => 'show', :id => ee.id.to_s}
+        %td= link_to_if (ee.estado.id!= 'PREPARADO' and ee.estado.id!= 'RESAGADO'), ee.estado.nombre, {:controller => 'estudiante_examenes', :action => 'show', :id => ee.id.to_s}
         %td= ee.tiempo ? "#{ee.tiempo} minutos" : "--"
         %td= ee.estudiante_examen_respuestas.count
         %td= total_and_sobre_20 ee
@@ -25,5 +25,16 @@
           |
           =link_to "Borrar Respuestas", {:controller => 'examenes', :action => 'borrar_respuestas', :id => ee.id.to_s}, :class => 'btn'
           )
+          |
+          = link_to_if ee.tipo_estado_estudiante_examen_id!='PREPARADO', 'Resagar', 'javascript:void(0)' , :onclick => "$(resagar_#{ee.examen_id}).show('slow'); $(this).remove();"
 
+          %div{:id => "resagar_#{ee.examen_id}", :style => 'display:none;'}
+            = form_tag(:controller => 'examenes', :action => "resagar") do
+              
+              = hidden_field_tag :id, ee.id.to_s
+              %p
+                = number_field_tag 'horas'
+                horas.
+                %input.small{:type => 'submit', :value => 'Resagar', :name => 'commit'}
+ 
 

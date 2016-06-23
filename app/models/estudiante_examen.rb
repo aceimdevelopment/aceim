@@ -1,7 +1,7 @@
 class EstudianteExamen < ActiveRecord::Base
 
 	# ATRIBUTOS ACCESIBLES
-	attr_accessible :estudiante_ci, :examen_id, :tiempo, :puntaje_total, :tipo_estado_estudiante_examen_id
+	attr_accessible :estudiante_ci, :examen_id, :tiempo, :puntaje_total, :tipo_estado_estudiante_examen_id, :resagado_inicio, :resagado_fin
 
 	# CLAVE PRIMARIA COMPUESTA
 	set_primary_keys [:estudiante_ci, :examen_id]
@@ -79,6 +79,10 @@ class EstudianteExamen < ActiveRecord::Base
 			total += 1 if eer.es_correcta?
 		end
 		return total
+	end
+
+	def resagado?
+		return ((resagado_inicio? and resagado_fin?) and (Time.now > resagado_inicio and Time.now < resagado_fin) and tipo_estado_estudiante_examen_id.eql? 'RESAGADO')
 	end
 
 end

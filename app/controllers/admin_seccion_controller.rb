@@ -54,13 +54,13 @@ class AdminSeccionController < ApplicationController
   	@titulo_pagina = "Agregar Sección" 
     @seccion = Seccion.new
     @periodo = params[:periodo]
-		@idioma_cat = params[:idioma]
+	@idioma_cat = params[:idioma]
 
-		if(!params[:idioma].kind_of?(String))
-    	@idioma_id, @categoria_id = params[:idioma].join.split("-")
-		else
-    	@idioma_id, @categoria_id = params[:idioma].split("-")
-		end
+	if(!params[:idioma].kind_of?(String))
+	@idioma_id, @categoria_id = params[:idioma].join.split("-")
+	else
+	@idioma_id, @categoria_id = params[:idioma].split("-")
+	end
 
     @idioma = Idioma.where(:id => @idioma_id).limit(1).first
     @categoria = TipoCategoria.where(:id => @categoria_id).limit(1).first
@@ -80,11 +80,11 @@ class AdminSeccionController < ApplicationController
 
   def nuevo_guardar
 
-	  periodo = params[:seccion][:periodo]
-	  idioma = params[:seccion][:idioma]
-	  idioma_cat = params[:seccion][:idioma_cat]
-	  categoria = params[:seccion][:categoria]
-	  nivel = params[:seccion][:tipo_nivel_id]
+	periodo = params[:seccion][:periodo]
+	idioma = params[:seccion][:idioma]
+	idioma_cat = params[:seccion][:idioma_cat]
+	categoria = params[:seccion][:categoria]
+	nivel = params[:seccion][:tipo_nivel_id]
     horario = params[:horario][:id]
     cantidad = params[:cantidad][:id].to_i
     ubi = params[:ubicacion][:ubicacion_id]
@@ -224,7 +224,6 @@ class AdminSeccionController < ApplicationController
 			  if horario_seccion1.save
           info_bitacora("Nueva Sección Agregada: periodo: #{periodo}, idioma: #{idioma}, categoria: #{categoria}, nivel: #{nivel}, numero: #{numero_seccion}")
 				  flash[:mensaje] = "Sección creada satisfactoriamente"
-
 			  else
 
 				  flash[:mensaje] = "No se ha podido crear la sección"
@@ -407,7 +406,7 @@ class AdminSeccionController < ApplicationController
 
   def elegir_periodo_idioma_modal
 
-		@idiomas = Idioma.select("idioma.*,tipo_curso.*").joins(:tipo_curso).where(["id != ? and tipo_curso.tipo_categoria_id != ?", "OR","BBVA"])
+		@idiomas = Idioma.select('idioma.*,tipo_curso.*').joins(:tipo_curso).where(["id != ? and tipo_curso.tipo_categoria_id != ?", "OR","BBVA"])
 
 		@idiomas.each{|i|
 			
@@ -421,7 +420,7 @@ class AdminSeccionController < ApplicationController
 		
 		}
 		
-    @periodo_actual = session[:parametros][:periodo_actual] 
+    @periodo_actual = session[:parametros][:periodo_actual]
 
     render :layout => false
 

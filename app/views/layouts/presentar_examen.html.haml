@@ -4,7 +4,7 @@
     %title ACEIM - Escuela de Idiomas Modernos  
     =stylesheet_link_tag  "/aceim/assets/application"
     =javascript_include_tag "/aceim/assets/application"
-    =javascript_include_tag "/aceim/assets/#{controller_name}"
+    =javascript_include_tag "/aceim/assets/examenes"
   %body
     = render 'tiempo' if action_name.eql? 'presentar'
     #banner
@@ -45,6 +45,9 @@
         -if @subtitulo_pagina
           .titulo
             =@subtitulo_pagina
+        -if action_name.eql? "indicaciones" or action_name.eql? "resultado"
+          %p 
+            =link_to "Regresar a principal", {:controller => "principal", :action => "principal"}, :class => 'btn_atras' unless (action_name.eql? 'presentar' and controller_name.eql? 'examenes')
         -if flash[:mensaje]
           #mensaje-flash{:style => "display:none;"}
             %p{ :class => "ui-state-highlight ui-corner-all", :style => "margin-top: 20px; padding: 3px 3px" }
@@ -54,7 +57,7 @@
         =yield
         -if action_name.eql? "indicaciones" or action_name.eql? "resultado"
           %p 
-            =link_to "<< Regresar a principal", :controller => "principal", :action => "principal" unless (action_name.eql? 'presentar' and controller_name.eql? 'examenes')
+            =link_to "Regresar a principal", {:controller => "principal", :action => "principal"}, :class => 'btn_atras' unless (action_name.eql? 'presentar' and controller_name.eql? 'examenes')
     #pie
       CIUDAD UNIVERSITARIA DE CARACAS - PATRIMONIO CULTURAL DE LA HUMANIDAD
       %br/

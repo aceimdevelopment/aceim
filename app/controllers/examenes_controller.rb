@@ -277,6 +277,18 @@ class ExamenesController < ApplicationController
       redirect_to :back
   end
 
+  def resagar
+    tiempo = Time.now
+    estudiante_examen = EstudianteExamen.find params[:id]    
+    estudiante_examen.resagado_inicio = tiempo
+    estudiante_examen.resagado_fin = tiempo+(params[:horas].to_i).hour
+    estudiante_examen.tipo_estado_estudiante_examen_id = 'RESAGADO'
+    if estudiante_examen.save
+      flash[:mensaje] = "El estudiante dispone ahora de #{params[:horas]} hora(s) para realizar el examen."
+    end
+    redirect_to :back
+  end
+
   def borrar_respuestas
       @estudiante_examen = EstudianteExamen.find params[:id]
       @estudiante_examen.estudiante_examen_respuestas.delete_all
@@ -315,7 +327,7 @@ class ExamenesController < ApplicationController
 
       @estudiante_examen = @examen.estudiante_examenes.where(:estudiante_ci => usuario.ci).limit(1).first
       @estudiante_examen.tipo_estado_estudiante_examen_id = 'PREPARADO' if @examen.prueba
-      if @estudiante_examen and @examen.se_puede_presentar? and @estudiante_examen.preparado?
+      if @estudiante_examen and @examen.se_puede_presentar? and @estudiante_examen.preparado? or @estudiante_examen.resagado?
         @estudiante_examen.tipo_estado_estudiante_examen_id = 'INICIADO'
         @estudiante_examen.tiempo = @examen.duracion if @estudiante_examen.tiempo.nil? or (@estudiante_examen.tiempo.eql? 0) or (@examen.prueba)
         @estudiante_examen.save
@@ -366,16 +378,18 @@ class ExamenesController < ApplicationController
 
     if @ee.save
       session[:estudiante_examen_id] = nil
-      flash[:mensaje] += 'Examen Completado con Éxito.'
+      flash[:mensaje] = 'Examen Completado con Éxito.'
+      puts 'Examen Completado con Éxito.'
     end
 
-    unless @ee.examen.prueba
-      if @ee.transfrir_nota_escrita2_a_historial
-        flash[:mensaje] += 'Calificación asignada.' 
-      else
-        flash[:mensaje] += 'Su calificación no pudo ser asignada. (Notifique al personal administrativo para tomar las correcciones respectivas).'
-      end
-    end
+    @ee.transfrir_nota_escrita2_a_historial unless @ee.examen.prueba
+    # unless @ee.examen.prueba
+    #   if @ee.transfrir_nota_escrita2_a_historial
+    #     flash[:mensaje] += 'Calificación asignada.' 
+    #   else
+    #     flash[:mensaje] += 'Su calificación no pudo ser asignada. (Notifique al personal administrativo para tomar las correcciones respectivas).'
+    #   end
+    # end
 
     redirect_to :action => :resultado, :id => @ee.id.to_s
 
@@ -400,6 +414,19 @@ class ExamenesController < ApplicationController
     @total_respuestas_correctas = @estudiante_examen.total_respuestas_correctas
     @total_respuestas_incorrectas = @total_preguntas - @total_respuestas_correctas
 
+  end
+
+  def transferir_notas_a_historiales
+    @estudiante_examenes = EstudianteExamen.all.delete_if{|ee| ee.examen.prueba}
+    total_trasferidos = 0
+    total_ee = @estudiante_examenes.count
+    @estudiante_examenes.each do |ee|
+      total_trasferidos += 1 if ee.transfrir_nota_escrita2_a_historial
+      puts "Guardado ##{total_trasferidos}/#{total_ee}."
+    end
+    puts "Total de exámenes: #{total_ee}. Total transferidos: #{total_trasferidos}"
+    flash[:mensaje] = "Total de exámenes: #{total_ee}. Total transferidos: #{total_trasferidos}"
+    redirect_to :action => 'index'
   end
 
   private
