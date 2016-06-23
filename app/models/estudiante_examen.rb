@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class EstudianteExamen < ActiveRecord::Base
 
 	# ATRIBUTOS ACCESIBLES
@@ -84,5 +86,20 @@ class EstudianteExamen < ActiveRecord::Base
 	def resagado?
 		return ((resagado_inicio? and resagado_fin?) and (Time.now > resagado_inicio and Time.now < resagado_fin) and tipo_estado_estudiante_examen_id.eql? 'RESAGADO')
 	end
+
+
+	def self.transferir_notas_a_historiales
+	    @estudiante_examenes = EstudianteExamen.where("tipo_estado_estudiante_examen_id = 'COMPLETADO' OR tipo_estado_estudiante_examen_id = 'INICIADO'").delete_if{|ee| ee.examen.prueba}
+
+	    total_trasferidos = 0
+	    total_ee = @estudiante_examenes.count
+	    @estudiante_examenes.each do |ee|
+	      total_trasferidos += 1 if ee.transfrir_nota_escrita2_a_historial
+	      puts "Guardado ##{total_trasferidos}/#{total_ee}."
+	    end
+	    puts "Total de exámenes: #{total_ee}. Total transferidos: #{total_trasferidos}"
+	    flash[:mensaje] = "Total de exámenes: #{total_ee}. Total transferidos: #{total_trasferidos}"
+	    redirect_to :action => 'index'
+  	end
 
 end
