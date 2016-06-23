@@ -417,7 +417,8 @@ class ExamenesController < ApplicationController
   end
 
   def transferir_notas_a_historiales
-    @estudiante_examenes = EstudianteExamen.all.delete_if{|ee| ee.examen.prueba}
+    @estudiante_examenes = EstudianteExamen.where("tipo_estado_estudiante_examen_id = 'COMPLETADO' OR tipo_estado_estudiante_examen_id = 'INICIADO'").delete_if{|ee| ee.examen.prueba}
+
     total_trasferidos = 0
     total_ee = @estudiante_examenes.count
     @estudiante_examenes.each do |ee|
