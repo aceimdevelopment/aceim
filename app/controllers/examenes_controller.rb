@@ -277,7 +277,7 @@ class ExamenesController < ApplicationController
       redirect_to :back
   end
 
-  def resagar
+  def rezagar
     tiempo = Time.now
     estudiante_examen = EstudianteExamen.find params[:id]    
     estudiante_examen.resagado_inicio = tiempo

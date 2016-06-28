@@ -26,15 +26,15 @@
           =link_to "Borrar Respuestas", {:controller => 'examenes', :action => 'borrar_respuestas', :id => ee.id.to_s}, :class => 'btn'
           )
           |
-          = link_to_if ee.tipo_estado_estudiante_examen_id!='PREPARADO', 'Resagar', 'javascript:void(0)' , :onclick => "$(resagar_#{ee.examen_id}).show('slow'); $(this).remove();"
+          = link_to 'Rezagar', 'javascript:void(0)' , :onclick => "$(rezagar_#{ee.examen_id}).show('slow'); $(this).remove();"
 
-          %div{:id => "resagar_#{ee.examen_id}", :style => 'display:none;'}
-            = form_tag(:controller => 'examenes', :action => "resagar") do
+          %div{:id => "rezagar_#{ee.examen_id}", :style => 'display:none;'}
+            = form_tag(:controller => 'examenes', :action => "rezagar") do
               
               = hidden_field_tag :id, ee.id.to_s
               %p
                 = number_field_tag 'horas'
                 horas.
-                %input.small{:type => 'submit', :value => 'Resagar', :name => 'commit'}
+                %input.small{:type => 'submit', :value => 'Rezagar', :name => 'commit'}
  
 

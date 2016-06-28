@@ -71,7 +71,9 @@ class EstudianteExamen < ActiveRecord::Base
 	end
 
 	def total_puntos_correctos_base_20
-		sprintf("%02i",((total_puntos_correctos*20)/examen.puntaje_total))
+		sprintf("%.1f",Float((total_puntos_correctos*20)/examen.puntaje_total))
+
+		# Float(nota[1].gsub(",","."))
 		# "#{sprintf('%.2f',((total_puntos_correctos*20)/examen.puntaje_total))}"
 	end
 
