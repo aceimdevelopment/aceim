@@ -140,8 +140,7 @@ end
     @estudiante_curso = EstudianteCurso.where(:usuario_ci=>ci)
     @nivelaciones = EstudianteNivelacion.where(:usuario_ci=>ci)
     @titulo_pagina = "Modificar Estudiante: #{@usuario.descripcion}"
-    @subtitulo_pagina = "Opciones"
-
+    flash[:mensaje] = "Estudiante Bloqueado" unless @usuario.activo
     @estudiante_examenes = EstudianteExamen.joins(:examen).where('estudiante_examen.estudiante_ci' => ci, "examen.periodo_id" => periodo_actual)
   end
   

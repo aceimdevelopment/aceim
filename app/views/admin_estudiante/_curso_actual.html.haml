@@ -1,34 +1,26 @@
 %table.tablesorter.liker
   %thead
     %tr
-      %th{:width => "15%"}
-        Idioma
-      %th{:width => "13%"}
-        Nivel
-      %th{:width => "5%"}
-        Sección
-      %th{:width => "15%"}
+      %th
+        Descripción
+      %th
         Aula
-      %th{:width => "15%"}
+      %th
         Horarios
-      %th{:width => "15%"}
+      %th
         Instructor
       %th{:width => "10%"}
         Convenio
       %th{:width => "12%"}
         Estado
-      %th{:width => "30%"}
+      %th{:width => "40%"}
         Opciones
   %tbody
     -@historial_actual.each do |h|
       -session[:tipo_curso]="#{h.tipo_curso.id}"
       %tr
         %td
-          =h.tipo_curso.descripcion
-        %td
-          =h.tipo_nivel.descripcion
-        %td
-          ="#{"%002i"%h.seccion_numero}"
+          =h.descripcion_completa
         %td
           - if h.seccion.aula
             =h.seccion.aula_corta
@@ -49,17 +41,22 @@
 
           -if h.tipo_estado_inscripcion_id=="PRE"
             
-            =link_to_modal "Confirmar",{:action => "confirmar_inscripcion",:title =>"Confirmar Inscripcion",:width=>600, :params=>{:idioma_id=>"#{h.idioma_id}", :tipo_categoria_id=>"#{h.tipo_categoria_id}", :usuario_ci=>"#{h.usuario_ci}"}}
+            =link_to_modal_v2 "Confirmar",{:action => "confirmar_inscripcion",:title =>"Confirmar Inscripcion",:width=>600, :params=>{:idioma_id=>"#{h.idioma_id}", :tipo_categoria_id=>"#{h.tipo_categoria_id}", :usuario_ci=>"#{h.usuario_ci}"}}, {:class => 'btn small'}
           -else
             Confirmar
-          %br/
-          =link_to_modal "Modificar_seccion",{:action => "cambiar_seccion",:title =>"Modificar Seccion",:width=>600, :params=>{:idioma_id=>"#{h.idioma_id}", :tipo_categoria_id=>"#{h.tipo_categoria_id}", :usuario_ci=>"#{h.usuario_ci}"}}
-          %br/
-          =link_to_modal "Eliminar",{:action => "confirmar_eliminar",:title =>"Confirmar Eliminación",:width=>500, :params=>{:idioma_id=>"#{h.idioma_id}", :tipo_categoria_id=>"#{h.tipo_categoria_id}", :usuario_ci=>"#{h.usuario_ci}"}}
-          %br/
-          =link_to "Planilla", :action => "planilla_inscripcion", :controller => "inscripcion_admin", :historial => h.id.to_s
-          %br/
-          = link_to_modal "Generar_constancia_estudio", {:action => "remitente",:title =>"Generar Constancia de Estudio",:width=>600, :params=>{:tipo_curso => h.tipo_curso}}
-          %br/
-          = link_to_modal "Congelar",{:action => "confirmar_congelar_curso",:title =>"Confirmar Eliminación",:width=>500, :params=>{:idioma_id=>"#{h.idioma_id}", :tipo_categoria_id=>"#{h.tipo_categoria_id}", :usuario_ci=>"#{h.usuario_ci}"}}
-          
+          =link_to_modal_v2 "Modificar Seccion",{:action => "cambiar_seccion",:title =>"Modificar Seccion",:width=>600, :params=>{:idioma_id=>"#{h.idioma_id}", :tipo_categoria_id=>"#{h.tipo_categoria_id}", :usuario_ci=>"#{h.usuario_ci}"}}, {:class => 'btn_editar small'}
+          =link_to_modal_v2 "Eliminar",{:action => "confirmar_eliminar",:title =>"Confirmar Eliminación",:width=>500, :params=>{:idioma_id=>"#{h.idioma_id}", :tipo_categoria_id=>"#{h.tipo_categoria_id}", :usuario_ci=>"#{h.usuario_ci}"}}, {:class => 'btn_eliminar small'}
+          =link_to " Planilla", {:action => "planilla_inscripcion", :controller => "inscripcion_admin", :historial => h.id.to_s}, {:class => 'btn_descargar small'}
+          = link_to_modal_v2 " Constancia", {:action => "remitente",:title =>"Generar Constancia de Estudio",:width=>600, :params=>{:tipo_curso => h.tipo_curso}}, {:class => 'btn_descargar small'}
+          = link_to_modal_v2 "Congelar",{:action => "confirmar_congelar_curso",:title =>"Confirmar Eliminación",:width=>500, :params=>{:idioma_id=>"#{h.idioma_id}", :tipo_categoria_id=>"#{h.tipo_categoria_id}", :usuario_ci=>"#{h.usuario_ci}"}}, {:class => 'btn_calendario small'}
+          - @posibles_examenes = h.curso.examenes.where(:periodo_id => h.periodo_id)
+
+          -if @posibles_examenes.count > 0
+            %br
+            - @estudiante = h.usuario.estudiante
+            - @posibles_examenes.each do |pe|
+              -id = "#{@estudiante.usuario_ci},#{pe.id}" 
+              - unless EstudianteExamen.exists? id
+                %br
+                = link_to "Generar #{pe.descripcion_simple}", "/aceim/estudiante_examenes/create/#{id}", {:class => 'btn small'}
+

@@ -89,8 +89,16 @@ class InicioController < ApplicationController
         return
       end
     end           
+
+    @usuario = Usuario.where(:ci => login).first
+
+    if @usuario and !@usuario.activo
+      flash[:mensaje] = "Usuario Bloqueado. Las Autoridades sarán notificadas de su intento de ingreso."
+    end
+
     info_bitacora "Error en el login o clave #{login}"
     flash[:mensaje_login] = "Error en login o clave"
+
     redirect_to :action => "index"
   end  
   

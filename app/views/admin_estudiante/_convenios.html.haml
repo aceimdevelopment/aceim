@@ -4,13 +4,13 @@
   %table.tablesorter.liker
     %thead
       %tr
-        %th{:width => "20%"}
+        %th
           Curso
-        %th{:width => "20%"}
+        %th
           Último Nivel Aprobado
-        %th{:width => "20%"}
+        %th
           Convenio Actual
-        %th{:width => "10%"}
+        %th{:width => "50%"}
           Opciones
     %tbody
       -@estudiante_curso.each do |ec|
@@ -27,9 +27,8 @@
           -if session[:administrador].tipo_rol_id <= 3
             %td
               - ha = ec.ultimo_historial_aprobado
-              =link_to_modal "Modificar_Convenio",{:action => "cambiar_convenio",:title =>"Modificar Convenio",:width=>500, :params => {:tipo_curso => "#{ec.tipo_curso.id}", :usuario_ci=>"#{ec.usuario_ci}"}}
-              %br/
-              = link_to_if(ha, "Generar_constancia_notas_aprobadas", :action=>"generar_constancia_notas",:tipo_curso=>ec.tipo_curso)
-              %br/
+              = link_to_modal_v2 "Modificar Convenio",{:action => "cambiar_convenio",:title =>"Modificar Convenio",:width=>500, :params => {:tipo_curso => "#{ec.tipo_curso.id}", :usuario_ci=>"#{ec.usuario_ci}"}}, :class => 'btn_editar'
+              = link_to_if ha, "Constancia Notas Aprobadas", {:action => "generar_constancia_notas",:tipo_curso => ec.tipo_curso}, :class => 'btn_descargar'
              
-              = link_to_if(ha && ha.curso.grado == ha.tipo_curso.numero_grados, "Obtener Certificado", :action=>"generar_certificado", :tipo_curso=>ec.tipo_curso )
+              - if (ha && ha.curso.grado == ha.tipo_curso.numero_grados)
+                = link_to "Obtener Certificado", {:action=>"generar_certificado", :tipo_curso => ec.tipo_curso}, :class => 'btn_descargar'

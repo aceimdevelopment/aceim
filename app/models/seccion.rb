@@ -273,7 +273,9 @@ class Seccion < ActiveRecord::Base
   end
 
   def aula_corta
-    if horario_seccion.first.aula_id == "CER"
+    if not horario_seccion.first
+      "Sin Aula"
+    elsif horario_seccion.first.aula_id == "CER"
       "No Asignada"
     else
       "#{horario_seccion.sort_by{|x| x.dia.orden}.collect{|hs| hs.dia_aula}.join(" | ")}"

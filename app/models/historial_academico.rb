@@ -74,7 +74,7 @@ class HistorialAcademico < ActiveRecord::Base
   
 
     def descripcion_completa
-      "#{tipo_curso.descripcion} - #{tipo_nivel.descripcion} - Sección: #{seccion_numero}"
+      "#{tipo_curso.descripcion} - #{tipo_nivel.descripcion} - Sección: #{"%002i"%seccion_numero}"
       
     end
   

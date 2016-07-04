@@ -4,6 +4,20 @@ class UsuarioController < ApplicationController
   before_filter :filtro_logueado
   before_filter :filtro_super_administrador, :except => ['modificar', 'modificar_guardar']
 
+  def bloquear
+    begin
+      usuario = Usuario.find params[:id]
+      usuario.activo = params[:activo]
+      usuario.save
+      flash[:mensaje] = "Usuario #{usuario.estado_bloqueo}"
+      info_bitacora "Usuario #{usuario.estado_bloqueo}: #{usuario.descripcion}. Momento: #{Time.now}"
+    rescue Exception => e
+      flash[:mensaje] = "No fue posible bloquear al Usuario. Error del sistema: #{e}"
+    end
+    redirect_to :back
+    
+  end
+
   def nuevo
     if session[:administrador].tipo_rol_id > 2 
       flash[:mensaje] = "Usted no posee los privilegios para acceder a esta función"

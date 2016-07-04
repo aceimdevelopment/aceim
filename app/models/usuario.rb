@@ -89,4 +89,8 @@ class Usuario < ActiveRecord::Base
     estudiante.destroy if estudiante
   end
 
+  def estado_bloqueo
+    activo ? "Activado" : "Bloqueado"
+  end
+
 end

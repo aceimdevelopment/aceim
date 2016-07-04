@@ -16,6 +16,4 @@ $ ->
 $ ->
   $('.btn').button()
 $ ->
-  $(document).tooltip()
-$ ->
   $("#parte").tabs()

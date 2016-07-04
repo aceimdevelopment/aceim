@@ -24,4 +24,24 @@ class EstudianteExamenesController < ApplicationController
 
 	end
 
+	def new
+		
+	end
+
+	def create
+		@estudiante_examen = EstudianteExamen.new 
+		@estudiante_examen.id = params[:id]
+		@estudiante_examen.tipo_estado_estudiante_examen_id = 'PREPARADO'
+		begin @estudiante_examen.save
+			info_bitacora("Agredado Examen #{@estudiante_examen.examen_id} al Estudiante: #{@estudiante_examen.estudiante_ci}")
+			flash[:mensaje] = "Agregado Examen al Estudiante"
+
+		rescue Exception => e
+			flash[:mensaje] = "No se pudo agregar el Examen al Estudiante. Por favor verifique e intentelo nuevamente. Error Generado por el sistema:#{e}"	
+		end 
+		redirect_to  :back
+
+	end
+
+
 end

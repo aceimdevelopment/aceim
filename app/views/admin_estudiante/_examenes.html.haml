@@ -1,7 +1,7 @@
 %table.tablesorter.liker
   %thead
     %tr
-      %th{:width => "30%"} Examen
+      %th{:width => "20%"} Examen
       %th Estado
       %th Tiempo Restante
       %th Preguntas Respondidas
@@ -17,16 +17,16 @@
         %td= ee.estudiante_examen_respuestas.count
         %td= total_and_sobre_20 ee
         %td
-          =link_to "Limpiar Todo", {:controller => 'examenes', :action => 'reseteo_completo', :id => ee.id.to_s}, :class => 'btn'
+          =link_to "Limpiar Todo", {:controller => 'examenes', :action => 'reseteo_completo', :id => ee.id.to_s}, :class => 'btn_actualizar small'
           (
-          =link_to "Habitar Para Presentar", {:controller => 'examenes', :action => 'habilitar_para_presentar', :id => ee.id.to_s}, :class => 'btn'
+          =link_to "Habitar Para Presentar", {:controller => 'examenes', :action => 'habilitar_para_presentar', :id => ee.id.to_s}, :class => 'btn_bandera small'
           |
-          =link_to "Resetear Tiempo", {:controller => 'examenes', :action => 'resetear_tiempo', :id => ee.id.to_s}, :class => 'btn'
+          =link_to "Resetear Tiempo", {:controller => 'examenes', :action => 'resetear_tiempo', :id => ee.id.to_s}, :class => 'btn_reloj small'
           |
-          =link_to "Borrar Respuestas", {:controller => 'examenes', :action => 'borrar_respuestas', :id => ee.id.to_s}, :class => 'btn'
+          =link_to "Borrar Respuestas", {:controller => 'examenes', :action => 'borrar_respuestas', :id => ee.id.to_s}, :class => 'btn_calculadora small'
           )
-          |
-          = link_to 'Rezagar', 'javascript:void(0)' , :onclick => "$(rezagar_#{ee.examen_id}).show('slow'); $(this).remove();"
+          %br
+          = link_to 'Rezagar', 'javascript:void(0)' , :onclick => "$(rezagar_#{ee.examen_id}).show('slow'); $(this).remove();", :class => 'btn_calendario small'
 
           %div{:id => "rezagar_#{ee.examen_id}", :style => 'display:none;'}
             = form_tag(:controller => 'examenes', :action => "rezagar") do

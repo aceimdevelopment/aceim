@@ -48,7 +48,7 @@ class Examen < ActiveRecord::Base
 		if prueba and prueba.eql? true
 			"Examen de prueba de #{curso_periodo.idioma.descripcion}"
 		else
-			"Examen de #{curso_periodo.descripcion}"
+			"Examen de #{titulo}"
 		end
 	end
 

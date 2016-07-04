@@ -2,9 +2,9 @@
 %html
   %head
     %title ACEIM - Escuela de Idiomas Modernos  
-    =stylesheet_link_tag  "application"
-    =javascript_include_tag "application"
-    =javascript_include_tag controller_name
+    =stylesheet_link_tag  "/aceim/assets/application"
+    =javascript_include_tag "/aceim/assets/application"
+    =javascript_include_tag "/aceim/assets/#{controller_name}"
   %body
     #banner
       #banner_barra
@@ -35,7 +35,7 @@
         %li.current
           =link_to "Principal", :controller => "principal", :action => "principal"
         %li
-          =link_to "Contacto", "mailto:fundeim@ucv.ve"
+          =link_to "Contacto", "mailto:fundeimucv@gmail.com"
     .contenedor
       #interno 
         %h2
