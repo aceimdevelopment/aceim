@@ -267,8 +267,8 @@ end
         flash[:mensaje] = "Cédula actualizada satisfactoriamente"
         redirect_to :action => :modificar_datos_personales
         return
-      rescue
-        flash[:mensaje] = "La cédula debe ser un número"
+      rescue Exception => e
+        flash[:mensaje] = "La cédula debe ser un número. Error del Sistema: #{e}"
         redirect_to :action => :modificar_datos_personales
         return
       end

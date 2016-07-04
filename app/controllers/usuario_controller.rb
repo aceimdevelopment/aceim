@@ -168,8 +168,8 @@ class UsuarioController < ApplicationController
         flash[:mensaje] = "Cédula actualizada satisfactoriamente"
         redirect_to :controller => controlador, :action => accion
         return
-      rescue
-        flash[:mensaje] = "La cédula debe ser un número"
+      rescue Exception => e
+        flash[:mensaje] = "La cédula debe ser un número. Error del Sistema #{e}"
         redirect_to :controller => controlador, :action => accion
         return
       end
