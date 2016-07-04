@@ -33,7 +33,7 @@
     %h3
       Historial Académico
     %div.titulo
-      -if @historial.size()>0
+      -if @historial.size > 0
         =render "cursos"
       -else
         %h4{:style =>"color:#061D9E"}
@@ -43,23 +43,23 @@
     #personales
       =render "personales"
 
--if @nivelaciones.size >0 
-  #nivelaciones
-    %h3
-      Nivelación
-    %div.titulo
-      %table.tablesorter
-        %thead
-          %tr
-            %th
-              Idioma
-            %th
-              Periodo
-        %tbody
-          -@nivelaciones.each do |ni|
+  -if @nivelaciones.size >0 
+    #nivelaciones
+      %h3
+        Nivelación
+      %div.titulo
+        %table.tablesorter
+          %thead
             %tr
-              %td
-                =ni.tipo_curso.descripcion
-              %td
-                =ni.periodo_id
+              %th
+                Idioma
+              %th
+                Periodo
+          %tbody
+            -@nivelaciones.each do |ni|
+              %tr
+                %td
+                  =ni.tipo_curso.descripcion
+                %td
+                  =ni.periodo_id
 %p= link_to "Buscar otro estudiante", {:action => "index"}, {:class => 'btn_atras'}
