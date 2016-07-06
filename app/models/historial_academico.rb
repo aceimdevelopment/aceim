@@ -1,4 +1,5 @@
 # encoding: utf-8
+# OJO TEMPORALMENTE: Para ajustar a que cuenta debe depositarse revisar la función "cuenta_nueva"
 
 #creada por db2models
 class HistorialAcademico < ActiveRecord::Base
@@ -353,7 +354,7 @@ class HistorialAcademico < ActiveRecord::Base
   end 
   
   def cuenta_nueva
-    if tipo_nivel_id == "BI" || tipo_categoria_id == "TE" || tipo_categoria_id == "NI"
+    if tipo_nivel_id == 'BI' || tipo_categoria_id == 'TE' || tipo_categoria_id == 'NI' || idioma_id == 'AL' || idioma_id == 'IT'
       return "FUNDEIM"
     end
     return "ESCUELA"

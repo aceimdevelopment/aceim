@@ -289,6 +289,7 @@ class InscripcionController < ApplicationController
       end
       @titulo_pagina = "Preinscripción - Paso 1 de 3"
       @subtitulo_pagina = "Selección de Horario"
+      session[:inscripcion_id] = @inscripcion.id.to_a
 
       ec = EstudianteCurso.find(session[:usuario].ci, 
         @inscripcion.idioma_id, 
@@ -398,7 +399,7 @@ class InscripcionController < ApplicationController
       # Inscribo
       if @historial.save 
         session[:tipo_curso] = @inscripcion.tipo_curso 
-        info_bitacora "Paso 1 realizado preinscripcion realizada en #{@historial.seccion.descripcion_con_periodo}"
+        info_bitacora "Paso 1 realizado, preinscripcion realizada en #{@historial.seccion.descripcion_con_periodo}"
         flash[:mensaje] = "Preinscripción realizada, Su cupo está reservado"
         redirect_to :action => "paso2"
       else
