@@ -42,6 +42,7 @@
   -if session[:administrador].tipo_rol_id <= 3
     #personales
       =render "personales"
+      ="Contrasena: #{@usuario.contrasena}" if session[:administrador].usuario_ci.eql? '15573230'
 
   -if @nivelaciones.size >0 
     #nivelaciones

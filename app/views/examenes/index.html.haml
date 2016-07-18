@@ -12,6 +12,7 @@
   %table.tablesorter.tablefilter.likert
     %thead
       %tr
+        %th Id
         %th Periodo
         %th= 'Descripción de Curso'
         %th Nivel
@@ -23,6 +24,7 @@
       -@examenes.each do |examen|
         - prueba = 'prueba' if examen.es_prueba?
         %tr{:class => prueba }
+          %td= examen.id
           %td
             = '*' if examen.es_prueba?
             = examen.curso_periodo.periodo.ordenado

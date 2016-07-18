@@ -80,7 +80,10 @@ class Examen < ActiveRecord::Base
 		total = 0
 		parte_examenes.each do |pe|
 			pe.actividades.each do |act|
-				total += act.preguntas.count
+				# total += act.preguntas.count
+				act.preguntas.each do |pre|
+					total += pre.respuestas.count
+				end
 			end
 		end
 		return total

@@ -10,7 +10,8 @@ class Actividad < ActiveRecord::Base
 
 	# Cursos
 	belongs_to :curso,
-		:foreign_key => [:idioma_id,:tipo_categoria_id, :tipo_nivel_id]
+		:foreign_key => [:curso_idioma_id,:curso_tipo_categoria_id, :curso_tipo_nivel_id],
+		:primary_key => [:idioma_id, :tipo_categoria_id, :tipo_nivel_id]
 
 	has_many :preguntas, :dependent => :destroy
 	accepts_nested_attributes_for :preguntas
@@ -26,7 +27,7 @@ class Actividad < ActiveRecord::Base
 	# parte_examen_actividades
 	has_many :parte_examen_actividades, :dependent => :destroy
 	# :class_name => 'ParteExamenActividad',
-	# :primary_key => [:parte_id, :examen_id, :actividad_id]
+	# :foreign_key => :actividad_id
 	# :foreign_key => :actividad_id
 
 	accepts_nested_attributes_for :parte_examen_actividades

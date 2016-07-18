@@ -1,34 +1,57 @@
-%p#notice= notice
+%p
+  %b Descripcion
+.well
+  %p
+    %b Curso:
+    = @actividad.curso.descripcion 
+  %p
+    %b Tipo actividad:
+    = @actividad.tipo_actividad.descripcion
+  %p
+    %b Instrucciones:
+    = @actividad.instrucciones
+  %p
+    %b Examenes-partes a los que pertenece esta actividad:
 
-%p
-  %b Titulo:
-  = @segmento.titulo
-%p
-  %b Tipo segmento:
-  = @segmento.tipo_segmento_id
-%p
-  %b Curso idioma:
-  = @segmento.curso_idioma_id
-%p
-  %b Curso tipo categoria:
-  = @segmento.curso_tipo_categoria_id
-%p
-  %b Curso tipo nivel:
-  = @segmento.curso_tipo_nivel_id
+  %table.tablesorter.tablefilter
+    %thead
+      %th Id
+      %th Examen
+      %th Parte
 
-%h2= "Agregar Pregunta:"
-= form_for([@segmento, @segmento.preguntas.build]) do |f|
-  .field
-    = f.label :clave
+    %tbody
+      - @actividad.parte_examenes.each do |pe|
+        %td= pe.id
+        %td= " #{pe.examen.descripcion_simple} |#{pe.examen.descripcion_completa}"
+        %td= pe.parte.nombre
+
+.well
+  %p
+    %b Preguntas:
+  - @actividad.preguntas.each do |p|
+    .factura
+      %p= p.valor
+
+      %p
+        %b Opciones:
+      - p.opciones.each do |opcion|
+        %p= opcion.valor
+
+      %p
+        %b Respuestas:
+      - p.respuestas.each do |resp|
+        %p= resp.valor
+
     %br
-    = f.text_field :clave
-  .field
-    = f.label :respuesta
-    %br
-    = f.text_area :respuesta
-  .actions
-    = f.submit
+  %h2= "Agregar Pregunta:"
+  = form_for([@actividad, @actividad.preguntas.build]) do |f|
+    .field
+      = f.label :valor
+      %br
+      = f.text_field :valor
+    .actions
+      = f.submit
 
-= link_to 'Edit', edit_segmento_path(@segmento)
+= link_to 'Edit', edit_actividad_path(@actividad)
 |
-= link_to 'Back', segmentos_path
+= link_to 'Back', actividades_path

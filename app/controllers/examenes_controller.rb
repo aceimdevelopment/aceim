@@ -403,8 +403,8 @@ class ExamenesController < ApplicationController
 
     rol = session[:rol]
 
-    @titulo = "Resultado del #{@estudiante_examen.examen.descripcion_simple}"
     @examen = @estudiante_examen.examen
+    @titulo = "Resultado del #{@examen.descripcion_simple}"
 
     @total_actividades = @examen.total_actividades
     @total_preguntas = @examen.total_preguntas
