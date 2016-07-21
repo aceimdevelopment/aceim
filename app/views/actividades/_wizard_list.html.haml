@@ -1,17 +1,14 @@
 -#@editable = action_name!='presentar' or (controller_name.eql? 'examenes' and action_name!='show')
 -@editable = (action_name.eql? 'wizard_paso2' or (controller_name.eql? 'actividades' and action_name.eql? 'show'))
 
-- if @editable 
-	.factura.well
-		%h2
-			= @actividad.descripcion_sin_tipo
-		=link_to 'Editar Actividad', 'javascript:void(0)' , :class => "small btn_editar", :onclick => "$(actualizar_actividad_#{@actividad.id}).show('slow'); $(this).parent().remove();"
-		=link_to 'Eliminar Actividad', @actividad, :confirm => '¿Está Seguro?', :method => :delete, :class => "btn_eliminar small flotar_derecha"
-	=render :partial => '/actividades/form_actualizar_actividad'
--else
-	.factura.well
-		%h2
-			= @actividad.descripcion_sin_tipo
+.division_actividad
+	%p
+		%b= @actividad.descripcion_sin_tipo
+		- if @editable 	
+			=link_to 'Editar Actividad', 'javascript:void(0)' , :class => "small btn_editar", :onclick => "$(actualizar_actividad_#{@actividad.id}).show('slow'); $(this).parent().remove();"
+			=link_to 'Eliminar Actividad', @actividad, :confirm => '¿Está Seguro?', :method => :delete, :class => "btn_eliminar small flotar_derecha"
+			=render :partial => '/actividades/form_actualizar_actividad'
+
 %br
 .factura.well
 	=#Texto Agregado 
