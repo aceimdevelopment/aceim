@@ -7,9 +7,9 @@
 					%b
 						- if action_name.eql? 'wizard_paso2'
 
-							= form_tag({:controller => 'preguntas',:action => "actualizar_puntaje_respuesta"}, {:class => "inline", :remote => true} ) do
+							= form_tag({:controller => 'preguntas',:action => "actualizar_respuesta"}, {:class => "inline", :remote => true} ) do
 								= "(#{respuesta.valor})"
-								= link_to 'Eliminar Pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small", :style => 'background-color: lightsalmon;'
+								= link_to 'Eliminar Pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small flotar_derecha", :style => 'background-color: lightsalmon;'
 
 								= hidden_field_tag :id, respuesta.id
 								= hidden_field_tag :examen_id, @examen.id

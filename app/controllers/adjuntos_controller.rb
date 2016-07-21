@@ -45,16 +45,30 @@ class AdjuntosController < ApplicationController
   # POST /adjuntos
   # POST /adjuntos.json
   def create
-    @adjunto = Adjunto.new(params[:adjunto])
+    begin
+      data = params[:archivo][:datafile]
 
-    respond_to do |format|
-      if @adjunto.save
-        format.html { redirect_to @adjunto, notice: 'Adjunto was successfully created.' }
-        format.json { render json: @adjunto, status: :created, location: @adjunto }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @adjunto.errors, status: :unprocessable_entity }
-      end
+      @actividad = Actividad.find params[:actividad_id]
+
+      ext = data.original_filename.split('.').last
+      nombre = "actividad_#{@actividad.id}_adjunto_#{@actividad.adjuntos.count+1}.#{ext}"
+      archivo = "#{Rails.root}/app/assets/images/examenes/#{nombre}"
+      # archivo = "190.169.176.5/examenes/#{nombre}"
+      @adjunto = Adjunto.new
+      @adjunto.archivo = nombre
+      @adjunto.actividad_id = @actividad.id
+      @adjunto.original_filename = data.original_filename
+      data = data.tempfile
+      File.open("#{archivo}", "wb") {|file| file.write data.read}
+      flash[:mensaje] = "Archivo guardado."
+      flash[:mensaje] += "Adjunto agregado." if @adjunto.save
+    rescue Exception => e
+      flash[:mensaje] = "Error: #{e.message}"
+    end
+    unless params[:examen_id].blank?
+      redirect_to :controller => "examenes", :action => "wizard_paso2", :id => params[:examen_id]
+    else
+      redirect_to :back
     end
   end
 
@@ -110,7 +124,6 @@ class AdjuntosController < ApplicationController
   end
 
   def importar_archivo
-
     begin
       data = params[:archivo][:datafile]
 
@@ -131,7 +144,11 @@ class AdjuntosController < ApplicationController
     rescue Exception => e
       flash[:mensaje] = "Error: #{e.message}"
     end
-    redirect_to :controller => "examenes", :action => "wizard_paso2", :id => params[:examen_id]
+    unless params[:examen_id].blank?
+      redirect_to :controller => "examenes", :action => "wizard_paso2", :id => params[:examen_id]
+    else
+      redirect_to :back
+    end
   end
 
 end

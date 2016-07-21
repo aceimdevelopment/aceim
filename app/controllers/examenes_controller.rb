@@ -29,6 +29,7 @@ class ExamenesController < ApplicationController
     @titulo = "Vista Previa del Examen"
     @examen = Examen.find(params[:id])
     @host = "#{request.protocol}#{request.host_with_port}"+HOST
+    @parte_examenes = @examen.parte_examenes.joins(:parte).order('parte.orden ASC')
 
     respond_to do |format|
       format.html # show.html.erb
@@ -90,6 +91,7 @@ class ExamenesController < ApplicationController
           exito += 1 if @examen.parte_examenes.create(:parte_id => parte.id)  
         end 
         resultado_bloques = "#{exito} Partes del examen añadidas."
+        info_bitacora "Examen Creado con id=#{@examen.id}. #{exito} examen_partes creadas."
         flash[:mensaje] = "Datos básicos almacenados con éxito.#{resultado_bloques}"
         format.html { redirect_to :action => 'wizard_paso2', :id => @examen.id}
         format.json { render :json => @examen, :status => :created, :location => @examen }
@@ -148,7 +150,7 @@ class ExamenesController < ApplicationController
     @titulo = "Nuevo Examen"
     @examen = Examen.find(id)
     @actividad = Actividad.new
-
+    @parte_examenes = @examen.parte_examenes.joins(:parte).order('parte.orden ASC')
   end
 
   #Funcion para la generación de EstudianteExamenes tanto para examenes de pruebas como oficiales 
@@ -221,23 +223,6 @@ class ExamenesController < ApplicationController
     redirect_to :action => 'wizard_paso2', :id => "#{params[:parte_examen][:examen_id]}"
   end
 
-  def actualizar_actividad
-    @actividad = Actividad.find(params[:id])
-    if @actividad.update_attributes(params[:actividad])
-      flash[:mensaje] = "Datos elementales de la actividad actualizados"
-    else
-      flash[:mensaje] = "No se pudo actualizar los datos de la actividad"
-    end
-    redirect_to :back
-  end
-
-  def eliminar_actividad
-    @actividad = Actividad.find(params[:id])
-    flash[:mensaje] = "Actividad Eliminada con éxito" if @actividad.destroy
-
-    redirect_to :back
-  end
-
   # Funcionalidades CRUD propias de las preguntas. (Puede trasladarse al controlador apropiado)
   def eliminar_pregunta
     @pregunta = Pregunta.find(params[:id])
@@ -299,122 +284,122 @@ class ExamenesController < ApplicationController
 
 # PRESENTAR EXAMENES
 
-  def indicaciones
-    # @estudiante_examen = EstudianteExamen.first
-    # La linea anterior debe ser sustituida con esta:
+  # def indicaciones
+  #   # @estudiante_examen = EstudianteExamen.first
+  #   # La linea anterior debe ser sustituida con esta:
 
-    @usuario = session[:usuario]
-    @examen_id = params[:id]
-    id = "#{@usuario.ci},#{@examen_id}"
+  #   @usuario = session[:usuario]
+  #   @examen_id = params[:id]
+  #   id = "#{@usuario.ci},#{@examen_id}"
 
-    # id = "21121853,#{@examen_id}" if session[:rol].eql? 'Administrador'
+  #   # id = "21121853,#{@examen_id}" if session[:rol].eql? 'Administrador'
 
-    @estudiante_examen = EstudianteExamen.find id
-    redirect_to :action => 'index' if @estudiante_examen.blank?
+  #   @estudiante_examen = EstudianteExamen.find id
+  #   redirect_to :action => 'index' if @estudiante_examen.blank?
 
-  end
+  # end
 
-  def presentar
-    usuario = session[:usuario]
+  # def presentar
+  #   usuario = session[:usuario]
 
-    @examen = Examen.where(:id => params[:id]).limit(1).first
+  #   @examen = Examen.where(:id => params[:id]).limit(1).first
 
-    if not @examen 
+  #   if not @examen 
 
-      flash[:mensaje] = 'Examen no encontrado'
-      redirect_to :controller => 'principal'
-    else
+  #     flash[:mensaje] = 'Examen no encontrado'
+  #     redirect_to :controller => 'principal'
+  #   else
 
-      @estudiante_examen = @examen.estudiante_examenes.where(:estudiante_ci => usuario.ci).limit(1).first
-      @estudiante_examen.tipo_estado_estudiante_examen_id = 'PREPARADO' if @examen.prueba
-      if @estudiante_examen and @examen.se_puede_presentar? and @estudiante_examen.preparado? or @estudiante_examen.resagado?
-        @estudiante_examen.tipo_estado_estudiante_examen_id = 'INICIADO'
-        @estudiante_examen.tiempo = @examen.duracion if @estudiante_examen.tiempo.nil? or (@estudiante_examen.tiempo.eql? 0) or (@examen.prueba)
-        @estudiante_examen.save
-        # session[:tiempo] = @examen.duracion
-        @titulo = @examen.descripcion_simple
-        if @examen.prueba
-          @estudiante_examen.estudiante_examen_respuestas.delete_all
-        end
-        # session[:estudiante_examen] = @estudiante_examen
-        session[:estudiante_examen_id] = @estudiante_examen.id
-        @estudiante_examen.estado_parte_id = @examen.parte_examenes.first.parte_id
-        # @estudiante_examen.save!
+  #     @estudiante_examen = @examen.estudiante_examenes.where(:estudiante_ci => usuario.ci).limit(1).first
+  #     @estudiante_examen.tipo_estado_estudiante_examen_id = 'PREPARADO' if @examen.prueba
+  #     if @estudiante_examen and @examen.se_puede_presentar? and @estudiante_examen.preparado? or @estudiante_examen.resagado?
+  #       @estudiante_examen.tipo_estado_estudiante_examen_id = 'INICIADO'
+  #       @estudiante_examen.tiempo = @examen.duracion if @estudiante_examen.tiempo.nil? or (@estudiante_examen.tiempo.eql? 0) or (@examen.prueba)
+  #       @estudiante_examen.save
+  #       # session[:tiempo] = @examen.duracion
+  #       @titulo = @examen.descripcion_simple
+  #       if @examen.prueba
+  #         @estudiante_examen.estudiante_examen_respuestas.delete_all
+  #       end
+  #       # session[:estudiante_examen] = @estudiante_examen
+  #       session[:estudiante_examen_id] = @estudiante_examen.id
+  #       @estudiante_examen.estado_parte_id = @examen.parte_examenes.first.parte_id
+  #       # @estudiante_examen.save!
 
-        @host = "#{request.protocol}#{request.host_with_port}"+HOST
-      else
-        flash[:mensaje] = 'Examen no disponible'
-        redirect_to :controller => 'principal'
-      end
-    end
-  end
+  #       @host = "#{request.protocol}#{request.host_with_port}"+HOST
+  #     else
+  #       flash[:mensaje] = 'Examen no disponible'
+  #       redirect_to :controller => 'principal'
+  #     end
+  #   end
+  # end
 
-  def guardar_respuesta
-    eer = params[:eer]
-    estudiante_ci = eer[:estudiante_ci]
-    examen_id = eer[:examen_id]
-    @respuesta_id = eer[:respuesta_id]
-    @eer = EstudianteExamenRespuesta.find_or_initialize_by_estudiante_ci_and_examen_id_and_respuesta_id(estudiante_ci,examen_id,@respuesta_id)
-    @eer.update_attributes eer
+  # def guardar_respuesta
+  #   eer = params[:eer]
+  #   estudiante_ci = eer[:estudiante_ci]
+  #   examen_id = eer[:examen_id]
+  #   @respuesta_id = eer[:respuesta_id]
+  #   @eer = EstudianteExamenRespuesta.find_or_initialize_by_estudiante_ci_and_examen_id_and_respuesta_id(estudiante_ci,examen_id,@respuesta_id)
+  #   @eer.update_attributes eer
 
-    @eer.estudiante_examen.tiempo = params[:tiempo].to_i + 1
-    @eer.estudiante_examen.transfrir_nota_escrita2_a_historial if not @eer.estudiante_examen.examen.prueba
-    @eer.estudiante_examen.save
-    respond_to do |format|
-      format.html {redirect_to :back}
-      format.js
-    end
+  #   @eer.estudiante_examen.tiempo = params[:tiempo].to_i + 1
+  #   @eer.estudiante_examen.transfrir_nota_escrita2_a_historial if not @eer.estudiante_examen.examen.prueba
+  #   @eer.estudiante_examen.save
+  #   respond_to do |format|
+  #     format.html {redirect_to :back}
+  #     format.js
+  #   end
     
-  end
+  # end
 
-  def completar
-    @ee = EstudianteExamen.find session[:estudiante_examen_id].to_s
-    @ee.tipo_estado_estudiante_examen_id = 'COMPLETADO' #unless @estudiante_examen.examen.prueba
-    @ee.tiempo = params[:tiempo]
+  # def completar
+  #   @ee = EstudianteExamen.find session[:estudiante_examen_id].to_s
+  #   @ee.tipo_estado_estudiante_examen_id = 'COMPLETADO' #unless @estudiante_examen.examen.prueba
+  #   @ee.tiempo = params[:tiempo]
 
-    # PENDIENTE POR GUARDAR EN EXAMEN TEORICO 2 LA NOTA @estudiante_examen.total_puntos_correctos_base_20
+  #   # PENDIENTE POR GUARDAR EN EXAMEN TEORICO 2 LA NOTA @estudiante_examen.total_puntos_correctos_base_20
 
-    flash[:mensaje] = ""
+  #   flash[:mensaje] = ""
 
-    if @ee.save
-      session[:estudiante_examen_id] = nil
-      flash[:mensaje] = 'Examen Completado con Éxito.'
-      puts 'Examen Completado con Éxito.'
-    end
+  #   if @ee.save
+  #     session[:estudiante_examen_id] = nil
+  #     flash[:mensaje] = 'Examen Completado con Éxito.'
+  #     puts 'Examen Completado con Éxito.'
+  #   end
 
-    @ee.transfrir_nota_escrita2_a_historial unless @ee.examen.prueba
-    # unless @ee.examen.prueba
-    #   if @ee.transfrir_nota_escrita2_a_historial
-    #     flash[:mensaje] += 'Calificación asignada.' 
-    #   else
-    #     flash[:mensaje] += 'Su calificación no pudo ser asignada. (Notifique al personal administrativo para tomar las correcciones respectivas).'
-    #   end
-    # end
+  #   @ee.transfrir_nota_escrita2_a_historial unless @ee.examen.prueba
+  #   # unless @ee.examen.prueba
+  #   #   if @ee.transfrir_nota_escrita2_a_historial
+  #   #     flash[:mensaje] += 'Calificación asignada.' 
+  #   #   else
+  #   #     flash[:mensaje] += 'Su calificación no pudo ser asignada. (Notifique al personal administrativo para tomar las correcciones respectivas).'
+  #   #   end
+  #   # end
 
-    redirect_to :action => :resultado, :id => @ee.id.to_s
+  #   redirect_to :action => :resultado, :id => @ee.id.to_s
 
-  end
+  # end
 
-  def resultado
-    # Variables Globales
-    @estudiante_examen = EstudianteExamen.find params[:id].to_s
+  # def resultado
+  #   # Variables Globales
+  #   @estudiante_examen = EstudianteExamen.find params[:id].to_s
 
-    @usuario = session[:usuario]
+  #   @usuario = session[:usuario]
 
-    rol = session[:rol]
+  #   rol = session[:rol]
 
-    @examen = @estudiante_examen.examen
-    @titulo = "Resultado del #{@examen.descripcion_simple}"
+  #   @examen = @estudiante_examen.examen
+  #   @titulo = "Resultado del #{@examen.descripcion_simple}"
 
-    @total_actividades = @examen.total_actividades
-    @total_preguntas = @examen.total_preguntas
-    @total_puntos = @examen.puntaje_total
+  #   @total_actividades = @examen.total_actividades
+  #   @total_preguntas = @examen.total_preguntas
+  #   @total_puntos = @examen.puntaje_total
     
-    @total_puntos_correctos = @estudiante_examen.total_puntos_correctos
-    @total_respuestas_correctas = @estudiante_examen.total_respuestas_correctas
-    @total_respuestas_incorrectas = @total_preguntas - @total_respuestas_correctas
+  #   @total_puntos_correctos = @estudiante_examen.total_puntos_correctos
+  #   @total_respuestas_correctas = @estudiante_examen.total_respuestas_correctas
+  #   @total_respuestas_incorrectas = @total_preguntas - @total_respuestas_correctas
 
-  end
+  # end
 
   def transferir_notas_a_historiales
     @estudiante_examenes = EstudianteExamen.where("tipo_estado_estudiante_examen_id = 'COMPLETADO' OR tipo_estado_estudiante_examen_id = 'INICIADO'").delete_if{|ee| ee.examen.prueba}

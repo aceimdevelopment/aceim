@@ -1,0 +1,28 @@
+-@editable = (action_name!='presentar' and action_name!= 'show')
+.well
+	%b{:style => 'float:left;'}= "Duración: #{@examen.duracion} minutos"
+	.center
+		%h2= @examen.titulo
+		%h3#puntaje_total= "Puntaje Total: #{@examen.puntaje_total} / 80" unless action_name.eql? 'presentar'
+	#parte
+		%ul
+			- @parte_examenes.each do |parte_examen|
+				- if parte_examen.actividades.count > 0 or @editable 
+					%li=  link_to parte_examen.parte.nombre, "##{parte_examen.parte_id}", :class => 'btn_idiomas'
+		- @parte_examenes.each do |parte_examen|
+			- if parte_examen.actividades.count > 0 or @editable
+				%div{:id => parte_examen.parte_id}
+					=#Actividades
+					- @actividades = parte_examen.actividades
+					- @actividades.each do |actividad|
+						- @actividad = actividad
+						= render :partial => '/actividades/wizard_list', :locals => {:parte_examen => parte_examen}
+					- if @editable
+						%div{:id => "form_actividad_#{parte_examen.parte_id}", :style => 'display:none;'}
+							=render :partial => '/actividades/wizard_form', :locals => {:parte_examen => parte_examen}
+						.division
+						= link_to "Agregar Actividad en Bloque de #{parte_examen.parte.nombre}" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_actividad_"+parte_examen.parte_id+").show('slow'); $(this).remove();"
+
+:javascript
+	
+	$("#parte").tabs();

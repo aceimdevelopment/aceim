@@ -32,7 +32,7 @@
 					%input.btn_agregar.small{:type => 'submit', :value => 'Agregar Pregunta/Ítem', :name => 'commit'}
 	
 .division
-= link_to " Agregar Pregunta" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_pregunta_"+@actividad.id.to_s+").show('slow'); $(this).remove();" 
+= link_to " Agregar Pregunta/Ítem" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_pregunta_"+@actividad.id.to_s+").show('slow'); $(this).remove();" 
 
 
 :javascript

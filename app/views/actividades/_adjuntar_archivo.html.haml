@@ -2,32 +2,31 @@
 - @host = "#{request.protocol}#{request.host_with_port}/aceim/assets/examenes/"
 
 - @actividad.adjuntos.each do |adjunto|
-	
 	- ext = adjunto.archivo.split('.').last
 	- imagenes = ['png', 'jpeg', 'jpg']
 	- audios = ['mp3', 'mpeg', 'ogg', 'wav']
-
 	.well.small
-		- if imagenes.include? ext 
-			%h3
-				= "Imagen Adjunta: #{adjunto.archivo} (#{adjunto.original_filename})"
-				= link_to 'Eliminar Imagen Adjunta', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => 'btn_eliminar small derecha'
-			= image_tag @host+adjunto.archivo, :size => '200x100'
+		- if imagenes.include? ext
+			- if @editable 
+				= link_to 'Eliminar Esta Imagen Adjunta', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => 'btn_eliminar small flotar_derecha'
+			= image_tag @host+adjunto.archivo, :style => 'padding: 0 130px; width: 70%;' 
 
 		- elsif audios.include? ext
-			%h3
-				= "Audio Adjunto: #{adjunto.archivo} (#{adjunto.original_filename})"
-				= link_to 'Eliminar Audio Adjunto', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => ' btn_eliminar small derecha' 
+			- if @editable
+				= link_to 'Eliminar Este Audio Adjunto', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => ' btn_eliminar small flotar_derecha' 
 			= audio_tag @host+adjunto.archivo, :class => "audio-play", :controls => true
-			
 
 		- else
-			= "Formato Desconocido: #{adjunto.archivo}"
-			= link_to 'Eliminar Archivo Adjunto', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => 'btn_eliminar small'
+			%h2
+				= "Formato Desconocido: #{adjunto.archivo}"
+			- if @editable 
+				= link_to 'Eliminar Archivo Adjunto', adjunto, :confirm => '¿Está Seguro?', :method => :delete, :class => 'btn_eliminar small flotar_derecha'
 
-= link_to 'Incluir Archivo (Audio/Imagen) Adjunto', 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_archivo_#{@actividad.id}).show('slow'); $(this).remove();"
 
-%div{:id => "form_archivo_#{@actividad.id}", :style => 'display:none;'}
-	= render 'adjuntos/importar'
+- if @editable
+	= link_to 'Incluir Archivo (Audio/Imagen) Adjunto', 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "$(form_archivo_#{@actividad.id}).show('slow'); $(this).remove();"
 
-.division
+	%div{:id => "form_archivo_#{@actividad.id}", :style => 'display:none;'}
+		= render 'adjuntos/importar'
+
+	%br

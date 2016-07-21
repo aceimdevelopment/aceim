@@ -20,7 +20,7 @@ class TextosController < ApplicationController
         # format.html { render :action => "new" }
         # format.json { render :json => @texto.errors, :status => :unprocessable_entity }
       end
-      format.html { redirect_to :controller => "examenes", :action => "wizard_paso2", :id => params[:examen_id]}
+      format.html { redirect_to :back}
     end
   end
 
@@ -33,7 +33,7 @@ class TextosController < ApplicationController
       else
         flash[:mensaje] = 'Error intentando actualizar el texto. Favor verifique e intente de nuevo'
       end
-      format.html { redirect_to :controller => "examenes", :action => "wizard_paso2", :id => params[:examen_id]}
+      format.html { redirect_to :back}
     end
   end
 

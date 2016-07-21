@@ -172,15 +172,28 @@ class PreguntasController < ApplicationController
 
   end
 
-  def actualizar_puntaje_respuesta
+  def actualizar_respuesta
     @examen = Examen.find(params[:examen_id])
     @respuesta = Respuesta.find(params[:id])
-    @respuesta.update_attribute :puntaje, params[:puntaje]
+    @respuesta.update_attributes params[:respuesta]
     respond_to do |format|
       format.html {redirect_to :back}
       format.js
     end
   end
+
+
+  def actualizar_valor_pregunta
+    @examen = Examen.find(params[:examen_id])
+    @pregunta = Pregunta.find(params[:id])
+    @pregunta.update_attribute :valor, params[:valor]
+    info_bitacora "Usuario: #{session[:usuario].ci} actualizó la pregunta #{@pregunta.id} con valor: #{params[:valor]}"
+    respond_to do |format|
+      format.html {redirect_to :back}
+      format.js
+    end
+  end
+
 
 
 end

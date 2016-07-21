@@ -1,57 +1,78 @@
-%p
-  %b Descripcion
-.well
-  %p
-    %b Curso:
-    = @actividad.curso.descripcion 
-  %p
-    %b Tipo actividad:
-    = @actividad.tipo_actividad.descripcion
-  %p
-    %b Instrucciones:
-    = @actividad.instrucciones
-  %p
-    %b Examenes-partes a los que pertenece esta actividad:
+=javascript_include_tag "elrte.min.js"
+=javascript_include_tag "/aceim/assets/elrte.min"
 
-  %table.tablesorter.tablefilter
-    %thead
-      %th Id
-      %th Examen
-      %th Parte
+=link_to "Regresar", actividades_path, :class => 'btn_atras'
 
-    %tbody
-      - @actividad.parte_examenes.each do |pe|
-        %td= pe.id
-        %td= " #{pe.examen.descripcion_simple} |#{pe.examen.descripcion_completa}"
-        %td= pe.parte.nombre
+=render :partial => 'wizard_list'
+%br
+=link_to "Regresar", actividades_path, :class => 'btn_atras'
 
-.well
-  %p
-    %b Preguntas:
-  - @actividad.preguntas.each do |p|
-    .factura
-      %p= p.valor
+:javascript
+  
+  $("#parte").tabs();
 
-      %p
-        %b Opciones:
-      - p.opciones.each do |opcion|
-        %p= opcion.valor
+  $( ".btn" ).button();
+  
+  $( ".btn_editar").button({
+    icons: {
+    primary: "ui-icon-pencil"
+    }
+  }); 
+  
+  $( ".btn_eliminar").button({
+    icons: {
+    primary: "ui-icon-trash"
+    }
+  });
 
-      %p
-        %b Respuestas:
-      - p.respuestas.each do |resp|
-        %p= resp.valor
 
-    %br
-  %h2= "Agregar Pregunta:"
-  = form_for([@actividad, @actividad.preguntas.build]) do |f|
-    .field
-      = f.label :valor
-      %br
-      = f.text_field :valor
-    .actions
-      = f.submit
+  $( ".btn_previsualizar").button({
+    icons: {
+    primary: "ui-icon-arrow-4-diag "
+    }
+  });
 
-= link_to 'Edit', edit_actividad_path(@actividad)
-|
-= link_to 'Back', actividades_path
+  $( ".btn_atras").button({
+    icons: {
+    primary: "ui-icon-carat-1-w"
+    }
+  });
+
+  $( ".btn_agregar").button({
+    icons: {
+    primary: "ui-icon-circle-plus"
+    }
+  });
+  
+  $( ".btn_remover").button({
+    icons: {
+    primary: " ui-icon-circle-minus"
+    }
+  }); 
+  
+  $( ".radio" ).buttonset();
+
+  $(".form").validate();
+
+  function eliminar_pregunta(id, actividad_id){
+    return $.get("/aceim/preguntas/"+"?data-method=delete",   
+      function(data){ alert("Data: " + data + "\nStatus: " + status);} );
+  };
+
+  function editar_texto(actividad_id, div){
+    var opts = {
+      absoluteURLs: false,
+      cssClass : 'el-rte',
+      lang     : 'es',
+      width    : 600,
+      height   : 350,
+      toolbar  : 'maxi' // Se pueden usar las siguientes opciones: 'maxi',tiny', 'compact', 'normal'
+    }
+
+    $('#form_editar_texto_'+actividad_id).show('slow');
+    $('#form_editar_texto_'+actividad_id).addClass('well');
+
+    $('#contenido_texto_'+actividad_id).elrte(opts);
+    $(div).parent().parent().remove();
+
+  };

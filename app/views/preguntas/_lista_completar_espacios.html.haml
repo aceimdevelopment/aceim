@@ -3,25 +3,42 @@
 		- @preguntas.each_with_index do |pregunta,i|
 			- respuesta = pregunta.respuestas.first.valor if pregunta.respuestas.first 
 			%li
-				%div= raw pregunta.valor				
-				- if action_name.eql? 'wizard_paso2' 
-					= link_to 'Eliminar pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small", :style => 'background-color: lightsalmon;'
 
+				- if action_name.eql? 'wizard_paso2' 
+					= link_to 'Eliminar pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small flotar_derecha", :style => 'background-color: lightsalmon;'
+					%br
+					%div
+						= form_tag({:controller => 'preguntas',:action => "actualizar_valor_pregunta"}, {:class => "inline", :remote => true} ) do
+							= hidden_field_tag :id, pregunta.id
+							= hidden_field_tag :examen_id, @examen.id						
+							= text_field_tag :valor, pregunta.valor, :placeholder => "Pregunta", :class => 'raw6', :required => true
+							= submit_tag "Actualizar Pregunta", :id => "submit", :name => "submit", :class => "btn small", :disable_with => "Actualizando..."
+						.span1{:id => "pregunta_#{pregunta.id}", :style => 'padding:3px 3px; margin:2px 0px;'}
+
+				- else
+					= raw pregunta.valor
 				- @respuestas = pregunta.respuestas
 				%ol	
 					- @respuestas.each do |respuesta|
 						%li
 							- if action_name.eql? 'wizard_paso2'
 								%p
-									= form_tag({:controller => 'preguntas',:action => "actualizar_puntaje_respuesta"}, {:class => "inline", :remote => true} ) do
+									= form_tag({:controller => 'preguntas',:action => "actualizar_respuesta"}, {:class => "inline", :remote => true} ) do
+
 										= hidden_field_tag :id, respuesta.id
 										= hidden_field_tag :examen_id, @examen.id
-										= text_field_tag nil, respuesta.valor, {:readonly => true}
-										=" / #{respuesta.valor_alternativa1}" unless respuesta.valor_alternativa1.blank?
-										=" / #{respuesta.valor_alternativa2}" unless respuesta.valor_alternativa2.blank?
-										= '/ Puntaje:'
-										= number_field_tag :puntaje, respuesta.puntaje, {:min => 1, :max => 20, :step => 0.5}
-										= submit_tag "actualizar", :id => "submit", :name => "submit", :class => "btn small", :disable_with => "Actualizando..."
+										= text_field_tag "respuesta[valor]", respuesta.valor, :placeholder => "Respuesta", :required => true  #, {:readonly => true}
+										
+										="/"
+										= text_field_tag "respuesta[valor_alternativa1]", respuesta.valor_alternativa1, :placeholder => "Respuesta Alternativa 1", :class => 'raw2'  
+										="/"
+										=#" / #{respuesta.valor_alternativa1}" unless respuesta.valor_alternativa1.blank?
+										= text_field_tag "respuesta[valor_alternativa2]", respuesta.valor_alternativa2, :placeholder => "Respuesta Alternativa 2" 
+										="."
+										=#" / #{respuesta.valor_alternativa2}" unless respuesta.valor_alternativa2.blank?
+										=# '/ Puntaje:'
+										= number_field_tag "respuesta[puntaje]", respuesta.puntaje, {:min => 1, :max => 20, :step => 0.5}
+										= submit_tag "Actualizar Respuesta", :id => "submit", :name => "submit", :class => "btn small", :disable_with => "Actualizando..."
 									.span2{:id => "respuesta_#{respuesta.id}", :style => 'padding:3px 3px; margin:2px 0px;'}
 							- elsif action_name.eql? 'presentar'
 

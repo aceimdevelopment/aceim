@@ -6,7 +6,7 @@
       %a.desplegable{:href=>"#"} Gestionar Examenes
       %ul.subnavegador
         %p
-          =link_to "Nuevo Examen", :controller => 'admin_examenes', :action => 'wizard_paso1'
+          =link_to 'Nuevo Examen', new_examen_path 
         %p
           =link_to "Listado de Examenes", examenes_path
 

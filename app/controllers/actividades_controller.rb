@@ -71,31 +71,50 @@ class ActividadesController < ApplicationController
   end
 
 
+  # def actualizar_actividad
+  #   @actividad = Actividad.find(params[:id])
+  #   if @actividad.update_attributes(params[:actividad])
+  #     flash[:mensaje] = "Datos elementales de la actividad actualizados"
+  #   else
+  #     flash[:mensaje] = "No se pudo actualizar los datos de la actividad"
+  #   end
+  #   redirect_to :back
+  # end
+
+  # def eliminar_actividad
+  #   @actividad = Actividad.find(params[:id])
+  #   flash[:mensaje] = "Actividad Eliminada con éxito" if @actividad.destroy
+
+  #   redirect_to :back
+  # end
+
+
+
   # PUT /actividades/1
   # PUT /actividades/1.json
   def update
     @actividad = Actividad.find(params[:id])
-
-    respond_to do |format|
-      if @actividad.update_attributes(params[:actividad])
-        format.html { redirect_to @actividad, :notice => 'actividad actualizada correctamente.' }
-        format.json { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.json { render :json => @actividad.errors, :status => :unprocessable_entity }
-      end
+    if @actividad.update_attributes(params[:actividad])
+      info_bitacora "Usuario: #{session[:usuario].ci} actualizó datos elementales de la actividad #{@actividad.id} actualizados."
+      flash[:mensaje] = "Datos elementales de la actividad actualizados"
+    else
+      flash[:mensaje] = "No se pudo actualizar los datos de la actividad"
     end
+    redirect_to :back
   end
 
   # DELETE /actividades/1
   # DELETE /actividades/1.json
   def destroy
-    @actividad = actividad.find(params[:id])
-    @actividad.destroy
-
-    respond_to do |format|
-      format.html { redirect_to actividades_url }
-      format.json { head :ok }
+    @actividad = Actividad.find(params[:id])
+    actividad_id = @actividad.id
+    if @actividad.destroy
+      info_bitacora "Usuario: #{session[:usuario].ci} eliminó actividad #{actividad_id}."
+      flash[:mensaje] = "Actividad Eliminada con éxito" 
     end
+    retorno = 'index'
+    retorno = params[:url] if params[:url]
+
+    redirect_to :action => retorno
   end
 end

@@ -1,0 +1,10 @@
+
+/ a partir de aqui seria el render plantilla_examen
+=render :partial => '/examenes/plantilla_examen'
+
+%h2=link_to "He Terminado el Examen", {:action =>'completar', :id => @estudiante_examen.id.to_s}, {:class => 'btn flotar_derecha', :data =>  { :confirm => '¿Confirma que ha finalizado el Examen. Este proceso es irreversible?' }, :id => 'terminar'}
+
+:javascript
+  
+  $("#parte").tabs();
+
