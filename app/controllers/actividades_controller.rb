@@ -112,9 +112,7 @@ class ActividadesController < ApplicationController
       info_bitacora "Usuario: #{session[:usuario].ci} eliminó actividad #{actividad_id}."
       flash[:mensaje] = "Actividad Eliminada con éxito" 
     end
-    retorno = 'index'
-    retorno = params[:url] if params[:url]
 
-    redirect_to :action => retorno
+    redirect_to :back 
   end
 end

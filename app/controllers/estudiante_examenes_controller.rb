@@ -59,24 +59,23 @@ class EstudianteExamenesController < ApplicationController
 	end
 
 	def guardar_respuesta
-	eer = params[:eer]
-	estudiante_ci = eer[:estudiante_ci]
-	examen_id = eer[:examen_id]
-	@respuesta_id = eer[:respuesta_id]
-	@eer = EstudianteExamenRespuesta.find_or_initialize_by_estudiante_ci_and_examen_id_and_respuesta_id(estudiante_ci,examen_id,@respuesta_id)
-	@eer.update_attributes eer
+		eer = params[:eer]
+		estudiante_ci = eer[:estudiante_ci]
+		examen_id = eer[:examen_id]
+		@respuesta_id = eer[:respuesta_id]
+		@eer = EstudianteExamenRespuesta.find_or_initialize_by_estudiante_ci_and_examen_id_and_respuesta_id(estudiante_ci,examen_id,@respuesta_id)
+		@eer.update_attributes eer
 
-	@eer.estudiante_examen.tiempo = params[:tiempo].to_i + 1
-	@eer.estudiante_examen.transfrir_nota_escrita2_a_historial if not @eer.estudiante_examen.examen.prueba
-	@eer.estudiante_examen.save
+		@eer.estudiante_examen.tiempo = params[:tiempo].to_i + 1
+		@eer.estudiante_examen.transfrir_nota_escrita2_a_historial if not @eer.estudiante_examen.examen.prueba
+		@eer.estudiante_examen.save
 
-	info_bitacora "respuesta guardada: #{@eer.id}"
+		info_bitacora "respuesta guardada: #{@eer.id}"
 
-	respond_to do |format|
-	  format.html {redirect_to :back}
-	  format.js
-	end
-
+		respond_to do |format|
+		  format.html {redirect_to :back}
+		  format.js
+		end
 	end
 
 	def completar

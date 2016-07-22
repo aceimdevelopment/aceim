@@ -175,6 +175,16 @@ class PreguntasController < ApplicationController
   def actualizar_respuesta
     @examen = Examen.find(params[:examen_id])
     @respuesta = Respuesta.find(params[:id])
+
+    if params[:opciones]
+      opciones = params[:opciones]
+
+      opciones.each do |opcion|
+        @opcion = Opcion.find opcion[0]
+        @opcion.update_attribute :valor, opcion[1]
+      end 
+    end
+
     @respuesta.update_attributes params[:respuesta]
     respond_to do |format|
       format.html {redirect_to :back}
@@ -188,6 +198,18 @@ class PreguntasController < ApplicationController
     @pregunta = Pregunta.find(params[:id])
     @pregunta.update_attribute :valor, params[:valor]
     info_bitacora "Usuario: #{session[:usuario].ci} actualizó la pregunta #{@pregunta.id} con valor: #{params[:valor]}"
+    respond_to do |format|
+      format.html {redirect_to :back}
+      format.js
+    end
+  end
+
+  def validar_respuesta
+    # @examen = Examen.find params[:examen_id]
+    @respuesta = Respuesta.find params[:respuesta][:id]
+    @correcta = "Incorrecta"
+    @correcta = "Correcta" if @respuesta.correcta? params[:respuesta][:valor] 
+
     respond_to do |format|
       format.html {redirect_to :back}
       format.js

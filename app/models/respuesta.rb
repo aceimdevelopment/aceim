@@ -28,4 +28,17 @@ class Respuesta < ActiveRecord::Base
 		return valor
 	end
 
+	def correcta? (valor_x)
+		casos = false
+		#Casos elementales
+		casos = true if valor.eql? valor_x
+		casos = true if valor_alternativa1.eql? valor_x
+		casos = true if valor_alternativa2.eql? valor_x
+		# Casos comparacion de caracteres (IqualIgnoreCase)
+		casos = true if valor and valor.casecmp(valor_x).zero?
+		casos = true if valor_alternativa1 and valor_alternativa1.casecmp(valor_x).zero?
+		casos = true if valor_alternativa2 and valor_alternativa2.casecmp(valor_x).zero?
+		return casos
+	end
+
 end

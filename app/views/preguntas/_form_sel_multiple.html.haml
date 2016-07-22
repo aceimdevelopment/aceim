@@ -2,7 +2,7 @@
 	%h2= "Nueva Preguta/Ítem:"
 	= form_tag "/aceim/preguntas/agregar_sel_multiple" do
 		=  hidden_field_tag :actividad_id, @actividad.id 
-		=  hidden_field_tag :examen_id, @examen_id
+		=  hidden_field_tag :examen_id, @examen.id if @examen
 		=  hidden_field_tag "pregunta[actividad_id]", @actividad.id 
 		%table
 			%tr.req

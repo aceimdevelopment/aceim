@@ -5,25 +5,49 @@
 			%li
 				%p
 					%b
-						- if action_name.eql? 'wizard_paso2'
 
-							= form_tag({:controller => 'preguntas',:action => "actualizar_respuesta"}, {:class => "inline", :remote => true} ) do
-								= "(#{respuesta.valor})"
-								= link_to 'Eliminar Pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small flotar_derecha", :style => 'background-color: lightsalmon;'
+						- if action_name.eql? 'wizard_paso2' 
+							= link_to 'Eliminar pregunta', {:action => 'eliminar_pregunta',:id => pregunta.id}, :data =>  { :confirm => '¿Está seguro?' }, :class => "btn_eliminar small flotar_derecha", :style => 'background-color: lightsalmon;'
+							%div
+								= form_tag({:controller => 'preguntas',:action => "actualizar_valor_pregunta"}, {:class => "inline", :remote => true} ) do
+									= hidden_field_tag :id, pregunta.id
+									= hidden_field_tag :examen_id, @examen.id						
+									= text_field_tag :valor, pregunta.valor, :placeholder => "Pregunta", :class => 'raw4', :required => true
+									= submit_tag "Actualizar Pregunta", :id => "submit", :name => "submit", :class => "btn small", :disable_with => "Actualizando..."
+								.span1{:id => "pregunta_#{pregunta.id}", :style => 'padding:3px 3px; margin:2px 0px;'}
 
-								= hidden_field_tag :id, respuesta.id
-								= hidden_field_tag :examen_id, @examen.id
-								= '/ Puntaje:'
-								= number_field_tag :puntaje, respuesta.puntaje, {:min => 1, :max => 20, :step => 0.5}
-								= submit_tag "actualizar", :id => "submit", :name => "submit", :class => "btn small", :disable_with => "Actualizando..."
-							.span2{:id => "respuesta_#{respuesta.id}", :style => 'padding:3px 3px; margin:2px 0px;'}
+
 						- else
 							= raw pregunta.valor
 							= raw "(#{pregunta.respuestas.first.valor})" if controller_name.eql? 'estudiante_examenes'
-
 				- @opciones = pregunta.opciones
-				
-				- if action_name.eql? 'presentar'
+
+				- if action_name.eql? 'wizard_paso2'
+					.well
+						= form_tag({:controller => 'preguntas',:action => "actualizar_respuesta"}, {:class => "inline"} ) do
+
+							= hidden_field_tag :tipo, 'sel_multiple'
+							= hidden_field_tag :id, respuesta.id
+							= hidden_field_tag :examen_id, @examen.id if @examen
+							Opciones:
+							%div{:id => "opciones_respuesta_#{respuesta.id}"}
+								- @opciones.each do |opc|
+									%br
+									= text_field_tag "opciones[#{opc.id}][#{opc.valor}]", opc.valor, {:name => "opciones[#{opc.id}]", :style => 'width: 300px;text-decoration: underline;'}
+								=# link_to " Opciones" , 'javascript:void(0)' , :class => "btn_agregar small", :onclick => "agregar_opcion_respuesta(#{respuesta.id});"
+							%br
+							Opción Correcta:
+							%br
+							= text_field_tag "respuesta[valor]", respuesta.valor, :placeholder => "Respuesta", :required => true, :style => 'text-decoration: underline;'										
+							=". Puntaje: "
+
+							= number_field_tag "respuesta[puntaje]", respuesta.puntaje, {:min => 1, :max => 20, :step => 0.5}
+							%br
+							= submit_tag "Actualizar Respuesta", :id => "submit", :name => "submit", :class => "btn small", :disable_with => "Actualizando..."
+						.span2{:id => "respuesta_#{respuesta.id}", :style => 'padding:3px 3px; margin:2px 0px;'}
+
+
+				- elsif action_name.eql? 'presentar'
 					- @eer = @estudiante_examen.estudiante_examen_respuestas.where(:respuesta_id => respuesta.id).limit(1).first
 
 					= form_tag({:action => 'guardar_respuesta'}, {:class => "inline", :remote => true} ) do
@@ -61,17 +85,23 @@
 							=#@eer.es_correcta? ? '(Correcta)' : '(Incorrecta)' 
 
 				- else
-					%table.likert.tablefilter
-						- @opciones.each_with_index do |opc,i|
-							%tr
-								- eql = false
-								- eql = true if (respuesta and (respuesta.valor.casecmp(opc.valor).zero?))
+					
+					= form_tag({:controller => 'preguntas', :action => 'validar_respuesta'}, {:class => "inline", :remote => true} ) do
 
-								%td= "#{i+1}."
-								%td{:style => "min-width:300px;"}= opc.valor
-								%td= radio_button_tag "opciones[#{opc.valor}]", nil, eql, :disabled => true, :class => 'radio'
+						= hidden_field_tag 'respuesta[id]', respuesta.id
+						%table.likert.tablefilter
+							- @opciones.each_with_index do |opc,i|
+								%tr
+									- eql = false
+									- eql = true if (respuesta and respuesta.correcta? opc.valor)
+
+									%td= "#{i+1}."
+									%td{:style => "min-width:300px;"}= opc.valor
+
+									%td= radio_button_tag "respuesta[valor]", opc.valor, eql, :class => 'radio', :required => true
+
+						= submit_tag "Validar respuesta", :id => "submit", :name => "submit", :class => "btn small flotar_derecha", :disable_with => "Guardando..."
+					.mensaje{:id => "respuesta_#{respuesta.id}", :style => 'padding:3px 3px; margin:2px 0px;'}
 
 			%p.division
-
-
 

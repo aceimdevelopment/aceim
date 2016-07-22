@@ -1,23 +1,25 @@
 -#@editable = action_name!='presentar' or (controller_name.eql? 'examenes' and action_name!='show')
 -@editable = (action_name.eql? 'wizard_paso2' or (controller_name.eql? 'actividades' and action_name.eql? 'show'))
+.well
+	.division_actividad
+		%p
+			%b= @actividad.descripcion_sin_tipo
+			- if @editable 	
+				=link_to 'Editar Actividad', 'javascript:void(0)' , :class => "small btn_editar", :onclick => "$(actualizar_actividad_#{@actividad.id}).show('slow'); $(this).parent().remove();"
+				=link_to 'Eliminar Actividad', @actividad, :confirm => '¿Está Seguro?', :method => :delete, :class => "btn_eliminar small flotar_derecha"
+				=render :partial => '/actividades/form_actualizar_actividad'
 
-.division_actividad
-	%p
-		%b= @actividad.descripcion_sin_tipo
-		- if @editable 	
-			=link_to 'Editar Actividad', 'javascript:void(0)' , :class => "small btn_editar", :onclick => "$(actualizar_actividad_#{@actividad.id}).show('slow'); $(this).parent().remove();"
-			=link_to 'Eliminar Actividad', @actividad, :confirm => '¿Está Seguro?', :method => :delete, :class => "btn_eliminar small flotar_derecha"
-			=render :partial => '/actividades/form_actualizar_actividad'
+	%br
+	.factura.well
+		=#Texto Agregado 
+		- #@examen_id = parte_examen.examen_id
+		=render :partial => '/actividades/incluir_texto'
 
+		=#Adjuntos
+		=render :partial => '/actividades/adjuntar_archivo'
+	%br
+	.factura.well
+		=#Preguntas
+		=render :partial => '/actividades/preguntas'
+.division
 %br
-.factura.well
-	=#Texto Agregado 
-	- #@examen_id = parte_examen.examen_id
-	=render :partial => '/actividades/incluir_texto'
-
-	=#Adjuntos
-	=render :partial => '/actividades/adjuntar_archivo'
-%br
-.factura.well
-	=#Preguntas
-	=render :partial => '/actividades/preguntas'
