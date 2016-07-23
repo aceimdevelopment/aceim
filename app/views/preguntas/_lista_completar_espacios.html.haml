@@ -26,7 +26,7 @@
 									= form_tag({:controller => 'preguntas',:action => "actualizar_respuesta"}, {:class => "inline", :remote => true} ) do
 
 										= hidden_field_tag :id, respuesta.id
-										=# hidden_field_tag :examen_id, @examen.id
+										= hidden_field_tag :examen_id, @examen.id if @examen 
 										= text_field_tag "respuesta[valor]", respuesta.valor, :placeholder => "Respuesta", :required => true										
 										="/"
 										= text_field_tag "respuesta[valor_alternativa1]", respuesta.valor_alternativa1, :placeholder => "Respuesta Alternativa 1", :class => 'raw2'  
