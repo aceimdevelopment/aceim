@@ -24,7 +24,7 @@
 
 				- if action_name.eql? 'wizard_paso2'
 					.well
-						= form_tag({:controller => 'preguntas',:action => "actualizar_respuesta"}, {:class => "inline"} ) do
+						= form_tag({:controller => 'preguntas',:action => "actualizar_respuesta"}, {:class => "inline", :remote => true} ) do
 
 							= hidden_field_tag :tipo, 'sel_multiple'
 							= hidden_field_tag :id, respuesta.id
@@ -38,7 +38,7 @@
 							%br
 							Opción Correcta:
 							%br
-							= text_field_tag "respuesta[valor]", respuesta.valor, :placeholder => "Respuesta", :required => true, :style => 'text-decoration: underline;'										
+							= text_field_tag "respuesta[valor]", respuesta.valor, :placeholder => "Respuesta", :required => true, :style => 'text-decoration: underline;'						
 							=". Puntaje: "
 
 							= number_field_tag "respuesta[puntaje]", respuesta.puntaje, {:min => 1, :max => 20, :step => 0.5}

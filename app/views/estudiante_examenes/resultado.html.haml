@@ -4,7 +4,7 @@
   %h2 Detalles de las respuestas incorrectas:
   - @estudiante_examen.estudiante_examen_respuestas.each do |eer|  
     - unless eer.es_correcta?
-      .well
+      .well{:stule => 'background-color: red;'}
         %table
           %tr
             %td
@@ -14,4 +14,5 @@
               %b Respuesta:
             %td
               = text_field_tag nil, eer.valor, :disabled => true
-              (Incorrecta)
+              = "(#{eer.respuesta.valor})"
+=# QUEDA PENDIENTE RESOLVER LO DE LAS PREGUNTAS NO RESPONDIDAS. NO APARECEN Y DEBERIAN

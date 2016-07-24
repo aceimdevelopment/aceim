@@ -2,21 +2,12 @@
 	%h2= @titulo
 	%table.well
 		%thead
-			%tr
-				/ %td Tiempo:
-				%td=# @estudiante_examen.tiempo.min if @estudiante_examen.tiempo
-			%tr
-				%td Total de Actividades:
-				%td=@total_actividades
-			%tr
-				%td Total Preguntas / Ítems:
-				%td= @total_preguntas
-			%tr
-				%td Total Puntos en Evaluación:
-				%td= @total_puntos
-			%tr
-				%td Total Respuestas Correctas:
-				%td= @total_respuestas_correctas
+			=# @estudiante_examen.tiempo.min if @estudiante_examen.tiempo
+			=# @total_actividades
+			=# @total_preguntas
+			=#d @total_puntos
+			=# @total_respuestas_correctas
 			%tr
 				%td Puntaje Total Obtenido:
-				%td= total_and_sobre_20 @estudiante_examen
+				%td
+					%b= total_and_sobre_20 @estudiante_examen

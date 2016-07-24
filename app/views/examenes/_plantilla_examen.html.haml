@@ -1,4 +1,8 @@
 -@editable = (action_name!='presentar' and action_name!= 'show')
+- if @editable 
+	=javascript_include_tag "elrte.min.js"
+	=javascript_include_tag "/aceim/assets/elrte.min"
+
 .well
 	%b{:style => 'float:left;'}= "Duración: #{@examen.duracion} minutos"
 	.center
@@ -26,3 +30,22 @@
 :javascript
 	
 	$("#parte").tabs();
+
+- if @editable 
+	function editar_texto(actividad_id, div){
+	var opts = {
+		absoluteURLs: false,
+		cssClass : 'el-rte',
+		lang     : 'es',
+		width    : 600,
+		height   : 350,
+		toolbar  : 'maxi' // Se pueden usar las siguientes opciones: 'maxi',tiny', 'compact', 'normal'
+	}
+
+	$('#form_editar_texto_'+actividad_id).show('slow');
+	$('#form_editar_texto_'+actividad_id).addClass('well');
+
+	$('#contenido_texto_'+actividad_id).elrte(opts);
+	$(div).parent().parent().remove();
+
+	};
