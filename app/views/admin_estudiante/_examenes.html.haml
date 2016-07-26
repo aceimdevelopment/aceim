@@ -12,7 +12,14 @@
     -@estudiante_examenes.each do |ee|
       %tr
         %td= ee.examen.descripcion_simple
-        %td= link_to_if (ee.estado.id!= 'PREPARADO' and ee.estado.id!= 'RESAGADO'), ee.estado.nombre, {:controller => 'estudiante_examenes', :action => 'show', :id => ee.id.to_s}
+        %td
+          = ee.estado.nombre if ee.estado
+          - if (ee.estado.id!= 'PREPARADO' and ee.estado.id!= 'RESAGADO')
+            = link_to 'detalle', {:controller => 'estudiante_examenes', :action => 'show', :id => ee.id.to_s}, :class => 'btn_agregar small'
+          - if ee.estado.id.eql? 'COMPLETADO'
+            |
+            =link_to 'Resumen Incorrectas', {:controller => 'estudiante_examenes', :action => 'resultado', :id => ee.id.to_s}, :class => 'small btn'
+
         %td= ee.tiempo ? "#{ee.tiempo} minutos" : "--"
         %td= ee.estudiante_examen_respuestas.count
         %td= total_and_sobre_20 ee
@@ -35,6 +42,6 @@
               %p
                 = number_field_tag 'horas'
                 horas.
-                %input.small{:type => 'submit', :value => 'Rezagar', :name => 'commit'}
+                %input.small.btn{:type => 'submit', :value => 'Rezagar', :name => 'commit'}
  
 

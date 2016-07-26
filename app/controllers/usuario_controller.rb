@@ -4,6 +4,18 @@ class UsuarioController < ApplicationController
   before_filter :filtro_logueado
   before_filter :filtro_super_administrador, :except => ['modificar', 'modificar_guardar']
 
+  def bitacora
+    if session[:administrador].tipo_rol_id > 3
+      flash[:mensaje] = "Ud. No dispone de privilegios suficientes para ver esta página"
+      info_bitacora "Intento de acceso a bitacora de usuario ci= #{params[:id]}"
+      redirect_to :back
+    else
+      @titulo_pagina = "Info Bitácora"
+      ci = params[:id]
+      @bitacoras = Bitacora.all(:conditions => ["descripcion LIKE ? OR usuario_ci LIKE ? OR estudiante_usuario_ci LIKE ? OR administrador_usuario_ci LIKE ?",ci,ci,ci,ci],:limit => 100, :order => 'fecha DESC' ) if session[:administrador].tipo_rol_id <= 3
+    end
+  end
+
   def bloquear
     begin
       usuario = Usuario.find params[:id]

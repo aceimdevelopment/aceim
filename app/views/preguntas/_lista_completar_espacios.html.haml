@@ -57,9 +57,7 @@
 								- @eer = @estudiante_examen.estudiante_examen_respuestas.where(:respuesta_id => respuesta.id).limit(1).first
 								- @eer = @eer.valor if @eer
 								
-								= text_field_tag 'eer[valor]', @eer, :class => 'raw4', :required => true
-								= "Respuesta Correcta: #{respuesta.correcta}"
-
+								= text_field_tag 'eer[valor]', @eer, :class => 'raw4', :disabled => true
 							- else
 								= form_tag({:controller => 'preguntas', :action => 'validar_respuesta'}, {:class => "inline", :remote => true} ) do
 									%p{:style => 'color: grey;'} 

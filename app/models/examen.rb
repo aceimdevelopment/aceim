@@ -1,8 +1,8 @@
 class Examen < ActiveRecord::Base
-	# ATRIBUTOS ACCESIBLES 
+# ATRIBUTOS ACCESIBLES 
 	attr_accessible :id, :descripcion, :duracion, :orden, :inicio_aplicacion, :cierre_aplicacion, :periodo_id, :curso_idioma_id, :curso_tipo_categoria_id, :curso_tipo_nivel_id, :tipo_estado_examen_id, :prueba
 
-	# ASOCIACIONES
+# ASOCIACIONES
 	belongs_to :curso_periodo,
 		:foreign_key => [:periodo_id, :curso_idioma_id,:curso_tipo_categoria_id, :curso_tipo_nivel_id]
 
@@ -27,6 +27,23 @@ class Examen < ActiveRecord::Base
 	validates :orden, :presence => true
 
 # FUNCINALIDADES
+	def respuestas
+		totales = []
+		parte_examenes.each do |pe|
+			actividades = pe.actividades
+			actividades.each do |actividad|
+				preguntas = actividad.preguntas
+				preguntas.each do |pregunta|
+					pregunta.respuestas.each do |respuesta|
+						totales << respuesta
+					end
+				end
+			end
+		end
+		return totales
+		
+	end
+
 	def se_puede_presentar?
 		if Time.now > inicio_aplicacion and Time.now < cierre_aplicacion
 			return true
@@ -34,7 +51,6 @@ class Examen < ActiveRecord::Base
 			false
 		end
 	end
-
 
 	def es_prueba?
 		prueba.eql? true

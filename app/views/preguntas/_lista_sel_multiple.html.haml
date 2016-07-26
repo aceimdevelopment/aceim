@@ -19,7 +19,7 @@
 
 						- else
 							= raw pregunta.valor
-							= raw "(#{pregunta.respuestas.first.valor})" if controller_name.eql? 'estudiante_examenes'
+							= raw "(#{pregunta.respuestas.first.valor})" if controller_name.eql? 'examenes'
 				- @opciones = pregunta.opciones
 
 				- if action_name.eql? 'wizard_paso2'
@@ -48,6 +48,7 @@
 
 
 				- elsif action_name.eql? 'presentar'
+					- @opciones = pregunta.opciones.order("RAND()")
 					- @eer = @estudiante_examen.estudiante_examen_respuestas.where(:respuesta_id => respuesta.id).limit(1).first
 
 					= form_tag({:action => 'guardar_respuesta'}, {:class => "inline", :remote => true} ) do

@@ -132,16 +132,18 @@ end
   end
   
   def opciones_menu
-    ci = session[:estudiante_ci] 
+    @ci = session[:estudiante_ci] 
     periodo_actual = session[:parametros][:periodo_actual]
-    @usuario = Usuario.where(:ci=>ci).limit(1).first
-    @historial = HistorialAcademico.where(:usuario_ci=>ci).sort_by{|x| "#{x.periodo.ano} #{x.periodo.id}"}.reverse
-    @historial_actual = HistorialAcademico.where(:usuario_ci=>ci, :periodo_id=>periodo_actual)
-    @estudiante_curso = EstudianteCurso.where(:usuario_ci=>ci)
-    @nivelaciones = EstudianteNivelacion.where(:usuario_ci=>ci)
+    @usuario = Usuario.where(:ci=>@ci).limit(1).first
+    @historial = HistorialAcademico.where(:usuario_ci=>@ci).sort_by{|x| "#{x.periodo.ano} #{x.periodo.id}"}.reverse
+    @historial_actual = HistorialAcademico.where(:usuario_ci=>@ci, :periodo_id=>periodo_actual)
+    @estudiante_curso = EstudianteCurso.where(:usuario_ci=>@ci)
+    @nivelaciones = EstudianteNivelacion.where(:usuario_ci=>@ci)
     @titulo_pagina = "Modificar Estudiante: #{@usuario.descripcion}"
     flash[:mensaje] = "Estudiante Bloqueado" unless @usuario.activo
-    @estudiante_examenes = EstudianteExamen.joins(:examen).where('estudiante_examen.estudiante_ci' => ci, "examen.periodo_id" => periodo_actual)
+    @estudiante_examenes = EstudianteExamen.joins(:examen).where('estudiante_examen.estudiante_ci' => @ci, "examen.periodo_id" => periodo_actual)
+
+
   end
   
   def cambiar_convenio_sel_curso

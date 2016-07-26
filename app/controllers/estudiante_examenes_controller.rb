@@ -17,7 +17,7 @@ class EstudianteExamenesController < ApplicationController
 			@usuario = session[:usuario]
 			@examen_id = params[:id]
 			id = "#{@usuario.ci},#{@examen_id}"
-			@estudiante_examen = EstudianteExamen.find id			
+			@estudiante_examen = EstudianteExamen.find id
 		rescue Exception => e
 			redirect_to :action => 'index'
 		end
@@ -39,6 +39,7 @@ class EstudianteExamenesController < ApplicationController
 	    @estudiante_examen.tipo_estado_estudiante_examen_id = 'INICIADO'
 	    @estudiante_examen.tiempo = @examen.duracion if @estudiante_examen.tiempo.nil? or (@estudiante_examen.tiempo.eql? 0) or (@examen.prueba)
 	    @estudiante_examen.save
+		@estudiante_examen.generar_eers2	    
 	    # session[:tiempo] = @examen.duracion
 	    @titulo = @examen.descripcion_simple
 	    if @examen.prueba
@@ -51,6 +52,8 @@ class EstudianteExamenesController < ApplicationController
 
 		@parte_examenes = @examen.parte_examenes.joins(:parte).order('parte.orden ASC')
 		@host = "#{request.protocol}#{request.host_with_port}"+HOST
+		info_bitacora "Estudiante #{@estudiante_examen.estudiante_ci} Inició Examen #{@estudiante_examen.examen.curso_periodo.descripcion}."
+
 	  else
 	    flash[:mensaje] = 'Examen no disponible'
 	    redirect_to :controller => 'principal'
@@ -89,6 +92,7 @@ class EstudianteExamenesController < ApplicationController
 
 		if @ee.save
 		  session[:estudiante_examen_id] = nil
+		  info_bitacora "Estudiante #{@ee.estudiante_ci} Completó Examen #{@ee.examen.curso_periodo.descripcion}."
 		  flash[:mensaje] = 'Examen Completado con Éxito.'
 		  puts 'Examen Completado con Éxito.'
 		end
@@ -139,14 +143,8 @@ class EstudianteExamenesController < ApplicationController
 		@estudiante_examen = EstudianteExamen.find params[:id].to_s
 		@examen = @estudiante_examen.examen
 		@host = "#{request.protocol}#{request.host_with_port}"+HOST
-
-		@total_actividades = @examen.total_actividades
-		@total_preguntas = @examen.total_preguntas
-		@total_puntos = @examen.puntaje_total
-
-		@total_puntos_correctos = @estudiante_examen.total_puntos_correctos
-		@total_respuestas_correctas = @estudiante_examen.total_respuestas_correctas
-		@total_respuestas_incorrectas = @total_preguntas - @total_respuestas_correctas
+		@parte_examenes = @examen.parte_examenes.joins(:parte).order('parte.orden ASC')
+	    @titulo = @examen.descripcion_simple
 
 	end
 

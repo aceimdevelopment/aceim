@@ -32,6 +32,54 @@ class EstudianteExamen < ActiveRecord::Base
 	validates :estudiante_ci, :presence => true
 	validates :examen_id, :presence => true
 
+	def eers
+		estudiante_examen_respuestas
+	end
+
+# Version de Generar EERs V1
+	# def generar_eers
+
+	# 	total_generadas = 0
+	# 	total_respuestas = 0
+	# 	examen.parte_examenes.each do |pe|
+	# 		actividades = pe.actividades
+	# 		actividades.each do |actividad|
+	# 			preguntas = actividad.preguntas
+	# 			preguntas.each do |pregunta|
+	# 				respuestas = pregunta.respuestas
+	# 				total_respuestas += respuestas.count
+	# 				respuestas.each do |respuesta|
+	# 					total_generadas += 1 if EstudianteExamenRespuesta.create(:estudiante_ci => estudiante_ci, :examen_id => examen_id, :respuesta_id => respuesta.id)
+	# 				end
+	# 			end
+	# 		end
+	# 	end
+	# 	return "Total Generadas: #{total_generadas} de Total de Respuestas: #{total_respuestas}"
+	# end
+
+	# def generar_respuestas
+	# 	begin
+	# 		estudiante_examen_respuestas.create(:respuesta_id => examen.respuestas.collect{|r| r.id})
+	# 		return examen.respuestas.count
+	# 	rescue Exception => e
+	# 		return e
+	# 	end
+	# end
+
+
+
+	def generar_eers2
+		total_generadas = 0
+
+		examen.respuestas.each do |respuesta|
+			total_generadas += 1 if EstudianteExamenRespuesta.find_or_create_by_estudiante_ci_and_examen_id_and_respuesta_id(:estudiante_ci => estudiante_ci, :examen_id => examen_id, :respuesta_id => respuesta.id)
+		end
+
+		return "Total Generadas o encontradas: #{total_generadas}"
+
+	end
+
+
 	def preparado?
 		tipo_estado_estudiante_examen_id.eql? 'PREPARADO'
 	end

@@ -17,7 +17,10 @@
 			- if parte_examen.actividades.count > 0 or @editable
 				%div{:id => parte_examen.parte_id}
 					=#Actividades
-					- @actividades = parte_examen.actividades
+					- if action_name.eql? 'presentar'
+						- @actividades = parte_examen.actividades.order("RAND()")
+					- else
+						- @actividades = parte_examen.actividades
 					- @actividades.each do |actividad|
 						- @actividad = actividad
 						= render :partial => '/actividades/wizard_list', :locals => {:parte_examen => parte_examen}

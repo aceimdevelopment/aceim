@@ -180,13 +180,16 @@ class ExamenesController < ApplicationController
         end
       end
     end
+
+    @examen.estudiante_examenes.each{|ee| ee.generar_eers2}
+
     flash[:mensaje] = "#{total_cursos} Curso(s). #{total_est_examen} exámenes generados a estudiantes."
     @examen.tipo_estado_examen_id = 'LISTO'
     flash[:mensaje] += 'Estado del examen actualizado' if @examen.save
     redirect_to :action => 'index'
   end
 
-  def eliminar_etudiante_examenes
+  def eliminar_estudiante_examenes
     @examen = Examen.find params[:id]
 
     total = 0
@@ -243,6 +246,7 @@ class ExamenesController < ApplicationController
       flash[:mensaje] = ""
       flash[:mensaje] += "Reseteo completado con exito." if @estudiante_examen.save
       flash[:mensaje] += "Respuestas limpiadas" if @estudiante_examen.estudiante_examen_respuestas.count.eql? 0
+      info_bitacora "Estudiante #{@estudiante_examen.estudiante_ci} reseteo completo para examen #{@estudiante_examen.examen.curso_periodo.descripcion}."
       redirect_to :back    
   end
 
@@ -250,7 +254,8 @@ class ExamenesController < ApplicationController
       @estudiante_examen = EstudianteExamen.find params[:id]
 
       @estudiante_examen.tipo_estado_estudiante_examen_id = 'PREPARADO'
-      flash[:mensaje] = "Estado del examen actualizado con exito." if @estudiante_examen.save
+      flash[:mensaje] = "Estudiante habilitado para presentar examen: #{@estudiante_examen.examen.descripcion_full}." if @estudiante_examen.save
+      info_bitacora "Estudiante #{@estudiante_examen.estudiante_ci} habilitado para presentar examen #{@estudiante_examen.examen.curso_periodo.descripcion}."
       redirect_to :back
   end
 
@@ -258,7 +263,8 @@ class ExamenesController < ApplicationController
       @estudiante_examen = EstudianteExamen.find params[:id]
 
       @estudiante_examen.tiempo = @estudiante_examen.examen.duracion
-      flash[:mensaje] = "Tiempo reiniciao con exito." if @estudiante_examen.save
+      info_bitacora "Estudiante #{@estudiante_examen.estudiante_ci} reseteo de tiempo para examen #{@estudiante_examen.examen.curso_periodo.descripcion}."
+      flash[:mensaje] = "Tiempo del examen: #{@estudiante_examen.examen.descripcion_full} reiniciado." if @estudiante_examen.save
       redirect_to :back
   end
 
@@ -269,6 +275,7 @@ class ExamenesController < ApplicationController
     estudiante_examen.resagado_fin = tiempo+(params[:horas].to_i).hour
     estudiante_examen.tipo_estado_estudiante_examen_id = 'RESAGADO'
     if estudiante_examen.save
+      info_bitacora "Estudiante #{estudiante_examen.estudiante_ci} rezagado para examen #{estudiante_examen.examen.curso_periodo.descripcion} por #{params[:horas]} hora(s)."
       flash[:mensaje] = "El estudiante dispone ahora de #{params[:horas]} hora(s) para realizar el examen."
     end
     redirect_to :back
@@ -277,6 +284,7 @@ class ExamenesController < ApplicationController
   def borrar_respuestas
       @estudiante_examen = EstudianteExamen.find params[:id]
       @estudiante_examen.estudiante_examen_respuestas.delete_all
+      info_bitacora "Estudiante #{estudiante_examen.estudiante_ci} borradas respuestas para examen #{estudiante_examen.examen.curso_periodo.descripcion}."
       flash[:mensaje] = "Respuestas limpiadas con exito." if @estudiante_examen.estudiante_examen_respuestas.count.eql? 0
       redirect_to :back
   end
