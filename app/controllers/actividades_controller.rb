@@ -93,10 +93,11 @@ class ActividadesController < ApplicationController
   # PUT /actividades/1
   # PUT /actividades/1.json
   def update
+
     @actividad = Actividad.find(params[:id])
     if @actividad.update_attributes(params[:actividad])
       info_bitacora "Usuario: #{session[:usuario].ci} actualizó datos elementales de la actividad #{@actividad.id} actualizados."
-      flash[:mensaje] = "Datos elementales de la actividad actualizados"
+      flash[:mensaje] = "Instrucciones de la actividad actualizados"
     else
       flash[:mensaje] = "No se pudo actualizar los datos de la actividad"
     end
