@@ -14,7 +14,7 @@
     %b= @usuario.apellidos
   %p
     Sexo:
-    %b= @usuario.tipo_sexo.descripcion
+    %b= @usuario.tipo_sexo.descripcion if @usuario.tipo_sexo
   %p
     Fecha de Nacimiento:
     %b= @usuario.fecha_nacimiento
