@@ -135,6 +135,9 @@ class EstudianteExamenesController < ApplicationController
 	def index
 		@examen = Examen.find params[:id]
 		@estudiante_examenes = @examen.estudiante_examenes
+		@total_iniciados = @estudiante_examenes.where(tipo_estado_estudiante_examen_id: 'INICIADO').count
+		@total_completados = @estudiante_examenes.where(tipo_estado_estudiante_examen_id: 'COMPLETADO').count
+		@total_preparados = @estudiante_examenes.where(tipo_estado_estudiante_examen_id: 'PREPARADO').count
 		@titulo = @examen.descripcion_simple
 		#@secciones = Seccion.where(:perido_id => @examen.perido_id, :idioma_id => @examen.curso_idioma_id, :tipo_categoria_id => @examen.curso_tipo_categoria_id, :tipo_nivel_id => @examen.curso_tipo_nivel_id)
 	end
