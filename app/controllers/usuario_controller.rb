@@ -2,7 +2,7 @@
 
 class UsuarioController < ApplicationController
   before_filter :filtro_logueado
-  before_filter :filtro_super_administrador, :except => ['modificar', 'modificar_guardar']
+  before_filter :filtro_super_administrador, :except => ['modificar', 'modificar_guardar', 'contrasena', 'contrasena_guardar']
 
   def bitacora
     if session[:administrador].tipo_rol_id > 3
