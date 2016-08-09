@@ -19,6 +19,9 @@ class Curso < ActiveRecord::Base
   #   :foreign_key => [:curso_idioma_id,:curso_tipo_categoria_id, :curso_tipo_nivel_id]
   # accepts_nested_attributes_for :segmentos
 
+  has_many :material_apoyo_cursos, :dependent => :destroy, :foreign_key => [:curso_idioma_id, :curso_tipo_categoria_id, :curso_tipo_nivel_id]
+  accepts_nested_attributes_for :material_apoyo_cursos
+
   has_many :actividades,
     :foreign_key => [:curso_idioma_id,:curso_tipo_categoria_id, :curso_tipo_nivel_id]
   accepts_nested_attributes_for :actividades

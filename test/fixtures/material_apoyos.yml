@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  nombre: MyString
+  url: MyString
+  tipo_material_apoyo: MyString
+
+two:
+  nombre: MyString
+  url: MyString
+  tipo_material_apoyo: MyString

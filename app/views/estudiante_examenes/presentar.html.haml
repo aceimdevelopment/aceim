@@ -2,9 +2,16 @@
 / a partir de aqui seria el render plantilla_examen
 =render :partial => '/examenes/plantilla_examen'
 
-%h2=link_to "He Terminado el Examen", {:action =>'completar', :id => @estudiante_examen.id.to_s}, {:class => 'btn flotar_derecha', :data =>  { :confirm => '¿Confirma que ha finalizado el Examen. Este proceso es irreversible?' }, :id => 'terminar'}
+%h2=link_to "He Terminado el Examen", {:action =>'completar', :id => @estudiante_examen.id.to_s}, {:class => 'btn flotar_derecha', :data =>  { :confirm => '¿Confirma que ha finalizado el Examen. Este proceso es irreversible?' }, :id => 'terminar', :onclick => 'verificar_requeridas();'}
+
 
 :javascript
   
   $("#parte").tabs();
+
+  function verificar_requeridas() {
+    if( $('input:text').val().length === 0 ) {
+      alert ('Aún hay preguntas sin responder, ¿está seguro de esta acción?');
+    }
+  }
 

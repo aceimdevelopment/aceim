@@ -4,7 +4,7 @@ class Actividad < ActiveRecord::Base
 
 	# ASOCIACIONES
 
-	# Tipo_Segmento
+	# Tipo_Actividad
 	belongs_to :tipo_actividad,
 		:foreign_key => :tipo_actividad_id
 

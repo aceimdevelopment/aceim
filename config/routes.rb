@@ -1,5 +1,7 @@
 Aceim::Application.routes.draw do
 
+  resources :material_apoyo
+
   resources :tipo_actividades do
     resources :actividades
   end
