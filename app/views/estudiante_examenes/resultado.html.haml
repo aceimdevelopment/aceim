@@ -18,6 +18,6 @@
           %td.well= pregunta.actividad.parte_examenes.collect{|pe| pe.parte.nombre}[0].to_s
           %td.well= pregunta.actividad.descripcion
           %td.well= eer.respuesta.pregunta.valor
-          %td.well= eer.valor
-          %td.well= eer.respuesta.valor
+          %td.well{:style => 'text-decoration: underline;'}= eer.valor
+          %td.well{:style => 'text-decoration: underline;'}= eer.respuesta.valor
 =# QUEDA PENDIENTE RESOLVER LO DE LAS PREGUNTAS NO RESPONDIDAS. NO APARECEN Y DEBERIAN

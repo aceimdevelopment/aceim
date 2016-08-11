@@ -19,7 +19,7 @@
 			- @bitacoras.each_with_index do |bitacora,i|
 				%tr
 					%td= i+1
-					%td= bitacora.fecha.strftime("%d/%m/%Y")
+					%td= bitacora.fecha.strftime("%d/%m/%Y - %I:%M %p")
 					%td.raw3= bitacora.descripcion
 					%td= bitacora.usuario_ci
 					%td= bitacora.estudiante_usuario_ci
