@@ -21,7 +21,7 @@
 					- if ee.examen.prueba
 						%td= "N/A"
 					- else 
-						%td= "##{ee.historial_academico.seccion_numero}" 
+						%td= "##{ee.historial_academico.seccion_numero}" if ee.historial_academico
 					%td= ee.estudiante.usuario.descripcion
 					%td= ee.total_puntos_correctos_base_20
 					%td= ee.tipo_estado_estudiante_examen.nombre
