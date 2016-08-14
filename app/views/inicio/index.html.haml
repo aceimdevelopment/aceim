@@ -69,7 +69,12 @@
                 %p
                   %b= curso.fecha_entrega_planilla                  
               %li
-                - @arancel = (curso.tipo_inscripcion_id.eql? 'NU') ? "#{ParametroGeneral.find("COSTO_NUEVOS").valor.to_i}Bs." : "#{TipoConvenio.find('REG').monto.to_i}Bs." 
+                - if tipo_curso.tipo_categoria_id.eql? "NI"
+                  - @arancel = "#{ParametroGeneral.costo_ninos_i}Bs." 
+                - elsif curso.tipo_inscripcion_id.eql? 'NU'
+                  - @arancel = "#{ParametroGeneral.costo_nuevos_i}Bs." 
+                - else
+                  - @arancel = "#{ParametroGeneral.costo_examen_i}Bs."  
                 Arancel:
                 %b= (curso.tipo_estado_inscripcion_curso_id.eql? 'PR' or curso.tipo_estado_inscripcion_curso_id.eql? 'AB') ? @arancel : @por_definir
           %br

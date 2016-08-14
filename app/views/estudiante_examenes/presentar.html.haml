@@ -7,9 +7,6 @@
   =hidden_field_tag :id, @estudiante_examen.id.to_s
   %h2=submit_tag 'He Terminado el Examen', :class => 'btn'
 
-%h2=#link_to "He Terminado el Examen", {:action =>'completar', :id => @estudiante_examen.id.to_s}, {:class => 'btn flotar_derecha', :data =>  { :confirm => '¿Confirma que ha finalizado el Examen. Este proceso es irreversible?' }, :id => 'terminar', :onclick => 'verificar_requeridas();'}
-
-
 :javascript
   
   $("#parte").tabs();

@@ -74,6 +74,19 @@ class ParametroGeneral < ActiveRecord::Base
     ParametroGeneral.first(:conditions=>["id = ?", "INSCRIPCION_MODO_NINOS"]).valor == "SI"
   end
 
+
+  def self.costo_ninos_i
+    ide = ParametroGeneral.first(:conditions=>["id = ?", "COSTO_NINOS"]).valor.to_i
+  end
+
+  def self.costo_examen_i
+    ide = ParametroGeneral.first(:conditions=>["id = ?", "COSTO_EXAMEN"]).valor.to_i
+  end
+
+  def self.costo_nuevos_i
+    ide = ParametroGeneral.first(:conditions=>["id = ?", "COSTO_NUEVOS"]).valor.to_i
+  end
+
   def self.costo_ninos
     ide = ParametroGeneral.first(:conditions=>["id = ?", "COSTO_NINOS"]).valor.to_f
   end
