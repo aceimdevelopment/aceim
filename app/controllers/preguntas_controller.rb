@@ -207,8 +207,9 @@ class PreguntasController < ApplicationController
   def validar_respuesta
     # @examen = Examen.find params[:examen_id]
     @respuesta = Respuesta.find params[:respuesta][:id]
+    params[:respuesta][:valor] = limpiar_string params[:respuesta][:valor]
     @correcta = "Incorrecta"
-    @correcta = "Correcta" if @respuesta.correcta? params[:respuesta][:valor] 
+    @correcta = "Correcta" if @respuesta.correcta? params[:respuesta][:valor]
 
     respond_to do |format|
       format.html {redirect_to :back}

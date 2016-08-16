@@ -67,8 +67,9 @@ class EstudianteExamenesController < ApplicationController
 		examen_id = eer[:examen_id]
 		@respuesta_id = eer[:respuesta_id]
 		@eer = EstudianteExamenRespuesta.find_or_initialize_by_estudiante_ci_and_examen_id_and_respuesta_id(estudiante_ci,examen_id,@respuesta_id)
+		# valor = eer[:valor].split(" ")
+		eer[:valor] = limpiar_string eer[:valor]
 		@eer.update_attributes eer
-
 		@eer.estudiante_examen.tiempo = params[:tiempo].to_i + 1
 		@eer.estudiante_examen.transfrir_nota_escrita2_a_historial if not @eer.estudiante_examen.examen.prueba
 		@eer.estudiante_examen.save

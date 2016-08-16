@@ -42,7 +42,7 @@
 								- @eer = @estudiante_examen.estudiante_examen_respuestas.where(:respuesta_id => respuesta.id).limit(1).first
 								- @eer = @eer.valor if @eer
 
-								= form_tag({:action => 'guardar_respuesta'}, {:class => "inline", :remote => true} ) do
+								= form_tag({:controller => 'estudiante_examenes', :action => 'guardar_respuesta'}, {:class => "inline", :remote => true} ) do
 
 									= hidden_field_tag 'eer[estudiante_ci]', @estudiante_examen.estudiante_ci
 									= hidden_field_tag 'eer[examen_id]', @estudiante_examen.examen_id

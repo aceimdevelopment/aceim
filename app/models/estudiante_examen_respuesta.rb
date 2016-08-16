@@ -20,7 +20,6 @@ class EstudianteExamenRespuesta < ActiveRecord::Base
 	validates :examen_id, :presence => true
 	validates :respuesta_id, :presence => true
 
-
 	def es_correcta?
 		if valor 
 			return respuesta.correcta? valor

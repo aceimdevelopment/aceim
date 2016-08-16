@@ -1,6 +1,12 @@
 #encoding: utf-8
 class ApplicationController < ActionController::Base
   protect_from_forgery
+
+  def limpiar_string valor
+    aux = valor.split(" ")
+    return aux.join(" ")
+  end
+  
   def historiales_usuarios
       @historiales = HistorialAcademico.where(:periodo_id => session[:periodo_id],
                                               :idioma_id => session[:idioma_id],
