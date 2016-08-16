@@ -100,11 +100,27 @@ class EstudianteExamen < ActiveRecord::Base
 		tipo_estado_estudiante_examen
 	end
 
-	def transfrir_nota_escrita2_a_historial
+	def transferir_nota_escrita_a_historial
+		if examen.orden.eql? "primero"
+			transferir_nota_escrito1_a_historial 
+		else
+			transferir_nota_escrita2_a_historial 
+		end
+	end
+
+	def transferir_nota_escrito1_a_historial
+		transferir_nota_a_historial(HistorialAcademico::EXAMENESCRITO1, total_puntos_correctos_base_20)		
+	end
+
+	def transferir_nota_escrita2_a_historial
 		transferir_nota_a_historial(HistorialAcademico::EXAMENESCRITO2, total_puntos_correctos_base_20)
 	end
 	def transferir_nota_a_historial(tipo_evalu_id, calificacion)
-		historial_academico.guargar_nota_adicional(tipo_evalu_id, calificacion)
+		unless historial_academico
+			return false
+		else
+			historial_academico.guargar_nota_adicional(tipo_evalu_id, calificacion)
+		end
 	end
 	def historial_academico
 		HistorialAcademico.where(:usuario_ci => estudiante_ci, :idioma_id => examen.curso_idioma_id, :tipo_categoria_id => examen.curso_tipo_categoria_id, :tipo_nivel_id => examen.curso_tipo_nivel_id, :periodo_id => examen.periodo_id).limit(1).first
@@ -144,7 +160,7 @@ class EstudianteExamen < ActiveRecord::Base
 	    total_trasferidos = 0
 	    total_ee = @estudiante_examenes.count
 	    @estudiante_examenes.each do |ee|
-	      total_trasferidos += 1 if ee.transfrir_nota_escrita2_a_historial
+	      total_trasferidos += 1 if ee.transferir_nota_escrita2_a_historial
 	      puts "Guardado ##{total_trasferidos}/#{total_ee}."
 	    end
 	    puts "Total de exámenes: #{total_ee}. Total transferidos: #{total_trasferidos}"

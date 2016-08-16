@@ -20,12 +20,20 @@ class EstudianteExamenRespuesta < ActiveRecord::Base
 	validates :examen_id, :presence => true
 	validates :respuesta_id, :presence => true
 
+	def ee
+		estudiante_examen
+	end
+
 	def es_correcta?
 		if valor 
 			return respuesta.correcta? valor
 		else
 			return false
 		end
+	end
+
+	def descripcion
+		"#{estudiante_ci} - #{ee.examen.descripcion_simple}. Pregunta: #{respuesta.pregunta.valor} ->  #{valor}"
 	end
 
 end

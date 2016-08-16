@@ -70,11 +70,15 @@ class EstudianteExamenesController < ApplicationController
 		# valor = eer[:valor].split(" ")
 		eer[:valor] = limpiar_string eer[:valor]
 		@eer.update_attributes eer
-		@eer.estudiante_examen.tiempo = params[:tiempo].to_i + 1
-		@eer.estudiante_examen.transfrir_nota_escrita2_a_historial if not @eer.estudiante_examen.examen.prueba
+		@ee = @eer.estudiante_examen
+		@ee.tiempo = params[:tiempo].to_i + 1
 		@eer.estudiante_examen.save
 
-		info_bitacora "respuesta guardada: #{@eer.id}"
+		@ee.transferir_nota_escrita_a_historial unless @ee.examen.prueba
+
+		# @eer.estudiante_examen.transferir_nota_escrita2_a_historial if not @eer.estudiante_examen.examen.prueba
+
+		info_bitacora "Respuesta guardada: #{@eer.descripcion}"
 
 		respond_to do |format|
 		  format.html {redirect_to :back}
@@ -98,9 +102,10 @@ class EstudianteExamenesController < ApplicationController
 		  puts 'Examen Completado con Éxito.'
 		end
 
-		@ee.transfrir_nota_escrita2_a_historial unless @ee.examen.prueba
+		@ee.transferir_nota_escrita_a_historial unless @ee.examen.prueba
+
 		# unless @ee.examen.prueba
-		#   if @ee.transfrir_nota_escrita2_a_historial
+		#   if @ee.transferir_nota_escrita2_a_historial
 		#     flash[:mensaje] += 'Calificación asignada.' 
 		#   else
 		#     flash[:mensaje] += 'Su calificación no pudo ser asignada. (Notifique al personal administrativo para tomar las correcciones respectivas).'

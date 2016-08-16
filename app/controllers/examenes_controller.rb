@@ -351,7 +351,7 @@ class ExamenesController < ApplicationController
   #   @eer.update_attributes eer
 
   #   @eer.estudiante_examen.tiempo = params[:tiempo].to_i + 1
-  #   @eer.estudiante_examen.transfrir_nota_escrita2_a_historial if not @eer.estudiante_examen.examen.prueba
+  #   @eer.estudiante_examen.transferir_nota_escrita2_a_historial if not @eer.estudiante_examen.examen.prueba
   #   @eer.estudiante_examen.save
   #   respond_to do |format|
   #     format.html {redirect_to :back}
@@ -375,9 +375,9 @@ class ExamenesController < ApplicationController
   #     puts 'Examen Completado con Éxito.'
   #   end
 
-  #   @ee.transfrir_nota_escrita2_a_historial unless @ee.examen.prueba
+  #   @ee.transferir_nota_escrita2_a_historial unless @ee.examen.prueba
   #   # unless @ee.examen.prueba
-  #   #   if @ee.transfrir_nota_escrita2_a_historial
+  #   #   if @ee.transferir_nota_escrita2_a_historial
   #   #     flash[:mensaje] += 'Calificación asignada.' 
   #   #   else
   #   #     flash[:mensaje] += 'Su calificación no pudo ser asignada. (Notifique al personal administrativo para tomar las correcciones respectivas).'
@@ -415,7 +415,7 @@ class ExamenesController < ApplicationController
     total_trasferidos = 0
     total_ee = @estudiante_examenes.count
     @estudiante_examenes.each do |ee|
-      total_trasferidos += 1 if ee.transfrir_nota_escrita2_a_historial
+      total_trasferidos += 1 if ee.transferir_nota_escrita2_a_historial
       puts "Guardado ##{total_trasferidos}/#{total_ee}."
     end
     puts "Total de exámenes: #{total_ee}. Total transferidos: #{total_trasferidos}"
