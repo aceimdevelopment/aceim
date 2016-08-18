@@ -156,7 +156,8 @@ class EstudianteExamen < ActiveRecord::Base
 
 	def self.transferir_notas_a_historiales
 		begin
-			@estudiante_examenes = EstudianteExamen.where("tipo_estado_estudiante_examen_id = 'COMPLETADO' OR tipo_estado_estudiante_examen_id = 'INICIADO'").delete_if{|ee| ee.examen.prueba and ee.examen.periodo_id!=ParametroGeneral.periodo_actual.id}
+			# @estudiante_examenes = EstudianteExamen.where("tipo_estado_estudiante_examen_id != 'PREPARADO' AND tipo_estado_estudiante_examen_id != 'SUSPENDIDO'").delete_if{|ee| ee.examen.prueba and ee.examen.periodo_id!=ParametroGeneral.periodo_actual.id}
+			@estudiante_examenes = EstudianteExamen.where("tipo_estado_estudiante_examen_id = 'AGOTADO' AND tipo_estado_estudiante_examen_id = 'RESAGADO'").delete_if{|ee| ee.examen.prueba or ee.examen.periodo_id!=ParametroGeneral.periodo_actual.id}
 
 			total_trasferidos = 0
 			total_ee = @estudiante_examenes.count
