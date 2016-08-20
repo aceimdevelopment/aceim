@@ -19,7 +19,7 @@
 
 						- else
 							= raw pregunta.valor
-							= raw "(#{pregunta.respuestas.first.valor})" if controller_name.eql? 'examenes'
+							= raw "(#{pregunta.respuestas.first.valor})" if controller_name.eql? 'examenes' and pregunta.respuestas > 0
 				- @opciones = pregunta.opciones
 
 				- if action_name.eql? 'wizard_paso2'
