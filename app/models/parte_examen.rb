@@ -1,4 +1,5 @@
 class ParteExamen < ActiveRecord::Base
+	include ActionView::Helpers::TextHelper
 
 	# CLAVE PRIMARIA COMPUESTA
   	set_primary_keys [:parte_id, :examen_id]
@@ -26,5 +27,8 @@ class ParteExamen < ActiveRecord::Base
 	validates :parte_id, :presence => true
 	validates :examen_id, :presence => true
 
+	def descripcion_parte_con_actividades
+		return "#{parte.nombre}: #{pluralize(actividades.count, 'Actividad')}"
+	end
 
 end

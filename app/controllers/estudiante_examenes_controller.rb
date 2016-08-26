@@ -74,6 +74,11 @@ class EstudianteExamenesController < ApplicationController
 		@ee.tiempo = params[:tiempo].to_i + 1
 		@eer.estudiante_examen.save
 
+		total_respuestas = @ee.examen.respuestas.count
+		contestadas = @ee.eers.count
+		@eers_restantes_count = total_respuestas - contestadas
+
+
 		@ee.transferir_nota_escrita_a_historial unless @ee.examen.prueba
 
 		# @eer.estudiante_examen.transferir_nota_escrita2_a_historial if not @eer.estudiante_examen.examen.prueba

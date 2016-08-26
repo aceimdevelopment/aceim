@@ -12,7 +12,7 @@
 		%ul
 			- @parte_examenes.each do |parte_examen|
 				- if parte_examen.actividades.count > 0 or @editable 
-					%li=  link_to parte_examen.parte.nombre, "##{parte_examen.parte_id}", :class => 'btn_idiomas'
+					%li=  link_to parte_examen.descripcion_parte_con_actividades, "##{parte_examen.parte_id}", :class => 'btn_idiomas'
 		- @parte_examenes.each do |parte_examen|
 			- if parte_examen.actividades.count > 0 or @editable
 				%div{:id => parte_examen.parte_id}
@@ -21,8 +21,9 @@
 						- @actividades = parte_examen.actividades.order("RAND()")
 					- else
 						- @actividades = parte_examen.actividades
-					- @actividades.each do |actividad|
+					- @actividades.each_with_index do |actividad,i|
 						- @actividad = actividad
+						- @i = i+1
 						= render :partial => '/actividades/wizard_list', :locals => {:parte_examen => parte_examen}
 					- if @editable
 						%div{:id => "form_actividad_#{parte_examen.parte_id}", :style => 'display:none;'}
