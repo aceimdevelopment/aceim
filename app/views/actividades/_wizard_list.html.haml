@@ -4,7 +4,7 @@
 .division_actividad
 	%p{ :class => "ui-state-highlight ui-corner-all", :style => "margin-top: 20px; padding: 3px 3px" }
 		%span.ui-icon.ui-icon-info{ :style =>"display:inline-block;" }
-		%b="#{pluralize(@actividad.preguntas.count, 'Respuesta esperada', 'Respuestas esperadas')} en esta actividad."
+		%b="#{pluralize(@actividad.total_respuestas_esperadas, 'Respuesta esperada', 'Respuestas esperadas')} en esta actividad."
 	%p
 		%b{:style => 'color:yellow;'}= "#{@i} .- "
 		%b= @actividad.descripcion_sin_tipo

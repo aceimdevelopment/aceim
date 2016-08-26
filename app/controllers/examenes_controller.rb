@@ -270,12 +270,12 @@ class ExamenesController < ApplicationController
 
   def rezagar
     tiempo = Time.now
-    estudiante_examen = EstudianteExamen.find params[:id]    
-    estudiante_examen.resagado_inicio = tiempo
-    estudiante_examen.resagado_fin = tiempo+(params[:horas].to_i).hour
-    estudiante_examen.tipo_estado_estudiante_examen_id = 'RESAGADO'
-    if estudiante_examen.save
-      info_bitacora "Estudiante #{estudiante_examen.estudiante_ci} rezagado para examen #{estudiante_examen.examen.curso_periodo.descripcion} por #{params[:horas]} hora(s)."
+    @estudiante_examen = EstudianteExamen.find params[:id]    
+    @estudiante_examen.resagado_inicio = tiempo
+    @estudiante_examen.resagado_fin = tiempo+(params[:horas].to_i).hour
+    @estudiante_examen.tipo_estado_estudiante_examen_id = 'RESAGADO'
+    if @estudiante_examen.save
+      info_bitacora "Estudiante #{@estudiante_examen.estudiante_ci} rezagado para examen #{@estudiante_examen.examen.curso_periodo.descripcion} por #{params[:horas]} hora(s)."
       flash[:mensaje] = "El estudiante dispone ahora de #{params[:horas]} hora(s) para realizar el examen."
     end
     redirect_to :back
@@ -284,7 +284,7 @@ class ExamenesController < ApplicationController
   def borrar_respuestas
       @estudiante_examen = EstudianteExamen.find params[:id]
       @estudiante_examen.estudiante_examen_respuestas.delete_all
-      info_bitacora "Estudiante #{estudiante_examen.estudiante_ci} borradas respuestas para examen #{estudiante_examen.examen.curso_periodo.descripcion}."
+      info_bitacora "Estudiante #{@estudiante_examen.estudiante_ci} borradas respuestas para examen #{@estudiante_examen.examen.curso_periodo.descripcion}."
       flash[:mensaje] = "Respuestas limpiadas con exito." if @estudiante_examen.estudiante_examen_respuestas.count.eql? 0
       redirect_to :back
   end

@@ -74,7 +74,7 @@ class EstudianteExamenesController < ApplicationController
 		@ee.tiempo = params[:tiempo].to_i + 1
 		@eer.estudiante_examen.save
 
-		total_respuestas = @ee.examen.respuestas.count
+		total_respuestas = @ee.examen.total_preguntas
 		contestadas = @ee.eers.count
 		@eers_restantes_count = total_respuestas - contestadas
 

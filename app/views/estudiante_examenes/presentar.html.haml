@@ -5,7 +5,7 @@
 =form_tag(url_for(:action => 'completar',:controller => 'estudiante_examenes'),:method => :post) do
   = hidden_field_tag 'tiempo', nil, :class => 'tiempo'
   =hidden_field_tag :id, @estudiante_examen.id.to_s
-  %h2=submit_tag 'He Terminado el Examen', :class => 'btn'
+  %h2=submit_tag 'He Terminado el Examen', {:class => 'btn', :onclick => "return verificar_requeridas()", 'data-confirm' => '¿Está seguro que desea completar el examen?'}
 
 :javascript
   
@@ -13,7 +13,7 @@
 
   function verificar_requeridas() {
     if( $('input:text').val().length === 0 ) {
-      alert ('Aún hay preguntas sin responder, ¿está seguro de esta acción?');
+      alert('Aún hay preguntas sin responder, ¿está seguro de esta acción?');
     }
   }
 

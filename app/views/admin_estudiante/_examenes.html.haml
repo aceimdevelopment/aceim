@@ -14,9 +14,8 @@
         %td= ee.examen.descripcion_simple
         %td
           = ee.estado.nombre if ee.estado
-          - if (ee.estado.id!= 'PREPARADO' and ee.estado.id!= 'RESAGADO')
+          - if (ee.estado.id!= 'PREPARADO')
             = link_to 'detalle', {:controller => 'estudiante_examenes', :action => 'show', :id => ee.id.to_s}, :class => 'btn_agregar small'
-          - if ee.estado.id.eql? 'COMPLETADO'
             |
             =link_to 'Resumen Incorrectas', {:controller => 'estudiante_examenes', :action => 'resultado', :id => ee.id.to_s}, :class => 'small btn'
 
@@ -24,13 +23,13 @@
         %td= ee.estudiante_examen_respuestas.count
         %td= total_and_sobre_20 ee
         %td
-          =link_to "Limpiar Todo", {:controller => 'examenes', :action => 'reseteo_completo', :id => ee.id.to_s}, :class => 'btn_actualizar small'
+          =link_to "Limpiar Todo", {:controller => 'examenes', :action => 'reseteo_completo', :id => ee.id.to_s}, {:class => 'btn_actualizar small', 'data-confirm' => '¿Está Seguro?'}
           (
-          =link_to "Habitar Para Presentar", {:controller => 'examenes', :action => 'habilitar_para_presentar', :id => ee.id.to_s}, :class => 'btn_bandera small'
+          =link_to "Habitar Para Presentar", {:controller => 'examenes', :action => 'habilitar_para_presentar', :id => ee.id.to_s}, {:class => 'btn_bandera small', 'data-confirm' => '¿Está Seguro?'}
           |
-          =link_to "Resetear Tiempo", {:controller => 'examenes', :action => 'resetear_tiempo', :id => ee.id.to_s}, :class => 'btn_reloj small'
+          =link_to "Resetear Tiempo", {:controller => 'examenes', :action => 'resetear_tiempo', :id => ee.id.to_s}, {:class => 'btn_reloj small', 'data-confirm' => '¿Está Seguro?'}
           |
-          =link_to "Borrar Respuestas", {:controller => 'examenes', :action => 'borrar_respuestas', :id => ee.id.to_s}, :class => 'btn_calculadora small'
+          =link_to "Borrar Respuestas", {:controller => 'examenes', :action => 'borrar_respuestas', :id => ee.id.to_s}, {:class => 'btn_calculadora small', 'data-confirm' => '¿Está Seguro?'}
           )
           %br
           = link_to 'Rezagar', 'javascript:void(0)' , :onclick => "$(rezagar_#{ee.examen_id}).show('slow'); $(this).remove();", :class => 'btn_calendario small'

@@ -62,6 +62,14 @@ class Actividad < ActiveRecord::Base
 		return total
 	end
 
+	def total_respuestas_esperadas
+		totales = 0
+		preguntas.each do |pregunta|
+			totales += pregunta.respuestas.count
+		end
+		return totales
+	end
+
 	def valor_cada_pregunta
 		valor = 0
 		valor = preguntas.first.valor_cada_pregunta if preguntas.first 

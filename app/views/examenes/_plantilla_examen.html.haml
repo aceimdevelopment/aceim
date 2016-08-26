@@ -6,7 +6,7 @@
 .well
 	%b{:style => 'float:left;'}= "Duración: #{@examen.duracion} minutos"
 	.center
-		%h2= @examen.titulo
+		%h2= @examen.descripcion_simple
 		%h3#puntaje_total= "Puntaje Total: #{@examen.puntaje_total} / 80" unless action_name.eql? 'presentar'
 	#parte
 		%ul
