@@ -157,7 +157,7 @@ class ExamenesController < ApplicationController
   
   def generar_estudiante_examenes
     @examen = Examen.find params[:id]
-
+    # NOTA: Incluir en la Generacion la asignacion al tiempo del examen al estudiante_examen. así como verificar la eliminación de las eer asociadas. 
     total_cursos = total_est_examen = 0 
     if @examen.es_prueba?
       @curso_periodos = CursoPeriodo.where(:periodo_id => @examen.periodo_id, :idioma_id => @examen.curso_idioma_id)
