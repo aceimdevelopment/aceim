@@ -15,7 +15,17 @@ class ExamenesController < ApplicationController
   def index
     @cursos = Curso.order(['idioma_id', 'grado']).all
     @titulo = "Examentes Listados por Curso"
-    @examenes = Examen.order([:curso_idioma_id]).all
+    # @examenes = Examen.joins(:curso_periodo).order("curso_periodo.periodo_id ASC")
+    @idiomas = Idioma.all.delete_if{|i| i.id.eql? 'OR'}
+    @periodo_actual = ParametroGeneral.periodo_actual
+    @periodo_anterior = ParametroGeneral.periodo_anterior
+    # @aleman = Examen.joins(:curso_periodo).where(:curso_idioma_id => 'AL').order("curso_periodo.periodo_id ASC")
+    # @ingles = Examen.where(:curso_idioma_id => 'IN').order("curso_periodo.periodo_id ASC")
+    # @italiano = Examen.where(:curso_idioma_id => 'IT').order("curso_periodo.periodo_id ASC")
+    # @frances = Examen.where(:curso_idioma_id => 'FR').order("curso_periodo.periodo_id ASC")
+    # @portugues = Examen.where(:curso_idioma_id => 'PG').order("curso_periodo.periodo_id ASC")
+    # @otros = Examen.all.delete_if{|e| e.curso_idioma_id.eql? 'IN', e.curso_idioma_id.eql? 'IT', e.curso_idioma_id.eql? 'AL', e.curso_idioma_id.eql? 'FR', e.curso_idioma_id.eql? 'PG' }
+
 
     respond_to do |format|
       format.html # index.html.erb
