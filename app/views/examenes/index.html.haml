@@ -17,8 +17,8 @@
       %div{:id => idioma.id}
         .tabs
           %ul
-            %li= link_to "actual", "#actual"
-            %li= link_to "anteriores", "#anteriores"
+            %li= link_to "Período actual", "#actual"
+            %li= link_to "Períodos anteriores", "#anteriores"
 
           #actual
             - @examenes = Examen.joins(:curso_periodo).where(:curso_idioma_id => idioma.id, :periodo_id => @periodo_actual.id).order("curso_periodo.periodo_id ASC")
