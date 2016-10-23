@@ -8,9 +8,17 @@
         %p
           =link_to 'Nuevo Examen', new_examen_path 
         %p
-          =link_to "Listado de Examenes", examenes_path
-
-
+          =link_to "Gestión General de Examenes", {:controller => 'examenes', :action => 'set_idioma', :id => 'ALL'}
+        %p
+          =link_to "Gestión de Examenes de Alemán", {:controller => 'examenes', :action => 'set_idioma', :id => 'AL'}
+        %p
+          =link_to "Gestión de Examenes de Francés", {:controller => 'examenes', :action => 'set_idioma', :id => 'FR'}
+        %p
+          =link_to "Gestión de Examenes de Inglés", {:controller => 'examenes', :action => 'set_idioma', :id => 'IN'}
+        %p
+          =link_to "Gestión de Examenes de Italiano", {:controller => 'examenes', :action => 'set_idioma', :id => 'IT'}
+        %p
+          =link_to "Gestión de Examenes de Portugués", {:controller => 'examenes', :action => 'set_idioma', :id => 'PG'}
 
     %li    
       %a.desplegable{:href=>"#"} Syllabus & Fecha

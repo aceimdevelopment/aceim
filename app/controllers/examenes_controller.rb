@@ -10,13 +10,24 @@ class ExamenesController < ApplicationController
 
   HOST = "/aceim/assets/examenes/"
 
+  def set_idioma
+    session[:idioma] = (params[:id].eql? 'ALL') ? nil : params[:id] 
+    redirect_to :action => 'index'
+  end
+
   # GET /examenes
   # GET /examenes.json
   def index
     @cursos = Curso.order(['idioma_id', 'grado']).all
     @titulo = "Examentes Listados por Curso"
     # @examenes = Examen.joins(:curso_periodo).order("curso_periodo.periodo_id ASC")
-    @idiomas = Idioma.all.delete_if{|i| i.id.eql? 'OR'}
+    # @idiomas = Idioma.all.delete_if{|i| i.id.eql? 'OR'}
+    if session[:idioma]
+      @idiomas = Idioma.where(:id => session[:idioma])
+    else  
+      @idiomas = Idioma.all.delete_if{|i| i.id.eql? 'OR'}
+    end
+
     @periodo_actual = ParametroGeneral.periodo_actual
     @periodo_anterior = ParametroGeneral.periodo_anterior
     # @aleman = Examen.joins(:curso_periodo).where(:curso_idioma_id => 'AL').order("curso_periodo.periodo_id ASC")
