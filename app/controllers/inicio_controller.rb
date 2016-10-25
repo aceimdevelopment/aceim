@@ -59,11 +59,11 @@ class InicioController < ApplicationController
 # TEMPORAL PARA INHABILATACION DE ACCESSO
     ci = params[:usuario][:cedula]
 
-    if ci!='81738607' and ci!='14519813' and ci!='10264009' and ci!='15573230'
-      flash[:mensaje] = "En estos momentos nuestros servicios se encuentran suspendidos. Ofrecemos disculpas por los inconvenientes causados y le informamos que trabajamos para prestarte un optimo servicio."
-      redirect_to :action => "index"
-      return
-    end
+    # if ci!='81738607' and ci!='14519813' and ci!='10264009' and ci!='15573230'
+    #   flash[:mensaje] = "En estos momentos nuestros servicios se encuentran suspendidos. Ofrecemos disculpas por los inconvenientes causados y le informamos que trabajamos para prestarte un optimo servicio."
+    #   redirect_to :action => "index"
+    #   return
+    # end
 # TEMPORAL PARA INHABILATACION DE ACCESSO
     login = params[:usuario][:cedula]
     clave = params[:usuario][:clave]     
