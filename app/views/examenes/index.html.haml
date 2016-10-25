@@ -22,11 +22,44 @@
 
           #actual
             - @examenes = Examen.joins(:curso_periodo).where(:curso_idioma_id => idioma.id, :periodo_id => @periodo_actual.id).order("curso_periodo.periodo_id ASC")
+            .tabs
+              %ul
+                %li= link_to "Primeros Exámenes", "#primeros"
+                %li= link_to "Segundos Exámenes", "#segundos"
+                %li= link_to "Exámenes de Prueba", "#pruebas"
+                - @primeros = @examenes.where(:orden => 'primero')
+                - @segundos = @examenes.where(:orden => 'segundo')
+                - @pruebas = @examenes.where(:prueba => true)
 
-            = render :partial => 'tabla_examenes'
+              #primeros
+                -@examenes = @primeros
+                = render :partial => 'tabla_examenes'
+              #segundos
+                -@examenes = @segundos
+                = render :partial => 'tabla_examenes'                
+              #pruebas
+                -@examenes = @pruebas
+                = render :partial => 'tabla_examenes'
           #anteriores
-            - @examenes = Examen.joins(:curso_periodo).where(:curso_idioma_id => idioma.id, :periodo_id => @periodo_anterior.id).order("curso_periodo.periodo_id ASC")
-            = render :partial => 'tabla_examenes'
+            - @examenes = Examen.joins(:curso_periodo).where(:curso_idioma_id => idioma.id, :periodo_id => @periodo_anteriores.collect{|pes| pes.id}).order("curso_periodo.periodo_id ASC")
+            .tabs
+              %ul
+                %li= link_to "Primeros Exámenes", "#primeros"
+                %li= link_to "Segundos Exámenes", "#segundos"
+                %li= link_to "Exámenes de Prueba", "#pruebas"
+                - @primeros = @examenes.where(:orden => 'primero')
+                - @segundos = @examenes.where(:orden => 'segundo')
+                - @pruebas = @examenes.where(:prueba => true)
+
+              #primeros
+                -@examenes = @primeros
+                = render :partial => 'tabla_examenes'
+              #segundos
+                -@examenes = @segundos
+                = render :partial => 'tabla_examenes'                
+              #pruebas
+                -@examenes = @pruebas
+                = render :partial => 'tabla_examenes'
 
 :javascript
   $(".tabs").tabs();

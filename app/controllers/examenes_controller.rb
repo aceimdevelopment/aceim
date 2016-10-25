@@ -29,7 +29,7 @@ class ExamenesController < ApplicationController
     end
 
     @periodo_actual = ParametroGeneral.periodo_actual
-    @periodo_anterior = ParametroGeneral.periodo_anterior
+    @periodo_anteriores = Periodo.where("id != ?", @periodo_actual.id)# ParametroGeneral.periodo_anterior
     # @aleman = Examen.joins(:curso_periodo).where(:curso_idioma_id => 'AL').order("curso_periodo.periodo_id ASC")
     # @ingles = Examen.where(:curso_idioma_id => 'IN').order("curso_periodo.periodo_id ASC")
     # @italiano = Examen.where(:curso_idioma_id => 'IT').order("curso_periodo.periodo_id ASC")
