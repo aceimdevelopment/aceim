@@ -97,6 +97,7 @@ $ ->
 #nota1,2,3,4_cedula.change, para asignar la nota (solo ingles, por ahora)
 
   if elementos("nota_5_").count > 0
+    #alert('hola5')
     for i in [1..5]    
       elementos("nota"+i+"_").change ->
         cedula = $(this).attr("id").substring(6)
@@ -130,7 +131,7 @@ $ ->
           $('#descripcion_'+cedula).html(palabra nota_final.toString())
           agregar_remover_clase this,false,6
   else
-
+    #alert('hola4')
     for i in [1..4]    
       elementos("nota"+i+"_").change ->
         cedula = $(this).attr("id").substring(6)
@@ -156,7 +157,8 @@ $ ->
           $('#descripcion_'+cedula).html(palabra "PI")
           agregar_remover_clase this,false,6
         else
-          nota_final = Math.round(nota1*0.3 + nota2*0.3 + nota3*0.2 + nota4*0.2)
+          #nota_final = Math.round(nota1*0.3 + nota2*0.3 + nota3*0.2 + nota4*0.2)
+          nota_final = Math.round(nota1*0.3 + nota2*0.3 + nota3*0.3 + nota4*0.1)
           $('#nota_final_'+cedula).html(nota_final)
           $('#notafinal_'+cedula).val(nota_final)
           $('#descripcion_'+cedula).html(palabra nota_final.toString())

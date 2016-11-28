@@ -50,6 +50,35 @@ class CalificacionController < ApplicationController
     @tipo_nivel_id = session[:tipo_nivel_id]
     @periodo = historial.periodo
     @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
+    @periodo_30 = Periodo::PERIODO_30
+
+    if (!historial.nota_en_evaluacion_sin_calificar? && !historial.sin_calificar? ) && (session[:administrador] == nil)
+      redirect_to :action => "mostrar_calificaciones"
+      return
+    else
+      if @periodo.es_menor_que? @periodo_transicion
+        @historiales.each{|h|
+          if !h.tiene_notas_adicionales? && h.idioma_id.upcase == "IN"
+            h.crear_notas_adicionales
+          end
+        }
+      elsif @periodo.es_mayor_igual_que? @periodo_30 
+        @historiales.each{|h|
+          h.generar_buscar_calificaciones if !h.tiene_notas_adicionales?
+        }
+      else
+        @historiales.each{|h|
+
+            if h.tiene_notas_adicionales?
+              h.crear_nota_redaccion unless h.tiene_nota_redaccion?
+            else
+              h.crear_notas_adicionales
+            end
+        }
+      end
+    end
+
+=begin
     if @periodo.es_menor_que? @periodo_transicion
 
       @historiales.each{|h|
@@ -67,13 +96,22 @@ class CalificacionController < ApplicationController
         redirect_to :action => "mostrar_calificaciones"
         return
       end
-    else
-      @historiales.each{|historial|
+    elsif @periodo.es_mayor_igual_que? @periodo_30 
+      @historiales.each{|h|
+        h.generar_buscar_calificaciones if !h.tiene_notas_adicionales?
+      }
+      if (!historial.nota_en_evaluacion_sin_calificar? && !historial.sin_calificar? && saltar) && (session[:administrador] == nil)
+        redirect_to :action => "mostrar_calificaciones"
+        return
+      end
 
-          if historial.tiene_notas_adicionales?
-            historial.crear_nota_redaccion unless historial.tiene_nota_redaccion?
+    else
+      @historiales.each{|h|
+
+          if h.tiene_notas_adicionales?
+            h.crear_nota_redaccion unless h.tiene_nota_redaccion?
           else
-            historial.crear_notas_adicionales
+            h.crear_notas_adicionales
           end
       }
       if (!historial.nota_en_evaluacion_sin_calificar? && !historial.sin_calificar? && saltar) && (session[:administrador] == nil)
@@ -81,7 +119,7 @@ class CalificacionController < ApplicationController
         return
       end
     end      
-
+=end
   end
   
   def guardar_notas
@@ -161,6 +199,96 @@ class CalificacionController < ApplicationController
       redirect_to :action => "mostrar_calificaciones"
     end
   end
+
+# Guardar notas del metodo de calificacion de 30-30-30-10
+  def guardar_notas_30
+    exitoso_global = true
+    exitoso_local = true
+    nota_float = -2
+    historial = nil
+    @tipo_nivel_id = session[:tipo_nivel_id]
+    
+    arreglo = [{:nota1 => HistorialAcademico::EXAMENESCRITO1},
+                 {:nota2 => HistorialAcademico::EXAMENESCRITO2},
+                 {:nota3 => HistorialAcademico::EXAMENORAL},
+                 {:nota4 => HistorialAcademico::OTRAS},
+                 {:notafinal => "nota_final"}]
+
+    arreglo.each{|a|
+      params[a.keys[0]].each_with_index{|nota,i|
+        exitoso_local = true
+        historial = HistorialAcademico.where(:usuario_ci => nota[0],
+                                          :periodo_id => session[:periodo_id],
+                                          :idioma_id => session[:idioma_id],
+                                          :tipo_estado_inscripcion_id => "INS",
+                                          :tipo_categoria_id => session[:tipo_categoria_id],
+                                          :tipo_nivel_id => session[:tipo_nivel_id],
+                                          :seccion_numero => session[:seccion_numero]
+                                          ).limit(1).first     
+        
+        if nota[1].upcase=="PI"
+          nota_float = -1
+        else
+          begin
+            nota_float = Float(nota[1].gsub(",","."))
+          rescue
+            exitoso_local = exitoso_global = false
+          end
+        end
+        
+        if exitoso_local 
+          if a[a.keys[0]] != "nota_final"
+            nota_individual = historial.nota_en_evaluacion(a[a.keys[0]])
+            nota_individual.nota = nota_float
+            nota_individual.save
+          else
+            historial.nota_final = nota_float
+            historial.save
+          end
+        end
+      }
+    }
+   
+   if !exitoso_global
+    flash[:mensaje] = "Los datos han sido guardados, pero existen algunas notas inválidas o incompletas"
+    @historiales,@usuarios = historiales_usuarios
+    historial = @historiales.first
+    @titulo_pagina = "Calificar sección"
+    @curso = "#{Seccion.idioma(historial.idioma_id)}"
+    @horario = Seccion.horario(session)
+    @nivel = historial.tipo_nivel.descripcion
+    @seccion = session[:seccion_numero]
+    @periodo = historial.periodo
+    @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
+    @periodo_30 = Periodo::PERIODO_30    
+    info_bitacora("La seccion #{session[:seccion_numero]} del curso #{Seccion.idioma(historial.idioma_id)} del horario #{Seccion.horario(session)} no fue calificada por completo, periodo #{session[:parametros][:periodo_calificacion]}")
+    render :action => "buscar_estudiantes"
+    return
+   else
+    historial.seccion.guardar_datos_calificacion(session[:usuario].ci)
+    if session[:administrador] == nil
+      historial.seccion.verificar_calificaciones_completas
+    end
+    #bitacora
+      params[:notafinal].each{ |pa| 
+      historial = HistorialAcademico.where(:usuario_ci => pa[0],
+                                          :periodo_id => session[:periodo_id],
+                                          :idioma_id => session[:idioma_id],
+            :tipo_estado_inscripcion_id => "INS",
+                                          :tipo_categoria_id => session[:tipo_categoria_id],
+                                          :tipo_nivel_id => session[:tipo_nivel_id],
+                                          :seccion_numero => session[:seccion_numero]
+                                          ).limit(1).first   
+      historial.cambiar_estado_calificacion(session[:tipo_categoria_id])                                    
+      info_bitacora("Usuario #{session[:usuario].nombre_completo} calificó al estudiante #{historial.usuario_ci} del curso #{Seccion.idioma(historial.idioma_id)}, horario #{Seccion.horario(session)}, seccion #{session[:seccion_numero]}, con las siguientes notas: E1 = #{historial.nota_en_evaluacion(HistorialAcademico::EXAMENESCRITO1).nota}, E2 = #{historial.nota_en_evaluacion(HistorialAcademico::EXAMENESCRITO2).nota}, EOral = #{historial.nota_en_evaluacion(HistorialAcademico::EXAMENORAL).nota}, Otras = E1 = #{historial.nota_en_evaluacion(HistorialAcademico::OTRAS).nota}, nota final = #{historial.nota_final}, periodo #{session[:parametros][:periodo_calificacion]}")
+      }
+      info_bitacora("La seccion #{session[:seccion_numero]} del curso #{Seccion.idioma(historial.idioma_id)} del horario #{Seccion.horario(session)} fue calificada por el usuario #{session[:usuario].nombre_completo}, periodo #{session[:parametros][:periodo_calificacion]}")
+      #fin bitacora
+    redirect_to :action => "mostrar_calificaciones"
+   end
+  end
+  
+
   
   def guardar_notas_ingles
     exitoso_global = true
@@ -286,15 +414,26 @@ class CalificacionController < ApplicationController
     @seccion = session[:seccion_numero]
     @periodo = historial.periodo
     @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
+    @periodo_30 = Periodo::PERIODO_30
+
     @tipo_nivel_id = session[:tipo_nivel_id]
   end
   
   def generar_pdf
+    
+    @periodo_30 = Periodo::PERIODO_30
     @historiales,@usuarios = historiales_usuarios
     historial = @historiales.first
+    @periodo = historial.periodo
     info_bitacora("Usuario #{session[:usuario].nombre_completo} generó pdf del curso #{Seccion.idioma(historial.idioma_id)}, horario #{Seccion.horario(session)}, seccion #{session[:seccion_numero]},periodo #{session[:parametros][:periodo_calificacion]}")
     historiales,usuarios = historiales_usuarios
+
+  if @periodo.es_mayor_igual_que? @periodo_30
+    pdf = DocumentosPDF.notas_30(historiales,session)
+  else
     pdf = DocumentosPDF.notas(historiales,session)
+  end
+
     send_data pdf.render,:filename => "notas.pdf",
                          :type => "application/pdf", :disposition => "attachment"
   end

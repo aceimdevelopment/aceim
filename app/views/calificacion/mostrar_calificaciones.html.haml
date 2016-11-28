@@ -12,7 +12,10 @@
   #{@seccion}
   %br
 
-- if @periodo.es_menor_que? @periodo_transicion
+- if @periodo.es_mayor_igual_que? @periodo_30
+  =colocar_tabla_30(@usuarios,@historiales,false)
+
+- elsif @periodo.es_menor_que? @periodo_transicion
   - if session[:idioma_id] != "IN"
     =colocar_tabla(@usuarios,@historiales,false)
   - else

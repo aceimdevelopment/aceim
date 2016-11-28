@@ -24,7 +24,10 @@
       %li Los datos se guardarán de forma definitiva una vez que se hayan calificado todos los estudiantes
   %h3 Tabla de calificaciones 
 - 
-- if @periodo.es_menor_que? @periodo_transicion
+
+- if @periodo.es_mayor_igual_que? @periodo_30
+  =colocar_tabla_30(@usuarios,@historiales,true)
+- elsif @periodo.es_menor_que? @periodo_transicion
   - if session[:idioma_id] != "IN"
     =colocar_tabla(@usuarios,@historiales,true)
   - else
@@ -39,3 +42,4 @@
   =#colocar_tabla_general(@usuarios,@historiales,true)
 -# else
   =#colocar_tabla_ingles(@usuarios,@historiales,true)
+

@@ -235,6 +235,163 @@ class DocumentosPDF
     return pdf
   end
 
+# NUEVO SISTEMA  DE CALIFICACION 30
+
+  def self.notas_30(historiales,session)
+    usuario = session[:usuario]
+    pdf = PDF::Writer.new
+    pdf.margins_cm(1.8)
+    
+    pdf.add_image_from_file 'app/assets/images/logo_fhe_ucv.jpg', 465, 710, 50,nil
+    pdf.add_image_from_file 'app/assets/images/logo_eim.jpg', 515, 710+10, 50,nil
+    pdf.add_image_from_file 'app/assets/images/logo_ucv.jpg', 45, 710, 50,nil
+ 
+    
+    #texto del encabezado
+    pdf.add_text 100,745,to_utf16("Universidad Central de Venezuela"),11
+    pdf.add_text 100,735,to_utf16("Facultad de Humanidades y Educación"),11
+    pdf.add_text 100,725,to_utf16("Escuela de Idiomas Modernos"),11
+    pdf.add_text 100,715,to_utf16("Cursos de Extensión EIM-UCV"),11
+
+    #titulo
+    pdf.fill_color(Color::RGB.new(0,0,0))
+    historial = historiales.first
+    @periodo = historial.periodo
+    @tipo_nivel_id = historial.tipo_nivel_id
+    @periodo_30 = Periodo::PERIODO_30
+
+    #periodo_calificacion
+    
+    pdf.add_text_wrap 50,650,510,to_utf16("#{Seccion.idioma(historial.idioma_id)} (#{Seccion.tipo_categoria(historial.tipo_categoria_id)} - Sección #{historial.seccion_numero})"), 12,:center
+    pdf.add_text_wrap 50,635,510,to_utf16(Seccion.horario(session)),10,:center
+    pdf.add_text_wrap 50,621,510,to_utf16("Periodo #{ParametroGeneral.periodo_calificacion.id}"),9.5,:center
+
+    #instructor
+    pdf.add_text_wrap 50,600,510,to_utf16(usuario.nombre_completo),10
+    pdf.add_text_wrap 50,585,505,to_utf16(usuario.ci),10
+
+    pdf.add_text_wrap 50,555,510,to_utf16("<b>Tabla de Calificaciones<b>"),10
+
+    historiales = historiales.sort_by{|h| h.usuario.nombre_completo}
+    #  historiales.each { |h|
+    #    pdf.text to_utf16 "#{h.usuario.nombre_completo} - #{h.nota_final}"
+    #  }
+    pdf.text "\n"*18
+    tabla = PDF::SimpleTable.new
+    tabla.heading_font_size = 8
+    tabla.font_size = 8
+    tabla.show_lines    = :all
+    tabla.line_color = Color::RGB::Gray
+    tabla.show_headings = true
+    tabla.shade_headings = true
+    tabla.shade_heading_color = Color::RGB.new(230,238,238)
+    tabla.shade_color = Color::RGB.new(230,238,238)
+    tabla.shade_color2 = Color::RGB::White
+    tabla.shade_rows = :striped
+    tabla.orientation   = :center
+    tabla.position      = :center
+
+    tabla.column_order = ["#", "nombre", "cedula", "nota1","nota2","nota3","nota4","notafinal", "descripcion"]
+
+
+    tabla.columns["#"] = PDF::SimpleTable::Column.new("#") { |col|
+      col.width = 20
+      col.heading = to_utf16("<b>#</b>")
+      col.heading.justification = :center
+      col.justification = :center
+    }
+
+    tabla.columns["cedula"] = PDF::SimpleTable::Column.new("cedula") { |col|
+      col.width = 60
+      col.heading = to_utf16("<b>Cédula</b>")
+      col.heading.justification = :center
+      col.justification = :center
+    }
+
+    tabla.columns["nombre"] = PDF::SimpleTable::Column.new("nombre") { |col|
+      col.width = 150
+      col.heading = "<b>Nombre</b>"
+      col.heading.justification = :left
+      col.justification = :left
+    }
+    
+    tabla.columns["nota1"] = PDF::SimpleTable::Column.new("nota1") { |col|
+      col.width = 50
+      col.heading = to_utf16("<b>Exámen Teórico 1 (30%)</b>")
+      col.heading.justification = :center
+      col.justification = :center
+    }
+    tabla.columns["nota2"] = PDF::SimpleTable::Column.new("nota2") { |col|
+      col.width = 50
+      col.heading = to_utf16("<b>Exámen Teórico 2 (30%)</b>")
+      col.heading.justification = :center
+      col.justification = :center
+    }
+    tabla.columns["nota3"] = PDF::SimpleTable::Column.new("nota3") { |col|
+      col.width = 50
+      col.heading = to_utf16("<b>Exámen Oral (30%)</b>")
+      col.heading.justification = :center
+      col.justification = :center
+    }
+    tabla.columns["nota4"] = PDF::SimpleTable::Column.new("nota4") { |col|
+      col.width = 50
+      col.heading = to_utf16("<b>Otros (10%)</b>")
+      col.heading.justification = :center
+      col.justification = :center
+    }
+    tabla.columns["notafinal"] = PDF::SimpleTable::Column.new("notafinal") { |col|
+      col.width = 50
+      col.heading = to_utf16("<b>Final</b>")
+      col.heading.justification = :center
+      col.justification = :center
+    }
+
+    tabla.columns["descripcion"] = PDF::SimpleTable::Column.new("descripcion") { |col|
+      if !historiales.first.tiene_notas_adicionales?
+        col.width = 100
+      else
+        col.width = 70
+      end
+      col.heading = to_utf16("<b>Descripción</b>")
+      col.heading.justification = :left
+      col.justification = :left
+    }
+
+    data = []
+
+    historiales.each_with_index{|h,i|
+      nota_descripcion = to_utf16(HistorialAcademico::NOTASPALABRAS[h.nota_final + 2])
+
+      nota1 = h.nota_en_evaluacion(HistorialAcademico::EXAMENESCRITO1).nota_valor 
+      nota2 = h.nota_en_evaluacion(HistorialAcademico::EXAMENESCRITO2).nota_valor
+      nota3 = h.nota_en_evaluacion(HistorialAcademico::EXAMENORAL).nota_valor
+      nota4 = h.nota_en_evaluacion(HistorialAcademico::OTRAS).nota_valor
+
+      data << {"#" => "#{i+1}",
+        "cedula" => to_utf16(h.usuario.ci),
+        "nombre" => to_utf16(h.usuario.nombre_completo),
+        "nota1" => to_utf16(nota1),
+        "nota2" => to_utf16(nota2),
+        "nota3" => to_utf16(nota3),
+        "nota4" => to_utf16(nota4),
+        "notafinal" => to_utf16(HistorialAcademico.colocar_nota(h.nota_final)),
+        "descripcion" => nota_descripcion
+      }
+    }
+    tabla.data.replace data
+    tabla.render_on(pdf)
+    pdf.add_text 430,50,to_utf16("#{Time.now.strftime('%d/%m/%Y %I:%M%p')} - Página: 1 de 1")
+    return pdf
+  end
+
+
+# FIN NUEVO SISTEMA DE CALIFICACION 30
+
+
+
+
+
+
   def self.datos_preinscripcion(historial_academico,pdf,profesor=nil)    
 
     #titulo

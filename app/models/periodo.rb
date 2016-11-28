@@ -2,6 +2,8 @@
 class Periodo < ActiveRecord::Base
 	PERIODO_TRANSICION_NOTAS_PARCIALES = "A-2016"
 
+	PERIODO_30 = "D-2016"
+
 
 	def self.lista_ordenada
 		Periodo.all.collect{|x| x}.sort_by{|x| "#{x.ano} #{x.id}"}.reverse()
@@ -10,6 +12,10 @@ class Periodo < ActiveRecord::Base
 	def ordenado
 		ident,ano = id.split("-")
 		"#{ano}-#{ident}"		
+	end
+
+	def es_mayor_igual_que? periodo4_id
+		es_mayor_que? periodo4_id
 	end
 
 	def es_mayor_que? periodo3_id
