@@ -32,9 +32,39 @@
           var montharray=new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
           document.write("<small><font color='000000' face='Arial'>"+dayarray[day]+", "+daym+" de "+montharray[month]+" de "+year+"</font></small>")
 
+
+          var xmlHttp;
+          function srvTime(){
+              try {
+                  //FF, Opera, Safari, Chrome
+                  xmlHttp = new XMLHttpRequest();
+              }
+              catch (err1) {
+                  //IE
+                  try {
+                      xmlHttp = new ActiveXObject('Msxml2.XMLHTTP');
+                  }
+                  catch (err2) {
+                      try {
+                          xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
+                      }
+                      catch (eerr3) {
+                          //AJAX not supported, use CPU time.
+                          alert("AJAX not supported");
+                      }
+                  }
+              }
+              xmlHttp.open('HEAD',window.location.href.toString(),false);
+              xmlHttp.setRequestHeader("Content-Type", "text/html");
+              xmlHttp.send('');
+              return xmlHttp.getResponseHeader("Date");
+          }
+
+          var st = srvTime();          
+
           function updateClock ( )
             {
-            var currentTime = new Date ( );
+            var currentTime = new Date (st);
               var currentHours = currentTime.getHours ( );
               var currentMinutes = currentTime.getMinutes ( );
               var currentSeconds = currentTime.getSeconds ( );
@@ -53,7 +83,7 @@
               currentHours = ( currentHours == 0 ) ? 12 : currentHours;
 
               // Compose the string for display
-              var currentTimeString = "- " + currentHours + ":" + currentMinutes + ":" + currentSeconds + " " + timeOfDay;
+              var currentTimeString = "- " + currentHours + ":" + currentMinutes + " " + timeOfDay;
               
               
               $("#clock").html(currentTimeString);
@@ -62,9 +92,9 @@
 
           $(document).ready(function()
           {
-             setInterval('updateClock()', 1000);
+                updateClock();
+          //    setInterval('updateClock()', 100);
           });
-
         %b#clock
 
         = render 'cargar_sesion'
