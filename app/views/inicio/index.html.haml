@@ -72,7 +72,7 @@
                   - @arancel = "#{ParametroGeneral.costo_nuevos_i}Bs." 
                 - else
                   - @arancel = "#{TipoConvenio.find('REG').monto.to_i}Bs."  
-                Arancel:
+                Arancel por nivel:
                 %b= (curso.tipo_estado_inscripcion_curso_id.eql? 'PR' or curso.tipo_estado_inscripcion_curso_id.eql? 'AB') ? @arancel : @por_definir
           %br
 
