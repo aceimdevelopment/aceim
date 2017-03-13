@@ -34,13 +34,12 @@
     %h2 Seleccione el Idioma de su interés para ampliar la información:
     %ul
       %li=  link_to 'Inglés(Adultos)', "#IN_AD", :id => 'INTE', :class => 'btn_idiomas'
-      %li=  link_to 'Inglés(Niños)', "#IN_NI", :id => 'INNI', :class => 'btn_idiomas'
       %li=  link_to 'Inglés(Adolescentes)', "#IN_TE", :id => 'INTE', :class => 'btn_idiomas'
       %li=  link_to 'Alemán', "#AL_AD", :id => 'ALAD', :class => 'btn_idiomas'
       %li=  link_to 'Francés', "#FR_AD", :id => 'FRAD', :class => 'btn_idiomas'
       %li=  link_to 'Italiano', "#IT_AD", :id => 'ITAD', :class => 'btn_idiomas'
       %li=  link_to 'Portugués', "#PG_AD", :id => 'PGAD', :class => 'btn_idiomas'
-      %li=  link_to 'Nivelación', "#NIVE", :id => 'NIV', :class => 'btn_idiomas'
+
 
     - @tipo_cursos.each do |tipo_curso|
       -@inscripciones = tipo_curso.inscripciones.delete_if{|i| i.tipo_inscripcion_id.eql? 'NI'}.sort_by{|i| i.apertura}
@@ -69,45 +68,15 @@
                 %p
                   %b= curso.fecha_entrega_planilla                  
               %li
-                - if tipo_curso.tipo_categoria_id.eql? "NI"
-                  - @arancel = "#{ParametroGeneral.costo_ninos_i}Bs." 
-                - elsif curso.tipo_inscripcion_id.eql? 'NU'
+                - if curso.tipo_inscripcion_id.eql? 'NU'
                   - @arancel = "#{ParametroGeneral.costo_nuevos_i}Bs." 
                 - else
-                  - @arancel = "#{ParametroGeneral.costo_nuevos_i}Bs."  
+                  - @arancel = "#{TipoConvenio.find('REG').monto}Bs."  
                 Arancel:
                 %b= (curso.tipo_estado_inscripcion_curso_id.eql? 'PR' or curso.tipo_estado_inscripcion_curso_id.eql? 'AB') ? @arancel : @por_definir
           %br
 
 
-    #NIVE{:style => 'background-color:white;'}
-      - @nivelaciones.each do |nivelacion|
-        - @culmino = (nivelacion.cierre and nivelacion.cerrada? and !nivelacion.post_cierre)
-        - @clase = "well"
-        - @clase += " abierta" if nivelacion.abierta?
-        - @clase += " programada" if nivelacion.programada?
-        - @clase += " culmino" if @culmino
-
-        %div{:class => @clase}
-          - if @culmino
-            %h2{:style => 'float:right;color:red;'} Culminó
-          %h2
-            %b= nivelacion.tipo_curso.descripcion.capitalize
-          %ul
-            %li
-              Fecha Prueba Oral:
-              %b= (nivelacion.apertura and !nivelacion.tipo_estado_inscripcion_curso_id.eql? 'CE') ? I18n.localize(nivelacion.apertura, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
-              %br
-              %br
-            %li
-              Fecha Prueba Escrita:
-              %b= (nivelacion.cierre and !nivelacion.tipo_estado_inscripcion_curso_id.eql? 'CE') ? I18n.localize(nivelacion.cierre, :format => "%A, %d de %B de %Y a las  %I:%M %p") : @por_definir
-              %br
-              %br
-            %li
-              Arancel:
-              %b= (nivelacion.tipo_estado_inscripcion_curso_id.eql? 'PR' or nivelacion.tipo_estado_inscripcion_curso_id.eql? 'AB') ? ParametroGeneral.costo_examen : @por_definir
-        %br
   %br
   %br
   .center
