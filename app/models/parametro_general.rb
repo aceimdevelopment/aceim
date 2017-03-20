@@ -15,7 +15,10 @@ class ParametroGeneral < ActiveRecord::Base
         aux += "Inscripcion Cerrada de #{inscripcion.descripcion} a las #{DateTime.now}" if inscripcion.save
       end
     end
+    
+    aux "No se encontraron Inscripciones por abrir o cerrar ahora: #{Time.now}." if aux.blank?
 
+    puts "Resultado: #{aux}"
     return aux;
     
   end
