@@ -6,7 +6,7 @@
           %span.ui-icon.ui-icon-info{ :style =>"display:inline-block;" }
           #{flash[:mensaje]}  
       =javascript_tag "$(document).ready(function(){ $('#mensaje-flash').show('pulsate',{},'fast'); });" 
-  - if false #@cursos_abiertos_nuevo.count > 0 
+  - if @cursos_abiertos_nuevo.count > 0 
     %ul.center
       %h3
         %p Inscripciones Nuevos: 

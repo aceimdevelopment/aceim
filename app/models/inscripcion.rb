@@ -99,7 +99,7 @@ class Inscripcion < ActiveRecord::Base
 	end
 
 	def cerrar_ahora?
-		tipo_estado_inscripcion_curso_id.eql? 'AB' and cierre <= DateTime.now
+		tipo_estado_inscripcion_curso_id.eql? 'AB' and cierre >= DateTime.now
 	end
 
     def descripcion
