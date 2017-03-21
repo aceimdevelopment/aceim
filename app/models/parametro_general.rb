@@ -12,7 +12,8 @@ class ParametroGeneral < ActiveRecord::Base
 
       if inscripcion.cerrar_ahora?
         inscripcion.tipo_estado_inscripcion_curso_id = 'CE'
-        aux += "Inscripcion Cerrada de #{inscripcion.descripcion} a las #{DateTime.now}" if inscripcion.save
+        aux += "Hora de Cierre: < #{inscripcion.cierre}> Inscripcion Cerrada de #{inscripcion.descripcion} a las #{DateTime.now}" if inscripcion.save
+        aux += "Time > Cerrada: #{DateTime.now > cierre}"
       end
     end
     
