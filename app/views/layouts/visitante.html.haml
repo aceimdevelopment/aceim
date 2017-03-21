@@ -17,9 +17,13 @@
           %br/
           ACEIM
           %br/
+          = Time.now
     #menubar.cargar_sesion
       %b.detalle_derecha
         :javascript
+          //Variable para tomar la Hora del Servidor
+          var serverTime = new Date("#{Time.now}"); 
+
           var mydate=new Date()
           var year=mydate.getYear()
           if (year < 1000) year+=1900
@@ -34,14 +38,16 @@
 
           function updateClock ( )
             {
-            var currentTime = new Date ( );
+
+              var currentTime = serverTime;
+
               var currentHours = currentTime.getHours ( );
               var currentMinutes = currentTime.getMinutes ( );
-              var currentSeconds = currentTime.getSeconds ( );
+              //var currentSeconds = currentTime.getSeconds ( );
 
               // Pad the minutes and seconds with leading zeros, if required
               currentMinutes = ( currentMinutes < 10 ? "0" : "" ) + currentMinutes;
-              currentSeconds = ( currentSeconds < 10 ? "0" : "" ) + currentSeconds;
+              //currentSeconds = ( currentSeconds < 10 ? "0" : "" ) + currentSeconds;
 
               // Choose either "AM" or "PM" as appropriate
               var timeOfDay = ( currentHours < 12 ) ? "AM" : "PM";
@@ -53,16 +59,18 @@
               currentHours = ( currentHours == 0 ) ? 12 : currentHours;
 
               // Compose the string for display
-              var currentTimeString = "- " + currentHours + ":" + currentMinutes + ":" + currentSeconds + " " + timeOfDay;
-              
+              var currentTimeString = "- " + currentHours + ":" + currentMinutes + " " + timeOfDay;
               
               $("#clock").html(currentTimeString);
+              
+              serverTime.setMinutes(serverTime.getMinutes() + 1);
                   
            }
 
           $(document).ready(function()
           {
-             setInterval('updateClock()', 1000);
+             updateClock();
+             setInterval('updateClock()', 60000);
           });
         %b#clock
 
