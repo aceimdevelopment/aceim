@@ -16,7 +16,7 @@ class ParametroGeneral < ActiveRecord::Base
       end
     end
     
-    aux "No se encontraron Inscripciones por abrir o cerrar ahora: #{Time.now}." if aux.blank?
+    aux = "No se encontraron Inscripciones por abrir o cerrar ahora: #{Time.now}." if aux.blank?
 
     puts "Resultado: #{aux}"
     return aux;
