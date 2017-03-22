@@ -2,7 +2,7 @@
 
 class AdministradorMailer < ActionMailer::Base
   # default :from => "fundeim@ucv.ve"
-  default :from => "fundeimucv@gmail.com", :bcc => 'aceim.development@gmail.com'
+  default :from => "FUNDEIM <fundeimucv@gmail.com>", :bcc => 'aceim.development@gmail.com'
   
   def enviar_notificacion(instructores)
     @instructores = instructores
