@@ -237,7 +237,7 @@ class InicioController < ApplicationController
     if usuario
       EstudianteMailer.olvido_clave(usuario).deliver  
       info_bitacora "El usuario #{usuario.descripcion} olvido su clave y la pidio recuperar"
-      flash[:mensaje] = "Se ha enviado la clave al correo: #{usuario.correo}"
+      flash[:mensaje] = "Se ha enviado la clave al correo: #{usuario.correo}. Favor revise en su carpeta de Spam de no encontrar el correo en su bandeja."
       redirect_to :action => :index
     else
       flash[:mensaje] = "Usuario no registrado"
