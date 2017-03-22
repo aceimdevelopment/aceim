@@ -8,7 +8,8 @@
             #{flash[:mensaje]}  
         =javascript_tag "$(document).ready(function(){ $('#mensaje-flash').show('pulsate',{},'fast'); });"
       %p Ingrese los datos para recuperar su clave:
-      =form_tag(:action => "olvido_clave_guardar") do 
+      =#form_tag(:action => "olvido_clave_guardar") do 
+      =form_tag(:action => "clave_set_ci_guardar") do 
         %p
           %label
             Cédula de Identidad

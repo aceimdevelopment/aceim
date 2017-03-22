@@ -246,4 +246,22 @@ class InicioController < ApplicationController
     
   end
 
+
+  def clave_set_ci_guardar
+    cedula = params[:usuario][:ci]
+    usuario = Usuario.where(:ci => cedula).limit(0).first
+    if usuario
+      usuario.contrasena = usuario.ci
+      usuario.save
+      info_bitacora "Se le asigno la ci por contrasena al usuario #{usuario.descripcion}."
+      flash[:mensaje] = "Su contraseña es ahora su cédula."
+      redirect_to :action => :index
+    else
+      flash[:mensaje] = "Usuario no registrado"
+      redirect_to :action => :olvido_clave
+    end
+    
+  end
+
+
 end
