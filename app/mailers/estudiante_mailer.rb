@@ -2,7 +2,7 @@
 
 class EstudianteMailer < ActionMailer::Base
   # default :from => "fundeim@ucv.ve"      
-  default :from => "fundeimucv@gmail.com"
+  default :from => "FUNDEIM <fundeimucv@gmail.com>"
   def bienvenida(usuario)
     @nombre = usuario.nombre_completo     
     @clave = usuario.contrasena
