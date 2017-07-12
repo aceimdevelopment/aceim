@@ -4,6 +4,9 @@ class Periodo < ActiveRecord::Base
 
 	PERIODO_30 = "D-2016"
 
+	has_many :archivos
+	accepts_nested_attributes_for :archivos
+
 
 	def self.lista_ordenada
 		Periodo.all.collect{|x| x}.sort_by{|x| "#{x.ano} #{x.id}"}.reverse()

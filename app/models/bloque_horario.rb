@@ -16,6 +16,8 @@ class BloqueHorario < ActiveRecord::Base
     :class_name => 'TipoDia',
     :foreign_key => ['tipo_dia_id2']
 
+  has_many :archivos
+  accepts_nested_attributes_for :archivos
 
 	def descripcion_horario
 

@@ -1,0 +1,28 @@
+= form_for @archivo do |f|
+  -if @archivo.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@archivo.errors.count, "error")} prohibited this archivo from being saved:"
+      %ul
+        - @archivo.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :nombre
+    = f.text_field :nombre
+  .field
+    = f.label :url
+    = f.text_field :url
+  .field
+    = f.label :periodo
+    = f.collection_select :periodo, Periodo.all, :id, :ordenado
+  .field
+    = f.label :bloque_horario
+    = f.collection_select :bloque_horario, BloqueHorario.all, :id, :descripcion
+  .field
+    = f.label :idioma
+    = f.collection_select :idioma, Idioma.all, :id, :descripcion_idioma    
+  .field
+    = f.label :tipo_nivel
+    = f.collection_select :tipo_nivel, TipoNivel.all, :id, :descripcion    
+  .actions
+    = f.submit 'Save'

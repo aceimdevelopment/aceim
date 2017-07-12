@@ -5,6 +5,9 @@ class TipoNivel < ActiveRecord::Base
     :class_name => 'Curso',
     :foreign_key => ['tipo_nivel_id']
 
+  has_many :archivos
+  accepts_nested_attributes_for :archivos
+
   PERIODO = ParametroGeneral.periodo_actual.id
   def preinscritos
     HistorialAcademico.count(:conditions => ["periodo_id = ? AND tipo_nivel_id = ?",PERIODO, id])

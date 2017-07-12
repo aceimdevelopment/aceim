@@ -9,6 +9,9 @@ class Idioma < ActiveRecord::Base
 
   has_many :categorias, :through => :tipo_curso, :source => :tipo_categoria
 
+  has_many :archivos
+  accepts_nested_attributes_for :archivos
+
   # has_and_belongs_to_many :categorias, :class_name => 'idioma_categoria', :foreign_key => ['tipo_categoria_id']
 
   # has_many :idioma_categoria,

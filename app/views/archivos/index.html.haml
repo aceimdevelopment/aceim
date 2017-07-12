@@ -1,0 +1,29 @@
+%h1 Listing archivos
+
+%table
+  %tr
+    %th Nombre
+    %th Url
+    %th Periodo
+    %th Bloque forario
+    %th Idioma
+    %th Nivel
+    %th
+    %th
+    %th
+
+  - @archivos.each do |archivo|
+    %tr
+      %td= archivo.nombre
+      %td= archivo.url
+      %td= archivo.periodo
+      %td= archivo.bloque_horario
+      %td= archivo.idioma
+      %td= archivo.nivel
+      %td= link_to 'Show', archivo
+      %td= link_to 'Edit', edit_archivo_path(archivo)
+      %td= link_to 'Destroy', archivo, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Archivo', new_archivo_path

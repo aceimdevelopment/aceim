@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Nombre:
+  = @archivo.nombre
+%p
+  %b Url:
+  = @archivo.url
+%p
+  %b Periodo:
+  = @archivo.periodo
+%p
+  %b Bloque forario:
+  = @archivo.bloque_horario
+%p
+  %b Idioma:
+  = @archivo.idioma
+%p
+  %b Nivel:
+  = @archivo.nivel
+
+= link_to 'Edit', edit_archivo_path(@archivo)
+\|
+= link_to 'Back', archivos_path
