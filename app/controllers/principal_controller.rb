@@ -28,6 +28,7 @@ class PrincipalController < ApplicationController
 
     @ha = nil if (@ha and @ha.idioma_id.eql? 'FR' and (@ha.tipo_nivel_id.eql? "CB" or @ha.tipo_nivel_id.eql? "CI" or @ha.tipo_nivel_id.eql? "CA"))
 
+    @archivos_disponibles = Archivo.all
     @curso_abierto_regular = Inscripcion.where(:tipo_inscripcion_id => 'RE', 
       :tipo_estado_inscripcion_curso_id => 'AB', 
       :idioma_id => session[:tipo_curso].idioma_id,

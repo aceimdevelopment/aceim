@@ -8,16 +8,16 @@
   = @archivo.url
 %p
   %b Periodo:
-  = @archivo.periodo
+  = @archivo.periodo_id
 %p
-  %b Bloque forario:
-  = @archivo.bloque_horario
+  %b Horario:
+  = @archivo.bloque_horario.descripcion
 %p
   %b Idioma:
-  = @archivo.idioma
+  = @archivo.idioma.descripcion
 %p
   %b Nivel:
-  = @archivo.nivel
+  = @archivo.tipo_nivel.descripcion
 
 = link_to 'Edit', edit_archivo_path(@archivo)
 \|

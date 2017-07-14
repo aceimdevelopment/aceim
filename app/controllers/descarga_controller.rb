@@ -3,6 +3,12 @@
 class DescargaController < ApplicationController
 	before_filter :filtro_logueado
 
+
+	def archivo
+		archivo = Archivo.find params[:id]
+		send_file archivo.url, :x_sendfile => true, :disposition => "attachment"
+	end
+
 	def fechas
 		send_file "#{Rails.root}/attachments/FECHAS.pdf", :type => "application/pdf", :x_sendfile => true, :disposition => "attachment"
 	end

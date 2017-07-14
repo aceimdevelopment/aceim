@@ -16,10 +16,10 @@
     %tr
       %td= archivo.nombre
       %td= archivo.url
-      %td= archivo.periodo
-      %td= archivo.bloque_horario
-      %td= archivo.idioma
-      %td= archivo.nivel
+      %td= archivo.periodo_id
+      %td= archivo.bloque_horario.descripcion
+      %td= archivo.idioma.descripcion
+      %td= archivo.tipo_nivel.descripcion
       %td= link_to 'Show', archivo
       %td= link_to 'Edit', edit_archivo_path(archivo)
       %td= link_to 'Destroy', archivo, :confirm => 'Are you sure?', :method => :delete

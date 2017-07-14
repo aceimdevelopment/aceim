@@ -45,6 +45,13 @@
 		=link_to "Syllabus: #{@ha.tipo_nivel.descripcion}", :controller => 'descarga', :action => 'syllabus', :nivel => @nivel, :idioma_id => @ha.idioma_id 
 	%div.titulo Descarga syllabus correspondiente al curso actual
 
+- if @ha and @archivos_disponibles
+	%h2 Archivos disponibles para tu curso:
+	- @archivos_disponibles.each do |arch| 
+		%h3
+			=link_to arch.nombre, :controller => 'descarga', :action => 'archivo', :id => arch.id 
+		%div.titulo Descarga arch.nombre
+
 %h3
 	=link_to "Descargar Fechas", :controller => 'descarga', :action => 'fechas' 
 %div.titulo Programación de los Cursos de Idiomas

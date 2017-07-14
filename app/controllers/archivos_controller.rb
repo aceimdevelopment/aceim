@@ -1,6 +1,12 @@
+# encoding: utf-8
+
 class ArchivosController < ApplicationController
   # GET /archivos
   # GET /archivos.json
+
+  before_filter :filtro_logueado
+  before_filter :filtro_administrador
+
   def index
     @archivos = Archivo.all
 
@@ -40,11 +46,24 @@ class ArchivosController < ApplicationController
   # POST /archivos
   # POST /archivos.json
   def create
+
+    if params[:file][:datafile]
+      begin
+        data = params[:file][:datafile]
+        url = "#{Rails.root}/attachments/archivos/#{data.original_filename}"
+        data = data.tempfile
+        File.open("#{url}", "wb") {|file| file.write data.read; file.close}
+        params[:archivo][:url] = "url"
+      rescue Exception => e
+        flash[:mensaje] = "Error: #{e.message}"
+      end
+    end
+
     @archivo = Archivo.new(params[:archivo])
 
     respond_to do |format|
       if @archivo.save
-        format.html { redirect_to @archivo, notice: 'Archivo was successfully created.' }
+        format.html { redirect_to @archivo, flash: {mensaje: 'Archivo creado con éxito.'}}
         format.json { render json: @archivo, status: :created, location: @archivo }
       else
         format.html { render action: "new" }
@@ -56,11 +75,12 @@ class ArchivosController < ApplicationController
   # PUT /archivos/1
   # PUT /archivos/1.json
   def update
+
     @archivo = Archivo.find(params[:id])
 
     respond_to do |format|
       if @archivo.update_attributes(params[:archivo])
-        format.html { redirect_to @archivo, notice: 'Archivo was successfully updated.' }
+        format.html { redirect_to @archivo, flash: {mensaje: 'Archivo actualizado con éxito.'} }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
@@ -73,6 +93,14 @@ class ArchivosController < ApplicationController
   # DELETE /archivos/1.json
   def destroy
     @archivo = Archivo.find(params[:id])
+
+    begin
+      File.delete(@archivo.url)
+      flash[:mensaje] = "Archivo Eliminado del sistema."
+    rescue Exception => e
+      flash[:mensaje] = "Error al intentar eliminar. #{e.message}"
+    end
+
     @archivo.destroy
 
     respond_to do |format|
