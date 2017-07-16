@@ -1,6 +1,7 @@
 
 -if session[:administrador].tipo_rol_id
   %ul.navegador
+    %li=link_to "Gestionar Archivos", :controller=>"archivos"
 
     %li    
       %a.desplegable{:href=>"#"} Gestionar Examenes
@@ -20,46 +21,47 @@
         %p
           =link_to "Gestión de Examenes de Portugués", {:controller => 'examenes', :action => 'set_idioma', :id => 'PG'}
 
-    %li    
-      %a.desplegable{:href=>"#"} Syllabus & Fecha
-      %ul.subnavegador
-        %p
-          =link_to "Fechas", :controller => 'descarga', :action => 'fechas'
-        - @cursos.each do |curso|
-          - nivel = curso.tipo_nivel
-          - if (curso.idioma_id.eql? 'IN') 
-            %p
-              =link_to curso.descripcion, :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id, :idioma_id => curso.idioma_id
-              = link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id}, :style => "font-size: small; color: orange;"
-
-            - if (nivel.id.eql? "CB" or nivel.id.eql? "CI")
+    -if false
+      %li    
+        %a.desplegable{:href=>"#"} Syllabus & Fecha
+        %ul.subnavegador
+          %p
+            =link_to "Fechas", :controller => 'descarga', :action => 'fechas'
+          - @cursos.each do |curso|
+            - nivel = curso.tipo_nivel
+            - if (curso.idioma_id.eql? 'IN') 
               %p
-                =link_to curso.descripcion+" (Sabatino)", :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id+"-S", :idioma_id => curso.idioma_id
-                = link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id+"-S"}, :style => "font-size: small; color: orange;"
+                =link_to curso.descripcion, :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id, :idioma_id => curso.idioma_id
+                = link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id}, :style => "font-size: small; color: orange;"
 
- 
-          - if (curso.idioma_id.eql? 'FR')
-            - if !(nivel.id.eql? "CB" or nivel.id.eql? "CI" or nivel.id.eql? "CA")  
+              - if (nivel.id.eql? "CB" or nivel.id.eql? "CI")
+                %p
+                  =link_to curso.descripcion+" (Sabatino)", :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id+"-S", :idioma_id => curso.idioma_id
+                  = link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id+"-S"}, :style => "font-size: small; color: orange;"
+
+   
+            - if (curso.idioma_id.eql? 'FR')
+              - if !(nivel.id.eql? "CB" or nivel.id.eql? "CI" or nivel.id.eql? "CA")  
+                %p
+                  =link_to curso.descripcion, :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id, :idioma_id => curso.idioma_id
+                  =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id}, :style => "font-size: small; color: orange;"
+                %p
+                  =link_to curso.descripcion+" (Sabatino)", :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id+"-S", :idioma_id => curso.idioma_id
+                  =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id+"-S"}, :style => "font-size: small; color: orange;"
+            - if (curso.idioma_id.eql? 'AL' or curso.idioma_id.eql? 'IT') 
               %p
                 =link_to curso.descripcion, :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id, :idioma_id => curso.idioma_id
                 =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id}, :style => "font-size: small; color: orange;"
+            
+            - if (curso.idioma_id.eql? 'PG')
               %p
-                =link_to curso.descripcion+" (Sabatino)", :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id+"-S", :idioma_id => curso.idioma_id
-                =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id+"-S"}, :style => "font-size: small; color: orange;"
-          - if (curso.idioma_id.eql? 'AL' or curso.idioma_id.eql? 'IT') 
-            %p
-              =link_to curso.descripcion, :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id, :idioma_id => curso.idioma_id
-              =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id}, :style => "font-size: small; color: orange;"
-          
-          - if (curso.idioma_id.eql? 'PG')
-            %p
-              =link_to curso.descripcion, :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id, :idioma_id => curso.idioma_id
-              =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id}, :style => "font-size: small; color: orange;"
+                =link_to curso.descripcion, :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id, :idioma_id => curso.idioma_id
+                =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id}, :style => "font-size: small; color: orange;"
 
-            -if (nivel.id.eql? "BI" or nivel.id.eql? "BII" or nivel.id.eql? "CB" or nivel.id.eql? "CI" or nivel.id.eql? "MI" or nivel.id.eql? "MII" or nivel.id.eql? "CI")
-              %p
-                =link_to curso.descripcion+" (Sabatino)", :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id+"-S", :idioma_id => curso.idioma_id
-                =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id+"-S"}, :style => "font-size: small; color: orange;"
+              -if (nivel.id.eql? "BI" or nivel.id.eql? "BII" or nivel.id.eql? "CB" or nivel.id.eql? "CI" or nivel.id.eql? "MI" or nivel.id.eql? "MII" or nivel.id.eql? "CI")
+                %p
+                  =link_to curso.descripcion+" (Sabatino)", :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id+"-S", :idioma_id => curso.idioma_id
+                  =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id+"-S"}, :style => "font-size: small; color: orange;"
 
     %li    
       %a.desplegable{:href=>"#"} Estudiantes
