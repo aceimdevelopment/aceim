@@ -50,12 +50,11 @@
 		=link_to "Descargar Fechas", :controller => 'descarga', :action => 'fechas' 
 	%div.titulo Programación de los Cursos de Idiomas
 
-- if @ha and @archivos_disponibles
-	%h2 Archivos disponibles para tu curso:
+- if @ha and @archivos_disponibles and @archivos_disponibles.count > 0
+	%h3 Archivos disponibles para tu curso:
 	- @archivos_disponibles.each do |arch| 
 		%h3
 			=link_to arch.nombre, :controller => 'descarga', :action => 'archivo', :id => arch.id 
-		%div.titulo Descarga arch.nombre
 
 
 
