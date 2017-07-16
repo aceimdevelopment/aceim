@@ -11,16 +11,19 @@
     .field
       = f.label :nombre
       %p
-        = f.text_field :nombre
+        = f.text_field :nombre, required: true
 
     #agregar_url
       Banco de Archivos:
-      = f.collection_select :url, Archivo.all, :url, :descripcion, {:prompt => "-- Seleccione --"}
+      - root_files = "#{Rails.root}/attachments/archivos/"
+      - dir = Dir.glob("#{root_files}**/*")
+      - dir.each{|d| d.slice! root_files}
+      = f.select :url, dir
       %br
       = link_to 'Nuevo Archivo', 'javascript:void(0)', class: 'btn', onclick: "$('#nuevo_archivo').show(200);$('#agregar_url').hide();"
-    #nuevo_archivo{style: 'display:none'}<
+    #nuevo_archivo{style: 'display:none'}
       %label Seleccione el archivo a importar:
-      = file_field 'file', 'datafile', { :class => 'btn'}
+      = f.file_field 'upload_file', { :class => 'btn'}
 
   %fieldset
     %legend ¿Quienes verán este archivo?

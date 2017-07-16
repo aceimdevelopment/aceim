@@ -11,3 +11,5 @@ codigos_barra/
 app/assets/images/examenes/
 Gemfile
 Gemfile.lock
+
+.ruby-version

@@ -3,7 +3,7 @@
 %table
   %tr
     %th Nombre
-    %th Url
+    %th nombre del archivo en disco
     %th Periodo
     %th Bloque forario
     %th Idioma
@@ -15,7 +15,7 @@
   - @archivos.each do |archivo|
     %tr
       %td= archivo.nombre
-      %td= archivo.url
+      %td= archivo.url.split("/").last
       %td= archivo.periodo_id
       %td= archivo.bloque_horario.descripcion
       %td= archivo.idioma.descripcion

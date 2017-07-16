@@ -46,23 +46,24 @@ class ArchivosController < ApplicationController
   # POST /archivos
   # POST /archivos.json
   def create
-
-    if params[:file][:datafile]
+    if params[:archivo][:upload_file]
       begin
-        data = params[:file][:datafile]
+        data = params[:archivo][:upload_file]
         url = "#{Rails.root}/attachments/archivos/#{data.original_filename}"
         data = data.tempfile
         File.open("#{url}", "wb") {|file| file.write data.read; file.close}
-        params[:archivo][:url] = "url"
+        params[:archivo][:url] = url
       rescue Exception => e
         flash[:mensaje] = "Error: #{e.message}"
       end
+      params[:archivo].delete :upload_file
     end
+
 
     @archivo = Archivo.new(params[:archivo])
 
     respond_to do |format|
-      if @archivo.save
+      if  @archivo.save
         format.html { redirect_to @archivo, flash: {mensaje: 'Archivo creado con éxito.'}}
         format.json { render json: @archivo, status: :created, location: @archivo }
       else
@@ -75,6 +76,8 @@ class ArchivosController < ApplicationController
   # PUT /archivos/1
   # PUT /archivos/1.json
   def update
+
+    params[:archivo][:url] = "#{Rails.root}/attachments/archivos/"+params[:archivo][:url]
 
     @archivo = Archivo.find(params[:id])
 
@@ -103,9 +106,6 @@ class ArchivosController < ApplicationController
 
     @archivo.destroy
 
-    respond_to do |format|
-      format.html { redirect_to archivos_url }
-      format.json { head :ok }
-    end
+    redirect_to controller: "archivos"
   end
 end
