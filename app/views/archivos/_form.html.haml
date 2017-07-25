@@ -41,5 +41,8 @@
       = f.label :tipo_nivel
       = f.collection_select :tipo_nivel_id, TipoNivel.all, :id, :descripcion    
   .actions
-    = f.submit 'Save'
+    = f.submit 'Guardar', class: 'ui-button'
 %br
+
+:javascript
+  $(".ui-button").button();

@@ -6,9 +6,10 @@ class ArchivosController < ApplicationController
 
   before_filter :filtro_logueado
   before_filter :filtro_administrador
+  skip_before_filter  :verify_authenticity_token
 
   def index
-    @archivos = Archivo.all
+    #@archivos = Archivo.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -57,6 +58,8 @@ class ArchivosController < ApplicationController
         flash[:mensaje] = "Error: #{e.message}"
       end
       params[:archivo].delete :upload_file
+    else
+      params[:archivo][:url] = "#{Rails.root}/attachments/archivos/"+params[:archivo][:url]
     end
 
 
@@ -96,6 +99,7 @@ class ArchivosController < ApplicationController
   # DELETE /archivos/1.json
   def destroy
     @archivo = Archivo.find(params[:id])
+
 
     begin
       File.delete(@archivo.url)
