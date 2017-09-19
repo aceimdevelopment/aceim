@@ -434,7 +434,8 @@ class DocumentosPDF
   def self.datos_cuentas(historial_academico,pdf)
         # -------- TABLA CUENTA -------
     pdf.text "\n", :font_size => 8
-    pdf.text to_utf16("<b>Datos de Pago:</b>"), :font_size => 11
+    pdf.text to_utf16("<b>Datos de Pago:</b> (Depósito en efectivo o transferencia <i>únicamente</i> del mismo banco)."), :font_size => 11
+#    pdf.text to_utf16("Cuenta Corriente <b>#{historial_academico.cuenta_numero}</b> del Banco: Banco de Venezuela"), :font_size => 11
     tabla = PDF::SimpleTable.new 
     tabla.font_size = 10
     tabla.show_lines    = :none
@@ -451,9 +452,8 @@ class DocumentosPDF
       col.justification = :left
     }
     datos = []
-    
-    datos << { "nombre" => to_utf16("<b>Banco:</b>"), "valor" => to_utf16("Banco de Venezuela") }
-    datos << { "nombre" => to_utf16("<b>Nro. de Cuenta:</b>"), "valor" => to_utf16("Cuenta Corriente #{historial_academico.cuenta_numero}") }
+
+    datos << { "nombre" => "", "valor" => to_utf16("<b>Cuenta Corriente #{historial_academico.cuenta_numero}</b> del Banco de Venezuela") }
     datos << { "nombre" => to_utf16("<b>A nombre de:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_nombre}") }
     # datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF.") }
     datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF. / <b>Depósito No.</b>: _________________________________________") }
@@ -1895,7 +1895,8 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
 
     # -------- TABLA CUENTA -------
     pdf.text "\n", :font_size => 10
-    pdf.text to_utf16("<b>Datos de Pago:</b>"), :font_size => 12
+    pdf.text to_utf16("<b>Datos de Pago:</b> (Depósito en efectivo o transferencia <i>únicamente</i> del mismo banco)."), :font_size => 11
+
     pdf.text "\n", :font_size => 8
     tabla = PDF::SimpleTable.new 
     tabla.font_size = 12
@@ -1913,9 +1914,8 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
       col.justification = :left
     }
     datos = []
-    
-    datos << { "nombre" => to_utf16("<b>Banco:</b>"), "valor" => to_utf16("Banco de Venezuela") }
-    datos << { "nombre" => to_utf16("<b>Nro. de Cuenta:</b>"), "valor" => to_utf16("Cuenta Corriente #{historial_academico.cuenta_numero}") }
+
+    datos << { "nombre" => "", "valor" => to_utf16("<b>Cuenta Corriente #{historial_academico.cuenta_numero}</b> del Banco de Venezuela") }
     datos << { "nombre" => to_utf16("<b>A nombre de:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_nombre}") }
     datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF.") }
     datos << { "nombre" => to_utf16("<b>Nro Depósito:</b>"), "valor" => to_utf16("______________________________") }
