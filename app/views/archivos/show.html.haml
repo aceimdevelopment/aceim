@@ -7,9 +7,6 @@
   %b Url:
   = @archivo.url
 %p
-  %b Periodo:
-  = @archivo.periodo_id
-%p
   %b Horario:
   = @archivo.bloque_horario.descripcion
 %p
@@ -21,4 +18,4 @@
 
 = link_to 'Editar', edit_archivo_path(@archivo)
 \|
-= link_to 'Regresar', archivos_path
+= link_to 'Regresar', archivos_path+"##{@archivo.idioma_id}"

@@ -28,7 +28,7 @@ class PrincipalController < ApplicationController
 
     @ha = nil if (@ha and @ha.idioma_id.eql? 'FR' and (@ha.tipo_nivel_id.eql? "CB" or @ha.tipo_nivel_id.eql? "CI" or @ha.tipo_nivel_id.eql? "CA"))
 
-    @archivos_disponibles = Archivo.where(periodo_id: @periodo.id, idioma_id: @ha.idioma_id, tipo_nivel_id: @ha.tipo_nivel_id, bloque_horario_id: @ha.seccion.bloque_horario_id) if @ha
+    @archivos_disponibles = Archivo.where(idioma_id: @ha.idioma_id, tipo_nivel_id: @ha.tipo_nivel_id, bloque_horario_id: @ha.seccion.bloque_horario_id) if @ha
 
 
     @curso_abierto_regular = Inscripcion.where(:tipo_inscripcion_id => 'RE', 

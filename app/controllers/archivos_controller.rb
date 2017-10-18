@@ -11,6 +11,7 @@ class ArchivosController < ApplicationController
   def index
     #@archivos = Archivo.all
 
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @archivos }
@@ -67,7 +68,7 @@ class ArchivosController < ApplicationController
 
     respond_to do |format|
       if  @archivo.save
-        format.html { redirect_to @archivo, flash: {mensaje: 'Archivo creado con éxito.'}}
+        format.html { redirect_to archivos_path+"##{@archivo.idioma_id}", flash: {mensaje: 'Archivo creado con éxito.'}}
         format.json { render json: @archivo, status: :created, location: @archivo }
       else
         format.html { render action: "new" }
@@ -86,7 +87,7 @@ class ArchivosController < ApplicationController
 
     respond_to do |format|
       if @archivo.update_attributes(params[:archivo])
-        format.html { redirect_to @archivo, flash: {mensaje: 'Archivo actualizado con éxito.'} }
+        format.html { redirect_to archivos_path+"##{@archivo.idioma_id}", flash: {mensaje: 'Archivo actualizado con éxito.'} }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
@@ -100,6 +101,7 @@ class ArchivosController < ApplicationController
   def destroy
     @archivo = Archivo.find(params[:id])
 
+    @idioma_id = @archivo.idioma_id
 
     begin
       File.delete(@archivo.url)
@@ -110,6 +112,6 @@ class ArchivosController < ApplicationController
 
     @archivo.destroy
 
-    redirect_to controller: "archivos"
+    redirect_to archivos_path+"##{@idioma_id}"
   end
 end

@@ -16,7 +16,7 @@
     #agregar_url
       Banco de Archivos:
       - root_files = "#{Rails.root}/attachments/archivos/"
-      - dir = Dir.glob("#{root_files}**/*")
+      - dir = Dir.glob("#{root_files}**/*").sort
       - dir.each{|d| d.slice! root_files}
       = f.select :url, dir
       %br
@@ -29,8 +29,6 @@
     %legend ¿Quienes verán este archivo?
 
     .field
-      = f.label :periodo
-      = f.collection_select :periodo_id, Periodo.all.collect{|x| x}.sort_by{|x| "#{x.ano} #{x.id}"}.reverse(), :id, :ordenado
     .field
       = f.label :bloque_horario
       = f.collection_select :bloque_horario_id, BloqueHorario.all, :id, :descripcion
@@ -38,8 +36,10 @@
       = f.label :idioma
       = f.collection_select :idioma_id, Idioma.all, :id, :descripcion_idioma    
     .field
-      = f.label :tipo_nivel
-      = f.collection_select :tipo_nivel_id, TipoNivel.all, :id, :descripcion    
+      - @niveles = TipoNivel.includes("curso").where("curso.grado !=0 AND tipo_nivel.id != 'BBVA'").order("curso.grado")
+
+      = f.label 'Nivel'
+      = f.collection_select :tipo_nivel_id, @niveles, :id, :descripcion    
   .actions
     = f.submit 'Guardar', class: 'ui-button'
 %br

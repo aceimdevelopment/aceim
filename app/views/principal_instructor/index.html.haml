@@ -12,3 +12,17 @@
   =link_to "Agregar pregunta", "#{session[:parametros][:direccion_atest]}"
 .titulo
   Permite agregar preguntas al banco de preguntas
+
+
+- if @secciones and @secciones.count > 0
+  %h3 Archivos disponibles para los curso cursos que dicta:
+  - @secciones.each do |s|
+    - archs = Archivo.where(idioma_id: s.idioma_id, tipo_nivel_id: s.tipo_nivel_id, bloque_horario_id: s.bloque_horario_id)
+      - if archs and archs.count > 0 
+        %p 
+          = "#{s.descripcion}:"
+          - archs.each do |a|          
+            = link_to a.nombre, :controller => 'descarga', :action => 'archivo', :id => a.id 
+    
+
+  - @archivos_disponibles.each do |arch| 

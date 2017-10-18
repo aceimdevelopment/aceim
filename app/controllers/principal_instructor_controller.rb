@@ -4,6 +4,15 @@ class PrincipalInstructorController < ApplicationController
   before_filter :filtro_logueado
   before_filter :filtro_instructor
   def index
+    @secciones = Seccion.where(:instructor_ci => session[:usuario].ci,
+                               :esta_abierta => true,
+                               :periodo_id => session[:parametros][:periodo_actual]).uniq.sort_by{|x| Seccion.idioma(x.idioma_id)}
+
+    @archivos_disponibles = Archivo.where(id: -1)
+    @secciones.each do |s|
+      @archivos_disponibles += Archivo.where(idioma_id: s.idioma_id, tipo_nivel_id: s.tipo_nivel_id, bloque_horario_id: s.bloque_horario_id)
+    end
+
   end
   
   def ver_secciones

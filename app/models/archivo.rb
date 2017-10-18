@@ -3,11 +3,11 @@
 class Archivo < ActiveRecord::Base
   #attr_accessible :nombre, :url, :periodo_id, :
 
-  belongs_to :periodo,
-    :class_name => 'Periodo',
-    :foreign_key => ['periodo_id']
+#  belongs_to :periodo,
+#    :class_name => 'Periodo',
+#    :foreign_key => ['periodo_id']
 
-  accepts_nested_attributes_for :periodo
+#  accepts_nested_attributes_for :periodo
 
   belongs_to :bloque_horario
   accepts_nested_attributes_for :bloque_horario
