@@ -116,14 +116,16 @@ class ParametrosGeneralesController < ApplicationController
 
       case letra
     	  when "A"
-    		  nueva_letra = "D"
+    		  nueva_letra = "E"
           ano = ano.to_i - 1
-    		when "B"
-    			nueva_letra = "A"
-    		when "C"
-    			nueva_letra = "B"
+        when "E"
+          nueva_letra = "D"
     		when "D"
     			nueva_letra = "C"
+        when "C"
+          nueva_letra = "B"
+        when "B"
+          nueva_letra = "A"
       end
 
       periodo_anterior = ParametroGeneral.find("PERIODO_ANTERIOR")
@@ -173,7 +175,9 @@ class ParametrosGeneralesController < ApplicationController
   		when "C"
   			nueva_letra = "D"
   		when "D"
-  			nueva_letra = "A"
+  			nueva_letra = "E"
+      when "E"
+        nueva_letra = "A"
         ano = ano.to_i + 1
     end
 
