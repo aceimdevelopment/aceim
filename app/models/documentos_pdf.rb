@@ -1052,7 +1052,7 @@ class DocumentosPDF
 			pdf.text to_utf16("En Caracas, a los #{t.day} días del mes de #{mes(t.month)} de #{t.year}"), :font_size => 11, :justification => :full
 			
 			pdf.text "\n\n\n"
-			pdf.image 'app/assets/images/firma_joyce3.jpg', :justification => :center, :resize => 0.25
+			pdf.image 'app/assets/images/firma.jpg', :justification => :center, :resize => 0.4
 			pdf.text "____________________________" , :justification => :center, :font_size => 6
 			pdf.text "Prof. Lucius Daniel" , :justification => :center, :font_size => 11
 			
@@ -1166,7 +1166,7 @@ class DocumentosPDF
 			pdf.text to_utf16("\n\tEsta constancia se expide en Caracas, a los #{t.day} días del mes de #{mes(t.month)} de #{t.year} con fines laborales únicamente y bajo ningún concepto indica que #{sexo(historial.usuario.tipo_sexo_id,"la","el")} Sr#{sexo(historial.usuario.tipo_sexo_id,"a","")}. #{historial.usuario.nombre_completo} es estudiante regular de la Universidad Central de Venezuela.
       "), :spacing => 1.5, :font_size => 12, :justification => :full
 			
-			pdf.image 'app/assets/images/firma_joyce3.jpg', :justification => :center, :resize => 0.30
+			pdf.image 'app/assets/images/firma.jpg', :justification => :center, :resize => 0.4
 			pdf.text "____________________________" , :justification => :center
 			pdf.text "Prof. Lucius Daniel" , :justification => :center
 			pdf.text "Director" , :justification => :center
@@ -2013,7 +2013,7 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
       rango << " #{ano}"
 
       #primero la firma para poder superponer texto sobre ella (como si fuera transparente)
-      pdf.add_image_from_file 'app/assets/images/firma_joyce.jpg', (xb+100), (yb-110), 130,35
+      pdf.add_image_from_file 'app/assets/images/firma.jpg', (xb+100), (yb-110), 130,35
       pdf.add_text_wrap xb,yb,300,to_utf16("Escuela de Idiomas Modernos")
    		pdf.add_text_wrap xb,(yb-10),300,to_utf16("Coordinación de los Cursos de Extensión")	
    		pdf.add_text_wrap xb,(yb-20),300,to_utf16("Informa que:")
