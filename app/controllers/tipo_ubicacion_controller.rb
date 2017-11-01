@@ -6,7 +6,7 @@ class TipoUbicacionController < ApplicationController
 
  	def nuevo
  		@tipo_ubicacion = TipoUbicacion.new
- 		# render :layout => false  
+ 		render :layout => false  
  	end
 
  	def nuevo_guardar
