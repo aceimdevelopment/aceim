@@ -415,9 +415,12 @@ class HistorialAcademico < ActiveRecord::Base
   end
   
   def cuenta_monto
-    return tipo_convenio.monto if tipo_convenio.id != "REG"
     return ParametroGeneral.costo_ninos if tipo_categoria_id == "NI"
-    return ParametroGeneral.costo_nuevos if tipo_nivel_id == "BI"
+    if tipo_nivel_id == "BI"
+      nuevo = ParametroGeneral.costo_nuevos.to_f 
+      #return nuevo-(nuevo*(tipo_convenio.descuento.to_f/100.0))
+      return nuevo*(1-(tipo_convenio.descuento.to_f/100.0))
+    end 
     return tipo_convenio.monto
   end
  
