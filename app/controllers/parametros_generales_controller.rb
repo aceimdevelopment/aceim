@@ -114,6 +114,16 @@ class ParametrosGeneralesController < ApplicationController
 
       letra , ano = params[:periodo][:id].split "-"
 
+      if letra.eql? "A"
+          ano = ano.to_i - 1
+          p = Periodo.where("ano = ?", ano).collect{|x| x}.sort_by{|x| "#{x.ano} #{x.id}"}.reverse().first
+          nueva_letra = p.letra
+
+      else
+        nueva_letra = (letra.ord - 1).chr
+      end
+
+=begin
       case letra
     	  when "A"
     		  nueva_letra = "E"
@@ -128,6 +138,7 @@ class ParametrosGeneralesController < ApplicationController
           nueva_letra = "A"
       end
 
+=end
       periodo_anterior = ParametroGeneral.find("PERIODO_ANTERIOR")
       periodo_anterior.valor = nueva_letra + "-" + ano.to_s
       periodo_anterior.save
@@ -165,29 +176,27 @@ class ParametrosGeneralesController < ApplicationController
     
     ultimo_periodo = Periodo.order("periodo.ano ASC, periodo.id ASC").last
   
-    letra , ano = ultimo_periodo.id.split "-"
+    letra = ultimo_periodo.letra
 
-    case letra
-  	  when "A"
-  		  nueva_letra = "B"
-  		when "B"
-  			nueva_letra = "C"
-  		when "C"
-  			nueva_letra = "D"
-  		when "D"
-  			nueva_letra = "E"
-      when "E"
-        nueva_letra = "A"
-        ano = ano.to_i + 1
-    end
+    letra = (letra.ord + 1).chr
 
-    @nuevo_periodo = nueva_letra + "-" + ano.to_s
+    @nuevo_periodo = letra + "-" + ultimo_periodo.ano.to_s
     
     render :layout => false
   
   end
 
+  def crear_nuevo_periodo_nuevo_ano_modal
+    
+    ultimo_periodo = Periodo.order("periodo.ano ASC, periodo.id ASC").last
+  
+    ano = ultimo_periodo.ano.to_i+1
 
+    @nuevo_periodo = "A-"+ano.to_s
+    
+    render :layout => false
+  
+  end
 
   def crear_nuevo_periodo
 

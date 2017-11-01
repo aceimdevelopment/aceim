@@ -8,6 +8,10 @@ class Periodo < ActiveRecord::Base
 	accepts_nested_attributes_for :archivos
 
 
+	def letra
+		id.split("-").first
+	end
+
 	def self.lista_ordenada
 		Periodo.all.collect{|x| x}.sort_by{|x| "#{x.ano} #{x.id}"}.reverse()
 	end

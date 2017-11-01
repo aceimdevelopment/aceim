@@ -182,8 +182,10 @@
         =@periodo_actual
       %td
         =link_to_modal "Cambiar",{:action => "cambiar_periodo_modal",:title =>"Cambiar Período Actual por Defecto",:width=>300,:params => {:invocador => "cambiar_periodo_general"}}
-        ="&nbsp;&nbsp;|&nbsp;&nbsp;".html_safe
-        =link_to_modal "Crear Nuevo Periodo",{:action => "crear_nuevo_periodo_modal",:title =>"Crear Nuevo Período",:width=>300}
+        =" | "
+        =link_to_modal "Nuevo Periodo Mismo Año",{:action => "crear_nuevo_periodo_modal",:title =>"Crear Nuevo Período Mismo Año",:width=>300}
+        =" | "
+        =link_to_modal "Nuevo Periodo Nuevo Año",{:action => "crear_nuevo_periodo_nuevo_ano_modal",:title =>"Crear Nuevo Período Nuevo Año",:width=>300}
         
 
 
