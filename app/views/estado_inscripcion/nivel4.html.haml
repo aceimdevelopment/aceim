@@ -1,3 +1,4 @@
+- @admin = (session[:administrador] and not session[:administrador].nil?)
 .titulo
   %b
     Curso: 
@@ -18,7 +19,8 @@
   -else
     NO ASIGNADO
   
-=link_to "Generar PDF", :action => "ver_pdf_estudiantes", :seccion => params[:seccion]
+=link_to "Generar PDF", action: "ver_pdf_estudiantes", seccion: params[:seccion], admin: @admin 
+
 %br
 Filtrar Contenido:
 =text_field_tag "filtro"
@@ -27,30 +29,24 @@ Filtrar Contenido:
     %tr
       %th
         ="#"
-      %th
-        Nombres
-      %th
-        Cédula
-      %th
-        Correo Electrónico
-      %th
-        Teléfono Móvil
+      %th Nombres
+      %th Cédula
+      %th Correo Electrónico
+      -if @admin
+        %th Pago
+      %th Teléfono Móvil
       -if @historiales.first.seccion.esta_calificada
-        %th 
-          Calificación
+        %th Calificación
   %tbody
     -@historiales.each_with_index do |h,i|
       %tr
-        %td
-          =i+1
-        %td
-          =h.usuario.nombre_completo
-        %td
-          =h.usuario.ci
-        %td
-          =h.usuario.correo
-        %td
-          =h.usuario.telefono_movil
+        %td= i+1
+        %td= h.usuario.nombre_completo
+        %td= h.usuario.ci
+        %td= h.usuario.correo
+        -if @admin   
+          %td= raw h.descripcion_pago
+        %td= h.usuario.telefono_movil
         -if @historiales.first.seccion.esta_calificada
           %td 
             -nota = HistorialAcademico::NOTAS[h.nota_final+2]
@@ -58,5 +54,5 @@ Filtrar Contenido:
               ="PI"
             -else
               =HistorialAcademico.colocar_nota(nota)
-=link_to "Generar PDF", :action => "ver_pdf_estudiantes", :seccion => params[:seccion]
+=link_to "Generar PDF", action: "ver_pdf_estudiantes", seccion: params[:seccion], admin: @admin 
 =link_to "<Atrás", :action => "ver_secciones"

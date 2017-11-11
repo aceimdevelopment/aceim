@@ -111,6 +111,8 @@ class PrincipalAdminController < ApplicationController
       @historial = HistorialAcademico.where(:periodo_id=>periodo, :idioma_id=>idioma_id, :tipo_categoria_id=>tipo_categoria_id, :usuario_ci=>ci, :tipo_nivel_id=>tipo_nivel_id).limit(1).first
       @historial.tipo_estado_inscripcion_id = "INS"
       @historial.numero_deposito = params[:historial][:numero_deposito]
+      @historial.tipo_transaccion_id = params[:historial][:tipo_transaccion_id]
+      @historial.cuenta_bancaria_id = params[:historial][:cuenta_bancaria_id]
   
       if @historial.save
         info_bitacora("Confirmación de Curos: #{@historial.curso.descripcion}")

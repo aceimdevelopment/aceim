@@ -66,7 +66,7 @@ class EstadoInscripcionController < ApplicationController
 
   def ver_pdf_estudiantes
     periodo_id, idioma_id, tipo_categoria_id, tipo_nivel_id, seccion_numero = params[:seccion].split(",")
-    if pdf = DocumentosPDF.generar_listado_estudiantes(periodo_id,idioma_id,tipo_nivel_id,tipo_categoria_id,seccion_numero,false)
+    if pdf = DocumentosPDF.generar_listado_estudiantes(periodo_id,idioma_id,tipo_nivel_id,tipo_categoria_id,seccion_numero,false, params[:admin])
       send_data pdf.render,:filename => "#{periodo_id}_#{idioma_id}_#{tipo_categoria_id}_#{tipo_nivel_id}_#{seccion_numero}.pdf",:type => "application/pdf", :disposition => "attachment"
     end
   end

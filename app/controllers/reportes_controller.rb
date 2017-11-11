@@ -316,7 +316,7 @@ ORDER BY t.grado, t.id", idioma_id, categoria_id, idioma_id, categoria_id, sessi
     tipo_cuenta_id = params[:id]
 		
     @titulo_pagina = "Detalle de Depósitos Bancarios en la Cuenta de: "
-    @subtitulo_pagina =  CuentaBancaria.find(tipo_cuenta_id).titular
+    @subtitulo_pagina =  CuentaBancaria.find(tipo_cuenta_id).descripcion
 
 		@historiales = HistorialAcademico.select("historial_academico.tipo_convenio_id, count(*) as cantidad").where(["periodo_id = ? AND tipo_estado_inscripcion_id = ? AND cuenta_bancaria_id = ?",session[:parametros][:periodo_actual],"INS",tipo_cuenta_id]).group("tipo_convenio_id")
 

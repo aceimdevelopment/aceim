@@ -36,6 +36,10 @@ class HistorialAcademico < ActiveRecord::Base
   belongs_to :cuenta_bancaria,
     :class_name => 'CuentaBancaria',
     :foreign_key => ['cuenta_bancaria_id']
+
+  belongs_to :tipo_transaccion,
+    :class_name => 'TipoTransaccion',
+    :foreign_key => ['tipo_transaccion_id']
  
   #autogenerado por db2models
   belongs_to :tipo_estado_inscripcion,
@@ -387,6 +391,14 @@ class HistorialAcademico < ActiveRecord::Base
     cuenta_bancaria.num_cuenta
   end 
   
+  def descripcion_pago
+    aux = "en"
+    aux = "#{tipo_transaccion.descripcion} a " if tipo_transaccion
+    aux += " #{cuenta_bancaria_id.humanize}: "  if cuenta_bancaria
+    aux += "<b>#{numero_deposito} </b>"
+    return aux
+  end
+
   def cuenta_nueva
     if tipo_nivel_id == 'BI' || tipo_categoria_id == 'TE' || tipo_categoria_id == 'NI' || idioma_id == 'AL' || idioma_id == 'IT'
       return "FUNDEIM"

@@ -677,7 +677,7 @@ class DocumentosPDF
   end
   
   def self.generar_listado_estudiantes(periodo,idioma,nivel,\
-  categoria,seccion_numero,guardar=false)
+  categoria,seccion_numero,guardar=false, admin=false)
 
     
     historial = HistorialAcademico.where(:periodo_id=>periodo, :idioma_id=>idioma, :tipo_nivel_id=>nivel, :tipo_categoria_id=>categoria, :seccion_numero=>seccion_numero, :tipo_estado_inscripcion_id=>"INS")
@@ -721,7 +721,11 @@ class DocumentosPDF
       tab.font_size = 8
       tab.row_gap = 3
       tab.minimum_space = 0
-      tab.column_order = ["nro","nombre","cedula", "correo","telefono"]
+      if admin
+        tab.column_order = ["nro","nombre","cedula", "correo", "pago","telefono"]
+      else  
+        tab.column_order = ["nro","nombre","cedula", "correo","telefono"]
+      end
       tab.columns["nro"] = PDF::SimpleTable::Column.new("nro") { |col|
         col.width = 25
         col.justification = :right
@@ -729,7 +733,7 @@ class DocumentosPDF
         col.heading.justification= :center
       }
       tab.columns["nombre"] = PDF::SimpleTable::Column.new("nombre") { |col|
-        col.width = 180
+        col.width = 150
         col.justification = :left
         col.heading = "NOMBRE COMPLETO"
         col.heading.justification= :center
@@ -741,11 +745,19 @@ class DocumentosPDF
         col.heading.justification= :center
       }
       tab.columns["correo"] = PDF::SimpleTable::Column.new("correo") { |col|
-        col.width = 180
+        col.width = 120
         col.justification = :left
         col.heading = "CORREO"
         col.heading.justification= :center
       }
+      if admin
+        tab.columns["pago"] = PDF::SimpleTable::Column.new("pago") { |col|
+          col.width = 100
+          col.justification = :left
+          col.heading = "PAGO"
+          col.heading.justification= :center
+        }
+      end
       tab.columns["telefono"] = PDF::SimpleTable::Column.new("telefono") { |col|
         col.width = 80
         col.justification = :left
@@ -756,13 +768,26 @@ class DocumentosPDF
       data = []
 
       historial.each_with_index{|reg,ind|
-        data << {
-          "nro" => "#{(ind+1)}",          
-          "nombre" => to_utf16(reg.usuario.nombre_completo),
-          "cedula" => reg.usuario_ci,
-          "correo" => reg.usuario.correo,
-          "telefono" => reg.usuario.telefono_movil
-        }
+        if admin
+          aux = {
+            "nro" => "#{(ind+1)}",          
+            "nombre" => to_utf16(reg.usuario.nombre_completo),
+            "cedula" => reg.usuario_ci,
+            "correo" => reg.usuario.correo,
+            "pago" => reg.descripcion_pago,
+            "telefono" => reg.usuario.telefono_movil
+          }
+
+        else
+          aux = {
+            "nro" => "#{(ind+1)}",          
+            "nombre" => to_utf16(reg.usuario.nombre_completo),
+            "cedula" => reg.usuario_ci,
+            "correo" => reg.usuario.correo,
+            "telefono" => reg.usuario.telefono_movil
+          }
+        end
+        data << aux
       }
 
 

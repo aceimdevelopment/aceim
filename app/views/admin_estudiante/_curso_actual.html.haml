@@ -43,7 +43,7 @@
             
             =link_to_modal_v2 "Confirmar",{:action => "confirmar_inscripcion",:title =>"Confirmar Inscripcion",:width=>600, :params=>{:idioma_id=>"#{h.idioma_id}", :tipo_categoria_id=>"#{h.tipo_categoria_id}", :usuario_ci=>"#{h.usuario_ci}"}}, {:class => 'btn small'}
           -else
-            Confirmar
+            = raw h.descripcion_pago
           =link_to_modal_v2 "Modificar Seccion",{:action => "cambiar_seccion",:title =>"Modificar Seccion",:width=>600, :params=>{:idioma_id=>"#{h.idioma_id}", :tipo_categoria_id=>"#{h.tipo_categoria_id}", :usuario_ci=>"#{h.usuario_ci}"}}, {:class => 'btn_editar small'}
           =link_to_modal_v2 "Eliminar",{:action => "confirmar_eliminar",:title =>"Confirmar Eliminación",:width=>500, :params=>{:idioma_id=>"#{h.idioma_id}", :tipo_categoria_id=>"#{h.tipo_categoria_id}", :usuario_ci=>"#{h.usuario_ci}"}}, {:class => 'btn_eliminar small'}
           =link_to " Planilla", {:action => "planilla_inscripcion", :controller => "inscripcion_admin", :historial => h.id.to_s}, {:class => 'btn_descargar small'}
