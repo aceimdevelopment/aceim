@@ -425,7 +425,7 @@ class DocumentosPDF
     if historial_academico.tipo_convenio_id != "REG"
       datos << { "nombre" => to_utf16("<b>Convenio:</b>"), "valor" => to_utf16("#{historial_academico.tipo_convenio.descripcion}") }
     end
-    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF. / <b>Depósito No.</b>: _________________________________________") } if profesor
+    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF. / <b>Transacción #</b>: _________________________ Tipo: T ___  D ___ P ___") } if profesor
     tabla.data.replace datos
     tabla.render_on(pdf)
 
@@ -456,7 +456,7 @@ class DocumentosPDF
     datos << { "nombre" => "", "valor" => to_utf16("<b>Cuenta Corriente #{historial_academico.cuenta_numero}</b> del Banco de Venezuela") }
     datos << { "nombre" => to_utf16("<b>A nombre de:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_nombre}") }
     # datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF.") }
-    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF. / <b>Depósito No.</b>: _________________________________________") }
+    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF. / <b>Transacción #</b>: _________________________ Tipo: T ___  D ___ P ___") }
     tabla.data.replace datos  
     tabla.render_on(pdf)
     pdf.text to_utf16("<b>*** Acepté las condiciones y normativas del programa. ***</b>"), :font_size => 10
@@ -648,10 +648,10 @@ class DocumentosPDF
  
 		pdf.text to_utf16("----- COPIA DEL ESTUDIANTE -----"), :font_size => 10, :justification => :center
 
-    alto_tijeras = 393
+    alto_tijeras = 403
     alto_tijeras = alto_tijeras - 13 if historial_academico.tipo_convenio_id != "REG"
 
-    pdf.add_image_from_file 'app/assets/images/tijeras.jpg', 10, alto_tijeras, 20, nil
+    pdf.add_image_from_file 'app/assets/images/tijeras.jpg', 10, alto_tijeras, 25, nil
     # pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 280, nil, 100
     pdf.text to_utf16("-----------------------------------------------------------------------------------------------------------------------------------------------------------"), :font_size => 10
   
@@ -1942,8 +1942,8 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
 
     datos << { "nombre" => "", "valor" => to_utf16("<b>Cuenta Corriente #{historial_academico.cuenta_numero}</b> del Banco de Venezuela") }
     datos << { "nombre" => to_utf16("<b>A nombre de:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_nombre}") }
-    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF.") }
-    datos << { "nombre" => to_utf16("<b>Nro Depósito:</b>"), "valor" => to_utf16("______________________________") }
+    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto}") }
+    datos << { "nombre" => to_utf16("<b>Transacción #:</b>"), "valor" => to_utf16("_________________________ Tipo: T ___  D ___ P ___") }
     tabla.data.replace datos  
     tabla.render_on(pdf)
     pdf.text "\n", :font_size => 10

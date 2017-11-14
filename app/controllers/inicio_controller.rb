@@ -136,7 +136,7 @@ class InicioController < ApplicationController
     usuario.nivelaciones.each{|n|
       @roles << {
         :tipo => "Nivelacion",
-        :descripcion => n.descripcion,
+        :descripcion => n.descripcion_con_periodo,
         :tipo_categoria_id => n.tipo_categoria_id,
         :idioma_id => n.idioma_id
       }

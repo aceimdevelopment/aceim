@@ -32,6 +32,10 @@ class EstudianteNivelacion < ActiveRecord::Base
     "Estudiante Nivelación - #{tipo_curso.descripcion}"
   end
 
+  def descripcion_con_periodo
+    "Estudiante Nivelación - #{tipo_curso.descripcion} - (#{periodo_id})"
+  end
+
   
   def estado
     return "Inscrito" if inscrito?
@@ -53,22 +57,27 @@ class EstudianteNivelacion < ActiveRecord::Base
   end
   
   def cuenta_nombre
-    if true || tipo_nivel_id == "BI" || tipo_categoria_id == "TE" #esto ya no se usa
-      return "FUNDEIM"
-    end
-    return "FACULTAD DE HUMANIDADES Y EDUCACIÓN"
+    return "FUNDEIM (RIF: J-30174529-9) "
+    #if true || tipo_nivel_id == "BI" || tipo_categoria_id == "TE" #esto ya no se usa
+    #  return "FUNDEIM"
+    #end
+    #return "FACULTAD DE HUMANIDADES Y EDUCACIÓN"
   end
 
   def cuenta_numero
-    if true || tipo_nivel_id == "BI" || tipo_categoria_id == "TE" #esto ya no se usa
-      return "0102-0140-34000442688-4"
-    end
-    return "0102-0552-2900-0000-1423"
+    return "0102-0140-34000442688-4"
+    #if true || tipo_nivel_id == "BI" || tipo_categoria_id == "TE" #esto ya no se usa
+    #  return "0102-0140-34000442688-4"
+    #end
+    #return "0102-0552-2900-0000-1423"
   end  
   
   
   def cuenta_monto
-    return "Arancel prueba : Bs. #{sprintf("%.2f",ParametroGeneral.costo_examen)} + Arancel Curso: Bs. #{sprintf("%.2f",ParametroGeneral.costo_nuevos)} "
+    examen = ParametroGeneral.costo_examen.to_f
+    nuevos = ParametroGeneral.costo_nuevos.to_f
+    total = examen + nuevos
+    return "Prueba: #{sprintf("%.0f",examen)}Bs. + Nivel: #{sprintf("%.0f",nuevos)}Bs. = Monto Total: #{sprintf("%.0f",total)}Bs."
   end
 
 
