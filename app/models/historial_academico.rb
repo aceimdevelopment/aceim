@@ -393,8 +393,8 @@ class HistorialAcademico < ActiveRecord::Base
   
   def descripcion_pago
     aux = "en"
-    aux = "#{tipo_transaccion.descripcion} a " if tipo_transaccion
-    aux += " #{cuenta_bancaria_id.humanize}: "  if cuenta_bancaria
+    aux = "#{tipo_transaccion.descripcion} - " if tipo_transaccion
+    aux += " #{cuenta_bancaria_id}: "  if cuenta_bancaria
     aux += "<b>#{numero_deposito} </b>"
     return aux
   end
