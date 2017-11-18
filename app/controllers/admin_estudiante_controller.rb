@@ -385,20 +385,26 @@ end
     tipo_nivel_id = params[:historial][:tipo_nivel_id]
     ci = params[:historial][:usuario_ci]
     periodo = session[:parametros][:periodo_actual]
+    depositos = HistorialAcademico.where(periodo_id: periodo).collect{|h| h.numero_deposito}
     unless params[:historial][:numero_deposito].eql? ""
-      @historial = HistorialAcademico.where(:periodo_id=>periodo, :idioma_id=>idioma_id, :tipo_categoria_id=>tipo_categoria_id, :usuario_ci=>ci, :tipo_nivel_id=>tipo_nivel_id).limit(1).first
-      @historial.tipo_estado_inscripcion_id = "INS"
-      @historial.numero_deposito = params[:historial][:numero_deposito]
-      @historial.tipo_transaccion_id = params[:historial][:tipo_transaccion_id]
-      @historial.cuenta_bancaria_id = params[:historial][:cuenta_bancaria_id]
-  
-      if @historial.save
-        info_bitacora("Confirmación de Curos: #{@historial.curso.descripcion}")
-        flash[:mensaje]="Confirmacion de Inscripcion Exitosa"
+      if depositos.include? params[:historial][:numero_deposito].to_s
+        flash[:mensaje]="Número de depósito ya usado para este período"
         redirect_to :action=> "opciones_menu"
       else
-        flash[:mensaje]="no se pudo confirmar la seccion"
-        redirect_to :action=> "opciones_menu"
+        @historial = HistorialAcademico.where(:periodo_id=>periodo, :idioma_id=>idioma_id, :tipo_categoria_id=>tipo_categoria_id, :usuario_ci=>ci, :tipo_nivel_id=>tipo_nivel_id).limit(1).first
+        @historial.tipo_estado_inscripcion_id = "INS"
+        @historial.numero_deposito = params[:historial][:numero_deposito]
+        @historial.tipo_transaccion_id = params[:historial][:tipo_transaccion_id]
+        @historial.cuenta_bancaria_id = params[:historial][:cuenta_bancaria_id]
+    
+        if @historial.save
+          info_bitacora("Confirmación de Curos: #{@historial.curso.descripcion}")
+          flash[:mensaje]="Confirmacion de Inscripcion Exitosa"
+          redirect_to :action=> "opciones_menu"
+        else
+          flash[:mensaje]="no se pudo confirmar la seccion"
+          redirect_to :action=> "opciones_menu"
+        end
       end
     else
       flash[:mensaje]="debe agregar un numero de depósito"
