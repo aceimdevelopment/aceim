@@ -403,7 +403,7 @@ class HistorialAcademico < ActiveRecord::Base
     if tipo_nivel_id == 'BI' || tipo_categoria_id == 'TE' || tipo_categoria_id == 'NI' || idioma_id == 'AL' || idioma_id == 'IT'
       return "FUNDEIM"
     end
-    return "ESCUELA"
+    return "FHyE"
   end
   
   def cuenta_nombre_nueva 

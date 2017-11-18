@@ -53,7 +53,7 @@ class EstudianteNivelacion < ActiveRecord::Base
     if true || tipo_nivel_id == "BI" || tipo_categoria_id == "TE" || tipo_categoria_id == "NI"
       return "FUNDEIM"
     end
-    return "ESCUELA"
+    return "FHyE"
   end
   
   def cuenta_nombre

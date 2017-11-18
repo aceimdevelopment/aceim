@@ -425,7 +425,8 @@ class DocumentosPDF
     if historial_academico.tipo_convenio_id != "REG"
       datos << { "nombre" => to_utf16("<b>Convenio:</b>"), "valor" => to_utf16("#{historial_academico.tipo_convenio.descripcion}") }
     end
-    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF. / <b>Transacción #</b>: _________________________ Tipo: T ___  D ___ P ___") } if profesor
+    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF. / <b>Transacción #</b>: _________________ Tipo: T ___  D ___ P ___") } if profesor
+    datos << { "nombre" => to_utf16("<b>Depositó En:</b>"), "valor" => to_utf16("FHyE ___ FUNDEIM ___ ") } if profesor
     tabla.data.replace datos
     tabla.render_on(pdf)
 
@@ -457,6 +458,8 @@ class DocumentosPDF
     datos << { "nombre" => to_utf16("<b>A nombre de:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_nombre}") }
     # datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF.") }
     datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF. / <b>Transacción #</b>: _________________________ Tipo: T ___  D ___ P ___") }
+    datos << { "nombre" => to_utf16("<b>Depositó En:</b>"), "valor" => to_utf16("FHyE ___ FUNDEIM ___ ") }
+
     tabla.data.replace datos  
     tabla.render_on(pdf)
     pdf.text to_utf16("<b>*** Acepté las condiciones y normativas del programa. ***</b>"), :font_size => 10
@@ -648,7 +651,7 @@ class DocumentosPDF
  
 		pdf.text to_utf16("----- COPIA DEL ESTUDIANTE -----"), :font_size => 10, :justification => :center
 
-    alto_tijeras = 403
+    alto_tijeras = 390
     alto_tijeras = alto_tijeras - 13 if historial_academico.tipo_convenio_id != "REG"
 
     pdf.add_image_from_file 'app/assets/images/tijeras.jpg', 10, alto_tijeras, 25, nil
@@ -1076,7 +1079,7 @@ class DocumentosPDF
 			
 			pdf.text to_utf16("En Caracas, a los #{t.day} días del mes de #{mes(t.month)} de #{t.year}"), :font_size => 11, :justification => :full
 			
-			pdf.text "\n\n\n"
+			pdf.text "\n"
 			pdf.image 'app/assets/images/firma.jpg', :justification => :center, :resize => 0.4
 			pdf.text "____________________________" , :justification => :center, :font_size => 6
 			pdf.text "Prof. Lucius Daniel" , :justification => :center, :font_size => 11
