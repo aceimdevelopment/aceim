@@ -573,7 +573,8 @@ class DocumentosPDF
     
     factura.detalle_facturas.each_with_index do |detalle, i|
       i += 1
-      datos << { "no" => "<i>#{i}</i>", "descripcion" => to_utf16("<i>#{detalle.curso_periodo.descripcion}</i>"), "unidad"=> "<i>Cursos</i>", "cantidad" => "<i>#{detalle.cantidad.to_s}</i>", "costo" => "<i>#{format("%.2f", detalle.costo_unitario)}</i>", "total" => "<i>#{format("%.2f",detalle.total)}</i>" }
+      descrip = detalle.descripcion.blank? ? detalle.curso_periodo.descripcion : detalle.descripcion 
+      datos << { "no" => "<i>#{i}</i>", "descripcion" => to_utf16("<i>#{descrip}</i>"), "unidad"=> "<i>Cursos</i>", "cantidad" => "<i>#{detalle.cantidad.to_s}</i>", "costo" => "<i>#{format("%.2f", detalle.costo_unitario)}</i>", "total" => "<i>#{format("%.2f",detalle.total)}</i>" }
 
     end
 

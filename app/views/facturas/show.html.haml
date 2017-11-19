@@ -18,7 +18,11 @@
         - @detalles_factura.each_with_index do |detalle, i|
           %tr
             %td= i
-            %td= detalle.curso_periodo.descripcion
+            - if detalle.descripcion.blank?
+              %td= detalle.curso_periodo.descripcion
+            - else
+              %td= detalle.descripcion
+
             %td Curso
             %td= detalle.cantidad
             %td{:style=> "text-align: right;"}= "#{number_to_currency (detalle.costo_unitario)}"
@@ -34,6 +38,8 @@
               = f.collection_select :idioma_id, @idiomas, :id, :descripcion, {:prompt => 'Idioma'}, :required => true, :style => "width:20%;", :class => 'small'
               = f.collection_select :tipo_categoria_id, TipoCategoria.all, :id, :descripcion, {:prompt => 'Categoria'}, :required => true, :style => "width:20%;", :class => 'small'
               = f.collection_select :tipo_nivel_id, @niveles, :id, :descripcion, {:prompt => 'Nivel'}, :required => true, :style => "width:20%;", :class => 'small'
+              %br
+              = f.text_field :descripcion, placeholder: "Descripción (Será sustituido por el valor de los cursos)", size: 50 
             %td 
             %td{:style=> "text-align: right;"}= f.number_field :cantidad, :min => 1, :style => "width:40px;", :class => "small"
             %td{:style=> "text-align: right;"}
