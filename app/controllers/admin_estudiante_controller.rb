@@ -133,7 +133,7 @@ end
   
   def opciones_menu
     @ci = session[:estudiante_ci] 
-    periodo_actual = [session[:parametros][:periodo_actual], ParametroGeneral.periodo_actual_sabatino.id]
+    periodo_actual = [ParametroGeneral.periodo_actual.id, ParametroGeneral.periodo_actual_sabatino.id]
     @usuario = Usuario.where(:ci=>@ci).limit(1).first
     @historial = HistorialAcademico.where(:usuario_ci=>@ci).sort_by{|x| "#{x.periodo.ano} #{x.periodo.id}"}.reverse
     @historial_actual = HistorialAcademico.where(:usuario_ci=>@ci, :periodo_id=>periodo_actual)
