@@ -39,6 +39,17 @@ class InicioController < ApplicationController
 
     @periodo_inscripcion_id = ParametroGeneral.periodo_inscripcion.id
 
+    if ParametroGeneral.periodo_actual_sabatino.id.eql? @periodo_inscripcion_id
+      @titulo = "Sabatino"
+    end
+
+    if ParametroGeneral.periodo_actual.id.eql? @periodo_inscripcion_id
+      if @titulo.blank?
+        @titulo = "Semana"
+      else
+        @titulo += " y Semana"
+      end
+    end
     # @idiomas = TipoCurso.all.delete_if{|x| !tipo_curso.index(x.id)}
 
     # if @idiomas.size == 0

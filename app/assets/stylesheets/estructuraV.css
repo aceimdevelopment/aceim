@@ -11,6 +11,20 @@ body{
 	
 }
 
+
+
+.label {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    display: inline;
+    padding: .2em .6em .3em;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: .25em;
+    background-color: #286090;
+    border-color: #204d74
+}
+
 /*
 article, aside, figure, figure img, figcaption, hgroup,
 footer, header, nav, section, video, object, output {
