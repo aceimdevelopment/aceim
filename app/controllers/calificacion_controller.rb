@@ -13,7 +13,7 @@ class CalificacionController < ApplicationController
       @seccion = Seccion.where(:instructor_ci => session[:usuario].ci, 
                              :esta_abierta => true,
                              :periodo_id => session[:parametros][:periodo_calificacion]).uniq.sort_by{|x| Seccion.idioma(x.idioma_id)}
-    elsif (session[:administrador].usuario_ci == "10264009") || (session[:administrador].usuario_ci == "14519813") || (session[:administrador].usuario_ci == "13736933" || session[:administrador].usuario_ci == "19499931")
+    elsif (session[:administrador].tipo_rol_id < 3)
       @seccion = Seccion.where(:esta_abierta => true,
                                :periodo_id => session[:parametros][:periodo_calificacion]).uniq.sort_by{|x| Seccion.idioma(x.idioma_id)}
     else

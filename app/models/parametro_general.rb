@@ -30,6 +30,10 @@ class ParametroGeneral < ActiveRecord::Base
     Periodo.first(:conditions => ["id = ?" , ide.valor])
   end
 
+  def self.periodo_actual_sabatino
+    ide = ParametroGeneral.first(:conditions=>["id = ?", "PERIODO_ACTUAL_SABATINO"])
+    Periodo.first(:conditions => ["id = ?" , ide.valor])
+  end
 
   def self.capacidad_curso
     ide = ParametroGeneral.first(:conditions=>["id = ?", "CAPACIDAD_CURSO"]).valor.to_i

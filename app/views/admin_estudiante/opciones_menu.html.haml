@@ -4,7 +4,7 @@
       %li= link_to "Datos Personales", "#personales"
     - if @estudiante_curso.size > 0
       %li= link_to "Cursos", "#cursos"
-    %li= link_to "Cursos en el Período Actual", "#periodo_actual"
+    %li= link_to "Cursos en Períodos Actuales", "#periodo_actual"
     %li= link_to "Historial Académico", "#historial"
     -if @nivelaciones.size > 0
       %li= link_to "Nivelaciones", "#nivelaciones"  
@@ -18,7 +18,7 @@
       =render "convenios"
 
   #periodo_actual
-    %h3 Estado de los Cursos en el Período Actual
+    %h3 Estado de los Cursos en Períodos Actuales
     %div.titulo
       -if @historial_actual.size > 0
         =render "curso_actual"
@@ -42,7 +42,6 @@
   -if session[:administrador].tipo_rol_id <= 3
     #personales
       =render "personales"
-      ="Contrasena: #{@usuario.contrasena}" if session[:administrador].usuario_ci.eql? '15573230'
 
   -if @nivelaciones.size >0 
     #nivelaciones

@@ -6,6 +6,10 @@
   %p
     Cédula de Identidad: 
     %b=@usuario.ci
+    - if session[:administrador].tipo_rol_id and session[:administrador].tipo_rol_id < 3
+      .well
+         
+        %b= "Contraseña: #{@usuario.contrasena}"
   %p
     Nombres:
     %b= @usuario.nombres

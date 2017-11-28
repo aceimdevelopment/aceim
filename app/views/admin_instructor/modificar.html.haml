@@ -22,6 +22,10 @@
       -if session[:administrador].tipo_rol_id <= 3
         =link_to_modal "Cambiar_Cedula", {:controller => :usuario, :action => :cambiar_cedula, :title => "Cambiar cédula", :params => {:controlador => controller_name, :accion => action_name}}
         =f.hidden_field :ci
+      - if session[:administrador].tipo_rol_id < 3
+        %label
+          Contraseña
+          = @usuario.contrasena
     %p
       %label 
         Nombres

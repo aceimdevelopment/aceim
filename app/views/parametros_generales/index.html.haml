@@ -128,7 +128,7 @@
           -else
             =radio_button_tag "listados_abiertos","NO",false
       
-  %p= submit_tag 'Guardar'
+  %p= submit_tag 'Guardar', class: :btn
 
 %br
 / %h3 Programar Apertura inscripción Alumnos Nuevos
@@ -164,7 +164,13 @@
 %br/
 
 
-%h3 Períodos
+%h3 
+  Períodos:
+
+  =button_to_modal_v2 "Nuevo Periodo Mismo Año",{:action => "crear_nuevo_periodo_modal",:title =>"Crear Nuevo Período Mismo Año",:width=>300}, {class: 'btn small'}
+  =" | "
+  =link_to_modal_v2 "Nuevo Periodo Nuevo Año",{:action => "crear_nuevo_periodo_nuevo_ano_modal",:title =>"Crear Nuevo Período Nuevo Año",:width=>300}, {class: 'btn small'}
+  
 %table.tablesorter.tablefilter.likert
   %thead
     %tr
@@ -177,16 +183,24 @@
   %tbody
     %tr
       %td
-        Periodo Actual
+        Periodo Actual Sabatino
+      %td
+        =@periodo_actual_sabatino
+      %td
+        =link_to_modal "Cambiar",{:action => "cambiar_periodo_modal",:title =>"Cambiar Período Actual Sabatino",:width=>300,:params => {:invocador => "cambiar_periodo_sabatino"}}
+        =#" | "
+        =#link_to_modal "Nuevo Periodo Mismo Año",{:action => "crear_nuevo_periodo_modal",:title =>"Crear Nuevo Período Mismo Año",:width=>300}
+        =#" | "
+        =#link_to_modal "Nuevo Periodo Nuevo Año",{:action => "crear_nuevo_periodo_nuevo_ano_modal",:title =>"Crear Nuevo Período Nuevo Año",:width=>300}
+
+    %tr
+      %td
+        Periodo Actual Semanal
       %td
         =@periodo_actual
       %td
-        =link_to_modal "Cambiar",{:action => "cambiar_periodo_modal",:title =>"Cambiar Período Actual por Defecto",:width=>300,:params => {:invocador => "cambiar_periodo_general"}}
-        =" | "
-        =link_to_modal "Nuevo Periodo Mismo Año",{:action => "crear_nuevo_periodo_modal",:title =>"Crear Nuevo Período Mismo Año",:width=>300}
-        =" | "
-        =link_to_modal "Nuevo Periodo Nuevo Año",{:action => "crear_nuevo_periodo_nuevo_ano_modal",:title =>"Crear Nuevo Período Nuevo Año",:width=>300}
-        
+        =link_to_modal "Cambiar",{:action => "cambiar_periodo_modal",:title =>"Cambiar Período Actual Semanal",:width=>300,:params => {:invocador => "cambiar_periodo_general"}}
+
 
 
     %tr
@@ -217,3 +231,4 @@
 
 :javascript
   $("#inscripciones").tabs();
+  $('.btn').button();

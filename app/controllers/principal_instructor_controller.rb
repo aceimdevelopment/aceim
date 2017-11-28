@@ -17,9 +17,10 @@ class PrincipalInstructorController < ApplicationController
   
   def ver_secciones
     @titulo_pagina = "Selecionar Curso"
+    @periodo_sabatino = ParametroGeneral.periodo_actual_sabatino
     @secciones = Seccion.where(:instructor_ci => session[:usuario].ci,
                                :esta_abierta => true,
-                               :periodo_id => session[:parametros][:periodo_actual]).uniq.sort_by{|x| Seccion.idioma(x.idioma_id)}
+                               :periodo_id => [session[:parametros][:periodo_actual], @periodo_sabatino.id]).uniq.sort_by{|x| Seccion.idioma(x.idioma_id)}
     if @secciones.size == 0
       flash[:mensaje] = "Actualmente no existe ninguna sección"
     end

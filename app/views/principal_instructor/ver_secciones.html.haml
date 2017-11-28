@@ -6,6 +6,7 @@
       %tr
         %th{:align => :center} #
         %th{:align => :center} Curso
+        %th Período
         %th Nivel
         %th Sección
         %th Horario
@@ -16,6 +17,7 @@
         - @archivos_disponibles = Archivo.where(idioma_id: s.idioma_id, tipo_nivel_id: s.tipo_nivel_id, bloque_horario_id: s.bloque_horario_id)
         %tr
           %td{:align => :center}= i+1
+          %td= s.periodo_id
           %td= enlace("#{Seccion.idioma(s.idioma_id)} (#{Seccion.tipo_categoria(s.tipo_categoria_id)})","mostrar_estudiantes",controller_name,s)   
           %td= enlace(s.tipo_nivel.descripcion,"mostrar_estudiantes",controller_name,s)
           %td{:align => :center}= enlace(s.seccion_numero,"mostrar_estudiantes",controller_name,s)

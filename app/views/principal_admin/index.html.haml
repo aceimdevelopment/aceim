@@ -1,67 +1,18 @@
 
 -if session[:administrador].tipo_rol_id
   %ul.navegador
-    %li=link_to "Gestionar Archivos", :controller=>"archivos"
 
-    %li    
-      %a.desplegable{:href=>"#"} Gestionar Examenes
-      %ul.subnavegador
-        %p
-          =link_to 'Nuevo Examen', new_examen_path 
-        %p
-          =link_to "Gestión General de Examenes", {:controller => 'examenes', :action => 'set_idioma', :id => 'ALL'}
-        %p
-          =link_to "Gestión de Examenes de Alemán", {:controller => 'examenes', :action => 'set_idioma', :id => 'AL'}
-        %p
-          =link_to "Gestión de Examenes de Francés", {:controller => 'examenes', :action => 'set_idioma', :id => 'FR'}
-        %p
-          =link_to "Gestión de Examenes de Inglés", {:controller => 'examenes', :action => 'set_idioma', :id => 'IN'}
-        %p
-          =link_to "Gestión de Examenes de Italiano", {:controller => 'examenes', :action => 'set_idioma', :id => 'IT'}
-        %p
-          =link_to "Gestión de Examenes de Portugués", {:controller => 'examenes', :action => 'set_idioma', :id => 'PG'}
-
-    -if false
+    - if false # hide examen
       %li    
-        %a.desplegable{:href=>"#"} Syllabus & Fecha
+        %a.desplegable{:href=>"#"} Gestionar Examenes
         %ul.subnavegador
-          %p
-            =link_to "Fechas", :controller => 'descarga', :action => 'fechas'
-          - @cursos.each do |curso|
-            - nivel = curso.tipo_nivel
-            - if (curso.idioma_id.eql? 'IN') 
-              %p
-                =link_to curso.descripcion, :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id, :idioma_id => curso.idioma_id
-                = link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id}, :style => "font-size: small; color: orange;"
-
-              - if (nivel.id.eql? "CB" or nivel.id.eql? "CI")
-                %p
-                  =link_to curso.descripcion+" (Sabatino)", :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id+"-S", :idioma_id => curso.idioma_id
-                  = link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id+"-S"}, :style => "font-size: small; color: orange;"
-
-   
-            - if (curso.idioma_id.eql? 'FR')
-              - if !(nivel.id.eql? "CB" or nivel.id.eql? "CI" or nivel.id.eql? "CA")  
-                %p
-                  =link_to curso.descripcion, :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id, :idioma_id => curso.idioma_id
-                  =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id}, :style => "font-size: small; color: orange;"
-                %p
-                  =link_to curso.descripcion+" (Sabatino)", :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id+"-S", :idioma_id => curso.idioma_id
-                  =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id+"-S"}, :style => "font-size: small; color: orange;"
-            - if (curso.idioma_id.eql? 'AL' or curso.idioma_id.eql? 'IT') 
-              %p
-                =link_to curso.descripcion, :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id, :idioma_id => curso.idioma_id
-                =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id}, :style => "font-size: small; color: orange;"
-            
-            - if (curso.idioma_id.eql? 'PG')
-              %p
-                =link_to curso.descripcion, :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id, :idioma_id => curso.idioma_id
-                =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id}, :style => "font-size: small; color: orange;"
-
-              -if (nivel.id.eql? "BI" or nivel.id.eql? "BII" or nivel.id.eql? "CB" or nivel.id.eql? "CI" or nivel.id.eql? "MI" or nivel.id.eql? "MII" or nivel.id.eql? "CI")
-                %p
-                  =link_to curso.descripcion+" (Sabatino)", :controller => 'descarga', :action => 'syllabus', :nivel => nivel.id+"-S", :idioma_id => curso.idioma_id
-                  =link_to "Actualizar", {:action => "cargar_pdf",:idioma_id => curso.idioma_id, :nivel_id => nivel.id+"-S"}, :style => "font-size: small; color: orange;"
+          %p=link_to 'Nuevo Examen', new_examen_path 
+          %p=link_to "Gestión General de Examenes", {:controller => 'examenes', :action => 'set_idioma', :id => 'ALL'}
+          %p=link_to "Gestión de Examenes de Alemán", {:controller => 'examenes', :action => 'set_idioma', :id => 'AL'}
+          %p=link_to "Gestión de Examenes de Francés", {:controller => 'examenes', :action => 'set_idioma', :id => 'FR'}
+          %p=link_to "Gestión de Examenes de Inglés", {:controller => 'examenes', :action => 'set_idioma', :id => 'IN'}
+          %p=link_to "Gestión de Examenes de Italiano", {:controller => 'examenes', :action => 'set_idioma', :id => 'IT'}
+          %p=link_to "Gestión de Examenes de Portugués", {:controller => 'examenes', :action => 'set_idioma', :id => 'PG'}
 
     %li    
       %a.desplegable{:href=>"#"} Estudiantes
@@ -76,6 +27,11 @@
         -if session[:administrador].tipo_rol_id <= 2
           %li
             =link_to "Listado de Todos Los Estudiantes", :controller=> "admin_estudiante", :action => "estudiantes"
+    
+    %li=link_to "Estudiantes con Nivelación", :controller => "estudiante_nivelaciones", :action=> "index"
+    
+    %li=link_to "Archivos", :controller=>"archivos"
+    
     %li 
       %a.desplegable{:href=>"#"} Instructores
       %ul.subnavegador
@@ -88,8 +44,6 @@
             =link_to "Enviar Correo a Instructores", :action=>"redactar_correo"
           %li
             =link_to "Agregar Nuevo Instructor", :controller=> "admin_instructor", :action=>"nuevo"
-    %li
-      =link_to "Estudiantes con Nivelación", :controller => "estudiante_nivelaciones", :action=> "index"
         
     %li
       =link_to "Gestionar Cursos (Estado de la Inscripción)", :controller => "estado_inscripcion", :action=> "ver_secciones"

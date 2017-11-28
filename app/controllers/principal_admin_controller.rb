@@ -75,6 +75,7 @@ class PrincipalAdminController < ApplicationController
   def confirmacion_rapida
     ci = params[:historial][:usuario_ci]
     periodo_actual=session[:parametros][:periodo_actual]
+    periodo_actual_sabatino = ParametroGeneral.periodo_actual_sabatino
     cursos = EstudianteCurso.where(:usuario_ci=>ci)
     
     if cursos.size<1
@@ -88,8 +89,8 @@ class PrincipalAdminController < ApplicationController
       return
     end    
     @historial = cursos.first.ultimo_historial
-    if @historial.periodo_id!=periodo_actual
-      flash[:mensaje]="No está preinscrito en el periodo actual"
+    if @historial.periodo_id!=periodo_actual or @historial.periodo_id!=periodo_actual_sabatino.id
+      flash[:mensaje]="No está preinscrito en ningún periodo actual "
       redirect_to :action => "capturar_ci"
       return
     end
@@ -106,7 +107,8 @@ class PrincipalAdminController < ApplicationController
     tipo_categoria_id = params[:historial][:tipo_categoria_id]
     tipo_nivel_id = params[:historial][:tipo_nivel_id]
     ci = params[:historial][:usuario_ci]
-    periodo = session[:parametros][:periodo_actual]
+    periodo = params[:historial][:periodo_id]
+    #periodo = session[:parametros][:periodo_actual]
     depositos = HistorialAcademico.where(periodo_id: periodo).collect{|h| h.numero_deposito}
     unless params[:historial][:numero_deposito].eql? ""
       if depositos.include? params[:historial][:numero_deposito].to_s
@@ -124,24 +126,13 @@ class PrincipalAdminController < ApplicationController
           flash[:mensaje]="Confirmacion de Inscripcion Exitosa"
           redirect_to :action=> "capturar_ci"
         else
-          flash[:mensaje]="no se pudo confirmar la seccion"
+          flash[:mensaje]="No se pudo confirmar la seccion"
           redirect_to :action=> "capturar_ci"
         end
       end
     else
-      flash[:mensaje]="debe agregar un numero de depósito"
+      flash[:mensaje]="Debe agregar un numero de depósito"
       respond_to :action=>"capturar_ci"
-    end
-  end
-  
-  respond_to do |format|
-    if @usuario.save
-      flash[:mensaje] = "Instructor Actualizado Satisfactoriamente"
-      format.html { redirect_to(:action=>"index") }
-    else
-      flash[:mensaje] = "Errores en el Formulario impiden que el instructor sea actualizado"
-      format.html { render :action => "modificar" }
-      format.xml  { render :xml => @usuario.errors, :status => :unprocessable_entity }
     end
   end
   

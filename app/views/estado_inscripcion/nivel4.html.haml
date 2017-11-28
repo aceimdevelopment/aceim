@@ -32,8 +32,6 @@ Filtrar Contenido:
       %th Nombres
       %th Cédula
       %th Correo Electrónico
-      -if @admin
-        %th Pago
       %th Teléfono Móvil
       -if @historiales.first.seccion.esta_calificada
         %th Calificación
@@ -44,8 +42,6 @@ Filtrar Contenido:
         %td= h.usuario.nombre_completo
         %td= h.usuario.ci
         %td= h.usuario.correo
-        -if @admin   
-          %td= raw h.descripcion_pago
         %td= h.usuario.telefono_movil
         -if @historiales.first.seccion.esta_calificada
           %td 

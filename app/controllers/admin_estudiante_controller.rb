@@ -133,7 +133,7 @@ end
   
   def opciones_menu
     @ci = session[:estudiante_ci] 
-    periodo_actual = session[:parametros][:periodo_actual]
+    periodo_actual = [session[:parametros][:periodo_actual], ParametroGeneral.periodo_actual_sabatino.id]
     @usuario = Usuario.where(:ci=>@ci).limit(1).first
     @historial = HistorialAcademico.where(:usuario_ci=>@ci).sort_by{|x| "#{x.periodo.ano} #{x.periodo.id}"}.reverse
     @historial_actual = HistorialAcademico.where(:usuario_ci=>@ci, :periodo_id=>periodo_actual)
@@ -147,7 +147,7 @@ end
   end
   
   def cambiar_convenio_sel_curso
-    periodo = session[:parametros][:periodo_actual]
+    periodo = [session[:parametros][:periodo_actual], ParametroGeneral.periodo_actual_sabatino.id]
     ci = session[:estudiante_ci]
     @usuario = Usuario.where(:ci=>ci).limit(1).first
     @cursos = EstudianteCurso.where(:usuario_ci => ci).collect{|c| c.tipo_curso}
@@ -279,7 +279,6 @@ end
   end
   
   def cambiar_seccion_sel_curso
-    periodo = session[:parametros][:periodo_actual]
     ci = session[:estudiante_ci]
     @usuario = Usuario.where(:ci=>ci).limit(1).first
     @cursos = EstudianteCurso.where(:usuario_ci => ci).collect{|c| c.tipo_curso}
@@ -289,12 +288,13 @@ end
   
   def cambiar_seccion
     p=params[:parametros]
-    periodo = session[:parametros][:periodo_actual]
+    #periodo = session[:parametros][:periodo_actual]
+    periodo_id = p[:periodo_id]#session[:parametros][:periodo_actual]
     idioma_id = p[:idioma_id]
     tipo_categoria_id = p[:tipo_categoria_id]
     ci = p[:usuario_ci]
-    @historial = HistorialAcademico.where(:periodo_id=>periodo, :idioma_id=>idioma_id, :tipo_categoria_id=>tipo_categoria_id, :usuario_ci=>ci).limit(1).first
-    @secciones = Seccion.where(:idioma_id=>idioma_id, :tipo_categoria_id=>tipo_categoria_id, :periodo_id => periodo, :tipo_nivel_id=>@historial.tipo_nivel_id)
+    @historial = HistorialAcademico.where(:periodo_id=>periodo_id, :idioma_id=>idioma_id, :tipo_categoria_id=>tipo_categoria_id, :usuario_ci=>ci).limit(1).first
+    @secciones = Seccion.where(:idioma_id=>idioma_id, :tipo_categoria_id=>tipo_categoria_id, :periodo_id => periodo_id, :tipo_nivel_id=>@historial.tipo_nivel_id)
     render :layout=> false
   end
   
@@ -333,22 +333,15 @@ end
   
   def confirmar_inscripcion
     p=params[:parametros]
-    periodo = session[:parametros][:periodo_actual]
     ci = p[:usuario_ci]
-    @historial = HistorialAcademico.where(:periodo_id=>periodo, :idioma_id=>p[:idioma_id], :tipo_categoria_id=>p[:tipo_categoria_id], :usuario_ci=>ci).limit(1).first
+    @historial = HistorialAcademico.where(:periodo_id=>p[:periodo_id], :idioma_id=>p[:idioma_id], :tipo_categoria_id=>p[:tipo_categoria_id], :usuario_ci=>ci).limit(1).first
     render :layout => false   
   end
 
   def cambiar_nota
     if (session[:administrador].usuario_ci != "aceim")
       pa = params[:parametros]
-      @historial = HistorialAcademico.where(:usuario_ci => pa[:usuario_ci],
-                                            :idioma_id => pa[:idioma_id],
-                                            :tipo_categoria_id => pa[:tipo_categoria_id],
-                                            :tipo_nivel_id => pa[:tipo_nivel_id],
-                                            :periodo_id => pa[:periodo_id],
-                                            :seccion_numero => pa[:seccion_numero]
-   ).limit(1).first
+      @historial = HistorialAcademico.find pa[:historial_id]
       render :layout => false   
     else
       redirect_to :action => "opciones_menu"
@@ -358,13 +351,7 @@ end
   def ver_detalle_nota
     if session[:administrador].tipo_rol_id <= 3
       pa = params[:parametros]
-      @historial = HistorialAcademico.where(:usuario_ci => pa[:usuario_ci],
-                                            :idioma_id => pa[:idioma_id],
-                                            :tipo_categoria_id => pa[:tipo_categoria_id],
-                                            :tipo_nivel_id => pa[:tipo_nivel_id],
-                                            :periodo_id => pa[:periodo_id],
-                                            :seccion_numero => pa[:seccion_numero]
-   ).limit(1).first
+      @historial = HistorialAcademico.find pa[:historial_id]
 
       @evaluaciones = @historial.notas_en_evaluaciones
       @n1 = @historial.nota_en_evaluacion("EXA_ESC_1").nota_valor if @historial.nota_en_evaluacion("EXA_ESC_1")
@@ -384,7 +371,7 @@ end
     tipo_categoria_id = params[:historial][:tipo_categoria_id]
     tipo_nivel_id = params[:historial][:tipo_nivel_id]
     ci = params[:historial][:usuario_ci]
-    periodo = session[:parametros][:periodo_actual]
+    periodo = params[:historial][:periodo_id]
     depositos = HistorialAcademico.where(periodo_id: periodo).collect{|h| h.numero_deposito}
     unless params[:historial][:numero_deposito].eql? ""
       if depositos.include? params[:historial][:numero_deposito].to_s
@@ -413,18 +400,14 @@ end
   end
   
   def confirmar_eliminar
-    p=params[:parametros]
-    ci = p[:usuario_ci]
-    periodo = session[:parametros][:periodo_actual]
-    @historial = HistorialAcademico.where(:idioma_id=>p[:idioma_id],:tipo_categoria_id=>p[:tipo_categoria_id],:periodo_id=>periodo,:usuario_ci=>ci).limit(1).first
+    pa = params[:parametros]
+    @historial = HistorialAcademico.find pa[:historial_id]
     render :layout => false
   end
   
   def eliminar_curso
-    periodo = session[:parametros][:periodo_actual]
-    idioma_id,tipo_categoria_id = params[:tipo_curso].split(",")
-    ci = params[:usuario_ci]
-    h = HistorialAcademico.where(:usuario_ci=>ci, :periodo_id=>periodo, :idioma_id=>idioma_id, :tipo_categoria_id=>tipo_categoria_id).limit(1).first
+    h = HistorialAcademico.find params[:historial_id]
+    ci = h.usuario_ci
     if h.destroy
       session[:estudiante] = Estudiante.find(ci)
       info_bitacora("Eliminado Curso: #{h.curso.descripcion}")

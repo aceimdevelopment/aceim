@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class PrincipalController < ApplicationController
 
   before_filter :filtro_logueado
@@ -23,7 +25,9 @@ class PrincipalController < ApplicationController
       :periodo_id => session[:parametros][:periodo_inscripcion]).limit(1).first
 
     @periodo = ParametroGeneral.periodo_actual 
-    @ha = HistorialAcademico.where(:idioma_id => session[:tipo_curso].idioma_id, :usuario_ci => session[:usuario].ci, :tipo_categoria_id => 'AD', :periodo_id => @periodo.id).first
+    @periodo_sabatino = ParametroGeneral.periodo_actual_sabatino 
+
+    @ha = HistorialAcademico.where(:idioma_id => session[:tipo_curso].idioma_id, :usuario_ci => session[:usuario].ci, :tipo_categoria_id => 'AD', :periodo_id => [@periodo.id, @periodo_sabatino.id]).first
     @descargar_planilla_inscripcion = ParametroGeneral.find("DESCARGAR_PLANILLA_INSCRIPCION").valor
 
     @ha = nil if (@ha and @ha.idioma_id.eql? 'FR' and (@ha.tipo_nivel_id.eql? "CB" or @ha.tipo_nivel_id.eql? "CI" or @ha.tipo_nivel_id.eql? "CA"))
@@ -89,7 +93,7 @@ class PrincipalController < ApplicationController
     controlador = params[:controlador]
     accion = params[:accion]
     session[:parametros][:periodo_actual] = params[:periodo][:id] 
-    flash[:mensaje]= "El periodo fue cambiado a #{session[:parametros][:periodo_actual]}"
+    flash[:mensaje]= "El periodo fue cambiado para su sessión a #{session[:parametros][:periodo_actual]}"
     redirect_to :controller => controlador, :action => accion
   end
 
