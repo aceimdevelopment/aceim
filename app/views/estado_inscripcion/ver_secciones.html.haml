@@ -13,17 +13,21 @@
   |
   =link_to_function "Enviar Correo","aceim.recolectar_enviar_correo('datos_enviar_correo','correos')"
   %br/
+  Filtro por Inscripción: 
+  =collection_select :tipo, :inscripcion, @tipo_inscripcion, :to_s, :to_s, {:prompt => "-- Ambos --", :selected => @filtro5}
+  %br/
   Filtro por Idioma: 
-  =collection_select :tipo_curso, :id, @tipos_curso, :id, :descripcion, {:prompt => "-- Todos --", :selected => @filtro}
+  =collection_select :tipo_curso, :id, @tipos_curso, :id, :descripcion, {:prompt => "-- Todos --", :selected => @filtro}#, {multiple: true}
   %br/
   Filtro por Nivel: 
   =collection_select :tipo_nivel, :id, @tipos_nivel, :id, :descripcion, {:prompt => "-- Todos --", :selected => @filtro4}
   %br/
   Filtro por Ubicación: 
   =collection_select :ubicacion, :id, @ubicaciones, :id, :descripcion_corta, {:prompt => "-- Todas --", :selected => @filtro2}
-  %br/
-  Filtro por Horario: 
-  =collection_select :horario, :id2, @horarios, :to_s, :to_s, {:prompt => "-- Todos --", :selected => @filtro3}
+  - if @horarios and @horarios.count > 1
+    %br/
+    Filtro por Horario: 
+    =collection_select :horario, :id2, @horarios, :to_s, :to_s, {:prompt => "-- Todos --", :selected => @filtro3}
   %br/
   %div{:style=>"color:red"}
     
@@ -49,7 +53,7 @@
           Aula
         %th{:width => "20%"}
           Instructor
-        -if (session[:administrador].usuario_ci == "10264009") || (session[:administrador].usuario_ci == "14519813") || (session[:administrador].usuario_ci == "13736933") || (session[:administrador].usuario_ci == "15573230") || (session[:administrador].usuario_ci == "19220025") || (session[:administrador].usuario_ci == "19395140")
+        -if session[:administrador].tipo_rol_id < 3
           %th{:width => "5%"}
             Opcion
 
@@ -101,7 +105,7 @@
               =link_to_modal instructor_id,{:action => "cambiar_instructor",:title =>"Modificar Instructor",:width=>700, :params => {:seccion => s, :controlador => controller_name, :accion => action_name, :indice => i, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3}}
             -else
               =instructor_id
-          -if session[:administrador].tipo_rol_id <= 2 
+          -if session[:administrador].tipo_rol_id < 3 
             %td{:style => "#{estilo}"}
               =link_to_modal "Eliminar", {:action => "confirmar_eliminar",:title =>"Eliminar Sección",:width=>700, :params => {:seccion => s, :controlador => controller_name, :accion => action_name}}
 

@@ -71,7 +71,8 @@ class EstadoInscripcionController < ApplicationController
     end
   end
   
-  def ver_secciones 
+  def ver_secciones
+
     #verificando el envio de correos
     if params[:ce]
       flash[:mensaje] = "Los correos se han enviado satisfactoriamente"
@@ -86,7 +87,12 @@ class EstadoInscripcionController < ApplicationController
     @filtro3 = nil if @filtro3 == nil || @filtro3.strip.size == 0
     @filtro4 = params[:filtrar4] 
     @filtro4 = nil if @filtro4 == nil || @filtro4.strip.size == 0
+    @filtro5 = params[:filtrar5] 
+    @filtro5 = nil if @filtro5 == nil || @filtro5.strip.size == 0
+
+
     # puts session[:parametros]
+
     periodo = session[:parametros][:periodo_actual]
     @subtitulo_pagina = "Período #{periodo}"  
     @seccion = Seccion.where(:periodo_id=>periodo)
@@ -98,45 +104,31 @@ class EstadoInscripcionController < ApplicationController
     #render :text => "#{@seccion.collect{|x| x.horario_seccion2}.delete_if{|r| r.nil?}.inspect}"
     #return
     @ubicaciones = @seccion.collect{|x| x.horario_seccion2}.delete_if{|r| r.nil?}.collect{|w| w.aula }.compact.collect{|y| y.tipo_ubicacion }.uniq
-    @horarios = @seccion.collect{|z| z.horario}.uniq
 
+    @tipo_inscripcion = %W(Sabatinos Semanal)
 
     # Filtro por Idioma
     if @filtro
       idioma_id , tipo_categoria_id = @filtro.split ","
       @seccion = @seccion.delete_if{|x| !(x.periodo_id == periodo && x.idioma_id == idioma_id && x.tipo_categoria_id == tipo_categoria_id)}
-      # @seccion = @seccion.where(:idioma_id => idioma_id, :tipo_categoria_id => tipo_categoria_id)
     end  
 
     # Filtro por Ubicacion
     if @filtro2
-
       @seccion = @seccion.delete_if{|s| s.horario_seccion2.aula.nil? || s.horario_seccion2.aula.tipo_ubicacion_id != @filtro2}
-
-
-      # secciones = []
-      # @seccion.each{|s|
-      #   aula = s.horario_seccion2.aula
-      #   secciones << s if aula && aula.tipo_ubicacion_id == @filtro2
-      # }                
-      # @seccion = secciones
     end
     
     # Filtro por Horario
-
-    @seccion = @seccion.delete_if{|s| s.horario != @filtro3} if @filtro3
-    # if @filtro3
-    #   @seccion = @seccion.delete_if{|s| !s.mach_horario?(@filtro3)}
-    # end
-    
+    @seccion = @seccion.delete_if{|s| s.horario != @filtro3} if (@filtro3 and @filtro3!= 'undefined')
     # Filtro de Nivel
 
     @seccion = @seccion.delete_if{|s| s.tipo_nivel_id != @filtro4 } if @filtro4
 
-    # if @filtro4
-    #   @seccion = @seccion.delete_if{|s| !(s.tipo_nivel_id ==  @filtro4)}
-    # end
-    # @seccion = @seccion.sort_by{|x| "#{x.tipo_curso.id}-#{'%03i'%x.curso.grado}-#{x.horario}-#{x.seccion_numero}"}
+    if @filtro5
+      @seccion = @seccion.delete_if{|s| s.horario == 'Sábado (08:30AM - 12:45PM)'} if @filtro5.eql? 'Semanal'
+      @seccion = @seccion.delete_if{|s| s.horario != 'Sábado (08:30AM - 12:45PM)'} if @filtro5.eql? 'Sabatinos'
+    end
+    @horarios = @seccion.collect{|z| z.horario}.uniq
 
   end
   

@@ -7,16 +7,15 @@ class InscripcionAdminController < ApplicationController
   
   def paso0                    
     #cargar_parametros_generales
-    @titulo_pagina = "Inscripción de Nuevo en Idioma"  
+    @titulo_pagina = "Inscripción"  
     @subtitulo_pagina = "Datos Básicos"    
     if usuario = Usuario.where(:ci => session[:estudiante_ci]).limit(1).first
       @usuario = usuario      
     else                      
       @usuario = Usuario.new
     end
-    tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_actual]).collect{|y| 
-      y.tipo_curso.id
-    }.sort.uniq
+    #tipo_curso = Seccion.where(:periodo_id => session[:parametros][:periodo_actual], esta_abierta: true).collect{|y| y.tipo_curso.id}.sort.uniq
+    tipo_curso = Seccion.where("periodo_id = ? and esta_abierta IS TRUE", session[:parametros][:periodo_actual]).collect{|y| y.tipo_curso.id}.sort.uniq
     @idiomas = TipoCurso.all.delete_if{|x| !tipo_curso.index(x.id)}
 
     #para predeterminar un idioma
@@ -171,8 +170,8 @@ class InscripcionAdminController < ApplicationController
       :periodo_id => session[:parametros][:periodo_actual],
       :idioma_id => ec.idioma_id,
       :tipo_categoria_id => ec.tipo_categoria_id,
-      :tipo_nivel_id => session[:especial_nivel]
-      ).sort_by{|s| s.cupo}
+      :tipo_nivel_id => session[:especial_nivel],
+      :esta_abierta => true).sort_by{|s| s.cupo}
   end
 
   def paso2_guardar

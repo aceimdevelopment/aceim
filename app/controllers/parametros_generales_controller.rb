@@ -38,6 +38,8 @@ class ParametrosGeneralesController < ApplicationController
 
     @inscripcion_modo_ninos = ParametroGeneral.find("INSCRIPCION_MODO_NINOS").valor
 
+    @inscripcion_activa = ParametroGeneral.find("INSCRIPCION_ACTIVA").valor
+
   end
 
   def guardar_inscripcion_idioma
@@ -62,6 +64,25 @@ class ParametrosGeneralesController < ApplicationController
 
     flash[:mensaje] = "Programación realizada" 
     redirect_to :back
+  end
+
+  def cambiar_inscripcion_activa_modal
+    @inscripcion_activa = ParametroGeneral.find("INSCRIPCION_ACTIVA").valor
+
+    render :layout => false
+  end
+
+  def cambiar_inscripcion_activa
+    inscripcion_activa = ParametroGeneral.find("INSCRIPCION_ACTIVA")
+    
+    inscripcion_activa.valor = params[:inscripcion_activa]
+    if inscripcion_activa.save
+      flash[:mensaje] = "Cambio exitoso de Incripción Activa."
+    else
+      flash[:mensaje] = "Error al intentar actualizar valor de Inscripción Activa. Por favor, inténtenlo de nuevo."
+    end
+    redirect_to(:action=>"index")
+
   end
 
   def guardar_parametros
@@ -96,7 +117,7 @@ class ParametrosGeneralesController < ApplicationController
 
   
     flash[:mensaje] = "Configuraciones almacenadas con éxito"
-    redirect_to(:action=>"index")    
+    redirect_to(:action=>"index")
 
   end
 

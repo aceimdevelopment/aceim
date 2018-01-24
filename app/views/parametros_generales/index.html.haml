@@ -183,6 +183,13 @@
   %tbody
     %tr
       %td
+        Periodo Inscripción Activo
+      %td
+        =@inscripcion_activa
+      %td
+        =link_to_modal "Cambiar",{:action => "cambiar_inscripcion_activa_modal",:title =>"Cambiar Inscripción Actva",:width=>400}
+    %tr
+      %td
         Periodo Actual Sabatino
       %td
         =@periodo_actual_sabatino

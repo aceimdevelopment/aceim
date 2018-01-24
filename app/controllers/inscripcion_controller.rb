@@ -14,10 +14,15 @@ class InscripcionController < ApplicationController
     @inscripcion = Inscripcion.find(params[:id]) 
     periodo_id =  ParametroGeneral.periodo_inscripcion.id
 
+    periodo_inscripcion_activo = ParametroGeneral.periodo_inscripcion_activo
+
     secciones = Seccion.where(:periodo_id => periodo_id, 
       :idioma_id => @inscripcion.tipo_curso.idioma_id, 
       :tipo_categoria_id => @inscripcion.tipo_curso.tipo_categoria_id, 
       :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?} 
+
+    secciones = secciones.delete_if{|s| s.horario == 'Sábado (08:30AM - 12:45PM)'} if periodo_inscripcion_activo.eql? 'SEMANAL'
+    secciones = secciones.delete_if{|s| s.horario == 'Sábado (08:30AM - 12:45PM)'} if periodo_inscripcion_activo.eql? 'SABATINOS'
     
     if @inscripcion.nil? or (!@inscripcion.abierta?) or secciones.count < 1
       reset_session
@@ -102,6 +107,11 @@ class InscripcionController < ApplicationController
       redirect_to :controller => "inicio"
       return
     end
+
+    periodo_inscripcion_activo = ParametroGeneral.periodo_inscripcion_activo
+
+    secciones = secciones.delete_if{|s| s.horario == 'Sábado (08:30AM - 12:45PM)'} if (periodo_inscripcion_activo.eql? 'SEMANAL')
+    secciones = secciones.delete_if{|s| s.horario != 'Sábado (08:30AM - 12:45PM)'} if (periodo_inscripcion_activo.eql? 'SABATINOS')
 
     # Se buscan los horarios que tienen las secciones selccionadas
     @horarios = secciones.collect{|s| s.horario}.uniq.sort
@@ -319,6 +329,13 @@ class InscripcionController < ApplicationController
           # session[:parametros][:inscripcion_permitir_cambio_horario] == "NO"
           !@inscripcion.cambio_horario?
         )
+
+        periodo_inscripcion_activo = ParametroGeneral.periodo_inscripcion_activo
+
+        @horarios = @horarios.delete_if{|s| s == 'Sábado (08:30AM - 12:45PM)'} if (periodo_inscripcion_activo.eql? 'SEMANAL')
+        @horarios = @horarios.delete_if{|s| s != 'Sábado (08:30AM - 12:45PM)'} if (periodo_inscripcion_activo.eql? 'SABATINOS')
+
+
         if @horarios.size == 0
           flash[:mensaje] = "Sin disponibilidad de cupos"
           redirect_to :controller => "principal", :action => "principal"

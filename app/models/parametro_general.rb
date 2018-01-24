@@ -25,6 +25,11 @@ class ParametroGeneral < ActiveRecord::Base
   end
 
 
+  def self.periodo_inscripcion_activo
+    ParametroGeneral.first(:conditions=>["id = ?", "INSCRIPCION_ACTIVA"]).valor
+  end
+
+
   def self.periodo_actual
     ide = ParametroGeneral.first(:conditions=>["id = ?", "PERIODO_ACTUAL"])
     Periodo.first(:conditions => ["id = ?" , ide.valor])
