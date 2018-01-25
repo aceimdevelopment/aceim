@@ -113,6 +113,23 @@ class Seccion < ActiveRecord::Base
     retorno = dias + hora
   end
 
+  def es_horario_inscripcion? horario_inscripcion
+
+      dias_id = horario_seccion.collect{|hs| hs.tipo_dia_id}
+    if horario_inscripcion.eql? 'AMBOS'
+      return true
+    elsif horario_inscripcion.eql? 'SABATINOS'
+      return dias_id.include? 'SA' 
+    elsif horario_inscripcion.eql? 'SEMANAL'
+      return (not dias_id.include? 'SA')       
+    else      
+      return false
+    end
+
+    return true if (horario.eql? 'SABATINO')
+    
+  end
+
   def horario
     retorno = ""
     horario_seccion = HorarioSeccion.where(:periodo_id => periodo_id,

@@ -13,7 +13,17 @@
       %label
         Secciones Disponibles
         %span.req *
-      =collection_select :datos, :seccion, @secciones, :id, :descripcion_inscritos
+        
+      =#collection_select :datos, :seccion, @secciones, :id, :descripcion_inscritos, {prompt: true}, {class: 'red'}
+
+      .req (Secciones en rojo pertenecen a horario de inscripción distinto al activo en este momento)
+      %select#datos_seccion{:name => "datos[seccion]"}
+        %option{value: ""} Por favor seleccione
+        - @secciones.each do |s| 
+          - clase = ""
+          - clase = "red" unless (s.es_horario_inscripcion? @horario_inscripcion_activo)
+          %option{value: "#{s.id}", class: clase}= s.descripcion_inscritos 
+
   %p 
     %span.req *  
     Campos Obligatorios

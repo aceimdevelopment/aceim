@@ -25,7 +25,7 @@ class ParametroGeneral < ActiveRecord::Base
   end
 
 
-  def self.periodo_inscripcion_activo
+  def self.horario_inscripcion_activo
     ParametroGeneral.first(:conditions=>["id = ?", "INSCRIPCION_ACTIVA"]).valor
   end
 

@@ -23,7 +23,7 @@
           =link_to "Gestionar Estudiante Existente", :controller=> "admin_estudiante"
         -if session[:administrador].tipo_rol_id <= 3
           %li
-            =link_to "Agregar Nuevo Estudiante", :controller=> "inscripcion_admin", :action => "paso0"
+            =link_to "Inscribir Estudiante", :controller=> "inscripcion_admin", :action => "paso0"
         -if session[:administrador].tipo_rol_id <= 2
           %li
             =link_to "Listado de Todos Los Estudiantes", :controller=> "admin_estudiante", :action => "estudiantes"

@@ -159,6 +159,7 @@ class InscripcionAdminController < ApplicationController
   end
   
   def paso2
+    @horario_inscripcion_activo = ParametroGeneral.horario_inscripcion_activo
     @titulo_pagina = "Preinscripción - Admin"
     @subtitulo_pagina = "Selección de Sección"
     @tipo_nivel = TipoNivel.find session[:especial_nivel]

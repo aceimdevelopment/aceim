@@ -31,6 +31,7 @@ footer, header, nav, section, video, object, output {
 	display: block;
 }
 */
+.red { background-color: red; color: white;}
 .btn_idiomas{ margin: 3px;padding: 3px;font-size: 15px;}
 
 .culmino{background-color: rgba(169, 169, 169, 0.1);color: rgba(28, 148, 196, 0.41);}
