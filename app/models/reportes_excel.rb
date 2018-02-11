@@ -25,12 +25,12 @@ class ReportesExcel
     formato = Spreadsheet::Format.new :weight => :bold,:size => 12, :align => :center, :border => true
     formato2 = Spreadsheet::Format.new :border => true
     if historiales.size > 0
-      hoja.row(7).insert 0,"Nombre","Cédula", "Correo","Teléfono","Idioma","Nivel"
+      hoja.row(7).insert 0,"Nombre","Cédula", "Horario","Teléfono","Idioma","Nivel"
       (0..5).each{|ind|
         hoja.row(7).set_format(ind,formato)
       }
       historiales.each_with_index{|reg,ind|
-        hoja.row(8 + ind).insert 0, (reg.usuario.nombre_completo), (reg.usuario_ci), (reg.usuario.correo),
+        hoja.row(8 + ind).insert 0, (reg.usuario.nombre_completo), (reg.usuario_ci), (reg.seccion.horario),
         (reg.usuario.telefono_movil) ,(reg.tipo_curso.descripcion), (reg.tipo_nivel.descripcion)
         (0..5).each{|i|
           hoja.row(8+ind).set_format(i,formato2)

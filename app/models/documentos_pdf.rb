@@ -1560,7 +1560,7 @@ def self.generar_listado_convenios(convenio_id, periodo_id,guardar=false)
       tab.font_size = 8
       tab.row_gap = 3
       tab.minimum_space = 0
-      tab.column_order = ["nombre","cedula", "correo","telefono","idioma","nivel"]
+      tab.column_order = ["nombre","cedula", "horario","telefono","idioma","nivel"]
       tab.columns["nivel"] = PDF::SimpleTable::Column.new("nro") { |col|
         col.width = 70
         col.heading = "Nivel"
@@ -1578,10 +1578,10 @@ def self.generar_listado_convenios(convenio_id, periodo_id,guardar=false)
         col.heading = to_utf16 "CÉDULA"
         col.heading.justification= :center
       }
-      tab.columns["correo"] = PDF::SimpleTable::Column.new("correo") { |col|
+      tab.columns["horario"] = PDF::SimpleTable::Column.new("horario") { |col|
         col.width = 140
         col.justification = :left
-        col.heading = "CORREO"
+        col.heading = "HORARIO"
         col.heading.justification= :center
       }
       tab.columns["telefono"] = PDF::SimpleTable::Column.new("telefono") { |col|
@@ -1603,7 +1603,7 @@ def self.generar_listado_convenios(convenio_id, periodo_id,guardar=false)
         data << {       
           "nombre" => to_utf16(reg.usuario.nombre_completo),
           "cedula" => to_utf16(reg.usuario_ci),
-          "correo" => to_utf16(reg.usuario.correo),
+          "horario" => to_utf16(reg.seccion.horario),
           "telefono" => to_utf16(reg.usuario.telefono_movil),
           "idioma" => to_utf16(reg.tipo_curso.descripcion),
           "nivel" => to_utf16(reg.tipo_nivel.descripcion)   
