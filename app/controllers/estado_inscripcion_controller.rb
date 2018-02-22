@@ -352,6 +352,14 @@ def eliminar_seccion
   end
   
 
+  def liberar_todo
+    periodo = session[:parametros][:periodo_actual]
+    @total_no_confirmados = HistorialAcademico.where(periodo_id: periodo, tipo_estado_inscripcion_id: "PRE")
+    @total_no_confirmados.each{|h| h.destroy}
+    flash[:mensaje] = "#{@total_no_confirmados.count} cupos liberados."
+    redirect_to :back
+  end
+
   def confirmar_liberar_cupos
     p=params[:parametros]
 		@accion = p[:accion]

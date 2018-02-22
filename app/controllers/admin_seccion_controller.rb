@@ -17,6 +17,7 @@ class AdminSeccionController < ApplicationController
     @filtro3 = nil if @filtro3 == nil || @filtro3.strip.size == 0
    
 		periodo = session[:parametros][:periodo_actual]
+    @total_no_confirmados = HistorialAcademico.where(periodo_id: periodo, tipo_estado_inscripcion_id: "PRE").count
 
     @subtitulo_pagina = "Período #{periodo}"
 

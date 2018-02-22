@@ -17,6 +17,8 @@ Filtro por Horario:
 %div{:style=>"color:red"}
     
   Secciones Cerradas
+%br
+%p= link_to_if (@total_no_confirmados > 0), "liberar todos los cupos del periodo #{session[:parametros][:periodo_actual]} -(#{@total_no_confirmados})", {action: 'liberar_todo', controller: 'estado_inscripcion'}
 %table.tablesorter.tablefilter.likert
   %thead
     %tr
