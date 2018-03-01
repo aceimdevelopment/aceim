@@ -22,7 +22,7 @@ class InscripcionController < ApplicationController
       :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?} 
 
     secciones = secciones.delete_if{|s| s.horario == 'Sábado (08:30AM - 12:45PM)'} if horario_inscripcion_activo.eql? 'SEMANAL'
-    secciones = secciones.delete_if{|s| s.horario == 'Sábado (08:30AM - 12:45PM)'} if horario_inscripcion_activo.eql? 'SABATINOS'
+    secciones = secciones.delete_if{|s| s.horario != 'Sábado (08:30AM - 12:45PM)'} if horario_inscripcion_activo.eql? 'SABATINOS'
     
     if @inscripcion.nil? or (!@inscripcion.abierta?) or secciones.count < 1
       reset_session
