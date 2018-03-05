@@ -55,6 +55,8 @@
           Instructor
         -if session[:administrador].tipo_rol_id < 3
           %th{:width => "5%"}
+            Calificada?
+          %th{:width => "5%"}
             Opcion
 
     %tbody
@@ -105,7 +107,8 @@
               =link_to_modal instructor_id,{:action => "cambiar_instructor",:title =>"Modificar Instructor",:width=>700, :params => {:seccion => s, :controlador => controller_name, :accion => action_name, :indice => i, :f => @filtro, :f2 => @filtro2, :f3 => @filtro3}}
             -else
               =instructor_id
-          -if session[:administrador].tipo_rol_id < 3 
+          -if session[:administrador].tipo_rol_id < 3
+            %td= 'Calificada' if s.esta_calificada 
             %td{:style => "#{estilo}"}
               =link_to_modal "Eliminar", {:action => "confirmar_eliminar",:title =>"Eliminar Sección",:width=>700, :params => {:seccion => s, :controlador => controller_name, :accion => action_name}}
 
