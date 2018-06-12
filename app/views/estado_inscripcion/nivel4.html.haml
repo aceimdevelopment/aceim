@@ -15,7 +15,7 @@
   %b
     Instructor:
   -if @historiales.first.seccion.instructor
-    =@historiales.first.seccion.instructor.nombre_completo
+    =@historiales.first.seccion.instructor.nombre_completo+" - "+ @historiales.first.seccion.instructor.usuario.correo
   -else
     NO ASIGNADO
   

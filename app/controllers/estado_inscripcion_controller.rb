@@ -418,6 +418,7 @@ def eliminar_seccion
       @correos = []
       
       secciones.each{|sec|
+        @correos << sec.instructor.usuario.correo if sec.instructor 
         sec.estudiantes_inscritos.each{|ins|
           @correos << ins.usuario.correo
         }
@@ -457,16 +458,23 @@ def eliminar_seccion
       File.open(ruta, "wb") { |f| f.write(adjunto.read)}
     end    
 
-    trabajo = MailJob.enqueue(para,asunto,mensaje,archivo)
-    session[:meta_id] = trabajo.meta_id
+    #trabajo = MailJob.enqueue(para,asunto,mensaje,archivo)
+    #session[:meta_id] = trabajo.meta_id
+
+    AdministradorMailer.enviar_correo_general_masivo(para,asunto,mensaje,adjunto).deliver
+
+
     #borrando archivo
     #File.delete("#{ruta}") if File.exist?("#{ruta}")
-    if params[:correo_para_instructores]
-      redirect_to :action => "ver_estado_envio", :correo_para_instructores => "true"
-    else
-      redirect_to :action => "ver_estado_envio"
-    end
-    return
+
+    # if params[:correo_para_instructores]
+    #   redirect_to :action => "ver_estado_envio", :correo_para_instructores => "true"
+    # else
+    #   redirect_to :action => "ver_estado_envio"
+    # end
+    # return
+
+    redirect_to :back
   end
   
   def ver_estado_envio

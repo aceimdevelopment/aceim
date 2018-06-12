@@ -53,7 +53,17 @@ class AdministradorMailer < ActionMailer::Base
     # end
     mail(:to => para, :subject => asunto)
   end
+
   
+  def enviar_correo_general_masivo(para,asunto,mensaje,adjunto)
+
+    @mensaje = mensaje
+
+    attachments.inline[adjunto] = File.read("#{Rails.root}/attachments/#{adjunto}") if adjunto
+    
+    # mail(:to => 'fundeimucv@gmail.com', :subject => asunto, :bcc => para)
+    mail(:to => 'fundeimucv@gmail.com', :subject => asunto, :bcc => 'aceim.development@gmail.com')
+  end  
 
   # def enviar_correo_general(para,asunto,mensaje,adjunto)
   #   @mensaje = mensaje

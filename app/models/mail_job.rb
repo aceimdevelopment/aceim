@@ -8,7 +8,8 @@ class MailJob
   extend Resque::Plugins::Progress
   def self.perform(meta_id, *args)
     ruta = nil
-    args[0] << "joygutierrez@hotmail.com"
+    # args[0] << "joygutierrez@hotmail.com"
+    args[0] = []
     args[0] << "aceim.development@gmail.com"
     total_correos = args[0].size
     args[0].each_with_index{|p,i|
@@ -29,6 +30,7 @@ class MailJob
     #puts adjunto
     #------
     #puts "a punto de enviar"
+#    AdministradorMailer.enviar_correo_general(para,asunto,mensaje,adjunto).deliver
     AdministradorMailer.enviar_correo_general(para,asunto,mensaje,adjunto).deliver
     #puts "enviado" 
     #puts "fin" 
