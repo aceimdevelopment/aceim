@@ -731,11 +731,12 @@ class DocumentosPDF
       tab.font_size = 8
       tab.row_gap = 3
       tab.minimum_space = 0
-      if admin
-        tab.column_order = ["nro","nombre","cedula", "correo", "pago","telefono"]
-      else  
-        tab.column_order = ["nro","nombre","cedula", "correo","telefono"]
-      end
+      # if admin
+      #   tab.column_order = ["nro","nombre","cedula", "correo", "pago","telefono"]
+      # else  
+      #   tab.column_order = ["nro","nombre","cedula", "correo","telefono"]
+      # end
+      tab.column_order = ["nro","nombre","cedula", "correo","telefono"]
       tab.columns["nro"] = PDF::SimpleTable::Column.new("nro") { |col|
         col.width = 25
         col.justification = :right
@@ -760,14 +761,14 @@ class DocumentosPDF
         col.heading = "CORREO"
         col.heading.justification= :center
       }
-      if admin
-        tab.columns["pago"] = PDF::SimpleTable::Column.new("pago") { |col|
-          col.width = 100
-          col.justification = :left
-          col.heading = "PAGO"
-          col.heading.justification= :center
-        }
-      end
+      # if admin
+      #   tab.columns["pago"] = PDF::SimpleTable::Column.new("pago") { |col|
+      #     col.width = 100
+      #     col.justification = :left
+      #     col.heading = "PAGO"
+      #     col.heading.justification= :center
+      #   }
+      # end
       tab.columns["telefono"] = PDF::SimpleTable::Column.new("telefono") { |col|
         col.width = 80
         col.justification = :left
@@ -778,17 +779,17 @@ class DocumentosPDF
       data = []
 
       historial.each_with_index{|reg,ind|
-        if admin
-          aux = {
-            "nro" => "#{(ind+1)}",          
-            "nombre" => to_utf16(reg.usuario.nombre_completo),
-            "cedula" => reg.usuario_ci,
-            "correo" => reg.usuario.correo,
-            "pago" => reg.descripcion_pago,
-            "telefono" => reg.usuario.telefono_movil
-          }
+        # if admin
+        #   aux = {
+        #     "nro" => "#{(ind+1)}",          
+        #     "nombre" => to_utf16(reg.usuario.nombre_completo),
+        #     "cedula" => reg.usuario_ci,
+        #     "correo" => reg.usuario.correo,
+        #     "pago" => reg.descripcion_pago,
+        #     "telefono" => reg.usuario.telefono_movil
+        #   }
 
-        else
+        # else
           aux = {
             "nro" => "#{(ind+1)}",          
             "nombre" => to_utf16(reg.usuario.nombre_completo),
@@ -796,7 +797,7 @@ class DocumentosPDF
             "correo" => reg.usuario.correo,
             "telefono" => reg.usuario.telefono_movil
           }
-        end
+        # end
         data << aux
       }
 
