@@ -9,7 +9,7 @@ codigos_barra/
 *.xls
 .DS_Store
 app/assets/images/examenes/
-Gemfile
+# Gemfile
 Gemfile.lock
 
 .ruby-version
