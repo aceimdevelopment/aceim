@@ -10,6 +10,6 @@ codigos_barra/
 .DS_Store
 app/assets/images/examenes/
 # Gemfile
-Gemfile.lock
+# Gemfile.lock
 
 .ruby-version
