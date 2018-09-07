@@ -77,7 +77,7 @@ class EstudianteNivelacion < ActiveRecord::Base
     examen = ParametroGeneral.costo_examen.to_f
     nuevos = ParametroGeneral.costo_nuevos.to_f
     total = examen + nuevos
-    return "Prueba: #{sprintf("%.0f",examen)}Bs. + Nivel: #{sprintf("%.0f",nuevos)}Bs. = Monto Total: #{sprintf("%.0f",total)}Bs."
+    return "Prueba: #{sprintf("%.0f",examen)}Bs.S + Nivel: #{sprintf("%.0f",nuevos)}Bs.S = Monto Total: #{sprintf("%.0f",total)}Bs.S"
   end
 
 

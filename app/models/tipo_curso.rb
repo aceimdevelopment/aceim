@@ -43,11 +43,11 @@ class TipoCurso < ActiveRecord::Base
 
   def arancel_bs
     if tipo_categoria_i.eql? "NI"
-      arancel = "#{ParametroGeneral.costo_ninos_i}Bs." 
+      arancel = "#{ParametroGeneral.costo_ninos_i}Bs.S" 
     elsif tipo_inscripcion_id.eql? 'NU'
-      arancel = "#{ParametroGeneral.costo_nuevos_i}Bs." 
+      arancel = "#{ParametroGeneral.costo_nuevos_i}Bs.S" 
     else
-      arancel = "#{ParametroGeneral.costo_examen_i}Bs."
+      arancel = "#{ParametroGeneral.costo_examen_i}Bs.S"
     end 
     return arancel
   end
