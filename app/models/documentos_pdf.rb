@@ -1957,7 +1957,7 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
     monto = historial_academico.cuenta_monto
     # monto_soberano = (monto.is_a? Float) ? "(#{monto.to_i/1000} Bs. S)" : "" 
 
-    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{monto} Bs.S")}
+    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{monto}")}
 
     datos << { "nombre" => to_utf16("<b>Transacción #:</b>"), "valor" => to_utf16("_________________________ Tipo: T ___  D ___ P ___") }
     tabla.data.replace datos  
