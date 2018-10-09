@@ -8,8 +8,8 @@
   -@idiomas.each do |idioma|
     %div{:id => idioma.id}
       - tipo_curso = idioma.tipo_curso.where(:tipo_categoria_id => 'AD').limit(1).first
-      - @estudiante_nivelaciones = tipo_curso.estudiantes_nivelacion.where(:periodo_id => session[:parametros][:periodo_actual]).sort_by{|x| x.usuario.descripcion}
-      -if @estudiante_nivelaciones.count > 1
+      - @estudiante_nivelaciones = tipo_curso.estudiantes_nivelacion.where(:periodo_id => @periodo_id).sort_by{|x| x.usuario.descripcion}
+      -if @estudiante_nivelaciones.count > 0
         %table 
           %tbody
             %td= button_to "Confirmados #{idioma.descripcion} (PDF)", {:action => "listado_confirmados", :periodo_id => @periodo_id, :idioma_id => idioma.id}, :class => 'ui-button ui-widget ui-state-default ui-corner-all'
