@@ -32,7 +32,7 @@ class ParametrosGeneralesController < ApplicationController
 
     @periodo_anterior = ParametroGeneral.find("PERIODO_ANTERIOR").valor
 
-    @periodo_anterior_sabatino = ParametroGeneral.find("periodo_anterior_sabatino").valor
+    @periodo_anterior_sabatino = ParametroGeneral.find("PERIODO_ANTERIOR_SABATINO").valor
 
     @periodo_calificacion = ParametroGeneral.find("PERIODO_CALIFICACION").valor
 
@@ -136,11 +136,12 @@ class ParametrosGeneralesController < ApplicationController
       periodo_actual = ParametroGeneral.find("PERIODO_ACTUAL")
       periodo_actual.valor = params[:periodo][:id] 
       if periodo_actual.save
+        periodo_actual = ParametroGeneral.periodo_actual 
         periodo_anterior = ParametroGeneral.find("PERIODO_ANTERIOR")
         periodo_anterior.valor = periodo_actual.periodo_anterior.id
         periodo_anterior.save
         session[:parametros][:periodo_actual] = params[:periodo][:id]
-        flash[:mensaje] = "Periodo General por defecto cambiado con éxito"
+        flash[:mensaje] = "Periodo Actual Semanal cambiado con éxito"
       end
     
     elsif params[:metodo_invocador] == "cambiar_periodo_calificacion"     
@@ -154,6 +155,7 @@ class ParametrosGeneralesController < ApplicationController
       periodo_actual_sabatino.valor = params[:periodo][:id] 
 
       if periodo_actual_sabatino.save
+        periodo_actual_sabatino = ParametroGeneral.periodo_actual_sabatino 
         periodo_anterior_sabatino = ParametroGeneral.find("PERIODO_ANTERIOR_SABATINO")
         periodo_anterior_sabatino.valor = periodo_actual_sabatino.periodo_anterior.id
         periodo_anterior_sabatino.save
