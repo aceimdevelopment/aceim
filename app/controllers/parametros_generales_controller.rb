@@ -227,6 +227,22 @@ class ParametrosGeneralesController < ApplicationController
     render :layout => false
   end
 
+  def cambiar_horario_modal
+    @horario = TipoHorario.find params[:id]
+    render :layout => false
+  end
+
+
+  def cambiar_descripcion_horario
+    valor = params[:descripcion]
+    @horario = TipoHorario.find params[:id]
+    @horario.descripcion = params[:descripcion]
+    flash[:mensaje] = @horario.save ? "Horario actualizada" : "No se pudo acualizar el horario" 
+    redirect_to :action => 'index' 
+  end
+
+
+
   def cambiar_capacidad_curso
     valor = params[:capacidad]
     capacidad = ParametroGeneral.find("CAPACIDAD_CURSO")

@@ -158,7 +158,31 @@
       %td
         =@capacidad_cursos
       %td
-        =link_to_modal "Cambiar",{:action => "cambiar_capacidad_curso_modal",:title =>"Cambiar Capacidad Cursos",:width=>300}
+        =link_to_modal "Cambiar", {:action => "cambiar_capacidad_curso_modal", :title => "Cambiar Capacidad Cursos", :width=>300}
+
+%br/
+%br/
+
+
+%h3 Descripción de Horario
+%table.tablesorter.tablefilter.likert
+  %thead
+    %tr
+      %th{:width => "40%"}
+        Parámetro
+      %th{:width => "40%"}
+        Valor
+      %th{:width => "20%"}
+        Acción
+  %tbody
+    - TipoHorario.each do |h| 
+      %tr
+        %td
+          h.id
+        %td
+          = h.descripcion
+        %td
+          = link_to_modal_v2 "Cambiar", {action: 'cambiar_horario_modal', id: h.id, :title =>"Cambiar Horario",:width=>300}
 
 %br/
 %br/
