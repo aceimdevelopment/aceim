@@ -12,8 +12,21 @@ class Periodo < ActiveRecord::Base
 		id.split("-").first
 	end
 
+	def periodo_anterior
+		pes = Periodo.lista_ordenada
+		indice = pes.index self
+		indice += 1
+
+		if (indice >= pes.size)
+			return nil
+		else
+			return pes[indice]
+		end
+
+	end
+
 	def self.lista_ordenada
-		Periodo.all.collect{|x| x}.sort_by{|x| "#{x.ano} #{x.id}"}.reverse()
+		Periodo.order([:ano, :id]).reverse
 	end
 
 	def ordenado

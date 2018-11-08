@@ -39,7 +39,7 @@ Filtrar Contenido:
     -@historiales.each_with_index do |h,i|
       %tr
         %td= i+1
-        %td= h.usuario.nombre_completo
+        %td= link_to h.usuario.nombre_completo, controller: "admin_estudiante", action: "validar", "usuario_ci" => h.usuario.ci
         %td= h.usuario.ci
         %td= h.usuario.correo
         %td= h.usuario.telefono_movil

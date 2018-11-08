@@ -32,6 +32,8 @@ class ParametrosGeneralesController < ApplicationController
 
     @periodo_anterior = ParametroGeneral.find("PERIODO_ANTERIOR").valor
 
+    @periodo_anterior_sabatino = ParametroGeneral.find("periodo_anterior_sabatino").valor
+
     @periodo_calificacion = ParametroGeneral.find("PERIODO_CALIFICACION").valor
 
     @periodo_inscripcion = ParametroGeneral.find("PERIODO_INSCRIPCION").valor
@@ -133,24 +135,13 @@ class ParametrosGeneralesController < ApplicationController
     
       periodo_actual = ParametroGeneral.find("PERIODO_ACTUAL")
       periodo_actual.valor = params[:periodo][:id] 
-      periodo_actual.save
-
-      letra , ano = params[:periodo][:id].split "-"
-
-      if letra.eql? "A"
-          ano = ano.to_i - 1
-          p = Periodo.where("ano = ?", ano).collect{|x| x}.sort_by{|x| "#{x.ano} #{x.id}"}.reverse().first
-          nueva_letra = p.letra
-
-      else
-        nueva_letra = (letra.ord - 1).chr
+      if periodo_actual.save
+        periodo_anterior = ParametroGeneral.find("PERIODO_ANTERIOR")
+        periodo_anterior.valor = periodo_actual.periodo_anterior.id
+        periodo_anterior.save
+        session[:parametros][:periodo_actual] = params[:periodo][:id]
+        flash[:mensaje] = "Periodo General por defecto cambiado con éxito"
       end
-
-      periodo_anterior = ParametroGeneral.find("PERIODO_ANTERIOR")
-      periodo_anterior.valor = nueva_letra + "-" + ano.to_s
-      periodo_anterior.save
-      session[:parametros][:periodo_actual] = params[:periodo][:id]
-      flash[:mensaje] = "Periodo General por defecto cambiado con éxito"
     
     elsif params[:metodo_invocador] == "cambiar_periodo_calificacion"     
       periodo_calificacion = ParametroGeneral.find("PERIODO_CALIFICACION") 
@@ -159,9 +150,18 @@ class ParametrosGeneralesController < ApplicationController
       flash[:mensaje] = "Periodo de Calificación cambiado con éxito"
 
     elsif params[:metodo_invocador].eql? "cambiar_periodo_sabatino"
-      periodo_actual = ParametroGeneral.find("PERIODO_ACTUAL_SABATINO")
-      periodo_actual.valor = params[:periodo][:id] 
-      periodo_actual.save
+      periodo_actual_sabatino = ParametroGeneral.find("PERIODO_ACTUAL_SABATINO")
+      periodo_actual_sabatino.valor = params[:periodo][:id] 
+
+      if periodo_actual_sabatino.save
+        periodo_anterior_sabatino = ParametroGeneral.find("PERIODO_ANTERIOR_SABATINO")
+        periodo_anterior_sabatino.valor = periodo_actual_sabatino.periodo_anterior.id
+        periodo_anterior_sabatino.save
+        session[:parametros][:periodo_actual] = params[:periodo][:id]
+        flash[:mensaje] = "Periodo General por defecto cambiado con éxito"
+      end
+
+
       flash[:mensaje] = "Periodo Sabatino cambiado con éxito"
     else
       periodo_inscripcion = ParametroGeneral.find("PERIODO_INSCRIPCION")

@@ -7,6 +7,16 @@ class Usuario < ActiveRecord::Base
   #autogenerado por db2models
   set_primary_key :ci
   #autogenerado por db2models
+  has_one :estudiante,
+    :primary_key => :usuario_ci,  
+    :foreign_key => 'usuario_ci'
+
+  has_one :administrador,
+    :foreign_key => ['ci']
+
+  has_one :instructor,
+    :foreign_key => ['ci']
+
   belongs_to :tipo_sexo,
     :class_name => 'TipoSexo',
     :foreign_key => ['tipo_sexo_id']

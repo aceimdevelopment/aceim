@@ -121,7 +121,9 @@ end
   end
   
   def validar
-    ci = params[:usuario][:ci]    
+
+    ci = params[:usuario_ci]
+    ci = params[:usuario][:ci] if ci.nil?
     if session[:estudiante]=Estudiante.where(:usuario_ci=>ci).limit(1).first
       session[:estudiante_ci] = ci
       redirect_to :action=> "opciones_menu"

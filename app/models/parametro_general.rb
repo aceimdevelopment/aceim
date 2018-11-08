@@ -54,6 +54,11 @@ class ParametroGeneral < ActiveRecord::Base
     Periodo.first(:conditions => ["id = ?" , ide.valor])
   end
   
+  def self.periodo_anterior_sabatino
+    ide = ParametroGeneral.first(:conditions=>["id = ?", "PERIODO_ANTERIOR_SABATINO"])
+    Periodo.first(:conditions => ["id = ?" , ide.valor])
+  end
+  
   def self.periodo_calificacion
     ide = ParametroGeneral.first(:conditions=>["id = ?", "PERIODO_CALIFICACION"])
     Periodo.first(:conditions => ["id = ?" , ide.valor])

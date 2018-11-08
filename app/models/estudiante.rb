@@ -3,10 +3,11 @@ class Estudiante < ActiveRecord::Base
 
   #autogenerado por db2models
   set_primary_key :usuario_ci
+  attr_accessible :usuario_ci, :tipo_nivel_academico_id
+
   #autogenerado por db2models
   belongs_to :usuario,
-    :class_name => 'Usuario',
-    :foreign_key => ['usuario_ci']
+    foreign_key: 'usuario_ci', autosave: true
 
   #autogenerado por db2models
   belongs_to :tipo_nivel_academico,
