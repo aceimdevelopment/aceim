@@ -215,22 +215,19 @@
       %td
         =link_to_modal "Cambiar",{:action => "cambiar_periodo_modal",:title =>"Cambiar Período Actual Semanal",:width=>300,:params => {:invocador => "cambiar_periodo_general"}}
 
-
+    %tr
+      %td
+        Periodo Anterior Sabatino
+      %td
+        =@periodo_anterior_sabatino
+      %td
+        ="-----"
 
     %tr
       %td
         Periodo Anterior Semanal
       %td
         =@periodo_anterior
-      %td
-        ="-----"
-
-
-    %tr
-      %td
-        Periodo Anterior Sabatino
-      %td
-        =@periodo_anterior_sabatino
       %td
         ="-----"
 
