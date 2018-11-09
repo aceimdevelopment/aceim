@@ -1,9 +1,11 @@
-=form_tag url_for(:action => "cambiar_descripcion_horario", :controller => "parametros_generales") do
-  %h4 Ingrese el número de la Capacidad de los Cursos
-  = text_field_tag :descripcion, @horario.descripcion
-  = hidden_field_tag :id, @horario.id
-
-  %br
-  %br
-  =submit_tag :Aceptar
-  =button_to_function "Cancelar","aceim.cerrar_modal();"
+= form_for(@tipo_hora,:url=>{:action => 'cambiar_horario'}) do |c|
+	= hidden_field_tag :id, @horario.id
+	Entrada:
+	= c.time_select :hora_entrada, {minute_step: 15, ampm: true}
+	%br
+	Salida:
+	= c.time_select :hora_salida, {minute_step: 15, ampm: true}
+	%br
+	%br
+	= submit_tag :Aceptar
+	=button_to_function "Cancelar","aceim.cerrar_modal();"

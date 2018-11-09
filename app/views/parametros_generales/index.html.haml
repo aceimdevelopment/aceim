@@ -175,14 +175,14 @@
       %th{:width => "20%"}
         Acción
   %tbody
-    - BloqueHorario.each do |h| 
+    - BloqueHorario.all.each do |h| 
       %tr
         %td
-          h.id
+          = h.id
         %td
           = h.descripcion
         %td
-          = link_to_modal_v2 "Cambiar", {action: 'cambiar_horario_modal', id: h.id, :title =>"Cambiar Horario",:width=>300}
+          = link_to_modal_v2 "Cambiar", {action: 'cambiar_horario_modal',id: h.id, title: "Cambiar Horario",width: 300}
 
 %br/
 %br/

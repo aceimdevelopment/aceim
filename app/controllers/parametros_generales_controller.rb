@@ -228,16 +228,31 @@ class ParametrosGeneralesController < ApplicationController
   end
 
   def cambiar_horario_modal
-    @horario = TipoHorario.find params[:id]
+    @horario = BloqueHorario.find params[:id]
+    @tipo_hora = @horario.tipo_hora
+    @entrada = @horario.tipo_hora.hora_entrada
+    @salida = @horario.tipo_hora.hora_salida
     render :layout => false
   end
 
 
-  def cambiar_descripcion_horario
-    valor = params[:descripcion]
-    @horario = TipoHorario.find params[:id]
-    @horario.descripcion = params[:descripcion]
-    flash[:mensaje] = @horario.save ? "Horario actualizada" : "No se pudo acualizar el horario" 
+  def cambiar_horario
+    horario = BloqueHorario.find params[:id]
+    tipo_hora = horario.tipo_hora
+    tipo_hora.hora_entrada = params[:tipo_hora][:hora_entrada]
+    tipo_hora.hora_salida = params[:tipo_hora][:hora_salida]
+    msg = ""
+    if tipo_hora.update_attributes(params[:tipo_hora])
+      msg += "Hora guardada"
+    else
+      msg += "No se pudo guardar la hora"
+    end
+    aux = (horario.tipo_dia_id1.eql? horario.tipo_dia_id2) ? "#{horario.tipo_dia_id1}" : "#{horario.tipo_dia_id1} - #{horario.tipo_dia_id2}"
+    en = tipo_hora.hora_entrada.strftime("%I:%M %p")
+    sa = tipo_hora.hora_salida.strftime("%I:%M %p")
+    aux += " (#{en} - #{sa})"
+    horario.descripcion = aux
+    flash[:mensaje] = horario.save ? "Horario actualizado. #{msg}" : "No se pudo acualizar el horario" 
     redirect_to :action => 'index' 
   end
 
