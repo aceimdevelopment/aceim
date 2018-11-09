@@ -247,9 +247,9 @@ class ParametrosGeneralesController < ApplicationController
     else
       msg += "No se pudo guardar la hora"
     end
-    aux = (horario.tipo_dia_id1.eql? horario.tipo_dia_id2) ? "#{horario.tipo_dia_id1}" : "#{horario.tipo_dia_id1} - #{horario.tipo_dia_id2}"
-    en = tipo_hora.hora_entrada.strftime("%I:%M %p")
-    sa = tipo_hora.hora_salida.strftime("%I:%M %p")
+    aux = (horario.tipo_dia_id1.eql? horario.tipo_dia_id2) ? "#{horario.tipo_dia_id1}".capitalize : "#{horario.tipo_dia_id1.to_s.capitalize} - #{horario.tipo_dia_id2.to_s.capitalize}"
+    en = tipo_hora.hora_entrada.strftime("%I:%M %p").downcase
+    sa = tipo_hora.hora_salida.strftime("%I:%M %p").downcase
     aux += " (#{en} - #{sa})"
     horario.descripcion = aux
     flash[:mensaje] = horario.save ? "Horario actualizado. #{msg}" : "No se pudo acualizar el horario" 
