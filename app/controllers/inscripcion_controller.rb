@@ -110,8 +110,13 @@ class InscripcionController < ApplicationController
 
     horario_inscripcion_activo = ParametroGeneral.horario_inscripcion_activo
 
-    secciones = secciones.delete_if{|s| s.horario == 'Sábado (08:30AM - 12:45PM)'} if (horario_inscripcion_activo.eql? 'SEMANAL')
-    secciones = secciones.delete_if{|s| s.horario != 'Sábado (08:30AM - 12:45PM)'} if (horario_inscripcion_activo.eql? 'SABATINOS')
+    # secciones = secciones.delete_if{|s| s.horario == 'Sábado (08:30AM - 12:45PM)'} if (horario_inscripcion_activo.eql? 'SEMANAL')
+    # secciones = secciones.delete_if{|s| s.horario != 'Sábado (08:30AM - 12:45PM)'} if (horario_inscripcion_activo.eql? 'SABATINOS')
+
+
+    secciones = secciones.delete_if{|s| s.bloque_horario_id == 'H5'} if (horario_inscripcion_activo.eql? 'SEMANAL')
+    secciones = secciones.delete_if{|s| s.bloque_horario_id != 'H5'} if (horario_inscripcion_activo.eql? 'SABATINOS')
+
 
     # Se buscan los horarios que tienen las secciones selccionadas
     @horarios = secciones.collect{|s| s.horario}.uniq.sort
@@ -151,6 +156,21 @@ class InscripcionController < ApplicationController
     
     # se busca el proximo historial correspondiente al Estudiante Curso en cuestion
     @historial = ec.proximo_historial
+
+    if @inscripcion.nuevos? and not @historial.tipo_nivel_id.eql? 'BI'
+      flash[:mensaje] = "Error: Intenta inscribirse en un horario inapropiado para su nivel. La inscripción es de Nuevos Ingresos y su próximo nivel es: #{@historial.tipo_nivel.descripcion}. Consulte los horarios en la cartelera"
+      info_bitacora "¡Bandido! Intentó inscribirse en un tipo de inscripcion que no le corresponde."
+      redirect_to :controller => "inicio"
+      return
+    end
+
+    if @inscripcion.regulares? and (@historial.tipo_nivel_id.eql? 'BI' or ec.repitiente?)
+      flash[:mensaje] = "Error: Intenta inscribirse en un horario inapropiado. Consulte los horarios en la cartelera"
+      info_bitacora "¡Bandido! Intentó inscribirse en un tipo de inscripcion que no le corresponde."
+      redirect_to :controller => "inicio"
+      return
+    end
+
     # Se buscan la seccion para este usuario y en ese horario
     seccion = @historial.buscar_seccion(params[:usuario][:horario]) unless seccion
     unless seccion 
@@ -397,7 +417,23 @@ class InscripcionController < ApplicationController
         info_bitacora "Usuario ya estaba inscrito en este periodo"
         redirect_to :action => "principal", :controller => "principal"
         return
-      end      
+      end
+
+      # Validacio de tipo de inscripcion inapropiada
+      if @inscripcion.nuevos? and not @historial.tipo_nivel_id.eql? 'BI'
+        flash[:mensaje] = "Error: Intenta inscribirse en un horario inapropiado para su nivel. La inscripción es de Nuevos Ingresos y su próximo nivel es: #{@historial.tipo_nivel.descripcion}. Consulte los horarios en la cartelera"
+        info_bitacora "¡Bandido! Intentó inscribirse en un tipo de inscripcion que no le corresponde."
+        redirect_to :controller => "inicio"
+        return
+      end
+
+      if @inscripcion.regulares? and (@historial.tipo_nivel_id.eql? 'BI' or ec.repitiente?)
+        flash[:mensaje] = "Error: Intenta inscribirse en un horario inapropiado. Consulte los horarios en la cartelera"
+        info_bitacora "¡Bandido! Intentó inscribirse en un tipo de inscripcion que no le corresponde."
+        redirect_to :controller => "inicio"
+        return
+      end
+
 
       # Busco la seccion 
       seccion = @historial.buscar_seccion(params[:usuario][:horario]) # unless seccion

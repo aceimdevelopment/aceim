@@ -41,6 +41,13 @@ class EstudianteCurso < ActiveRecord::Base
     EstudianteNivelacion.where(:usuario_ci => usuario_ci, :idioma_id => idioma_id, :tipo_categoria_id => tipo_categoria_id)
   end
 
+  def repitiente?
+    ult = ultimo_historial
+    prox =  proximo_historial
+    ult and prox and ult.tipo_nivel_id.eql? prox.tipo_nivel_id
+  end
+
+
   def ultimo_historial
     HistorialAcademico.where(
         :usuario_ci => usuario_ci,
