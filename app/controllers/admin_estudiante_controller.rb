@@ -435,7 +435,7 @@ end
     if @usuario.save
       info_bitacora("Contraseña reseteada, estudiante: #{@usuario.ci}")
       #AdministradorMailer.aviso_general("#{@usuario.correo}","Su Contraseña fue Reseteada II", "su contraseña fue reseteada, ahora es:#{@usuario.contrasena}. Si ud. no solicitó este servicio dirijase a nuestras oficinas a fin de aclarar la situación").deliver
-      flash[:mensaje] = "Contraseña reseteada corréctamente, un correo electrónico con la información fue enviado a la cuenta de correo del estudiante"
+      flash[:mensaje] = "Contraseña reseteada corréctamente"
       redirect_to  :action=>"opciones_menu"
     else
       flash[:mensaje] = "no se pudo resetear la contraseña"
