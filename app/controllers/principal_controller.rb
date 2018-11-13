@@ -41,6 +41,12 @@ class PrincipalController < ApplicationController
       :idioma_id => session[:tipo_curso].idioma_id,
       :tipo_categoria_id => session[:tipo_curso].tipo_categoria_id).limit(1).first
 
+    if @curso_abierto_regular
+      @ec = EstudianteCurso.find(session[:usuario], 
+        @curso_abierto_regular.tipo_curso.idioma_id, 
+        @curso_abierto_regular.tipo_curso.tipo_categoria_id)
+
+
     @curso_abierto_cambio = Inscripcion.where(:tipo_inscripcion_id => 'CA', 
       :tipo_estado_inscripcion_curso_id => 'AB', 
       :idioma_id => session[:tipo_curso].idioma_id,

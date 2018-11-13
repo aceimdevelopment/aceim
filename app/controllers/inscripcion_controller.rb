@@ -277,7 +277,7 @@ class InscripcionController < ApplicationController
 
     @titulo_pagina = "Preinscripción: Paso 3 de 3 - Normativa e Impresión de Planilla"
 
-    @texto = "<ul><li>La inscripción es válida UNICAMENTE para el período indicado. NO SE CONGELAN CUPOS POR NINGÚN MOTIVO.</li><li>La asistencia a clases es obligatoria: Cursos <b>LUN-MIE</b>: Con 3 inasistencias se pierde el curso. Cursos <b>MAR-JUE</b>: Con 3 inasistencias se pierde el curso. Cursos <b>SÁBADOS</b>: Con 2 inasistencias se pierde el curso.</li><li>La nota mínima aprobatoria es de 15 puntos. El cupo mínimo es de 15 participantes.</li><li>NO SE PERMITEN CAMBIOS DE SECCIÓN.</li><li>El horario, sección y aula se reserva hasta la fecha indicada.</li><li>Pago únicamente DEPOSITOS en EFECTIVO (NO CHEQUES, NI TRANSFERENCIAS).</li>"
+    @texto = "<ul><li>La inscripción es válida UNICAMENTE para el período indicado. NO SE CONGELAN CUPOS POR NINGÚN MOTIVO.</li><li>La asistencia a clases es obligatoria: Cursos <b>LUN-MIE</b>: Con 3 inasistencias se pierde el curso. Cursos <b>MAR-JUE</b>: Con 3 inasistencias se pierde el curso. Cursos <b>SÁBADOS</b>: Con 2 inasistencias se pierde el curso.</li><li>La nota mínima aprobatoria es de 15 puntos. El cupo mínimo es de 15 participantes.</li><li>NO SE PERMITEN CAMBIOS DE SECCIÓN.</li><li>El horario, sección y aula se reserva hasta la fecha indicada.</li><li>Pago unicamente depósito en efectivo o transferencia del mismo banco.</li>"
 
     @inscripcion = Inscripcion.find(session[:inscripcion_id])
 
