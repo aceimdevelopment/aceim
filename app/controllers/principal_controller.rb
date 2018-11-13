@@ -45,7 +45,7 @@ class PrincipalController < ApplicationController
       @ec = EstudianteCurso.find(session[:usuario], 
         @curso_abierto_regular.tipo_curso.idioma_id, 
         @curso_abierto_regular.tipo_curso.tipo_categoria_id)
-
+    end
 
     @curso_abierto_cambio = Inscripcion.where(:tipo_inscripcion_id => 'CA', 
       :tipo_estado_inscripcion_curso_id => 'AB', 
