@@ -33,6 +33,17 @@ class Seccion < ActiveRecord::Base
   :foreign_key => ['periodo_id','idioma_id','tipo_categoria_id','tipo_nivel_id', 'seccion_numero']
   accepts_nested_attributes_for :horario_seccion2
 
+  def descripcion_instructor_con_correo
+    if instructor and instructor.usuario
+      instructor.usuario.descripcion_con_correo
+    else
+      'NO ASIGNADO'
+    end
+  end
+
+  def historiales
+    historial_academico
+  end
 
   def horario_seccion
     HorarioSeccion.where(:periodo_id=>periodo_id,:idioma_id=>idioma_id,:tipo_categoria_id=>tipo_categoria_id,:tipo_nivel_id=>tipo_nivel_id,:seccion_numero=>seccion_numero)

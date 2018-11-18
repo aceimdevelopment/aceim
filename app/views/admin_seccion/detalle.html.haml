@@ -1,0 +1,45 @@
+
+.titulo
+  %b
+    Curso: 
+  ="#{@seccion.descripcion_con_periodo.capitalize}" 
+  %br
+  %b
+    Aula:
+  =@seccion.aula
+  %br
+  %b
+    Horario:
+  =@seccion.horario
+  %br
+  %b
+    Instructor:
+  = @seccion.descripcion_instructor_con_correo
+- if @superadmin 
+  =link_to "Generar PDF", action: "ver_pdf_estudiantes", seccion: params[:seccion], admin: @admin 
+
+%table.tablesorter.tablefilter.likert
+  %thead
+    %tr
+      %th #
+      %th Nombres
+      %th Cédula
+      %th Correo Electrónico
+      %th Teléfono Móvil
+      -if @seccion.esta_calificada
+        %th Calificación
+  %tbody
+    -@historiales.each_with_index do |h,i|
+      %tr
+        %td= i+1
+        %td= h.usuario.nombre_completo
+        %td= h.usuario.ci
+        %td= h.usuario.correo
+        %td= h.usuario.telefono_movil
+        -if @seccion.esta_calificada
+          %td 
+            -nota = HistorialAcademico::NOTAS[h.nota_final+2]
+            -if nota == -1
+              ="PI"
+            -else
+              =HistorialAcademico.colocar_nota(nota)

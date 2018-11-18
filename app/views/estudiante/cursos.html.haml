@@ -4,27 +4,18 @@
 %table.tablesorter
   %thead
     %tr
-      %th
-        Nivel
-      %th
-        Horario
-      %th
-        Aula
-      %th
-        Periodo
-      %th
-        Calificación
+      %th Nivel
+      %th Horario
+      %th Aula
+      %th Periodo
+      %th Calificación
   %tbody
     -@historial.each do |h|
       %tr
-        %td
-          =h.tipo_nivel.descripcion
-        %td
-          =h.seccion.horario
-        %td
-          =h.seccion.aula_corta if h.seccion
-        %td
-          =h.periodo_id
+        %td= h.tipo_nivel.descripcion
+        %td= h.seccion.horario
+        %td= h.seccion.aula_corta if h.seccion
+        %td= h.periodo_id
         %td
           -if h.nota_final == -2
             SIN CALIFICAR

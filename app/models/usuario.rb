@@ -63,8 +63,12 @@ class Usuario < ActiveRecord::Base
     edad = Time.now.year - fecha_nacimiento.year
     edad -= 1 if Date.today < fecha_nacimiento + edad.years 
     edad
-  end     
+  end    
   
+  def descripcion_con_correo
+    "#{nombre_completo} - #{correo}"
+  end
+
   def nombre_completo
     "#{apellidos} #{nombres}"
   end 
