@@ -23,7 +23,7 @@
           = text_field :historial, :numero_deposito, :autofocus => true, :required => true 
           = javascript_tag "$('#historial_numero_deposito').focus();"
         %td= collection_select(:historial, :tipo_transaccion_id, TipoTransaccion.all, :id, :descripcion, {prompt: "Seleccione"}, {required: true})
-        %td= collection_select(:historial, :cuenta_bancaria_id, CuentaBancaria.all, :id, :id, {prompt: "Seleccione"}, {required: true})
+        %td= collection_select(:historial, :cuenta_bancaria_id, CuentaBancaria.where(id: 'FUNDEIM'), :id, :id, {prompt: "Seleccione"}, {required: true})
 
   %br/
   %br/
