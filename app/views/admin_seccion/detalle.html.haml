@@ -2,21 +2,17 @@
 .titulo
   %b
     Curso: 
-  ="#{@seccion.descripcion_con_periodo.capitalize}" 
+  ="#{@seccion.descripcion_con_periodo}" 
   %br
   %b
     Aula:
   =@seccion.aula
   %br
   %b
-    Horario:
-  =@seccion.horario
-  %br
-  %b
     Instructor:
-  = @seccion.descripcion_instructor_con_correo
-- if @superadmin 
-  =link_to "Generar PDF", action: "ver_pdf_estudiantes", seccion: params[:seccion], admin: @admin 
+  = @seccion.descripcion_instructor_con_datos_contacto
+- if true 
+  =link_to "Generar PDF", action: "ver_pdf_estudiantes", controller: 'estado_inscripcion', seccion: @seccion, admin: @admin 
 
 %table.tablesorter.tablefilter.likert
   %thead

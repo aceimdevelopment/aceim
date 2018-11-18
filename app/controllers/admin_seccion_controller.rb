@@ -6,17 +6,11 @@ class AdminSeccionController < ApplicationController
 # before_action :set_opportunity, except: [:index, :inbox, :set_custom_field, :receive, :receive_report_dropped_mailgun, :objects_deep, :reports, :list]
 
   def detalle
-    # periodo_id, idioma_id, tipo_categoria_id, tipo_nivel_id, seccion_numero = params[:seccion].split(",")
     @seccion = Seccion.find params[:id]
-    @historiales = @seccion.historiales
-    @historiales = @historiales.sort_by{|x| x.usuario.nombre_completo}
-
+    @historiales = @seccion.historiales.sort_by{|x| x.usuario.nombre_completo}
     render layout: false
 
   end
-
-
-
   
   def index
     @titulo_pagina = "Listado de Secciones"  

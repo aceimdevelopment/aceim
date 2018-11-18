@@ -33,9 +33,9 @@ class Seccion < ActiveRecord::Base
   :foreign_key => ['periodo_id','idioma_id','tipo_categoria_id','tipo_nivel_id', 'seccion_numero']
   accepts_nested_attributes_for :horario_seccion2
 
-  def descripcion_instructor_con_correo
+  def descripcion_instructor_con_datos_contacto
     if instructor and instructor.usuario
-      instructor.usuario.descripcion_con_correo
+      instructor.usuario.descripcion_con_datos_contacto
     else
       'NO ASIGNADO'
     end

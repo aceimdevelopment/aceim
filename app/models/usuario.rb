@@ -65,8 +65,8 @@ class Usuario < ActiveRecord::Base
     edad
   end    
   
-  def descripcion_con_correo
-    "#{nombre_completo} - #{correo}"
+  def descripcion_con_datos_contacto
+    "#{nombre_completo} - #{datos_contacto}"
   end
 
   def nombre_completo
