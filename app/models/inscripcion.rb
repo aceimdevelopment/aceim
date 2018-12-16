@@ -35,7 +35,7 @@ class Inscripcion < ActiveRecord::Base
 	end
 
 	def fecha_formato (fecha_inicial, fecha_final)
-		if fecha_inicial.blank? or fecha_final.blank? or post_cierre
+		if fecha_inicial.blank? or fecha_final.blank? #or post_cierre
 			return "por definir"
 		else
 			if fecha_inicial.to_date.eql? fecha_final.to_date		
