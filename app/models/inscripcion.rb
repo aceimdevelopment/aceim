@@ -55,7 +55,7 @@ class Inscripcion < ActiveRecord::Base
 	end
 
 	def post_cierre
-		Date.today.yday > cierre.to_date.yday+10
+		cierre and Date.today > cierre.to_date+10.day
 	end
 
 	def ninos_abierta?
