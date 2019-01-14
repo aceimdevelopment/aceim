@@ -6,7 +6,7 @@
 =render :partial => 'estudiante_examenes/cartelera'
 
 - if !@preinscrito
-	- if @curso_abierto_regular and @ec and not @ec.repitiente?
+	- if @curso_abierto_regular and @ec #and not @ec.repitiente?
 		%h3
 			= link_to "Preinscribirse: #{@curso_abierto_regular.descripcion}", :action => "paso1", :controller => "inscripcion", :id => @curso_abierto_regular.id
 		%div.titulo Preinscribirse en el periodo #{session[:parametros][:periodo_inscripcion]} como regular y obtener la Planilla
