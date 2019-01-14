@@ -66,36 +66,37 @@ class EstudianteCurso < ActiveRecord::Base
   end
   
   def tipo_estudiante
-    periodo_inscripcion = ParametroGeneral.periodo_inscripcion
-    letra, ano = periodo_inscripcion.id.split("-")                    
-    ano = ano.to_i
-    ultimo = ultimo_historial        
-    return REINICIO unless ultimo
-    letra_ultimo, ano_ultimo = ultimo.periodo_id.split("-")
-    ano_ultimo = ano_ultimo.to_i
-    return REGULAR if letra == letra_ultimo && ano == ano_ultimo
-    return REINICIO if ano_ultimo < (ano-2) 
-    if ano_ultimo == (ano-2) 
-      return REINICIO if letra_ultimo[0] <= letra[0]
-      return REINTEGRO
-    end
-    case letra
-      when "A"                
-        return REGULAR if (letra_ultimo == "D" || letra_ultimo == "C") && (ano_ultimo == (ano-1))
-        return REINTEGRO
-      when "B"                
-        return REGULAR if (letra_ultimo == "D" && ano_ultimo == (ano-1)) || (letra_ultimo == "A" && ano_ultimo == ano)
-        return REINTEGRO
-      when "C"                
-        return REGULAR if (letra_ultimo == "B" && ano_ultimo == ano) || (letra_ultimo == "A" && ano_ultimo == ano)
-        return REINTEGRO
-      when "D"                
-        return REGULAR if (letra_ultimo == "C" && ano_ultimo == ano) #|| (letra_ultimo == "B" && ano_ultimo == ano && tipo_convenio_id != "REG")
-        return MODIFICACION if (letra_ultimo == "B" && ano_ultimo == ano)
-        return REINTEGRO  
-      else 
-        return MODIFICACION   
-     end
+    return REGULAR
+    # periodo_inscripcion = ParametroGeneral.periodo_inscripcion
+    # letra, ano = periodo_inscripcion.id.split("-")                    
+    # ano = ano.to_i
+    # ultimo = ultimo_historial        
+    # return REINICIO unless ultimo
+    # letra_ultimo, ano_ultimo = ultimo.periodo_id.split("-")
+    # ano_ultimo = ano_ultimo.to_i
+    # return REGULAR if letra == letra_ultimo && ano == ano_ultimo
+    # return REINICIO if ano_ultimo < (ano-2) 
+    # if ano_ultimo == (ano-2) 
+    #   return REINICIO if letra_ultimo[0] <= letra[0]
+    #   return REINTEGRO
+    # end
+    # case letra
+    #   when "A"                
+    #     return REGULAR if (letra_ultimo == "D" || letra_ultimo == "C") && (ano_ultimo == (ano-1))
+    #     return REINTEGRO
+    #   when "B"                
+    #     return REGULAR if (letra_ultimo == "D" && ano_ultimo == (ano-1)) || (letra_ultimo == "A" && ano_ultimo == ano)
+    #     return REINTEGRO
+    #   when "C"                
+    #     return REGULAR if (letra_ultimo == "B" && ano_ultimo == ano) || (letra_ultimo == "A" && ano_ultimo == ano)
+    #     return REINTEGRO
+    #   when "D"                
+    #     return REGULAR if (letra_ultimo == "C" && ano_ultimo == ano) #|| (letra_ultimo == "B" && ano_ultimo == ano && tipo_convenio_id != "REG")
+    #     return MODIFICACION if (letra_ultimo == "B" && ano_ultimo == ano)
+    #     return REINTEGRO  
+    #   else 
+    #     return MODIFICACION   
+    #  end
   end
   
   def proximo_historial
