@@ -65,6 +65,36 @@ class EstudianteCurso < ActiveRecord::Base
       ).sort_by{|x| x.periodo.ordenado}.last
   end
   
+  def tipo_estudiante2
+    periodo_inscripcion = ParametroGeneral.periodo_inscripcion
+    letra, ano = periodo_inscripcion.id.split("-")
+    ano = ano.to_i
+    ultimo = ultimo_historial
+    return REINICIO unless ultimo
+    letra_ultimo, ano_ultimo = ultimo.periodo_id.split("-")
+    ano_ultimo = ano_ultimo.to_i
+    return REGULAR if letra == letra_ultimo && ano == ano_ultimo
+    return REINICIO if ano_ultimo < (ano-2) 
+
+    if ano_ultimo == (ano-2) 
+      return REINICIO if letra_ultimo[0] <= letra[0]
+      return REINTEGRO
+    end
+
+    return REGULAR unless periodo_anterior = periodo_inscripcion.periodo_anterior
+    return REGULAR unless 2_periodos_anteriores = periodo_anterior.periodo_anterior
+    
+    ultimo_periodo_cursado_id = ultimo.periodo.id_reverso
+    periodo_anterior_id = periodo_anterior.id_reverso
+    2_periodos_anteriores_id = 2_periodos_anteriores.id_reverso
+      
+    if (ultimo_periodo_cursado_id == periodo_anterior_id) || (ultimo_periodo_cursado_id == 2_periodos_anteriores_id) 
+      return REGULAR
+    else
+      return REINTEGRO
+    end
+  end
+
   def tipo_estudiante
     periodo_inscripcion = ParametroGeneral.periodo_inscripcion
     letra, ano = periodo_inscripcion.id.split("-")
@@ -79,6 +109,7 @@ class EstudianteCurso < ActiveRecord::Base
       return REINICIO if letra_ultimo[0] <= letra[0]
       return REINTEGRO
     end
+
     case letra
       when "A"                
         return REGULAR if (letra_ultimo == "E" || letra_ultimo == "D") && (ano_ultimo == (ano-1))

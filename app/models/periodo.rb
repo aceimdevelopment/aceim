@@ -8,6 +8,10 @@ class Periodo < ActiveRecord::Base
 	accepts_nested_attributes_for :archivos
 
 
+	def id_reverso
+		self.id.split("-").reverse.join("-")
+	end
+
 	def letra
 		id.split("-").first
 	end
