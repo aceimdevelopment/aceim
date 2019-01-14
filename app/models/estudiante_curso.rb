@@ -82,13 +82,13 @@ class EstudianteCurso < ActiveRecord::Base
     end
 
     return REGULAR unless periodo_anterior = periodo_inscripcion.periodo_anterior
-    return REGULAR unless 2_periodos_anteriores = periodo_anterior.periodo_anterior
+    return REGULAR unless dos_periodos_anteriores = periodo_anterior.periodo_anterior
     
     ultimo_periodo_cursado_id = ultimo.periodo.id_reverso
     periodo_anterior_id = periodo_anterior.id_reverso
-    2_periodos_anteriores_id = 2_periodos_anteriores.id_reverso
+    dos_periodos_anteriores_id = dos_periodos_anteriores.id_reverso
       
-    if (ultimo_periodo_cursado_id == periodo_anterior_id) || (ultimo_periodo_cursado_id == 2_periodos_anteriores_id) 
+    if (ultimo_periodo_cursado_id == periodo_anterior_id) || (ultimo_periodo_cursado_id == dos_periodos_anteriores_id) 
       return REGULAR
     else
       return REINTEGRO
