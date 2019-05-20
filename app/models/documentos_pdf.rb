@@ -1018,7 +1018,7 @@ class DocumentosPDF
     	pdf.text "\n\n\n\n"
     	pdf.text "<b>CONSTANCIA</b>", :font_size => 20,:justification => :center
     	pdf.text "\n"
-    	pdf.text to_utf16("Quien suscribe, Prof. Lucius Daniel, Director de la Escuela de Idiomas Modernos de la Facultad de Humanidades y Educación de la Universidad Central de Venezuela, hace constar por medio de la presente que #{sexo(historial.first.usuario.tipo_sexo_id,"la","el")} ciudadan#{sexo(historial.first.usuario.tipo_sexo_id,"a","o")}:"), :font_size => 11, :justification => :full
+    	pdf.text to_utf16("Quien suscribe, Prof. Carlos A. Saavedra A., Director de la Escuela de Idiomas Modernos de la Facultad de Humanidades y Educación de la Universidad Central de Venezuela, hace constar por medio de la presente que #{sexo(historial.first.usuario.tipo_sexo_id,"la","el")} ciudadan#{sexo(historial.first.usuario.tipo_sexo_id,"a","o")}:"), :font_size => 11, :justification => :full
     	pdf.text "\n"
     	pdf.text "<b>#{to_utf16(historial.first.usuario.nombres)} #{to_utf16(historial.first.usuario.apellidos)} (#{to_utf16(historial.first.usuario.ci)})</b>",:justification => :center, :font_size => 12
     	
@@ -1088,9 +1088,10 @@ class DocumentosPDF
 			pdf.text to_utf16("En Caracas, a los #{t.day} días del mes de #{mes(t.month)} de #{t.year}"), :font_size => 11, :justification => :full
 			
 			pdf.text "\n"
-			pdf.image 'app/assets/images/firma.jpg', :justification => :center, :resize => 0.4
+      pdf.text "\n"
+			# pdf.image 'app/assets/images/firma.jpg', :justification => :center, :resize => 0.4
 			pdf.text "____________________________" , :justification => :center, :font_size => 6
-			pdf.text "Prof. Lucius Daniel" , :justification => :center, :font_size => 11
+			pdf.text "Prof. Carlos A. Saavedra A." , :justification => :center, :font_size => 11
 			
 			
 			pdf.add_text_wrap(160, 38, 300 , "\"CIUDAD UNIVERSITARIA DE CARACAS - PATRIMONIO CULTURAL DE LA HUMANIDAD\"", 6, :center)
@@ -1130,7 +1131,7 @@ class DocumentosPDF
     	pdf.text "\n\n\n"
     	pdf.text to_utf16("<b>#{remitente}</b>"), :font_size => 16, :justification => :left
     	pdf.text "\n"
-    	pdf.text to_utf16("\tQuien suscribe, Prof. Lucius Daniel, Director de la Escuela de Idiomas Modernos de la Facultad de Humanidades y Educación de la Universidad Central de Venezuela, hace constar por medio de la presente que #{sexo(historial.usuario.tipo_sexo_id,"la","el")} ciudadan#{sexo(historial.usuario.tipo_sexo_id,"a","o")}:"), :spacing => 1.5, :font_size => 12, :justification => :full
+    	pdf.text to_utf16("\tQuien suscribe, Prof. Carlos A. Saavedra A., Director de la Escuela de Idiomas Modernos de la Facultad de Humanidades y Educación de la Universidad Central de Venezuela, hace constar por medio de la presente que #{sexo(historial.usuario.tipo_sexo_id,"la","el")} ciudadan#{sexo(historial.usuario.tipo_sexo_id,"a","o")}:"), :spacing => 1.5, :font_size => 12, :justification => :full
     	pdf.text "\n"
     	pdf.text "<b>#{to_utf16(historial.usuario.descripcion)}</b>",:spacing => 1.5,:justification => :center
 			pdf.text "\n"
@@ -1202,9 +1203,9 @@ class DocumentosPDF
 			pdf.text to_utf16("\n\tEsta constancia se expide en Caracas, a los #{t.day} días del mes de #{mes(t.month)} de #{t.year} con fines laborales únicamente y bajo ningún concepto indica que #{sexo(historial.usuario.tipo_sexo_id,"la","el")} Sr#{sexo(historial.usuario.tipo_sexo_id,"a","")}. #{historial.usuario.nombre_completo} es estudiante regular de la Universidad Central de Venezuela.
       "), :spacing => 1.5, :font_size => 12, :justification => :full
 			
-			pdf.image 'app/assets/images/firma.jpg', :justification => :center, :resize => 0.4
+			# pdf.image 'app/assets/images/firma.jpg', :justification => :center, :resize => 0.4
 			pdf.text "____________________________" , :justification => :center
-			pdf.text "Prof. Lucius Daniel" , :justification => :center
+			pdf.text "Prof. Carlos A. Saavedra A." , :justification => :center
 			pdf.text "Director" , :justification => :center
 			
 			pdf.add_text_wrap(160, 38, 300 , "\"CIUDAD UNIVERSITARIA DE CARACAS - PATRIMONIO CULTURAL DE LA HUMANIDAD\"", 6, :center)
@@ -1403,7 +1404,7 @@ class DocumentosPDF
     	pdf.text to_utf16("que se otorga a"), :justification => :center, :font_size => 22
     	pdf.text "\n"
     	pdf.select_font "Helvetica-Bold"
-    	pdf.text "#{to_utf16(estudiante_curso.usuario.nombres)} #{to_utf16(estudiante_curso.usuario.apellidos)}",:justification => :center, :font_size => 30
+    	pdf.text "#{estudiante_curso.usuario_ci} - #{to_utf16(estudiante_curso.usuario.nombres)} #{to_utf16(estudiante_curso.usuario.apellidos)}",:justification => :center, :font_size => 30
 			pdf.text "\n"
 			pdf.select_font "Times-Italic"
 			pdf.text to_utf16("por haber aprobado el curso de"), :justification => :center, :font_size => 22
@@ -1417,9 +1418,9 @@ class DocumentosPDF
 			pdf.text to_utf16("Caracas, #{t.day} de #{mes(t.month)} de #{t.year}"), :spacing => 1.5, :font_size => 12, :justification => :center
 			
 			
-			pdf.add_text_wrap(40, 110, 200 , "Prof. Lucius Daniel", 10, :center)
+			pdf.add_text_wrap(40, 110, 200 , "Prof. Carlos A. Saavedra A.", 10, :center)
 			pdf.add_text_wrap(40, 100, 200 , "Director", 10, :center)
-			pdf.add_text_wrap(540, 110, 200 , to_utf16("Prof. Carlos A. Saavedra A."), 10, :center)
+			pdf.add_text_wrap(540, 110, 200 , to_utf16("Prof. Lucius Daniel"), 10, :center)
 			pdf.add_text_wrap(540, 100, 200 , to_utf16("Coordinador Académico"), 10, :center)
 
       pdf.save_as "Certificado - #{estudiante_curso.usuario.ci} - #{estudiante_curso.usuario.nombre_completo}.pdf" if guardar
@@ -2054,7 +2055,7 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
       rango << " #{ano}"
 
       #primero la firma para poder superponer texto sobre ella (como si fuera transparente)
-      pdf.add_image_from_file 'app/assets/images/firma.jpg', (xb+100), (yb-110), 130,35
+      # pdf.add_image_from_file 'app/assets/images/firma.jpg', (xb+100), (yb-110), 130,35
       pdf.add_text_wrap xb,yb,300,to_utf16("Escuela de Idiomas Modernos")
    		pdf.add_text_wrap xb,(yb-10),300,to_utf16("Coordinación de los Cursos de Extensión")	
    		pdf.add_text_wrap xb,(yb-20),300,to_utf16("Informa que:")
