@@ -15,7 +15,7 @@ class InicioController < ApplicationController
 
     # @tipo_inscripciones = TipoInscripcion.all.delete_if{|i| i.id.eql? 'NI'}.sort_by{|i| i.descripcion}
 
-    @tipo_cursos = TipoCurso.all.delete_if{|c| c.idioma_id.eql? 'OR' or c.tipo_categoria_id.eql? 'BBVA' or c.tipo_categoria_id.eql? 'NI'}
+    @tipo_cursos = TipoCurso.all.delete_if{|c| c.idioma_id.eql? 'OR' or c.tipo_categoria_id.eql? 'BBVA' or c.tipo_categoria_id.eql? 'TE' or c.tipo_categoria_id.eql? 'NI'}
 
     @nivelaciones = TipoInscripcion.where(:id => 'NI').first.inscripciones.order{|i| i.apertura}
 
