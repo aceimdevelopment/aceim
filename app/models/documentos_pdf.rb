@@ -1421,7 +1421,7 @@ class DocumentosPDF
 			pdf.add_text_wrap(40, 110, 200 , "Prof. Carlos A. Saavedra A.", 10, :center)
 			pdf.add_text_wrap(40, 100, 200 , "Director", 10, :center)
 			pdf.add_text_wrap(540, 110, 200 , to_utf16("Prof. Lucius Daniel"), 10, :center)
-			pdf.add_text_wrap(540, 100, 200 , to_utf16("Coordinador Académico"), 10, :center)
+			pdf.add_text_wrap(540, 100, 200 , to_utf16("Coordinador De Cursos"), 10, :center)
 
       pdf.save_as "Certificado - #{estudiante_curso.usuario.ci} - #{estudiante_curso.usuario.nombre_completo}.pdf" if guardar
     pdf

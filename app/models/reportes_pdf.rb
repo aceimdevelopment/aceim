@@ -286,7 +286,7 @@ class ReportesPdf
     	pdf.text "\n\n\n\n\n\n\n"
     	pdf.text "<b>CONSTANCIA</b>", :font_size => 20,:justification => :center
     	pdf.text "\n"
-    	pdf.text to_utf16("Quien suscribe, Prof. Lucius Daniel, Director de la Escuela de Idiomas Modernos de la Facultad de Humanidades y Educación de la Universidad Central de Venezuela, hace constar por medio de la presente que el(la) ciudadano(a):"), :spacing => 1.5, :font_size => 12, :justification => :full
+    	pdf.text to_utf16("Quien suscribe, Prof. Carlos A. Saavedra A., Director de la Escuela de Idiomas Modernos de la Facultad de Humanidades y Educación de la Universidad Central de Venezuela, hace constar por medio de la presente que el(la) ciudadano(a):"), :spacing => 1.5, :font_size => 12, :justification => :full
     	pdf.text "\n"
     	pdf.text "<b>#{to_utf16(historial.first.usuario.descripcion)}</b>",:justification => :center
 			pdf.text "\n"
@@ -368,7 +368,7 @@ class ReportesPdf
 			
 			pdf.text "\n\n\n\n"
 			pdf.text "____________________________" , :justification => :center
-			pdf.text "Prof. Lucius Daniel" , :justification => :center
+			pdf.text "Prof. Carlos A. Saavedra A." , :justification => :center
 			
 			
 			pdf.add_text_wrap(160, 38, 300 , "\"CIUDAD UNIVERSITARIA DE CARACAS - PATRIMONIO CULTURAL DE LA HUMANIDAD\"", 6, :center)
