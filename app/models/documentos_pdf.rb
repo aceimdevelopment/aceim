@@ -1090,6 +1090,8 @@ class DocumentosPDF
 			pdf.text to_utf16("En Caracas, a los #{t.day} días del mes de #{mes(t.month)} de #{t.year}"), :font_size => 11, :justification => :full
       pdf.text "\n"
       pdf.text "\n"
+      pdf.text "\n"
+      pdf.text "\n"
 			# pdf.image 'app/assets/images/firma.jpg', :justification => :center, :resize => 0.4
 			pdf.text "____________________________" , :justification => :center, :font_size => 6
 			pdf.text "Prof. Carlos A. Saavedra A." , :justification => :center, :font_size => 11
