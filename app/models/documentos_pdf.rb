@@ -1083,11 +1083,12 @@ class DocumentosPDF
 			t = Time.new
 			
 			pdf.text "\n\n\n"
-			pdf.text to_utf16("Cada nivel tiene una duración de 54 horas académicas (9 semanas aproximadamente). Esta constancia se expide a solicitud del interesad#{sexo(historial.first.usuario.tipo_sexo_id,"a","o")}."), :font_size => 11, :justification => :full
-			
-			pdf.text to_utf16("En Caracas, a los #{t.day} días del mes de #{mes(t.month)} de #{t.year}"), :font_size => 11, :justification => :full
-			
+			pdf.text to_utf16("Cada nivel tiene una duración de 54 horas académicas (9 semanas aproximadamente)."), :font_size => 11, :justification => :full
 			pdf.text "\n"
+      pdf.text to_utf16("Esta constancia se expide a solicitud de la parte interesada."), :font_size => 11, :justification => :full
+      pdf.text "\n"
+			pdf.text to_utf16("En Caracas, a los #{t.day} días del mes de #{mes(t.month)} de #{t.year}"), :font_size => 11, :justification => :full
+      pdf.text "\n"
       pdf.text "\n"
 			# pdf.image 'app/assets/images/firma.jpg', :justification => :center, :resize => 0.4
 			pdf.text "____________________________" , :justification => :center, :font_size => 6
@@ -1405,7 +1406,8 @@ class DocumentosPDF
     	pdf.text "\n"
     	pdf.select_font "Helvetica-Bold"
     	pdf.text "#{to_utf16(estudiante_curso.usuario.nombres)} #{to_utf16(estudiante_curso.usuario.apellidos)}",:justification => :center, :font_size => 30
-      pdf.text "(#{estudiante_curso.usuario_ci})",:justification => :center, :font_size => 22
+      pdf.select_font "Helvetica"
+      pdf.text "(#{estudiante_curso.usuario_ci})",:justification => :center, :font_size => 20
 			pdf.text "\n"
 			pdf.select_font "Times-Italic"
 			pdf.text to_utf16("por haber aprobado el curso de"), :justification => :center, :font_size => 22
