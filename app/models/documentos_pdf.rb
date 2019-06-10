@@ -1405,7 +1405,7 @@ class DocumentosPDF
     	pdf.text "\n"
     	pdf.select_font "Helvetica-Bold"
     	pdf.text "#{to_utf16(estudiante_curso.usuario.nombres)} #{to_utf16(estudiante_curso.usuario.apellidos)}",:justification => :center, :font_size => 30
-      pdf.text "(#{estudiante_curso.usuario_ci})",:justification => :center, :font_size => 24
+      pdf.text "(#{estudiante_curso.usuario_ci})",:justification => :center, :font_size => 22
 			pdf.text "\n"
 			pdf.select_font "Times-Italic"
 			pdf.text to_utf16("por haber aprobado el curso de"), :justification => :center, :font_size => 22
