@@ -1085,9 +1085,7 @@ class DocumentosPDF
 			pdf.text "\n\n\n"
 			pdf.text to_utf16("Cada nivel tiene una duración de 54 horas académicas (9 semanas aproximadamente)."), :font_size => 11, :justification => :full
 			pdf.text "\n"
-      pdf.text to_utf16("Esta constancia se expide a solicitud de la parte interesada."), :font_size => 11, :justification => :full
-      pdf.text "\n"
-			pdf.text to_utf16("En Caracas, a los #{t.day} días del mes de #{mes(t.month)} de #{t.year}"), :font_size => 11, :justification => :full
+      pdf.text to_utf16("Esta constancia se expide a solicitud de la parte interesada. En Caracas, a los #{t.day} días del mes de #{mes(t.month)} de #{t.year}"), :font_size => 11, :justification => :full
       pdf.text "\n"
       pdf.text "\n"
       pdf.text "\n"
