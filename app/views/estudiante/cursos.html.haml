@@ -8,6 +8,7 @@
       %th Horario
       %th Aula
       %th Periodo
+      %th Parciales
       %th Calificación
   %tbody
     -@historial.each do |h|
@@ -16,6 +17,17 @@
         %td= h.seccion.horario
         %td= h.seccion.aula_corta if h.seccion
         %td= h.periodo_id
+        %td
+          %table
+            %thead
+              %tr
+                - h.notas_en_evaluaciones.each do |eva| 
+                  %td eva.tipo_evaluacion.descripcion
+            %tbody
+              %tr
+                - h.notas_en_evaluaciones.each do |eva| 
+                  %td eva.nota
+
         %td
           -if h.nota_final == -2
             SIN CALIFICAR
