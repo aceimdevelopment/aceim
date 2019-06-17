@@ -22,11 +22,11 @@
             %thead
               %tr
                 - h.notas_en_evaluaciones.each do |eva| 
-                  %td eva.tipo_evaluacion.descripcion
+                  %td= eva.tipo_evaluacion.descripcion
             %tbody
               %tr
                 - h.notas_en_evaluaciones.each do |eva| 
-                  %td eva.nota
+                  %td= eva.nota
 
         %td
           -if h.nota_final == -2
