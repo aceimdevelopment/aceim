@@ -41,6 +41,8 @@ class InicioController < ApplicationController
 
     @inscripcion_activa = ParametroGeneral.horario_inscripcion_activo
 
+    @horario_inscripcion_activo = ParametroGeneral.horario_inscripcion_activo
+
     @titulo = ParametroGeneral.horario_inscripcion_activo
     @titulo = "Semanal y Sabatino" if(@titulo.eql? 'AMBOS')
     @titulo = "" if @titulo.eql? 'NINGUNO'

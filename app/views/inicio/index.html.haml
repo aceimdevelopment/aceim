@@ -14,6 +14,10 @@
           %b.label= @titulo  
         -@cursos_abiertos_nuevo.each do |curso|
           - secciones = curso.tipo_curso.secciones.where(:periodo_id => @periodo_inscripcion_id, :esta_abierta => true).delete_if{|s| s.curso.grado != 1}.delete_if{|s| !s.hay_cupo?}
+
+          - secciones = secciones.delete_if{|s| s.horario == 'Sábado (08:30AM - 12:45PM)'} if @horario_inscripcion_activo.eql? 'SEMANAL'
+          - secciones = secciones.delete_if{|s| s.horario != 'Sábado (08:30AM - 12:45PM)'} if @horario_inscripcion_activo.eql? 'SABATINOS'
+
           - catidad_secciones = secciones.count
           - cupo = 0
           - @horarios = secciones.collect{|s| s.horario}.uniq
