@@ -26,6 +26,10 @@ class Inscripcion < ActiveRecord::Base
 		I18n.localize(cierre, :format => "%A %d de %B de %Y a las %I:%M %p")
 	end
 
+	def colocar_fecha fecha
+		I18n.localize(fecha, :format => "%A %d de %B de %Y a las %I:%M %p")
+	end
+
 	def fecha_inscripcion
 		fecha_formato apertura, cierre
 	end
@@ -48,7 +52,7 @@ class Inscripcion < ActiveRecord::Base
 					fecha += I18n.localize(fecha_final, :format => "%I:%M %p")					
 				end	
 			else
-				fecha = "Desde el #{fecha_apertura} hasta el #{fecha_cierre}"
+				fecha = "Desde el #{colocar_fecha fecha_inicial} hasta el #{colocar_fecha fecha_final}"
 			end			
 			return fecha
 		end
