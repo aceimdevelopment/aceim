@@ -131,7 +131,7 @@
           #mensaje-flash{:style => "display:none;"}
             %h3{ :class => "ui-state-highlight ui-corner-all", :style => "margin-top: 20px; padding: 20px; background: crimson; color: lightgoldenrodyellow;" }
               %span.ui-icon.ui-icon-info{ :style =>"display:inline-block;" }
-              = "¡ATENCIÓN ERROR! #{flash[:mensaje_error]}"
+              = "ERROR ¡ATENCIÓN! #{flash[:mensaje_error]}"
           =javascript_tag "$(document).ready(function(){ $('#mensaje-flash').show('pulsate',{},'slow'); });"
 
 

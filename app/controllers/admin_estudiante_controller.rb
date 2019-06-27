@@ -377,7 +377,7 @@ end
     depositos = HistorialAcademico.where(periodo_id: periodo).collect{|h| h.numero_deposito}
     unless params[:historial][:numero_deposito].eql? ""
       if depositos.include? params[:historial][:numero_deposito].to_s
-        flash[:mensaje_error]="Número de pago ya usado para este período"
+        flash[:mensaje_error]="Número de pago ya usado para este período. Favor Inténtelo de nuevo"
         redirect_to :action=> "opciones_menu"
       else
         @historial = HistorialAcademico.where(:periodo_id=>periodo, :idioma_id=>idioma_id, :tipo_categoria_id=>tipo_categoria_id, :usuario_ci=>ci, :tipo_nivel_id=>tipo_nivel_id).limit(1).first
@@ -391,12 +391,12 @@ end
           flash[:mensaje]="Confirmacion de Inscripcion Exitosa"
           redirect_to :action=> "opciones_menu"
         else
-          flash[:mensaje_error]="no se pudo confirmar la seccion"
+          flash[:mensaje_error]="No se pudo confirmar la seccion. Favor Inténtelo de nuevo"
           redirect_to :action=> "opciones_menu"
         end
       end
     else
-      flash[:mensaje_error]="debe agregar un numero de pago"
+      flash[:mensaje_error]="Debe agregar un numero de pago. Favor Inténtelo de nuevo"
       redirect_to :action=> "opciones_menu"
     end
   end
