@@ -127,6 +127,14 @@
               %span.ui-icon.ui-icon-info{ :style =>"display:inline-block;" }
               #{flash[:mensaje]}  
           =javascript_tag "$(document).ready(function(){ $('#mensaje-flash').show('pulsate',{},'fast'); });"
+        - if flash[:mensaje_error]
+          #mensaje-flash{:style => "display:none;"}
+            %p{ :class => "ui-state-highlight ui-corner-all", :style => "margin-top: 20px; padding: 3px 3px; background: crimson; color: lightgoldenrodyellow;" }
+              %span.ui-icon.ui-icon-info{ :style =>"display:inline-block;" }
+              #{flash[:mensaje]}  
+          =javascript_tag "$(document).ready(function(){ $('#mensaje-flash').show('pulsate',{},'slow'); });"
+
+
         =yield
         -if (controller_name != "principal" || action_name != "index") && (controller_name != "principal_admin" || action_name != "index") && (controller_name != "principal_instructor" || action_name != "index") && (controller_name != "reportes") && (controller_name != "planificacion") && (controller_name != "convenio") && (controller_name != "admin_seccion") && (controller_name != "gestionar_cartelera") && (action_name != "ingresar_horario_disponible_instructores") && (controller_name != "parametros_generales") && (controller_name != 'inscripcion')
           %p 
