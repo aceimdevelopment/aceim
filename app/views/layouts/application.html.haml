@@ -129,9 +129,9 @@
           =javascript_tag "$(document).ready(function(){ $('#mensaje-flash').show('pulsate',{},'fast'); });"
         - if flash[:mensaje_error]
           #mensaje-flash{:style => "display:none;"}
-            %p{ :class => "ui-state-highlight ui-corner-all", :style => "margin-top: 20px; padding: 3px 3px; background: crimson; color: lightgoldenrodyellow;" }
+            %h3{ :class => "ui-state-highlight ui-corner-all", :style => "margin-top: 20px; padding: 20px; background: crimson; color: lightgoldenrodyellow;" }
               %span.ui-icon.ui-icon-info{ :style =>"display:inline-block;" }
-              #{flash[:mensaje_error]}  
+              = "¡ATENCIÓN ERROR! #{flash[:mensaje_error]}"
           =javascript_tag "$(document).ready(function(){ $('#mensaje-flash').show('pulsate',{},'slow'); });"
 
 
