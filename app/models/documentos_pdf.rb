@@ -428,8 +428,8 @@ class DocumentosPDF
 
     monto = historial_academico.cuenta_monto
     # monto_soberano = (monto.is_a? Float) ? "(#{monto.to_i/1000} Bs. S)" : "" 
-    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{monto} Bs.S / <b>Transacción #</b>: _________________________ Tipo: T ___  D ___ P ___") } if profesor
-    datos << { "nombre" => to_utf16("<b>Acreditada en:</b>"), "valor" => to_utf16("FHyE ___ FUNDEIM ___ ") } if profesor
+    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{monto} Bs.S") } if profesor
+    datos << { "nombre" => to_utf16("<b>Transacción #:</b>"), "valor" => to_utf16("_________________________ Tipo: T ___  D ___ P ___  (FUNDEIM)") } if profesor
     tabla.data.replace datos
     tabla.render_on(pdf)
 
@@ -438,7 +438,8 @@ class DocumentosPDF
   def self.datos_cuentas(historial_academico,pdf)
         # -------- TABLA CUENTA -------
     pdf.text "\n", :font_size => 8
-    pdf.text to_utf16("<b>Datos de Pago:</b> (Depósito en efectivo o transferencia <i>únicamente</i> del mismo banco)."), :font_size => 11
+    pdf.text to_utf16("<b>Datos de Pago:</b>"), :font_size => 11
+    pdf.text to_utf16("(Depósito en efectivo, transferencia <i>únicamente</i> del mismo banco o punto de venta con tarjeta de debito)."), :font_size => 10
 #    pdf.text to_utf16("Cuenta Corriente <b>#{historial_academico.cuenta_numero}</b> del Banco: Banco de Venezuela"), :font_size => 11
     tabla = PDF::SimpleTable.new 
     tabla.font_size = 10
@@ -457,7 +458,7 @@ class DocumentosPDF
     }
     datos = []
 
-    datos << { "nombre" => "", "valor" => to_utf16("<b>Cuenta Corriente #{historial_academico.cuenta_numero}</b> del Banco de Venezuela") }
+    datos << { "nombre" => "<b>Cuenta:</b>", "valor" => to_utf16("<b>Cuenta Corriente # #{historial_academico.cuenta_numero}</b> del Banco de Venezuela") }
     datos << { "nombre" => to_utf16("<b>A nombre de:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_nombre}") }
     # datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF.") }
     monto = historial_academico.cuenta_monto
@@ -465,13 +466,13 @@ class DocumentosPDF
     # monto_soberano = (monto.is_a? Float) ? "(#{monto.to_i/1000} Bs. S)" : "" 
 
     datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{monto} Bs.S #{coletilla_costo}") }
-    datos << { "nombre" => to_utf16("<b>Transacción:</b>"), "valor" => to_utf16("#_________________________ Tipo: T ___  D ___ P ___") }
-    datos << { "nombre" => to_utf16("<b>Acreditada en:</b>"), "valor" => to_utf16("FHyE ___ FUNDEIM ___ ") }
+    datos << { "nombre" => to_utf16("<b>Transacción:</b>"), "valor" => to_utf16("#_________________________ Tipo: T ___  D ___ P ___  (FUNDEIM)") }
 
     tabla.data.replace datos  
     tabla.render_on(pdf)
-    pdf.text to_utf16("<b>*** Acepté las condiciones y normativas del programa. ***</b>"), :font_size => 10
-    pdf.text "\n", :font_size => 10
+    pdf.text "\n", :font_size => 6
+    pdf.text to_utf16("<b>*** Acepté las condiciones y normativas del programa. ***</b>"), :font_size => 10, :justification => :center
+    pdf.text "\n", :font_size => 6
 
   end
 
@@ -656,11 +657,13 @@ class DocumentosPDF
 
     datos_cuentas(historial_academico,pdf)
 
+    datos_facturacion(historial_academico,pdf)
+
     firmas(historial_academico,pdf)      
  
 		pdf.text to_utf16("----- COPIA DEL ESTUDIANTE -----"), :font_size => 10, :justification => :center
 
-    alto_tijeras = 390
+    alto_tijeras = 290
     alto_tijeras = alto_tijeras - 13 if historial_academico.tipo_convenio_id != "REG"
 
     pdf.add_image_from_file 'app/assets/images/tijeras.jpg', 10, alto_tijeras, 25, nil
@@ -672,13 +675,12 @@ class DocumentosPDF
     # pdf.new_page
     # pdf.y = 756
     pdf.text "\n"
-    pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 280, nil, 100
-    pdf.add_text 480,280,to_utf16("---- #{historial_academico.usuario_ci} ----"),11
+    pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 180, nil, 100
+    pdf.add_text 480,180,to_utf16("---- #{historial_academico.usuario_ci} ----"),11
 
     datos_preinscripcion(historial_academico,pdf,true)
     # pdf.text to_utf16("  <b>Monto:</b>       #{historial_academico.cuenta_monto} BsF. / <b>Depósito No.</b>: _________________________________________"), :font_size => 10
 
-    datos_facturacion(historial_academico,pdf)
     firmas(historial_academico,pdf)
 
 
@@ -1937,7 +1939,9 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
 
     # -------- TABLA CUENTA -------
     pdf.text "\n", :font_size => 10
-    pdf.text to_utf16("<b>Datos de Pago:</b> (Depósito en efectivo o transferencia <i>únicamente</i> del mismo banco)."), :font_size => 11
+
+    pdf.text to_utf16("<b>Datos de Pago:</b>"), :font_size => 11
+    pdf.text to_utf16("(Depósito en efectivo, transferencia <i>únicamente</i> del mismo banco o punto de venta con tarjeta de debito)."), :font_size => 10
 
     pdf.text "\n", :font_size => 8
     tabla = PDF::SimpleTable.new 
@@ -1965,7 +1969,7 @@ def self.generar_listado_congelados(periodo_id,guardar=false)
 
     datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{monto}")}
 
-    datos << { "nombre" => to_utf16("<b>Transacción #:</b>"), "valor" => to_utf16("_________________________ Tipo: T ___  D ___ P ___") }
+    datos << { "nombre" => to_utf16("<b>Transacción #:</b>"), "valor" => to_utf16("_________________________ Tipo: T ___  D ___ P ___ / FUNDEIM") }
     tabla.data.replace datos  
     tabla.render_on(pdf)
     pdf.text "\n", :font_size => 10
