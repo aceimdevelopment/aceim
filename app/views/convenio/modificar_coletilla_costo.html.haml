@@ -1,0 +1,28 @@
+=form_for(@coletilla_costo,:url=>{:action => "guardar_coletilla_costo", :controller => "convenio"}) do |a|
+  -if @coletilla_costo.errors.any?
+    %div#error_explanation
+      %ul
+        -@coletilla_costo.errors.full_messages.each do |msg|
+          %li
+            *
+            =msg
+          
+  %fieldset
+    %legend Actualización de coletilla de costos
+
+    %p
+      =a.hidden_field :id
+
+    %p
+      %label 
+        Coletilla
+        %span.req *
+      =a.text_area :valor, :autofocus => "true", size: '45x4'
+			
+  %p 
+    %span.req *  
+    Campos Obligatorios
+  %p
+    =submit_tag "Modificar"
+    |
+    =link_to_function "Cancelar","aceim.cerrar_modal()"

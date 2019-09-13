@@ -11,6 +11,7 @@ class ConvenioController < ApplicationController
     @precio_nuevos = ParametroGeneral.find("COSTO_NUEVOS").valor.to_f
     @precio_examen = ParametroGeneral.find("COSTO_EXAMEN").valor.to_f
     @precio_ninos = ParametroGeneral.find("COSTO_NINOS").valor.to_f
+    @coletilla_costo = ParametroGeneral.find("COLETILLA_COSTO").valor
 
   end
 
@@ -111,6 +112,10 @@ class ConvenioController < ApplicationController
     
   end
 
+  def modificar_coletilla_costo
+    @coletilla_costo = ParametroGeneral.find("COLETILLA_COSTO")
+    render :layout => false   
+  end
 
   def modificar_monto_planilla
     @precio_planilla = ParametroGeneral.find("COSTO_PLANILLA")
@@ -130,6 +135,25 @@ class ConvenioController < ApplicationController
   def modificar_monto_ninos
     @precio_planilla = ParametroGeneral.find("COSTO_NINOS")
     render :layout => false   
+  end
+
+  def guardar_coletilla_costo
+    id = params[:parametro_general][:id]
+    @coletilla_costo = ParametroGeneral.find("COLETILLA_COSTO")
+    valor_anterior = @coletilla_costo.valor
+    
+    @coletilla_costo.valor = params[:parametro_general][:valor]
+
+    if @coletilla_costo.save
+      info_bitacora("Coletilla del costo Actualizado de #{valor_anterior} a #{@coletilla_costo.valor}")
+      flash[:mensaje] = "Coletilla del costo actualizado satisfactoriamente"
+    else
+      flash[:mensaje] = "ATENCIÓN: Error al intentar actualizar el valor de la coletilla del costo"
+    end
+    redirect_to(:action=>"index")
+
+
+
   end
 
   def guardar_monto_planilla

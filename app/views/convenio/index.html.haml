@@ -5,6 +5,20 @@
   %thead
     %tr
       %th{:width => "85%"}
+        Coletilla del costo
+      %th{:width => "15%"}
+        Acción
+  %tbody
+    %tr
+      %td
+        =@coletilla_costo
+      %td
+        =link_to_modal "Actualizar",{:action => "modificar_coletilla_costo",:title =>"Modificar Coletilla de Costo",:width=>350}
+
+%table.tablesorter.liker
+  %thead
+    %tr
+      %th{:width => "85%"}
         Costo de la Planilla
       %th{:width => "15%"}
         Acción

@@ -46,7 +46,7 @@ class InicioController < ApplicationController
     @titulo = ParametroGeneral.horario_inscripcion_activo
     @titulo = "Semanal y Sabatino" if(@titulo.eql? 'AMBOS')
     @titulo = "" if @titulo.eql? 'NINGUNO'
-
+    @coletilla_costo = ParametroGeneral.find("COLETILLA_COSTO")
 
 =begin
     if ParametroGeneral.periodo_actual_sabatino.id.eql? @periodo_inscripcion_id

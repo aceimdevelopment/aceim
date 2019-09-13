@@ -461,9 +461,11 @@ class DocumentosPDF
     datos << { "nombre" => to_utf16("<b>A nombre de:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_nombre}") }
     # datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{historial_academico.cuenta_monto} BsF.") }
     monto = historial_academico.cuenta_monto
+    coletilla_costo = ParametroGeneral.find('COLETILLA_COSTO').valor
     # monto_soberano = (monto.is_a? Float) ? "(#{monto.to_i/1000} Bs. S)" : "" 
 
-    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{monto} Bs.S / <b>Transacción #</b>: _________________________ Tipo: T ___  D ___ P ___") }
+    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{monto} Bs.S #{coletilla_costo}") }
+    datos << { "nombre" => to_utf16("<b>Transacción:</b>"), "valor" => to_utf16("#_________________________ Tipo: T ___  D ___ P ___") }
     datos << { "nombre" => to_utf16("<b>Acreditada en:</b>"), "valor" => to_utf16("FHyE ___ FUNDEIM ___ ") }
 
     tabla.data.replace datos  
