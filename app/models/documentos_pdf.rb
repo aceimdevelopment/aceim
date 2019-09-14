@@ -502,7 +502,7 @@ class DocumentosPDF
     datos << { "nombre" => to_utf16("Firma #{@persona}"), "valor" => to_utf16("Firma Autorizada y Sello") }
     tabla.data.replace datos  
     tabla.render_on(pdf)
-    pdf.text "\n", :font_size => 8
+    pdf.text "\n", :font_size => 5
     
   end
 
@@ -605,7 +605,6 @@ class DocumentosPDF
   def self.datos_facturacion(historial_academico,pdf)
 
         # -------- TABLA CUENTA -------
-    pdf.text "\n", :font_size => 8
     pdf.text to_utf16("<b>Si requiere una factura fiscal llene los siguientes campos:</b>"), :font_size => 11
     tabla = PDF::SimpleTable.new 
     tabla.font_size = 10
@@ -639,19 +638,18 @@ class DocumentosPDF
     pdf = PDF::Writer.new(:paper => "letter")  #:orientation => :landscape, 
     t = Time.now
 
-    pdf.add_image_from_file 'app/assets/images/logo_fhe_ucv.jpg', 465, 710, 50,nil
-    pdf.add_image_from_file 'app/assets/images/logo_eim.jpg', 515, 710+10, 50,nil
-    pdf.add_image_from_file 'app/assets/images/logo_ucv.jpg', 45, 710, 50,nil
-    pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 600, nil, 100
-    pdf.add_text 480,600,to_utf16("---- #{historial_academico.usuario_ci} ----"),11
+    pdf.add_image_from_file 'app/assets/images/logo_eim.jpg', 500, 710+30, 50,nil
+    pdf.add_image_from_file 'app/assets/images/logo_ucv.jpg', 45, 710+20, 50,nil
+    pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 620, nil, 100
+    pdf.add_text 480,620,to_utf16("---- #{historial_academico.usuario_ci} ----"),11
     
     #texto del encabezado
-    pdf.add_text 100,745,to_utf16("Universidad Central de Venezuela"),10
-    pdf.add_text 100,735,to_utf16("Facultad de Humanidades y Educación"),10
-    pdf.add_text 100,725,to_utf16("Escuela de Idiomas Modernos"),10
-    pdf.add_text 100,715,to_utf16("Cursos de Extensión EIM-UCV"),10
+    pdf.add_text 100,745+20,to_utf16("Universidad Central de Venezuela"),10
+    pdf.add_text 100,735+20,to_utf16("Facultad de Humanidades y Educación"),10
+    pdf.add_text 100,725+20,to_utf16("Escuela de Idiomas Modernos"),10
+    pdf.add_text 100,715+20,to_utf16("Cursos de Extensión EIM-UCV"),10
 
-    pdf.text "\n\n\n\n"
+    pdf.text "\n\n\n"
 
     datos_preinscripcion(historial_academico,pdf)
 
@@ -675,8 +673,8 @@ class DocumentosPDF
     # pdf.new_page
     # pdf.y = 756
     pdf.text "\n"
-    pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 180, nil, 100
-    pdf.add_text 480,180,to_utf16("---- #{historial_academico.usuario_ci} ----"),11
+    pdf.add_image_from_file Rutinas.crear_codigo_barra(historial_academico.usuario_ci), 460, 190, nil, 100
+    pdf.add_text 480,190,to_utf16("---- #{historial_academico.usuario_ci} ----"),11
 
     datos_preinscripcion(historial_academico,pdf,true)
     # pdf.text to_utf16("  <b>Monto:</b>       #{historial_academico.cuenta_monto} BsF. / <b>Depósito No.</b>: _________________________________________"), :font_size => 10
