@@ -413,7 +413,7 @@ class DocumentosPDF
       col.justification = :left
     }
     tabla.columns["valor"] = PDF::SimpleTable::Column.new("valor") { |col|
-      col.width = 420
+      col.width = 440
       col.justification = :left
     }
     datos = []
@@ -453,8 +453,8 @@ class DocumentosPDF
       col.justification = :left
     }
     tabla.columns["valor"] = PDF::SimpleTable::Column.new("valor") { |col|
-      col.width = 420
-      col.justification = :left
+      col.width = 440
+      col.justification = :justify
     }
     datos = []
 
@@ -502,7 +502,6 @@ class DocumentosPDF
     datos << { "nombre" => to_utf16("Firma #{@persona}"), "valor" => to_utf16("Firma Autorizada y Sello") }
     tabla.data.replace datos  
     tabla.render_on(pdf)
-    pdf.text "\n", :font_size => 5
     
   end
 
@@ -604,8 +603,8 @@ class DocumentosPDF
 
   def self.datos_facturacion(historial_academico,pdf)
 
-        # -------- TABLA CUENTA -------
-    pdf.text to_utf16("<b>Si requiere una factura fiscal llene los siguientes campos:</b>"), :font_size => 11
+    # -------- TABLA CUENTA -------
+    pdf.text to_utf16("<b>Si requiere una factura fiscal llene los siguientes campos:</b>"), :font_size => 10
     tabla = PDF::SimpleTable.new 
     tabla.font_size = 10
     tabla.show_lines    = :none
@@ -659,9 +658,9 @@ class DocumentosPDF
 
     firmas(historial_academico,pdf)      
  
-		pdf.text to_utf16("----- COPIA DEL ESTUDIANTE -----"), :font_size => 10, :justification => :center
+		pdf.text to_utf16("----- COPIA DEL ESTUDIANTE -----"), :font_size => 9, :justification => :center
 
-    alto_tijeras = 290
+    alto_tijeras = 300
     alto_tijeras = alto_tijeras - 13 if historial_academico.tipo_convenio_id != "REG"
 
     pdf.add_image_from_file 'app/assets/images/tijeras.jpg', 10, alto_tijeras, 25, nil
@@ -682,7 +681,7 @@ class DocumentosPDF
     firmas(historial_academico,pdf)
 
 
-		pdf.text to_utf16("----- COPIA ADMINISTRACIÓN -----"), :font_size => 10, :justification => :center
+		pdf.text to_utf16("----- COPIA ADMINISTRACIÓN -----"), :font_size => 9, :justification => :center
 
    
     return pdf
