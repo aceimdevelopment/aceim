@@ -193,7 +193,7 @@ class InscripcionAdminController < ApplicationController
     @historial.nota_final = -2
     @historial.numero_deposito = ""
     @historial.seccion_numero = seccion_numero
-    
+    @historial.fecha_inscripcion = Time.now     
     if HistorialAcademico.where(
       :usuario_ci => @historial.usuario_ci,
       :idioma_id => @historial.idioma_id,

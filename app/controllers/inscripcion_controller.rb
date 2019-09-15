@@ -192,7 +192,7 @@ class InscripcionController < ApplicationController
       redirect_to :controller => "inicio"
       return
     end
-    
+    @historial.fecha_inscripcion = Time.now 
     if @historial.save
       session[:tipo_curso] = @inscripcion.tipo_curso
       info_bitacora "Paso 1 realizado preinscripcion realizada en #{@historial.seccion.descripcion_con_periodo}"

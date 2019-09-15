@@ -387,12 +387,7 @@ class DocumentosPDF
 
 # FIN NUEVO SISTEMA DE CALIFICACION 30
 
-
-
-
-
-
-  def self.datos_preinscripcion(historial_academico,pdf,profesor=nil)    
+  def self.datos_preinscripcion(historial_academico,pdf,profesor=nil)
 
     #titulo
     pdf.text to_utf16("Planilla de Inscripción (Sede Ciudad Universitaria)\n"), :font_size => 11, :justification => :center
@@ -416,8 +411,9 @@ class DocumentosPDF
       col.justification = :left
     }
     datos = []
-    
-    datos << { "nombre" => to_utf16("<b>Fecha:</b>"), "valor" => to_utf16("#{Time.now.strftime('%d/%m/%Y')}") }
+    if fecha_inscripcion = historial_academico.fecha_inscripcion
+      datos << { "nombre" => to_utf16("<b>Fecha:</b>"), "valor" => to_utf16("#{fecha_inscripcion.strftime('%d/%m/%Y')}") }
+    end
     datos << { "nombre" => to_utf16("<b>Estudiante:</b>"), "valor" => to_utf16("#{historial_academico.usuario.descripcion}\n#{historial_academico.usuario.datos_contacto}") }
     datos << { "nombre" => to_utf16("<b>Curso:</b>"), "valor" => to_utf16("#{historial_academico.descripcion_completa}") }
     datos << { "nombre" => to_utf16("<b>Horario:</b>"), "valor" => to_utf16("#{historial_academico.seccion.horario}") }
