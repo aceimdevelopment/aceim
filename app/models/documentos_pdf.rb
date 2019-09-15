@@ -399,7 +399,6 @@ class DocumentosPDF
     pdf.text to_utf16("Periodo #{historial_academico.periodo_id}"), :justification => :center
 
     # ------- DATOS DE LA PREINSCRIPCIO -------
-		pdf.text "\n", :font_size => 8
 		pdf.text to_utf16("<b>Datos de la Preinscripción:</b>"), :font_size => 11
     tabla = PDF::SimpleTable.new 
     tabla.font_size = 10
@@ -418,6 +417,7 @@ class DocumentosPDF
     }
     datos = []
     
+    datos << { "nombre" => to_utf16("<b>Fecha:</b>"), "valor" => to_utf16("#{Time.now.strftime('%d/%m/%Y')}") }
     datos << { "nombre" => to_utf16("<b>Estudiante:</b>"), "valor" => to_utf16("#{historial_academico.usuario.descripcion}\n#{historial_academico.usuario.datos_contacto}") }
     datos << { "nombre" => to_utf16("<b>Curso:</b>"), "valor" => to_utf16("#{historial_academico.descripcion_completa}") }
     datos << { "nombre" => to_utf16("<b>Horario:</b>"), "valor" => to_utf16("#{historial_academico.seccion.horario}") }
