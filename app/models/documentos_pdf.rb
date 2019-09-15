@@ -424,7 +424,7 @@ class DocumentosPDF
 
     monto = historial_academico.cuenta_monto
     # monto_soberano = (monto.is_a? Float) ? "(#{monto.to_i/1000} Bs. S)" : "" 
-    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{monto} Bs.S") } if profesor
+    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("Bs.S #{monto}") } if profesor
     datos << { "nombre" => to_utf16("<b>Transacción #:</b>"), "valor" => to_utf16("_________________________ Tipo: T ___  D ___ P ___  (FUNDEIM)") } if profesor
     tabla.data.replace datos
     tabla.render_on(pdf)
@@ -461,7 +461,7 @@ class DocumentosPDF
     coletilla_costo = ParametroGeneral.find('COLETILLA_COSTO').valor
     # monto_soberano = (monto.is_a? Float) ? "(#{monto.to_i/1000} Bs. S)" : "" 
 
-    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("#{monto} Bs.S #{coletilla_costo}") }
+    datos << { "nombre" => to_utf16("<b>Monto:</b>"), "valor" => to_utf16("Bs.S #{monto}. #{coletilla_costo}") }
     datos << { "nombre" => to_utf16("<b>Transacción:</b>"), "valor" => to_utf16("#_________________________ Tipo: T ___  D ___ P ___  (FUNDEIM)") }
 
     tabla.data.replace datos  

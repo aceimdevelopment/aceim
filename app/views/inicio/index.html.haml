@@ -77,13 +77,13 @@
                   %b= curso.fecha_entrega_planilla                  
               %li
                 - if curso.tipo_inscripcion_id.eql? 'NU'
-                  - @arancel = "#{ParametroGeneral.costo_nuevos_i}Bs.S" 
+                  - @arancel = "Bs.S #{ParametroGeneral.costo_nuevos_i}" 
                 - else
-                  - @arancel = "#{TipoConvenio.find('REG').monto.to_i}Bs.S"  
+                  - @arancel = "Bs.S #{TipoConvenio.find('REG').monto.to_i}"  
                 Arancel por nivel:
                 %b
                   - if (curso.tipo_estado_inscripcion_curso_id.eql? 'PR' or curso.tipo_estado_inscripcion_curso_id.eql? 'AB')
-                    = "#{@arancel} #{@coletilla_costo.valor}"
+                    = "#{@arancel}. #{@coletilla_costo.valor}"
                   - else
                     = @por_definir
           %br
