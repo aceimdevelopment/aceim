@@ -22,7 +22,7 @@
         %p 
           = "#{s.descripcion}:"
           - archs.each do |a|          
-            = link_to a.nombre, :controller => 'descarga', :action => 'archivo', :id => a.id 
             %br
+            = link_to a.nombre, :controller => 'descarga', :action => 'archivo', :id => a.id 
 
   - @archivos_disponibles.each do |arch| 
