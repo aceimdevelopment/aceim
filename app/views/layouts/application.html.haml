@@ -115,6 +115,8 @@
           #cambio_periodo
             ="Periodo #{session[:parametros][:periodo_actual]}" 
             =link_to_modal "Cambiar",{:title => "Cambio de Periodo",:controller => "principal", :action => "cambiar_periodo_modal", :params => {:controlador => controller_name,:accion => action_name},:width=>300}
+      - if Rails.root.to_s.include? 'aceim_dev'
+        %h1{style: 'color: white;text-align: center;background-color:red;'} ENTORNO DE PRUEBAS 
       #interno 
         %h2
           =@titulo_pagina
