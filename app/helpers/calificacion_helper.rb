@@ -179,6 +179,138 @@ module CalificacionHelper
 
   # Nueva funcion helper para calificaciones generales
 
+  def colocar_tabla_calificaciones(usuarios, historiales, editar)
+
+    periodo = historiales.first.periodo
+
+    if periodo.es_mayor_igual_que? Periodo::PERIODO_25
+      cabeceras = HistorialAcademico::CABECERAS25
+    else
+      cabeceras = HistorialAcademico::CABECERAS30
+    end
+    evaluaciones = [HistorialAcademico::EXAMENESCRITO1, HistorialAcademico::EXAMENESCRITO2, HistorialAcademico::EXAMENORAL, HistorialAcademico::OTRAS]
+    plantilla_colocar_tabla(usuarios,historiales,cabeceras, evaluaciones, 'guardar_notas_30', editar)
+  end
+
+  # Helper para colocar la tabla de calificaion en 30-30-30-10
+  def plantilla_colocar_tabla(usuarios,historiales,cabecera_notas, tipo_evaluaciones, accion, editar)
+    form_tag accion do
+      haml_tag(:table, :class => 'tablesorter', :id => "ingles") do
+        haml_tag :thead do
+          haml_tag :tr do
+            haml_tag :th, '#'
+            haml_tag :th, 'Nombres'
+            haml_tag :th, 'Cédula'
+            haml_tag :th, cabecera_notas[0]
+            haml_tag :th, cabecera_notas[1]
+            haml_tag :th, cabecera_notas[2]
+            haml_tag :th, cabecera_notas[3]
+            haml_tag :th, 'Final'
+            haml_tag :th, 'Descripción'
+          end
+        end
+        haml_tag :tbody do  
+          historiales.each_with_index{ |h,i|
+            haml_tag :tr do
+              haml_tag :td, i+1
+              haml_tag :td, h.usuario.nombre_completo
+              haml_tag :td, h.usuario.ci
+              valor = nil
+              valor = h.nota_en_evaluacion(tipo_evaluaciones[0]).nota_valor
+              if editar
+                haml_tag :td do
+                  if valor != HistorialAcademico::SC
+                    haml_concat (text_field :nota1,h.usuario.ci, \
+                    {:value => valor, :maxlength => 5})
+                  else
+                    haml_concat(text_field :nota1,h.usuario.ci,{:placeholder => "SC",:maxlength => 5})
+                  end
+                end
+              else
+                haml_tag :td, valor
+              end
+              
+              valor = h.nota_en_evaluacion(tipo_evaluaciones[1]).nota_valor
+              
+              if editar
+                haml_tag :td do
+                  if valor != HistorialAcademico::SC
+                    haml_concat (text_field :nota2,h.usuario.ci, \
+                    {:value => valor, :maxlength => 5})
+                  else
+                    haml_concat(text_field :nota2,h.usuario.ci,{:placeholder => "SC",:maxlength => 5})
+                  end
+                end
+              else
+                haml_tag :td, valor
+              end
+
+              valor = h.nota_en_evaluacion(tipo_evaluaciones[2]).nota_valor
+                
+              if editar
+                haml_tag :td do
+                  if valor != HistorialAcademico::SC
+                    haml_concat (text_field :nota3,h.usuario.ci, \
+                    {:value => valor, :maxlength => 5})
+                  else
+                    haml_concat(text_field :nota3,h.usuario.ci,{:placeholder => "SC",:maxlength => 5})
+                  end
+                end
+              else
+                haml_tag :td, valor
+              end
+
+              valor = h.nota_en_evaluacion(tipo_evaluaciones[4]).nota_valor
+
+              if editar
+                haml_tag :td do
+                  if valor != HistorialAcademico::SC
+                    haml_concat (text_field :nota4,h.usuario.ci, \
+                    {:value => valor, :maxlength => 5})
+                  else
+                    haml_concat(text_field :nota4,h.usuario.ci,{:placeholder => "SC",:maxlength => 5})
+                  end
+                end
+              else
+                haml_tag :td, valor
+              end
+              
+              if h.nota_final != HistorialAcademico::SC
+                haml_tag(:td,:id => "nota_final_"+h.usuario.ci) do
+                  haml_concat HistorialAcademico.colocar_nota(h.nota_final)
+                end
+              else 
+                haml_tag(:td,:id => "nota_final_"+h.usuario.ci) do
+                  haml_concat "SC"
+                end
+              end
+              if h.nota_final == -1
+                valor = -1
+              else
+                valor = h.nota_final
+              end
+              if editar
+                haml_concat(hidden_field :notafinal,h.usuario.ci,{:value => valor})
+              end
+              
+              haml_tag :td do
+                haml_tag(:div, :id => "descripcion_#{h.usuario.ci}") do
+                    haml_concat HistorialAcademico::NOTASPALABRAS[h.nota_final+2]
+                end
+              end
+            end
+          }
+        end
+      end 
+      if editar
+          haml_tag :br
+          haml_concat(submit_tag :Calificar)
+      end
+    end 
+  end
+
+
+  # Helper para colocar la tabla de calificaion en 30-30-30-10
   def colocar_tabla_30(usuarios,historiales,editar)
     form_tag "guardar_notas_30" do
       haml_tag(:table, :class => 'tablesorter', :id => "ingles") do

@@ -2,6 +2,7 @@
 class Periodo < ActiveRecord::Base
 	PERIODO_TRANSICION_NOTAS_PARCIALES = "A-2016"
 
+	PERIODO_25 = "D-2019"
 	PERIODO_30 = "D-2016"
 
 	has_many :archivos

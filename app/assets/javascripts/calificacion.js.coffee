@@ -157,8 +157,9 @@ $ ->
           $('#descripcion_'+cedula).html(palabra "PI")
           agregar_remover_clase this,false,6
         else
-          #nota_final = Math.round(nota1*0.3 + nota2*0.3 + nota3*0.2 + nota4*0.2)
-          nota_final = Math.round(nota1*0.3 + nota2*0.3 + nota3*0.3 + nota4*0.1)
+          # nota_final = Math.round(nota1*0.3 + nota2*0.3 + nota3*0.2 + nota4*0.2)
+          # nota_final = Math.round(nota1*0.3 + nota2*0.3 + nota3*0.3 + nota4*0.1)
+          nota_final = Math.round(nota1*0.25 + nota2*0.25 + nota3*0.25 + nota4*0.25)
           $('#nota_final_'+cedula).html(nota_final)
           $('#notafinal_'+cedula).val(nota_final)
           $('#descripcion_'+cedula).html(palabra nota_final.toString())

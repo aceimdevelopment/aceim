@@ -12,8 +12,8 @@
   #{@seccion}
   %br
 
-- if @periodo.es_mayor_igual_que? @periodo_30
-  =colocar_tabla_30(@usuarios,@historiales,false)
+- if @periodo.es_mayor_igual_que? Periodo::PERIODO_30
+  = colocar_tabla_calificaciones(@usuarios,@historiales,false)
 
 - elsif @periodo.es_menor_que? @periodo_transicion
   - if session[:idioma_id] != "IN"

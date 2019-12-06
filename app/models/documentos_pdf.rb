@@ -235,9 +235,9 @@ class DocumentosPDF
     return pdf
   end
 
-# NUEVO SISTEMA  DE CALIFICACION 30
+# NUEVO SISTEMA DE CALIFICACION
 
-  def self.notas_30(historiales,session)
+  def self.tabla_calificaciones(historiales,session)
     usuario = session[:usuario]
     pdf = PDF::Writer.new
     pdf.margins_cm(1.8)
@@ -256,9 +256,14 @@ class DocumentosPDF
     #titulo
     pdf.fill_color(Color::RGB.new(0,0,0))
     historial = historiales.first
-    @periodo = historial.periodo
+    periodo = historial.periodo
     @tipo_nivel_id = historial.tipo_nivel_id
-    @periodo_30 = Periodo::PERIODO_30
+
+    if periodo.es_mayor_igual_que? Periodo::PERIODO_25
+      cabeceras = HistorialAcademico::CABECERAS25
+    else
+      cabeceras = HistorialAcademico::CABECERAS30
+    end
 
     #periodo_calificacion
     
@@ -317,25 +322,25 @@ class DocumentosPDF
     
     tabla.columns["nota1"] = PDF::SimpleTable::Column.new("nota1") { |col|
       col.width = 50
-      col.heading = to_utf16("<b>Exámen Teórico 1 (30%)</b>")
+      col.heading = to_utf16("<b>#{cabeceras[0]}</b>")
       col.heading.justification = :center
       col.justification = :center
     }
     tabla.columns["nota2"] = PDF::SimpleTable::Column.new("nota2") { |col|
       col.width = 50
-      col.heading = to_utf16("<b>Exámen Teórico 2 (30%)</b>")
+      col.heading = to_utf16("<b>#{cabeceras[1]}</b>")
       col.heading.justification = :center
       col.justification = :center
     }
     tabla.columns["nota3"] = PDF::SimpleTable::Column.new("nota3") { |col|
       col.width = 50
-      col.heading = to_utf16("<b>Exámen Oral (30%)</b>")
+      col.heading = to_utf16("<b>#{cabeceras[2]}</b>")
       col.heading.justification = :center
       col.justification = :center
     }
     tabla.columns["nota4"] = PDF::SimpleTable::Column.new("nota4") { |col|
       col.width = 50
-      col.heading = to_utf16("<b>Otros (10%)</b>")
+      col.heading = to_utf16("<b>#{cabeceras[3]}</b>")
       col.heading.justification = :center
       col.justification = :center
     }

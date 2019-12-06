@@ -27,6 +27,7 @@ class CalificacionController < ApplicationController
   end
   
   def buscar_estudiantes
+    # saltar =|| true
     saltar = true
     if params[:saltar] == nil
       saltar = true
@@ -50,6 +51,7 @@ class CalificacionController < ApplicationController
     @tipo_nivel_id = session[:tipo_nivel_id]
     @periodo = historial.periodo
     @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
+    @periodo_25 = Periodo::PERIODO_25
     @periodo_30 = Periodo::PERIODO_30
 
     if (!historial.nota_en_evaluacion_sin_calificar? && !historial.sin_calificar? ) && (session[:administrador] == nil)
@@ -260,6 +262,7 @@ class CalificacionController < ApplicationController
     @seccion = session[:seccion_numero]
     @periodo = historial.periodo
     @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
+    @periodo_25 = Periodo::PERIODO_25
     @periodo_30 = Periodo::PERIODO_30    
     info_bitacora("La seccion #{session[:seccion_numero]} del curso #{Seccion.idioma(historial.idioma_id)} del horario #{Seccion.horario(session)} no fue calificada por completo, periodo #{session[:parametros][:periodo_calificacion]}")
     render :action => "buscar_estudiantes"
@@ -414,25 +417,22 @@ class CalificacionController < ApplicationController
     @seccion = session[:seccion_numero]
     @periodo = historial.periodo
     @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
-    @periodo_30 = Periodo::PERIODO_30
 
     @tipo_nivel_id = session[:tipo_nivel_id]
   end
   
-  def generar_pdf
-    
-    @periodo_30 = Periodo::PERIODO_30
+  def generar_pdf 
     @historiales,@usuarios = historiales_usuarios
     historial = @historiales.first
-    @periodo = historial.periodo
+    periodo = historial.periodo
     info_bitacora("Usuario #{session[:usuario].nombre_completo} generó pdf del curso #{Seccion.idioma(historial.idioma_id)}, horario #{Seccion.horario(session)}, seccion #{session[:seccion_numero]},periodo #{session[:parametros][:periodo_calificacion]}")
     historiales,usuarios = historiales_usuarios
 
-  if @periodo.es_mayor_igual_que? @periodo_30
-    pdf = DocumentosPDF.notas_30(historiales,session)
-  else
-    pdf = DocumentosPDF.notas(historiales,session)
-  end
+    if periodo.es_mayor_igual_que? Periodo::PERIODO_30
+      pdf = DocumentosPDF.tabla_calificaciones(historiales,session)
+    else
+      pdf = DocumentosPDF.notas(historiales,session)
+    end
 
     send_data pdf.render,:filename => "notas.pdf",
                          :type => "application/pdf", :disposition => "attachment"
