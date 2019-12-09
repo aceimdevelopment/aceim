@@ -33,7 +33,12 @@ class Instructor < ActiveRecord::Base
     :esta_abierta => true)  
   end
 
-  def descripcion  
+  def descripcion_con_ci
+    return " NO ASIGNADO" if usuario_ci == "-----"   
+    return "#{usuario_ci} : #{nombre_completo} (#{usuario.telefono_movil})"
+  end
+
+  def descripcion
     return " NO ASIGNADO" if usuario_ci == "-----"   
     return "#{nombre_completo} (#{usuario.telefono_movil})"
   end 
