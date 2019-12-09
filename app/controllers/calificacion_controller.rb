@@ -434,7 +434,7 @@ class CalificacionController < ApplicationController
       pdf = DocumentosPDF.notas(historiales,session)
     end
 
-    send_data pdf.render,:filename => "notas.pdf",
+    send_data pdf.render,:filename => "calificaciones_#{descripcion_corta}.pdf",
                          :type => "application/pdf", :disposition => "attachment"
   end
 
