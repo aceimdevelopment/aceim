@@ -11,9 +11,10 @@
   %b= "Sección:" 
   #{@seccion}
   %br
-
-  %b= "Profesor:" 
-  #{@instructor}
+  - if @instructor
+    %b
+      = "Profesor:" 
+      #{@instructor.descripcion}
   %br
   
   %p 
