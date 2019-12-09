@@ -19,7 +19,7 @@ class HistorialAcademico < ActiveRecord::Base
   OTRAS = "OTRAS"
   REDACCION = "REDACCION"
   
-  CABECERAS25 = ['GRAMÁTICA 25%' 'REDACCIÓN 25%' 'ORAL 25%' 'AUDIOS/TAREAS 25%']
+  CABECERAS25 = ['GRAMÁTICA 25%', 'REDACCIÓN 25%', 'ORAL 25%', 'AUDIOS/TAREAS 25%']
   CABECERAS30 = ['Exámen Teórico 1 (30%)', 'Exámen Teórico 2 (30%)', 'Exámen Oral (30%)', 'Otros (10%)']
 
   #autogenerado por db2models
