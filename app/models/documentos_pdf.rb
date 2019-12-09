@@ -237,6 +237,11 @@ class DocumentosPDF
 
 # NUEVO SISTEMA DE CALIFICACION
 
+  def self.cabecera_minstring (cabecera)
+    tam = cabecera.length
+    "#{cabecera[0..4]} #{cabecera[tam-4..tam-1]}"
+  end
+
   def self.tabla_calificaciones(historiales,session)
     usuario = session[:usuario]
     pdf = PDF::Writer.new
@@ -319,28 +324,28 @@ class DocumentosPDF
       col.heading.justification = :left
       col.justification = :left
     }
-    
+    cabecera = 
     tabla.columns["nota1"] = PDF::SimpleTable::Column.new("nota1") { |col|
       col.width = 50
-      col.heading = to_utf16("<b>#{cabeceras[0]}</b>")
+      col.heading = to_utf16("<b>#{cabecera_minstring(cabeceras[0])}</b>")
       col.heading.justification = :center
       col.justification = :center
     }
     tabla.columns["nota2"] = PDF::SimpleTable::Column.new("nota2") { |col|
       col.width = 50
-      col.heading = to_utf16("<b>#{cabeceras[1]}</b>")
+      col.heading = to_utf16("<b>#{cabecera_minstring(cabeceras[1])}</b>")
       col.heading.justification = :center
       col.justification = :center
     }
     tabla.columns["nota3"] = PDF::SimpleTable::Column.new("nota3") { |col|
       col.width = 50
-      col.heading = to_utf16("<b>#{cabeceras[2]}</b>")
+      col.heading = to_utf16("<b>#{cabecera_minstring(cabeceras[2])}</b>")
       col.heading.justification = :center
       col.justification = :center
     }
     tabla.columns["nota4"] = PDF::SimpleTable::Column.new("nota4") { |col|
       col.width = 50
-      col.heading = to_utf16("<b>#{cabeceras[3]}</b>")
+      col.heading = to_utf16("<b>#{cabecera_minstring(cabeceras[3])}</b>")
       col.heading.justification = :center
       col.justification = :center
     }
