@@ -260,7 +260,7 @@ module CalificacionHelper
                 haml_tag :td, valor
               end
 
-              valor = h.nota_en_evaluacion(tipo_evaluaciones[4]).nota_valor
+              valor = h.nota_en_evaluacion(tipo_evaluaciones[3]).nota_valor
 
               if editar
                 haml_tag :td do
