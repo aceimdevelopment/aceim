@@ -33,7 +33,7 @@ class Seccion < ActiveRecord::Base
   :foreign_key => ['periodo_id','idioma_id','tipo_categoria_id','tipo_nivel_id', 'seccion_numero']
   accepts_nested_attributes_for :horario_seccion2
 
-  def descripcion_corta
+  def descripcion_corta_to_file
     "#{idioma.descripcion}_#{periodo_id}_#{seccion_numero}"
   end
 
