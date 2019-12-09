@@ -8,7 +8,7 @@ class CalificacionController < ApplicationController
   
   def seleccionar_curso
     
-    @titulo_pagina = "Seleccionar Curso"
+    @titulo_pagina = "Seleccionar Curso (Periodo de calificacion: #{ParametroGeneral.find("PERIODO_CALIFICACION").valor})"
     if session[:administrador] == nil
       @seccion = Seccion.where(:instructor_ci => session[:usuario].ci, 
                              :esta_abierta => true,
