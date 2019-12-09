@@ -48,10 +48,11 @@ class CalificacionController < ApplicationController
     @horario = Seccion.horario(session)
     @seccion = session[:seccion_numero]
     @nivel = historial.tipo_nivel.descripcion
+
+    @instructor = historial.seccion.instructor.descripcion
     @tipo_nivel_id = session[:tipo_nivel_id]
     @periodo = historial.periodo
     @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
-    @periodo_25 = Periodo::PERIODO_25
     @periodo_30 = Periodo::PERIODO_30
 
     if (!historial.nota_en_evaluacion_sin_calificar? && !historial.sin_calificar? ) && (session[:administrador] == nil)
@@ -262,7 +263,7 @@ class CalificacionController < ApplicationController
     @seccion = session[:seccion_numero]
     @periodo = historial.periodo
     @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
-    @periodo_25 = Periodo::PERIODO_25
+
     @periodo_30 = Periodo::PERIODO_30    
     info_bitacora("La seccion #{session[:seccion_numero]} del curso #{Seccion.idioma(historial.idioma_id)} del horario #{Seccion.horario(session)} no fue calificada por completo, periodo #{session[:parametros][:periodo_calificacion]}")
     render :action => "buscar_estudiantes"
