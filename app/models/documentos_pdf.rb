@@ -324,7 +324,7 @@ class DocumentosPDF
       col.heading.justification = :left
       col.justification = :left
     }
-    cabecera = 
+
     tabla.columns["nota1"] = PDF::SimpleTable::Column.new("nota1") { |col|
       col.width = 50
       col.heading = to_utf16("<b>#{cabecera_minstring(cabeceras[0])}</b>")

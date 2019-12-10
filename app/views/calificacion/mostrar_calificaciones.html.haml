@@ -11,7 +11,14 @@
   %b= "Sección:" 
   #{@seccion}
   %br
-
+  %b= "Periodo:" 
+  #{@periodo.id}
+  %br
+  - if @instructor
+    %b= "Profesor:" 
+    #{@instructor.descripcion_con_ci}
+  %br
+  
 - if @periodo.es_mayor_igual_que? Periodo::PERIODO_30
   = colocar_tabla_calificaciones(@usuarios,@historiales,false)
 
