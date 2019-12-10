@@ -418,7 +418,7 @@ class CalificacionController < ApplicationController
     @seccion = session[:seccion_numero]
     @periodo = historial.periodo
     @periodo_transicion = Periodo::PERIODO_TRANSICION_NOTAS_PARCIALES
-
+    @instructor = historial.seccion.instructor
     @tipo_nivel_id = session[:tipo_nivel_id]
   end
   
