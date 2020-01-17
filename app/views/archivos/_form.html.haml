@@ -64,9 +64,11 @@
 
     $("#enviar").click(function(){
         if (($("input[name*='bloques']:checked").length)<=0||($("input[name*='idiomas']:checked").length)<=0||($("input[name*='niveles']:checked").length)<=0) {
-            alert("Debe seleccionar al menos una opción");
-        }
-        return true;
+          alert("Debe seleccionar al menos una opción");
+          return false;
+        }else{ return true; }
+
+
     });
 
   });
