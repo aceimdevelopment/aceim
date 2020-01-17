@@ -117,13 +117,15 @@ class ArchivosController < ApplicationController
     @idioma_id = @archivo.idioma_id
 
     begin
+      arvhivos = Archivo.where(url: @archivo.url)
       File.delete(@archivo.url)
       flash[:mensaje] = "Archivo Eliminado del sistema."
     rescue Exception => e
       flash[:mensaje] = "Error al intentar eliminar. #{e.message}"
     end
 
-    @archivo.destroy
+    Archivo.where(url: @archivo.url).delete_all
+    # @archivo.destroy
 
     redirect_to archivos_path+"##{@idioma_id}"
   end
