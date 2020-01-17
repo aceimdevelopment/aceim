@@ -32,21 +32,27 @@
     .field
       = f.label :bloque_horario
       - BloqueHorario.all.each do |bh| 
-        = check_box_tag "[bloques][#{bh.id}]", bh.descripcion, false
-      = f.collection_select :bloque_horario_id, BloqueHorario.all, :id, :descripcion, multiple: true
+        = check_box_tag "[bloques][#{bh.id}]", bh.id, false
+        = bh.descripcion
+
+
+      =# f.collection_select :bloque_horario_id, BloqueHorario.all, :id, :descripcion, multiple: true
     .field
       = f.label :idioma
       - Idioma.all.each do |idioma| 
-        = check_box_tag "[idiomas]#{idioma.id}[]", idioma.descripcion, false
-      = f.collection_select :idioma_id, Idioma.all, :id, :descripcion_idioma    
+        = check_box_tag "[idiomas]#{idioma.id}[]", idioma.id, false
+        = idioma.descripcion
+
+      =# f.collection_select :idioma_id, Idioma.all, :id, :descripcion_idioma    
     .field
       - niveles = TipoNivel.includes("curso").where("curso.grado !=0 AND tipo_nivel.id != 'BBVA'").order("curso.grado")
 
-      - niveles.each do |nivel| 
-        = check_box_tag "[nivel]#{nivel.id}[]", nivel.descripcion, false
-
       = f.label 'Nivel'
-      = f.collection_select :tipo_nivel_id, niveles, :id, :descripcion    
+      - niveles.each do |nivel| 
+        = check_box_tag "[nivel]#{nivel.id}[]", nivel.id, false
+        = nivel.descripcion
+
+      =# f.collection_select :tipo_nivel_id, niveles, :id, :descripcion    
   .actions
     = f.submit 'Guardar', class: 'ui-button'
 %br

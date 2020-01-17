@@ -48,6 +48,7 @@ class ArchivosController < ApplicationController
   # POST /archivos
   # POST /archivos.json
   def create
+    1/0
     if params[:archivo][:upload_file]
       begin
         data = params[:archivo][:upload_file]
