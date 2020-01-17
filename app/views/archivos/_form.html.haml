@@ -62,18 +62,11 @@
 
   $(document).ready(function () {
 
-    $('#formArchivo').validate({ 
-        rules: {
-            'bloques[]': {
-                required: true,
-                maxlength: 2
-            }
-        },
-        messages: {
-            'bloques[]': {
-                required: "You must check at least 1 box",
-                maxlength: "Check no more than {0} boxes"
-            }
+    $("#submit").on("click",function(){
+        if (($("input[name*='bloques']:checked").length)<=0) {
+            alert("You must check at least 1 box");
         }
+        return true;
     });
+
   });
