@@ -32,7 +32,7 @@
     .field
       = f.label :bloque_horario
       - BloqueHorario.all.each do |bh| 
-        = check_box_tag "bloques[#{bh.id}]", bh.id, false, required: true
+        = check_box_tag "bloques[#{bh.id}]", bh.id, false
         = bh.descripcion
         %br
 
@@ -40,7 +40,7 @@
     .field
       = f.label :idioma
       - Idioma.where("id != 'OR'").each do |idioma| 
-        = check_box_tag "idiomas[#{idioma.id}]", idioma.id, false, required: true
+        = check_box_tag "idiomas[#{idioma.id}]", idioma.id, false
         = idioma.descripcion
 
       =# f.collection_select :idioma_id, Idioma.all, :id, :descripcion_idioma    
