@@ -7,7 +7,7 @@
       %li= link_to idioma.descripcion.capitalize, "#"+idioma.id
   -@idiomas.each do |idioma|
     %div{:id => idioma.id}
-      - @archivos = idioma.archivos.order(updated_at: :desc)
+      - @archivos = idioma.archivos.order(updated_at: :asc)
       %table.tablesorter.likert
         %thead
           %tr
