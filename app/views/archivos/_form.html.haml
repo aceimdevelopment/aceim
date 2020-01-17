@@ -61,4 +61,21 @@
   $(".ui-button").button();
 
 
+  $(document).ready(function () {
 
+    $('#formArchivo').validate({ // initialize the plugin
+        rules: {
+            'bloques[]': {
+                required: true,
+                maxlength: 2
+            }
+        },
+        messages: {
+            'bloques[]': {
+                required: "You must check at least 1 box",
+                maxlength: "Check no more than {0} boxes"
+            }
+        }
+    });
+
+});
