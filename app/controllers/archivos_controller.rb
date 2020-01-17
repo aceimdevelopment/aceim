@@ -63,18 +63,31 @@ class ArchivosController < ApplicationController
       params[:archivo][:url] = "#{Rails.root}/attachments/archivos/"+params[:archivo][:url]
     end
 
-
-    @archivo = Archivo.new(params[:archivo])
-
-    respond_to do |format|
-      if  @archivo.save
-        format.html { redirect_to archivos_path+"##{@archivo.idioma_id}", flash: {mensaje: 'Archivo creado con éxito.'}}
-        format.json { render json: @archivo, status: :created, location: @archivo }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @archivo.errors, status: :unprocessable_entity }
+    total = 0
+    params[:bloques].each do |bloque|
+      params[:idiomas].each do |idioma|
+        params[:niveles].each do |nivel|
+          params[:archivo][:bloque_horario_id] = bloque
+          params[:archivo][:idioma_id] = idioma
+          params[:archivo][:tipo_nivel_id] = nivel
+          @archivo = Archivo.new(params[:archivo])
+          total = total+1 if @archivo.save 
+        end
       end
     end
+
+    redirect_to archivos_path+"##{@archivo.idioma_id}", flash: {mensaje: "Archivo creado con éxito. Total asociados: #{total}"}
+    # @archivo = Archivo.new(params[:archivo])
+
+    # respond_to do |format|
+    #   if  @archivo.save
+    #     format.html { redirect_to archivos_path+"##{@archivo.idioma_id}", flash: {mensaje: 'Archivo creado con éxito.'}}
+    #     format.json { render json: @archivo, status: :created, location: @archivo }
+    #   else
+    #     format.html { render action: "new" }
+    #     format.json { render json: @archivo.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PUT /archivos/1
