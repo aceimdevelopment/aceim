@@ -48,7 +48,6 @@ class ArchivosController < ApplicationController
   # POST /archivos
   # POST /archivos.json
   def create
-    1/0
     if params[:archivo][:upload_file]
       begin
         data = params[:archivo][:upload_file]
@@ -68,9 +67,9 @@ class ArchivosController < ApplicationController
     params[:bloques].each do |bloque|
       params[:idiomas].each do |idioma|
         params[:niveles].each do |nivel|
-          params[:archivo][:bloque_horario_id] = bloque
-          params[:archivo][:idioma_id] = idioma
-          params[:archivo][:tipo_nivel_id] = nivel
+          params[:archivo][:bloque_horario_id] = bloque.first
+          params[:archivo][:idioma_id] = idioma.first
+          params[:archivo][:tipo_nivel_id] = nivel.first
           @archivo = Archivo.new(params[:archivo])
           total = total+1 if @archivo.save 
         end
