@@ -49,7 +49,7 @@
 
       = f.label 'Nivel'
       - niveles.each do |nivel| 
-        = check_box_tag "nivel[#{nivel.id}]", nivel.id, false
+        = check_box_tag "niveles[#{nivel.id}]", nivel.id, false
         = nivel.descripcion
 
       =# f.collection_select :tipo_nivel_id, niveles, :id, :descripcion    
@@ -63,8 +63,8 @@
   $(document).ready(function () {
 
     $("#enviar").click(function(){
-        if (($("input[name*='bloques']:checked").length)<=0) {
-            alert("You must check at least 1 box");
+        if (($("input[name*='bloques']:checked").length)<=0||($("input[name*='idiomas']:checked").length)<=0||($("input[name*='niveles']:checked").length)<=0) {
+            alert("Debe seleccionar al menos una opción");
         }
         return true;
     });
