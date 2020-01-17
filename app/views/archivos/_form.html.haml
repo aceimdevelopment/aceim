@@ -54,7 +54,7 @@
 
       =# f.collection_select :tipo_nivel_id, niveles, :id, :descripcion    
   .actions
-    = f.submit 'Guardar', class: 'ui-button'
+    = f.submit 'Guardar', class: 'ui-button', id: 'enviar'
 %br
 
 :javascript
@@ -62,7 +62,7 @@
 
   $(document).ready(function () {
 
-    $("#submit").on("click",function(){
+    $("#enviar").on("click",function(){
         if (($("input[name*='bloques']:checked").length)<=0) {
             alert("You must check at least 1 box");
         }
