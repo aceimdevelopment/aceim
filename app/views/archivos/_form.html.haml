@@ -31,12 +31,12 @@
     .field
     .field
       = f.label :bloque_horario
-      - BloqueHorario.each do |bh| 
+      - BloqueHorario.all.each do |bh| 
         = check_box_tag "[bloques][#{bh.id}]", bh.descripcion, false
       = f.collection_select :bloque_horario_id, BloqueHorario.all, :id, :descripcion, multiple: true
     .field
       = f.label :idioma
-      - Idioma.each do |idioma| 
+      - Idioma.all.each do |idioma| 
         = check_box_tag "[idiomas]#{idioma.id}[]", idioma.descripcion, false
       = f.collection_select :idioma_id, Idioma.all, :id, :descripcion_idioma    
     .field
