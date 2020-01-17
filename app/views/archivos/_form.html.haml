@@ -46,7 +46,7 @@
         = check_box_tag "[nivel]#{nivel.id}[]", nivel.descripcion, false
 
       = f.label 'Nivel'
-      = f.collection_select :tipo_nivel_id, @niveles, :id, :descripcion    
+      = f.collection_select :tipo_nivel_id, niveles, :id, :descripcion    
   .actions
     = f.submit 'Guardar', class: 'ui-button'
 %br
