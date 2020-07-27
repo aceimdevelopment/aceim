@@ -4,8 +4,17 @@ class InscripcionController < ApplicationController
   
   #before_filter :filtro_inscripcion_abierta, :except => ["paso0","paso0_guardar","planilla_inscripcion"] 
   #before_filter :filtro_primer_dia, :only => ["paso1","paso2"]
-  before_filter :filtro_logueado, :except => ["paso0_ingles", "paso0","paso0_guardar", 'ingrese_ci', 'ingrese_ci_guardar']
+  before_filter :filtro_logueado, :except => ["paso0_ingles", "paso0","paso0_guardar", 'ingrese_ci', 'ingrese_ci_guardar', 'show']
   #before_filter :filtro_nuevos
+
+  def show
+    @historial_academicos = HistorialAcademico.where(usuario_ci: params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @historial_academico }
+    end    
+  end
 
   def ingrese_ci
     reset_session
