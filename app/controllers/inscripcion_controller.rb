@@ -12,7 +12,7 @@ class InscripcionController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @historial_academico }
+      format.json { json: @historial_academico}
     end    
   end
 
