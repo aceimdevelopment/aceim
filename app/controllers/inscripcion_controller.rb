@@ -14,7 +14,7 @@ class InscripcionController < ApplicationController
       format.html # show.html.erb
 
       format.json do 
-        render json: {data: @historial_academico}, status: :ok 
+        render json: {@historial_academicos}, status: :ok 
       end
 
     end    
