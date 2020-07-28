@@ -10,7 +10,7 @@ gem 'rails', '3.1.0'
 #gem 'mysql2', '0.3.7'
 gem 'mysql2', '~> 0.3.18'
 
-gem 'json', '1.5.4'
+gem 'json', '2.3.1'
 
 
 #gem 'sass', '3.1.7'
